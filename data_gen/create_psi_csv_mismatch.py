@@ -1,8 +1,8 @@
 import csv
 from typing import Any
 
+from generator.logging_utils import setup_logger
 from generator.utils import calculate_mass, get_id_and_name, is_obsolete, parse_formula_to_dict, read_obo
-from logging_utils import setup_logger
 
 logger = setup_logger(__name__, "extract_psimod_mismatches")
 

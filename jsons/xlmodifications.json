@@ -1,0 +1,2219 @@
+{
+    "metadata": {
+        "generated_date": "2026-01-16T15:32:45.053205",
+        "generator": "tacular data generator",
+        "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
+        "tacular_version": "0.1.0",
+        "data_version": "1.5.1"
+    },
+    "xlmodifications": [
+        {
+            "id": "01000",
+            "name": "hydrolyzed BS3",
+            "formula": "C8H12O3",
+            "monoisotopic_mass": 156.078644,
+            "average_mass": 156.179391,
+            "composition": {
+                "C": 8,
+                "H": 12,
+                "O": 3
+            }
+        },
+        {
+            "id": "01001",
+            "name": "ammonium amidated BS3",
+            "formula": "C8H13NO2",
+            "monoisotopic_mass": 155.094629,
+            "average_mass": 155.19463,
+            "composition": {
+                "C": 8,
+                "H": 13,
+                "O": 2,
+                "N": 1
+            }
+        },
+        {
+            "id": "01002",
+            "name": "hydrolyzed DSS",
+            "formula": "C8H12O3",
+            "monoisotopic_mass": 156.078644,
+            "average_mass": 156.179391,
+            "composition": {
+                "C": 8,
+                "H": 12,
+                "O": 3
+            }
+        },
+        {
+            "id": "01003",
+            "name": "ammonium amidated DSS",
+            "formula": "C8H13NO2",
+            "monoisotopic_mass": 155.094629,
+            "average_mass": 155.19463,
+            "composition": {
+                "C": 8,
+                "H": 13,
+                "O": 2,
+                "N": 1
+            }
+        },
+        {
+            "id": "01004",
+            "name": "hydrolyzed DSS-d4",
+            "formula": null,
+            "monoisotopic_mass": 160.103742,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01005",
+            "name": "ammonium amidated DSS-d4",
+            "formula": null,
+            "monoisotopic_mass": 159.119726,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01006",
+            "name": "hydrolyzed DSS-d12",
+            "formula": null,
+            "monoisotopic_mass": 168.153965,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01007",
+            "name": "ammonium amidated DSS-d12",
+            "formula": null,
+            "monoisotopic_mass": 167.16995,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01008",
+            "name": "hydrolyzed BS3-d4",
+            "formula": "C8D4H8O3",
+            "monoisotopic_mass": 160.103751,
+            "average_mass": 160.204035,
+            "composition": {
+                "C": 8,
+                "D": 4,
+                "H": 8,
+                "O": 3
+            }
+        },
+        {
+            "id": "01009",
+            "name": "ammonium amidated BS3-d4",
+            "formula": "C8D4H9NO2",
+            "monoisotopic_mass": 159.119736,
+            "average_mass": 159.219274,
+            "composition": {
+                "C": 8,
+                "D": 4,
+                "H": 9,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01010",
+            "name": "hydrolyzed BS2G",
+            "formula": "C5H6O3",
+            "monoisotopic_mass": 114.031694,
+            "average_mass": 114.099539,
+            "composition": {
+                "C": 5,
+                "H": 6,
+                "O": 3
+            }
+        },
+        {
+            "id": "01011",
+            "name": "ammonium amidated BS2G",
+            "formula": "C5H7NO2",
+            "monoisotopic_mass": 113.047679,
+            "average_mass": 113.114778,
+            "composition": {
+                "C": 5,
+                "H": 7,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01012",
+            "name": "hydrolyzed DSG",
+            "formula": "C5H6O3",
+            "monoisotopic_mass": 114.031694,
+            "average_mass": 114.099539,
+            "composition": {
+                "C": 5,
+                "H": 6,
+                "O": 3
+            }
+        },
+        {
+            "id": "01013",
+            "name": "ammonium amidated DSG",
+            "formula": "C5H7NO2",
+            "monoisotopic_mass": 113.047679,
+            "average_mass": 113.114778,
+            "composition": {
+                "C": 5,
+                "H": 7,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01014",
+            "name": "hydrolyzed DSG-d4",
+            "formula": "C5D4H2O3",
+            "monoisotopic_mass": 118.056774,
+            "average_mass": 118.124183,
+            "composition": {
+                "C": 5,
+                "D": 4,
+                "H": 2,
+                "O": 3
+            }
+        },
+        {
+            "id": "01015",
+            "name": "ammonium amidated DSG-d4",
+            "formula": "C5D4H3NO2",
+            "monoisotopic_mass": 117.072759,
+            "average_mass": 117.139422,
+            "composition": {
+                "C": 5,
+                "D": 4,
+                "H": 3,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01016",
+            "name": "hydrolyzed BS2G-d4",
+            "formula": "C5D4H2O3",
+            "monoisotopic_mass": 118.056801,
+            "average_mass": 118.124183,
+            "composition": {
+                "C": 5,
+                "D": 4,
+                "H": 2,
+                "O": 3
+            }
+        },
+        {
+            "id": "01017",
+            "name": "ammonium amidated BS2G-d4",
+            "formula": "C5D4H3NO2",
+            "monoisotopic_mass": 117.072785,
+            "average_mass": 117.139422,
+            "composition": {
+                "C": 5,
+                "D": 4,
+                "H": 3,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01018",
+            "name": "BDP-NHP-stump",
+            "formula": null,
+            "monoisotopic_mass": 197.032422,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01019",
+            "name": "hydrolyzed DSP",
+            "formula": "C6H8O3S2",
+            "monoisotopic_mass": 191.991486,
+            "average_mass": 192.255731,
+            "composition": {
+                "C": 6,
+                "H": 8,
+                "O": 3,
+                "S": 2
+            }
+        },
+        {
+            "id": "01020",
+            "name": "ammonium amidated DSP",
+            "formula": "C6H9NO2S2",
+            "monoisotopic_mass": 191.00747,
+            "average_mass": 191.27097,
+            "composition": {
+                "C": 6,
+                "H": 9,
+                "N": 1,
+                "O": 2,
+                "S": 2
+            }
+        },
+        {
+            "id": "01021",
+            "name": "hydrolyzed EGS",
+            "formula": "C10H12O7",
+            "monoisotopic_mass": 244.058303,
+            "average_mass": 244.198482,
+            "composition": {
+                "C": 10,
+                "H": 12,
+                "O": 7
+            }
+        },
+        {
+            "id": "01022",
+            "name": "ammonium amidated EGS",
+            "formula": "C10H13NO6",
+            "monoisotopic_mass": 243.074287,
+            "average_mass": 243.213722,
+            "composition": {
+                "C": 10,
+                "H": 13,
+                "N": 1,
+                "O": 6
+            }
+        },
+        {
+            "id": "01023",
+            "name": "hydrolyzed BiPS",
+            "formula": "C16H18N2O5S2",
+            "monoisotopic_mass": 382.06571,
+            "average_mass": 382.454714,
+            "composition": {
+                "C": 16,
+                "H": 18,
+                "N": 2,
+                "O": 5,
+                "S": 2
+            }
+        },
+        {
+            "id": "01024",
+            "name": "ammonium amidated BiPS",
+            "formula": "C16H18N3O4S2",
+            "monoisotopic_mass": 381.08169,
+            "average_mass": 380.462012,
+            "composition": {
+                "C": 16,
+                "H": 18,
+                "N": 3,
+                "O": 4,
+                "S": 2
+            }
+        },
+        {
+            "id": "01025",
+            "name": "hydrolyzed CBDPS",
+            "formula": "C19H25N7O5S3",
+            "monoisotopic_mass": 527.10738,
+            "average_mass": 527.64081,
+            "composition": {
+                "C": 19,
+                "H": 25,
+                "N": 7,
+                "O": 5,
+                "S": 3
+            }
+        },
+        {
+            "id": "01026",
+            "name": "ammonium amidated CBDPS",
+            "formula": "C19H25N8O4S3",
+            "monoisotopic_mass": 526.12336,
+            "average_mass": 525.648108,
+            "composition": {
+                "C": 19,
+                "H": 25,
+                "N": 8,
+                "O": 4,
+                "S": 3
+            }
+        },
+        {
+            "id": "01027",
+            "name": "hydrolyzed DSA",
+            "formula": "C6H8O3",
+            "monoisotopic_mass": 128.0468,
+            "average_mass": 128.126156,
+            "composition": {
+                "C": 6,
+                "H": 8,
+                "O": 3
+            }
+        },
+        {
+            "id": "01028",
+            "name": "ammonium amidated DSA",
+            "formula": "C6H9NO2",
+            "monoisotopic_mass": 127.06278,
+            "average_mass": 127.141395,
+            "composition": {
+                "C": 6,
+                "H": 9,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01029",
+            "name": "hydrolyzed DNBDPS",
+            "formula": "C12H10N2O7S2",
+            "monoisotopic_mass": 357.99294,
+            "average_mass": 358.347054,
+            "composition": {
+                "C": 12,
+                "H": 10,
+                "N": 2,
+                "O": 7,
+                "S": 2
+            }
+        },
+        {
+            "id": "01030",
+            "name": "ammonium amidated DNBDPS",
+            "formula": "C12H10N3O6S2",
+            "monoisotopic_mass": 357.00892,
+            "average_mass": 356.354352,
+            "composition": {
+                "C": 12,
+                "H": 10,
+                "N": 3,
+                "O": 6,
+                "S": 2
+            }
+        },
+        {
+            "id": "01031",
+            "name": "hydrolyzed TEABS",
+            "formula": "C28H41N5O12S",
+            "monoisotopic_mass": 671.24724,
+            "average_mass": 671.717339,
+            "composition": {
+                "C": 28,
+                "H": 41,
+                "N": 5,
+                "O": 12,
+                "S": 1
+            }
+        },
+        {
+            "id": "01032",
+            "name": "ammonium amidated TEABS",
+            "formula": "C28H41N6O11S",
+            "monoisotopic_mass": 670.26322,
+            "average_mass": 669.724637,
+            "composition": {
+                "C": 28,
+                "H": 41,
+                "N": 6,
+                "O": 11,
+                "S": 1
+            }
+        },
+        {
+            "id": "01033",
+            "name": "hydrolyzed DTSSP-d8",
+            "formula": "C6D8O3S2",
+            "monoisotopic_mass": 191.99149,
+            "average_mass": 200.305019,
+            "composition": {
+                "C": 6,
+                "D": 8,
+                "O": 3,
+                "S": 2
+            }
+        },
+        {
+            "id": "01034",
+            "name": "ammonium amidated DTSSP-d8",
+            "formula": "C6D8HNO2S2",
+            "monoisotopic_mass": 191.00747,
+            "average_mass": 199.320258,
+            "composition": {
+                "C": 6,
+                "D": 8,
+                "H": 1,
+                "N": 1,
+                "O": 2,
+                "S": 2
+            }
+        },
+        {
+            "id": "01035",
+            "name": "hydrolyzed DSP-d8",
+            "formula": "C6D8O3S2",
+            "monoisotopic_mass": 200.04165,
+            "average_mass": 200.305019,
+            "composition": {
+                "C": 6,
+                "D": 8,
+                "O": 3,
+                "S": 2
+            }
+        },
+        {
+            "id": "01036",
+            "name": "ammonium amidated DSP-d8",
+            "formula": "C6D8HNO2S2",
+            "monoisotopic_mass": 199.05763,
+            "average_mass": 199.320258,
+            "composition": {
+                "C": 6,
+                "D": 8,
+                "H": 1,
+                "N": 1,
+                "O": 2,
+                "S": 2
+            }
+        },
+        {
+            "id": "01037",
+            "name": "hydrolyzed Sulfo-EGS",
+            "formula": "C10H12O7",
+            "monoisotopic_mass": 244.058303,
+            "average_mass": 244.198482,
+            "composition": {
+                "C": 10,
+                "H": 12,
+                "O": 7
+            }
+        },
+        {
+            "id": "01038",
+            "name": "ammonium amidated Sulfo-EGS",
+            "formula": "C10H12NO6",
+            "monoisotopic_mass": 243.07428,
+            "average_mass": 242.205781,
+            "composition": {
+                "C": 10,
+                "H": 12,
+                "N": 1,
+                "O": 6
+            }
+        },
+        {
+            "id": "01039",
+            "name": "hydrolyzed EGS-d12",
+            "formula": "C10D12O7",
+            "monoisotopic_mass": 256.13403,
+            "average_mass": 256.272415,
+            "composition": {
+                "C": 10,
+                "D": 12,
+                "O": 7
+            }
+        },
+        {
+            "id": "01040",
+            "name": "ammonium amidated EGS-d12",
+            "formula": "C10D12NO6",
+            "monoisotopic_mass": 255.15001,
+            "average_mass": 254.279713,
+            "composition": {
+                "C": 10,
+                "D": 12,
+                "N": 1,
+                "O": 6
+            }
+        },
+        {
+            "id": "01041",
+            "name": "hydrolyzed Sulfo-EGS-d12",
+            "formula": "C10D12O7",
+            "monoisotopic_mass": 256.13403,
+            "average_mass": 256.272415,
+            "composition": {
+                "C": 10,
+                "D": 12,
+                "O": 7
+            }
+        },
+        {
+            "id": "01042",
+            "name": "ammonium amidated Sulfo-EGS-d12",
+            "formula": "C10D12NO6",
+            "monoisotopic_mass": 255.15001,
+            "average_mass": 254.279713,
+            "composition": {
+                "C": 10,
+                "D": 12,
+                "N": 1,
+                "O": 6
+            }
+        },
+        {
+            "id": "01043",
+            "name": "hydrolyzed DSA-13C6",
+            "formula": "H8O3",
+            "monoisotopic_mass": 134.06696,
+            "average_mass": 134.08187,
+            "composition": {
+                "H": 8,
+                "O": 3
+            }
+        },
+        {
+            "id": "01044",
+            "name": "ammonium amidated DSA-13C6",
+            "formula": "H9NO2",
+            "monoisotopic_mass": 133.08294,
+            "average_mass": 133.097109,
+            "composition": {
+                "H": 9,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01045",
+            "name": "hydrolyzed CBDPS-d8",
+            "formula": "C19D8H17N7O5S3",
+            "monoisotopic_mass": 535.15754,
+            "average_mass": 535.690098,
+            "composition": {
+                "C": 19,
+                "D": 8,
+                "H": 17,
+                "N": 7,
+                "O": 5,
+                "S": 3
+            }
+        },
+        {
+            "id": "01046",
+            "name": "ammonium amidated CBDPS-d8",
+            "formula": "C19D8H17N8O4S3",
+            "monoisotopic_mass": 534.17352,
+            "average_mass": 533.697397,
+            "composition": {
+                "C": 19,
+                "D": 8,
+                "H": 17,
+                "N": 8,
+                "O": 4,
+                "S": 3
+            }
+        },
+        {
+            "id": "01047",
+            "name": "hydrolyzed CBDPSS",
+            "formula": "C19H25N7O5S3",
+            "monoisotopic_mass": 527.10738,
+            "average_mass": 527.64081,
+            "composition": {
+                "C": 19,
+                "H": 25,
+                "N": 7,
+                "O": 5,
+                "S": 3
+            }
+        },
+        {
+            "id": "01048",
+            "name": "ammonium amidated CBDPSS",
+            "formula": "C19H25N8O4S3",
+            "monoisotopic_mass": 526.12336,
+            "average_mass": 525.648108,
+            "composition": {
+                "C": 19,
+                "H": 25,
+                "N": 8,
+                "O": 4,
+                "S": 3
+            }
+        },
+        {
+            "id": "01049",
+            "name": "hydrolyzed CBDPSS-d8",
+            "formula": "C19D8H17N7O5S3",
+            "monoisotopic_mass": 535.15754,
+            "average_mass": 535.690098,
+            "composition": {
+                "C": 19,
+                "D": 8,
+                "H": 17,
+                "N": 7,
+                "O": 5,
+                "S": 3
+            }
+        },
+        {
+            "id": "01050",
+            "name": "ammonium amidated CBDPSS-d8",
+            "formula": "C19D8H17N8O4S3",
+            "monoisotopic_mass": 534.17352,
+            "average_mass": 533.697397,
+            "composition": {
+                "C": 19,
+                "D": 8,
+                "H": 17,
+                "N": 8,
+                "O": 4,
+                "S": 3
+            }
+        },
+        {
+            "id": "01051",
+            "name": "hydrolyzed BS3-d12",
+            "formula": "C8D12O3",
+            "monoisotopic_mass": 168.15437,
+            "average_mass": 168.253323,
+            "composition": {
+                "C": 8,
+                "D": 12,
+                "O": 3
+            }
+        },
+        {
+            "id": "01052",
+            "name": "ammonium amidated BS3-d12",
+            "formula": "C8D12HNO2",
+            "monoisotopic_mass": 167.17035,
+            "average_mass": 167.268562,
+            "composition": {
+                "C": 8,
+                "D": 12,
+                "H": 1,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01053",
+            "name": "hydrolyzed DSG-d6",
+            "formula": "C5D6O3",
+            "monoisotopic_mass": 120.07483,
+            "average_mass": 120.136505,
+            "composition": {
+                "C": 5,
+                "D": 6,
+                "O": 3
+            }
+        },
+        {
+            "id": "01054",
+            "name": "ammonium amidated DSG-d6",
+            "formula": "C5D6HNO2",
+            "monoisotopic_mass": 119.09081,
+            "average_mass": 119.151744,
+            "composition": {
+                "C": 5,
+                "D": 6,
+                "H": 1,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01055",
+            "name": "hydrolyzed BS2G-d6",
+            "formula": "C5D6O3",
+            "monoisotopic_mass": 120.06877,
+            "average_mass": 120.136505,
+            "composition": {
+                "C": 5,
+                "D": 6,
+                "O": 3
+            }
+        },
+        {
+            "id": "01056",
+            "name": "ammonium amidated BS2G-d6",
+            "formula": "C5D6HNO2",
+            "monoisotopic_mass": 119.08475,
+            "average_mass": 119.151744,
+            "composition": {
+                "C": 5,
+                "D": 6,
+                "H": 1,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01057",
+            "name": "hydrolyzed SDH",
+            "formula": "C8H16N4O",
+            "monoisotopic_mass": 184.132411,
+            "average_mass": 184.239157,
+            "composition": {
+                "C": 8,
+                "H": 16,
+                "N": 4,
+                "O": 1
+            }
+        },
+        {
+            "id": "01058",
+            "name": "hydrolyzed SDH-d12",
+            "formula": "C8D12H4N4O",
+            "monoisotopic_mass": 196.207732,
+            "average_mass": 196.313089,
+            "composition": {
+                "C": 8,
+                "D": 12,
+                "H": 4,
+                "N": 4,
+                "O": 1
+            }
+        },
+        {
+            "id": "01059",
+            "name": "hydrolyzed ADH",
+            "formula": "C6H12N4O",
+            "monoisotopic_mass": 156.101111,
+            "average_mass": 156.185922,
+            "composition": {
+                "C": 6,
+                "H": 12,
+                "N": 4,
+                "O": 1
+            }
+        },
+        {
+            "id": "01060",
+            "name": "hydrolyzed ADH-d8",
+            "formula": "C6D8H4N4O",
+            "monoisotopic_mass": 164.151325,
+            "average_mass": 164.23521,
+            "composition": {
+                "C": 6,
+                "D": 8,
+                "H": 4,
+                "N": 4,
+                "O": 1
+            }
+        },
+        {
+            "id": "01061",
+            "name": "hydrolyzed GDH",
+            "formula": "C5H10N4O",
+            "monoisotopic_mass": 142.085461,
+            "average_mass": 142.159305,
+            "composition": {
+                "C": 5,
+                "H": 10,
+                "N": 4,
+                "O": 1
+            }
+        },
+        {
+            "id": "01062",
+            "name": "hydrolyzed GDH-d6",
+            "formula": "C5D6H4N4O",
+            "monoisotopic_mass": 148.123121,
+            "average_mass": 148.196271,
+            "composition": {
+                "C": 5,
+                "D": 6,
+                "H": 4,
+                "N": 4,
+                "O": 1
+            }
+        },
+        {
+            "id": "01063",
+            "name": "hydrolyzed BCCL1",
+            "formula": null,
+            "monoisotopic_mass": 355.12019,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01064",
+            "name": "hydrolyzed BCCL2",
+            "formula": null,
+            "monoisotopic_mass": 411.18179,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01065",
+            "name": "hydrolyzed IRCX",
+            "formula": null,
+            "monoisotopic_mass": 348.0,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01066",
+            "name": "hydrolyzed azide-DSG",
+            "formula": null,
+            "monoisotopic_mass": 229.0,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01067",
+            "name": "hydrolyzed JMV 3378",
+            "formula": null,
+            "monoisotopic_mass": 286.0,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01068",
+            "name": "hydrolyzed BuTuGPG",
+            "formula": null,
+            "monoisotopic_mass": 1704.86,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01070",
+            "name": "hydrolyzed DEST",
+            "formula": "C8H14N2O",
+            "monoisotopic_mass": 154.110613,
+            "average_mass": 154.209869,
+            "composition": {
+                "C": 8,
+                "H": 14,
+                "N": 2,
+                "O": 1
+            }
+        },
+        {
+            "id": "01071",
+            "name": "ammonium amidated DEST",
+            "formula": "C8H15N3",
+            "monoisotopic_mass": 153.126593,
+            "average_mass": 153.225108,
+            "composition": {
+                "C": 8,
+                "H": 15,
+                "N": 3
+            }
+        },
+        {
+            "id": "01072",
+            "name": "thioesterized DEST",
+            "formula": "C10H17NOS",
+            "monoisotopic_mass": 199.103085,
+            "average_mass": 199.313247,
+            "composition": {
+                "C": 10,
+                "H": 17,
+                "N": 1,
+                "O": 1,
+                "S": 1
+            }
+        },
+        {
+            "id": "01073",
+            "name": "hydrolyzed BS(PEG)5",
+            "formula": "C14H24O8",
+            "monoisotopic_mass": 320.147115,
+            "average_mass": 320.33612,
+            "composition": {
+                "C": 14,
+                "H": 24,
+                "O": 8
+            }
+        },
+        {
+            "id": "01074",
+            "name": "ammonium amidated BS(PEG)5",
+            "formula": "C14H27NO7",
+            "monoisotopic_mass": 320.147115,
+            "average_mass": 321.367241,
+            "composition": {
+                "C": 14,
+                "H": 27,
+                "N": 1,
+                "O": 7
+            }
+        },
+        {
+            "id": "01075",
+            "name": "hydrolyzed BSOCOES",
+            "formula": "C6H8O7S",
+            "monoisotopic_mass": 223.999077,
+            "average_mass": 224.188563,
+            "composition": {
+                "C": 6,
+                "H": 8,
+                "O": 7,
+                "S": 1
+            }
+        },
+        {
+            "id": "01076",
+            "name": "ammonium amidated BSOCOES",
+            "formula": "C6H9NO6S",
+            "monoisotopic_mass": 223.015061,
+            "average_mass": 223.203802,
+            "composition": {
+                "C": 6,
+                "H": 9,
+                "N": 1,
+                "O": 6,
+                "S": 1
+            }
+        },
+        {
+            "id": "01077",
+            "name": "hydrolyzed DST",
+            "formula": "C4H4O5",
+            "monoisotopic_mass": 132.005875,
+            "average_mass": 132.071731,
+            "composition": {
+                "C": 4,
+                "H": 4,
+                "O": 5
+            }
+        },
+        {
+            "id": "01078",
+            "name": "ammonium amidated DST",
+            "formula": "C4H5NO4",
+            "monoisotopic_mass": 131.021859,
+            "average_mass": 131.08697,
+            "composition": {
+                "C": 4,
+                "H": 5,
+                "N": 1,
+                "O": 4
+            }
+        },
+        {
+            "id": "01079",
+            "name": "hydrolyzed SDA",
+            "formula": "C5H8O2",
+            "monoisotopic_mass": 100.05243,
+            "average_mass": 100.116015,
+            "composition": {
+                "C": 5,
+                "H": 8,
+                "O": 2
+            }
+        },
+        {
+            "id": "01080",
+            "name": "oxidized SDA",
+            "formula": "C5H6O2",
+            "monoisotopic_mass": 98.036779,
+            "average_mass": 98.100134,
+            "composition": {
+                "C": 5,
+                "H": 6,
+                "O": 2
+            }
+        },
+        {
+            "id": "01081",
+            "name": "alkenized SDA",
+            "formula": "C4H4O",
+            "monoisotopic_mass": 68.026215,
+            "average_mass": 68.074112,
+            "composition": {
+                "C": 4,
+                "H": 4,
+                "O": 1
+            }
+        },
+        {
+            "id": "01082",
+            "name": "hydrolyzed LC-SDA",
+            "formula": "C11H19NO3",
+            "monoisotopic_mass": 213.136494,
+            "average_mass": 213.273887,
+            "composition": {
+                "C": 11,
+                "H": 19,
+                "N": 1,
+                "O": 3
+            }
+        },
+        {
+            "id": "01083",
+            "name": "oxidized LC-SDA",
+            "formula": "C11H17NO3",
+            "monoisotopic_mass": 211.120843,
+            "average_mass": 211.258006,
+            "composition": {
+                "C": 11,
+                "H": 17,
+                "N": 1,
+                "O": 3
+            }
+        },
+        {
+            "id": "01084",
+            "name": "alkenized LC-SDA",
+            "formula": "C10H15NO2",
+            "monoisotopic_mass": 181.110279,
+            "average_mass": 181.231983,
+            "composition": {
+                "C": 10,
+                "H": 15,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "01085",
+            "name": "hydrolyzed L-Photo-Leucine",
+            "formula": "C-1H-2O",
+            "monoisotopic_mass": 1.979265,
+            "average_mass": 1.972788,
+            "composition": {
+                "C": -1,
+                "H": -2,
+                "O": 1
+            }
+        },
+        {
+            "id": "01086",
+            "name": "oxidized L-Photo-Leucine",
+            "formula": "C-1H-4O",
+            "monoisotopic_mass": -0.036386,
+            "average_mass": -0.043094,
+            "composition": {
+                "C": -1,
+                "H": -4,
+                "O": 1
+            }
+        },
+        {
+            "id": "01087",
+            "name": "alkenized L-Photo-Leucine",
+            "formula": "C-2H-6",
+            "monoisotopic_mass": -30.04695,
+            "average_mass": -30.069116,
+            "composition": {
+                "C": -2,
+                "H": -6
+            }
+        },
+        {
+            "id": "01088",
+            "name": "hydrolyzed L-Photo-Methionine",
+            "formula": "CH2OS-1",
+            "monoisotopic_mass": -1.961507,
+            "average_mass": -2.038765,
+            "composition": {
+                "C": 1,
+                "H": 2,
+                "O": 1,
+                "S": -1
+            }
+        },
+        {
+            "id": "01089",
+            "name": "oxidized L-Photo-Methionine",
+            "formula": "COS-1",
+            "monoisotopic_mass": -3.977156,
+            "average_mass": -4.054647,
+            "composition": {
+                "C": 1,
+                "O": 1,
+                "S": -1
+            }
+        },
+        {
+            "id": "01090",
+            "name": "alkenized L-Photo-Methionine",
+            "formula": "H-2S-1",
+            "monoisotopic_mass": -33.987722,
+            "average_mass": -34.080669,
+            "composition": {
+                "H": -2,
+                "S": -1
+            }
+        },
+        {
+            "id": "01092",
+            "name": "hydrolyzed BMPS",
+            "formula": "C7H7NO4",
+            "monoisotopic_mass": 169.037508,
+            "average_mass": 169.135059,
+            "composition": {
+                "C": 7,
+                "H": 7,
+                "O": 4,
+                "N": 1
+            }
+        },
+        {
+            "id": "01093",
+            "name": "ammonium amidated BMPS",
+            "formula": "C7H8N2O3",
+            "monoisotopic_mass": 168.053492,
+            "average_mass": 168.150299,
+            "composition": {
+                "C": 7,
+                "H": 8,
+                "O": 3,
+                "N": 2
+            }
+        },
+        {
+            "id": "01094",
+            "name": "hydrolyzed PDH",
+            "formula": "C7H12N4",
+            "monoisotopic_mass": 170.116761,
+            "average_mass": 152.197253,
+            "composition": {
+                "C": 7,
+                "H": 12,
+                "N": 4
+            }
+        },
+        {
+            "id": "01095",
+            "name": "hydrolyzed PDH-d10",
+            "formula": "C7D10H2N4",
+            "monoisotopic_mass": 180.179529,
+            "average_mass": 162.258863,
+            "composition": {
+                "C": 7,
+                "D": 10,
+                "H": 2,
+                "N": 4
+            }
+        },
+        {
+            "id": "01096",
+            "name": "hydrolyzed SuDP",
+            "formula": null,
+            "monoisotopic_mass": 294.0852,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01097",
+            "name": "hydrolyzed L-Photo-Isoleucine",
+            "formula": "C-1H-2O",
+            "monoisotopic_mass": 1.979265,
+            "average_mass": 1.972788,
+            "composition": {
+                "C": -1,
+                "H": -2,
+                "O": 1
+            }
+        },
+        {
+            "id": "01098",
+            "name": "oxidized L-Photo-Isoleucine",
+            "formula": "C-1H-4O",
+            "monoisotopic_mass": -0.036386,
+            "average_mass": -0.043094,
+            "composition": {
+                "C": -1,
+                "H": -4,
+                "O": 1
+            }
+        },
+        {
+            "id": "01099",
+            "name": "alkenized L-Photo-Isoleucine",
+            "formula": "C-2H-6",
+            "monoisotopic_mass": -30.04695,
+            "average_mass": -30.069116,
+            "composition": {
+                "C": -2,
+                "H": -6
+            }
+        },
+        {
+            "id": "01100",
+            "name": "hydrolyzed Sulfo-SBED",
+            "formula": null,
+            "monoisotopic_mass": 652.217,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01102",
+            "name": "hydrolized PL",
+            "formula": null,
+            "monoisotopic_mass": 334.15,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01711",
+            "name": "bis-[3-(2-ketobutyraldehyde)ether",
+            "formula": null,
+            "monoisotopic_mass": 230.079,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01712",
+            "name": "mechlorethamine",
+            "formula": null,
+            "monoisotopic_mass": 83.073,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01713",
+            "name": "4-[bis-(2-chloroethyl)amino]benzenebutanoic acid",
+            "formula": null,
+            "monoisotopic_mass": 231.126,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01714",
+            "name": "sym-triazine trichloride",
+            "formula": null,
+            "monoisotopic_mass": 110.962,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01715",
+            "name": "Heteroconjugate 20",
+            "formula": null,
+            "monoisotopic_mass": 1554.6871,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "01900",
+            "name": "L-Photo-Leucine",
+            "formula": "C-1H-4",
+            "monoisotopic_mass": -16.0313,
+            "average_mass": -16.042499,
+            "composition": {
+                "C": -1,
+                "H": -4
+            }
+        },
+        {
+            "id": "01901",
+            "name": "L-Photo-Methionine",
+            "formula": "CS-1",
+            "monoisotopic_mass": -19.972072,
+            "average_mass": -20.054052,
+            "composition": {
+                "C": 1,
+                "S": -1
+            }
+        },
+        {
+            "id": "01902",
+            "name": "L-Photo-Isoleucine",
+            "formula": "C-1H-4",
+            "monoisotopic_mass": -16.0313,
+            "average_mass": -16.042499,
+            "composition": {
+                "C": -1,
+                "H": -4
+            }
+        },
+        {
+            "id": "02000",
+            "name": "BS3",
+            "formula": "C8H10O2",
+            "monoisotopic_mass": 138.06808,
+            "average_mass": 138.164105,
+            "composition": {
+                "C": 8,
+                "H": 10,
+                "O": 2
+            }
+        },
+        {
+            "id": "02001",
+            "name": "DSS",
+            "formula": "C8H10O2",
+            "monoisotopic_mass": 138.06808,
+            "average_mass": 138.164105,
+            "composition": {
+                "C": 8,
+                "H": 10,
+                "O": 2
+            }
+        },
+        {
+            "id": "02002",
+            "name": "DSS-d4",
+            "formula": "C8D4H6O2",
+            "monoisotopic_mass": 142.093187,
+            "average_mass": 142.188749,
+            "composition": {
+                "C": 8,
+                "D": 4,
+                "H": 6,
+                "O": 2
+            }
+        },
+        {
+            "id": "02003",
+            "name": "DSS-d12",
+            "formula": "C8D10O2",
+            "monoisotopic_mass": 150.143401,
+            "average_mass": 148.225715,
+            "composition": {
+                "C": 8,
+                "D": 10,
+                "O": 2
+            }
+        },
+        {
+            "id": "02004",
+            "name": "BS3-d4",
+            "formula": null,
+            "monoisotopic_mass": 142.093187,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02005",
+            "name": "BS2G",
+            "formula": "C5H4O2",
+            "monoisotopic_mass": 96.021129,
+            "average_mass": 96.084252,
+            "composition": {
+                "C": 5,
+                "H": 4,
+                "O": 2
+            }
+        },
+        {
+            "id": "02006",
+            "name": "DSG",
+            "formula": "C5H4O2",
+            "monoisotopic_mass": 96.021129,
+            "average_mass": 96.084252,
+            "composition": {
+                "C": 5,
+                "H": 4,
+                "O": 2
+            }
+        },
+        {
+            "id": "02007",
+            "name": "DSG-d4",
+            "formula": "C5D4O2",
+            "monoisotopic_mass": 100.046236,
+            "average_mass": 100.108896,
+            "composition": {
+                "C": 5,
+                "D": 4,
+                "O": 2
+            }
+        },
+        {
+            "id": "02008",
+            "name": "BS2G-d4",
+            "formula": "C5D4O2",
+            "monoisotopic_mass": 100.046236,
+            "average_mass": 100.108896,
+            "composition": {
+                "C": 5,
+                "D": 4,
+                "O": 2
+            }
+        },
+        {
+            "id": "02009",
+            "name": "Disulfide",
+            "formula": "H-2",
+            "monoisotopic_mass": -2.01565,
+            "average_mass": -2.015882,
+            "composition": {
+                "H": -2
+            }
+        },
+        {
+            "id": "02010",
+            "name": "1-ethyl-3-(3-Dimethylaminopropyl)carbodiimide hydrochloride",
+            "formula": "H-2O-1",
+            "monoisotopic_mass": -18.01056,
+            "average_mass": -18.015286,
+            "composition": {
+                "H": -2,
+                "O": -1
+            }
+        },
+        {
+            "id": "02011",
+            "name": "BDP-NHP",
+            "formula": null,
+            "monoisotopic_mass": 1241.469926,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02013",
+            "name": "BMPS",
+            "formula": "C7H5NO3",
+            "monoisotopic_mass": 151.026943,
+            "average_mass": 151.119773,
+            "composition": {
+                "C": 7,
+                "H": 5,
+                "O": 3,
+                "N": 1
+            }
+        },
+        {
+            "id": "02029",
+            "name": "DSP",
+            "formula": "C6H6O2S2",
+            "monoisotopic_mass": 173.980921,
+            "average_mass": 174.240445,
+            "composition": {
+                "C": 6,
+                "H": 6,
+                "O": 2,
+                "S": 2
+            }
+        },
+        {
+            "id": "02030",
+            "name": "DSP-d8",
+            "formula": "C6D6O2S2",
+            "monoisotopic_mass": 182.031417,
+            "average_mass": 180.277411,
+            "composition": {
+                "C": 6,
+                "D": 6,
+                "O": 2,
+                "S": 2
+            }
+        },
+        {
+            "id": "02032",
+            "name": "DST",
+            "formula": "C4H2O4",
+            "monoisotopic_mass": 113.99531,
+            "average_mass": 114.056445,
+            "composition": {
+                "C": 4,
+                "H": 2,
+                "O": 4
+            }
+        },
+        {
+            "id": "02033",
+            "name": "DTSSP",
+            "formula": "C6H6O2S2",
+            "monoisotopic_mass": 173.98093,
+            "average_mass": 174.240445,
+            "composition": {
+                "C": 6,
+                "H": 6,
+                "O": 2,
+                "S": 2
+            }
+        },
+        {
+            "id": "02034",
+            "name": "EGS",
+            "formula": "C10H10O6",
+            "monoisotopic_mass": 226.047738,
+            "average_mass": 226.183196,
+            "composition": {
+                "C": 10,
+                "H": 10,
+                "O": 6
+            }
+        },
+        {
+            "id": "02035",
+            "name": "Sulfo-EGS",
+            "formula": "C10H10O6",
+            "monoisotopic_mass": 226.04774,
+            "average_mass": 226.183196,
+            "composition": {
+                "C": 10,
+                "H": 10,
+                "O": 6
+            }
+        },
+        {
+            "id": "02040",
+            "name": "BiPS",
+            "formula": "C16H16N2O4S2",
+            "monoisotopic_mass": 364.05515,
+            "average_mass": 364.439427,
+            "composition": {
+                "C": 16,
+                "H": 16,
+                "N": 2,
+                "O": 4,
+                "S": 2
+            }
+        },
+        {
+            "id": "02043",
+            "name": "DSA",
+            "formula": "C6H6O2",
+            "monoisotopic_mass": 110.03624,
+            "average_mass": 110.11087,
+            "composition": {
+                "C": 6,
+                "H": 6,
+                "O": 2
+            }
+        },
+        {
+            "id": "02044",
+            "name": "DNBDPS",
+            "formula": "C12H9N2O6S2",
+            "monoisotopic_mass": 339.98238,
+            "average_mass": 341.339708,
+            "composition": {
+                "C": 12,
+                "H": 9,
+                "N": 2,
+                "O": 6,
+                "S": 2
+            }
+        },
+        {
+            "id": "02045",
+            "name": "TEABS",
+            "formula": "C28H39N5O11S",
+            "monoisotopic_mass": 653.23668,
+            "average_mass": 653.702052,
+            "composition": {
+                "C": 28,
+                "H": 39,
+                "N": 5,
+                "O": 11,
+                "S": 1
+            }
+        },
+        {
+            "id": "02048",
+            "name": "DTSSP-d8",
+            "formula": "C6D6O2S2",
+            "monoisotopic_mass": 182.03109,
+            "average_mass": 180.277411,
+            "composition": {
+                "C": 6,
+                "D": 6,
+                "O": 2,
+                "S": 2
+            }
+        },
+        {
+            "id": "02049",
+            "name": "EGS-d12",
+            "formula": "C10D10O6",
+            "monoisotopic_mass": 238.12347,
+            "average_mass": 236.244806,
+            "composition": {
+                "C": 10,
+                "D": 10,
+                "O": 6
+            }
+        },
+        {
+            "id": "02050",
+            "name": "Sulfo-EGS-d12",
+            "formula": "C10D10O6",
+            "monoisotopic_mass": 238.12347,
+            "average_mass": 236.244806,
+            "composition": {
+                "C": 10,
+                "D": 10,
+                "O": 6
+            }
+        },
+        {
+            "id": "02051",
+            "name": "PCAS",
+            "formula": "C6H3NO",
+            "monoisotopic_mass": 105.02146,
+            "average_mass": 105.094346,
+            "composition": {
+                "C": 6,
+                "H": 3,
+                "N": 1,
+                "O": 1
+            }
+        },
+        {
+            "id": "02052",
+            "name": "PCAS-d4",
+            "formula": "C6D3NO",
+            "monoisotopic_mass": 109.04812,
+            "average_mass": 108.112829,
+            "composition": {
+                "C": 6,
+                "D": 3,
+                "N": 1,
+                "O": 1
+            }
+        },
+        {
+            "id": "02053",
+            "name": "DSA-13C6",
+            "formula": "H6O2",
+            "monoisotopic_mass": 116.0564,
+            "average_mass": 116.066583,
+            "composition": {
+                "H": 6,
+                "O": 2
+            }
+        },
+        {
+            "id": "02054",
+            "name": "CBDPS-d8",
+            "formula": "C19D8H15N7O4S3",
+            "monoisotopic_mass": 517.14698,
+            "average_mass": 517.674812,
+            "composition": {
+                "C": 19,
+                "D": 8,
+                "H": 15,
+                "N": 7,
+                "O": 4,
+                "S": 3
+            }
+        },
+        {
+            "id": "02055",
+            "name": "CBDPSS",
+            "formula": "C19H23N7O4S3",
+            "monoisotopic_mass": 509.09682,
+            "average_mass": 509.625524,
+            "composition": {
+                "C": 19,
+                "H": 23,
+                "N": 7,
+                "O": 4,
+                "S": 3
+            }
+        },
+        {
+            "id": "02056",
+            "name": "CBDPSS-d8",
+            "formula": "C19D8H15N7O4S3",
+            "monoisotopic_mass": 517.14698,
+            "average_mass": 517.674812,
+            "composition": {
+                "C": 19,
+                "D": 8,
+                "H": 15,
+                "N": 7,
+                "O": 4,
+                "S": 3
+            }
+        },
+        {
+            "id": "02057",
+            "name": "SDH",
+            "formula": "C8H14N4",
+            "monoisotopic_mass": 166.121846,
+            "average_mass": 166.223871,
+            "composition": {
+                "C": 8,
+                "H": 14,
+                "N": 4
+            }
+        },
+        {
+            "id": "02058",
+            "name": "SDH-d12",
+            "formula": "C8D12H2N4",
+            "monoisotopic_mass": 178.197167,
+            "average_mass": 178.297803,
+            "composition": {
+                "C": 8,
+                "D": 12,
+                "H": 2,
+                "N": 4
+            }
+        },
+        {
+            "id": "02059",
+            "name": "ADH",
+            "formula": "C6H10N4",
+            "monoisotopic_mass": 138.090546,
+            "average_mass": 138.170636,
+            "composition": {
+                "C": 6,
+                "H": 10,
+                "N": 4
+            }
+        },
+        {
+            "id": "02060",
+            "name": "ADH-d8",
+            "formula": "C6D8H2N4",
+            "monoisotopic_mass": 146.14076,
+            "average_mass": 146.219924,
+            "composition": {
+                "C": 6,
+                "D": 8,
+                "H": 2,
+                "N": 4
+            }
+        },
+        {
+            "id": "02061",
+            "name": "GDH",
+            "formula": "C5H8N4",
+            "monoisotopic_mass": 124.074896,
+            "average_mass": 124.144018,
+            "composition": {
+                "C": 5,
+                "H": 8,
+                "N": 4
+            }
+        },
+        {
+            "id": "02062",
+            "name": "GDH-d6",
+            "formula": "C5D6H2N4",
+            "monoisotopic_mass": 130.112557,
+            "average_mass": 130.180985,
+            "composition": {
+                "C": 5,
+                "D": 6,
+                "H": 2,
+                "N": 4
+            }
+        },
+        {
+            "id": "02063",
+            "name": "BS3-d12",
+            "formula": null,
+            "monoisotopic_mass": 150.14381,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02064",
+            "name": "DSG-d6",
+            "formula": "C5D6O2",
+            "monoisotopic_mass": 102.05821,
+            "average_mass": 104.1371,
+            "composition": {
+                "C": 5,
+                "D": 6,
+                "O": 2
+            }
+        },
+        {
+            "id": "02065",
+            "name": "BS2G-d6",
+            "formula": "C5D4O2",
+            "monoisotopic_mass": 100.046236,
+            "average_mass": 100.108896,
+            "composition": {
+                "C": 5,
+                "D": 4,
+                "O": 2
+            }
+        },
+        {
+            "id": "02078",
+            "name": "BSOCOES",
+            "formula": "C6H6O6S",
+            "monoisotopic_mass": 205.988512,
+            "average_mass": 206.173277,
+            "composition": {
+                "C": 6,
+                "H": 6,
+                "O": 6,
+                "S": 1
+            }
+        },
+        {
+            "id": "02103",
+            "name": "1,4-diacetalbenzene",
+            "formula": null,
+            "monoisotopic_mass": 190.027,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02107",
+            "name": "BCCL1",
+            "formula": null,
+            "monoisotopic_mass": 337.10962,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02108",
+            "name": "BCCL2",
+            "formula": null,
+            "monoisotopic_mass": 393.17222,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02109",
+            "name": "SBC",
+            "formula": null,
+            "monoisotopic_mass": 236.09,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02110",
+            "name": "SBDC",
+            "formula": null,
+            "monoisotopic_mass": 238.1,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02114",
+            "name": "IRCX",
+            "formula": null,
+            "monoisotopic_mass": 330.0,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02115",
+            "name": "BAMG",
+            "formula": null,
+            "monoisotopic_mass": 125.048,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02116",
+            "name": "azide-DSG",
+            "formula": null,
+            "monoisotopic_mass": 211.0,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02118",
+            "name": "JMV 3378",
+            "formula": null,
+            "monoisotopic_mass": 268.0,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02119",
+            "name": "BuTuGPG",
+            "formula": null,
+            "monoisotopic_mass": 1686.84,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02124",
+            "name": "SDAD",
+            "formula": null,
+            "monoisotopic_mass": 273.0,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02125",
+            "name": "Sulfo-SDAD",
+            "formula": null,
+            "monoisotopic_mass": 273.0,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02126",
+            "name": "DSSO",
+            "formula": "C6H6O3S",
+            "monoisotopic_mass": 158.003765,
+            "average_mass": 158.175062,
+            "composition": {
+                "C": 6,
+                "O": 3,
+                "S": 1,
+                "H": 6
+            }
+        },
+        {
+            "id": "02127",
+            "name": "DEST",
+            "formula": "C8H12N2",
+            "monoisotopic_mass": 136.100048,
+            "average_mass": 136.194583,
+            "composition": {
+                "C": 8,
+                "H": 12,
+                "N": 2
+            }
+        },
+        {
+            "id": "02128",
+            "name": "cis-Diamminedichloroplatinum (II)",
+            "formula": null,
+            "monoisotopic_mass": 225.995,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02134",
+            "name": "SDA",
+            "formula": "C5H6O",
+            "monoisotopic_mass": 82.041865,
+            "average_mass": 82.100729,
+            "composition": {
+                "C": 5,
+                "H": 6,
+                "O": 1
+            }
+        },
+        {
+            "id": "02135",
+            "name": "LC-SDA",
+            "formula": "C11H12NO2",
+            "monoisotopic_mass": 195.125929,
+            "average_mass": 190.218897,
+            "composition": {
+                "C": 11,
+                "H": 12,
+                "N": 1,
+                "O": 2
+            }
+        },
+        {
+            "id": "02139",
+            "name": "DMP",
+            "formula": "C7H10N2",
+            "monoisotopic_mass": 122.084398,
+            "average_mass": 122.167965,
+            "composition": {
+                "C": 7,
+                "H": 10,
+                "N": 2
+            }
+        },
+        {
+            "id": "02198",
+            "name": "BS(PEG)5",
+            "formula": "C14H22O7",
+            "monoisotopic_mass": 302.13655,
+            "average_mass": 302.320834,
+            "composition": {
+                "C": 14,
+                "H": 22,
+                "O": 7
+            }
+        },
+        {
+            "id": "02206",
+            "name": "TPAL",
+            "formula": "C8H6",
+            "monoisotopic_mass": 102.04695,
+            "average_mass": 102.133532,
+            "composition": {
+                "C": 8,
+                "H": 6
+            }
+        },
+        {
+            "id": "02207",
+            "name": "DEB",
+            "formula": "C10H6",
+            "monoisotopic_mass": 126.04695,
+            "average_mass": 126.155003,
+            "composition": {
+                "C": 10,
+                "H": 6
+            }
+        },
+        {
+            "id": "02209",
+            "name": "PDH",
+            "formula": "C7H12N4",
+            "monoisotopic_mass": 152.106196,
+            "average_mass": 152.197253,
+            "composition": {
+                "C": 7,
+                "H": 12,
+                "N": 4
+            }
+        },
+        {
+            "id": "02210",
+            "name": "PDH-d10",
+            "formula": "C7D10H2N4",
+            "monoisotopic_mass": 162.168964,
+            "average_mass": 162.258863,
+            "composition": {
+                "C": 7,
+                "D": 10,
+                "H": 2,
+                "N": 4
+            }
+        },
+        {
+            "id": "02215",
+            "name": "SDA-13C5",
+            "formula": "H6O",
+            "monoisotopic_mass": 87.058665,
+            "average_mass": 87.063824,
+            "composition": {
+                "H": 6,
+                "O": 1
+            }
+        },
+        {
+            "id": "02227",
+            "name": "PL",
+            "formula": null,
+            "monoisotopic_mass": 316.14,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02234",
+            "name": "PIR-I",
+            "formula": "C6H10NO2",
+            "monoisotopic_mass": 128.0712,
+            "average_mass": 128.149336,
+            "composition": {
+                "C": 6,
+                "H": 10,
+                "O": 2,
+                "N": 1
+            }
+        },
+        {
+            "id": "02235",
+            "name": "PIR-II",
+            "formula": "C4H6NO2",
+            "monoisotopic_mass": 100.0399,
+            "average_mass": 100.096101,
+            "composition": {
+                "C": 4,
+                "H": 6,
+                "O": 2,
+                "N": 1
+            }
+        },
+        {
+            "id": "02236",
+            "name": "PIR-III",
+            "formula": "C4H6NO2",
+            "monoisotopic_mass": 100.0399,
+            "average_mass": 100.096101,
+            "composition": {
+                "C": 4,
+                "H": 6,
+                "O": 2,
+                "N": 1
+            }
+        },
+        {
+            "id": "02254",
+            "name": "ARGO1",
+            "formula": null,
+            "monoisotopic_mass": 326.079,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02255",
+            "name": "ARGO2",
+            "formula": null,
+            "monoisotopic_mass": 370.105,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02256",
+            "name": "ARGO3",
+            "formula": null,
+            "monoisotopic_mass": 414.131,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "02257",
+            "name": "KARGO",
+            "formula": null,
+            "monoisotopic_mass": 352.095,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "03001",
+            "name": "CBDPS",
+            "formula": "C19H23N7O4S3",
+            "monoisotopic_mass": 509.09682,
+            "average_mass": 509.625524,
+            "composition": {
+                "C": 19,
+                "H": 23,
+                "N": 7,
+                "O": 4,
+                "S": 3
+            }
+        },
+        {
+            "id": "03002",
+            "name": "Sulfo-SBED",
+            "formula": null,
+            "monoisotopic_mass": 634.207,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "03009",
+            "name": "NNP9",
+            "formula": "C7D10H2N4",
+            "monoisotopic_mass": 314.1127,
+            "average_mass": 162.258863,
+            "composition": {
+                "C": 7,
+                "D": 10,
+                "H": 2,
+                "N": 4
+            }
+        },
+        {
+            "id": "03010",
+            "name": "TATA",
+            "formula": null,
+            "monoisotopic_mass": 200.05,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "03011",
+            "name": "TATA-13C6",
+            "formula": null,
+            "monoisotopic_mass": 206.07016,
+            "average_mass": null,
+            "composition": null
+        },
+        {
+            "id": "09317",
+            "name": "DSAU",
+            "formula": "C5H4N2O3",
+            "monoisotopic_mass": 140.022192,
+            "average_mass": 140.097064,
+            "composition": {
+                "C": 5,
+                "H": 4,
+                "N": 2,
+                "O": 3
+            }
+        },
+        {
+            "id": "09320",
+            "name": "QKiso",
+            "formula": "H-3N-1",
+            "monoisotopic_mass": -17.026549,
+            "average_mass": -17.030525,
+            "composition": {
+                "H": -3,
+                "N": -1
+            }
+        }
+    ]
+}

@@ -4,14 +4,14 @@ from .dclass import XlModInfo
 
 
 class XlModLookup(OntologyLookup[XlModInfo]):
-    def __init__(self, data: dict[str, XlModInfo]) -> None:
+    def __init__(self, data: dict[str, XlModInfo], version: str) -> None:
         super().__init__(
             data=data,
             ontology_name="XLMOD",
             id_prefixes=("xlmod",),
             name_prefixes=("x",),
-            _version=VERSION,
+            _version=version,
         )
 
 
-XLMOD_LOOKUP = XlModLookup(XLMOD_MODIFICATIONS)
+XLMOD_LOOKUP = XlModLookup(XLMOD_MODIFICATIONS, VERSION)

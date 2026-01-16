@@ -27,3 +27,6 @@ gen:
 
 update:
     just --justfile data_gen/justfile update
+
+gen-jsons:
+    uv run create_output_jsons.py

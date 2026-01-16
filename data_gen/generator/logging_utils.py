@@ -14,7 +14,13 @@ def setup_logger(
     - `level` sets both the logger and handler levels.
     """
     logger = logging.getLogger(name)
-    logs_dir = logs_dir or os.path.join(os.getcwd(), "logs")
+
+    if logs_dir is None:
+        # Resolve path relative to this file: data_gen/generator/logging_utils.py -> data_gen/logs
+        current_file_dir = os.path.dirname(os.path.abspath(__file__))
+        data_gen_dir = os.path.dirname(current_file_dir)
+        logs_dir = os.path.join(data_gen_dir, "logs")
+
     os.makedirs(logs_dir, exist_ok=True)
 
     # choose a safe filename

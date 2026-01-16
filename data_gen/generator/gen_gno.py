@@ -133,35 +133,6 @@ def _get_gno_entries(
         )
 
 
-def gen_all_gno_ids() -> set[str]:
-    """Generate a set of all GNO IDs from the data file."""
-    with open("./data/GNOme.obo") as f:
-        data = read_obo(f)
-
-    gno_ids = set()
-    for term in data:
-        term_id, _ = get_id_and_name(term)
-        term_id = term_id.replace("GNO:", "")
-        if not is_obsolete(term):
-            gno_ids.add(term_id)
-
-    return gno_ids
-
-
-def gen_all_gno_names() -> set[str]:
-    """Generate a set of all GNO names from the data file."""
-    with open("./data/GNOme.obo") as f:
-        data = read_obo(f)
-
-    gno_names = set()
-    for term in data:
-        _, term_name = get_id_and_name(term)
-        if not is_obsolete(term):
-            gno_names.add(term_name)
-
-    return gno_names
-
-
 def gen_gno(output_file: str = OutputFile.GNO):
     logger.info("\n" + "=" * 60)
     logger.info("GENERATING GNO DATA")
@@ -174,14 +145,6 @@ def gen_gno(output_file: str = OutputFile.GNO):
 
     version = metadata.get("data-version", "unknown")
     logger.info(f"  ℹ️  Version: {version}")
-
-    gno_names = gen_all_gno_ids()
-    logger.info(f"  ✓ Parsed {len(gno_names)} total GNO IDs")
-    gno_ids = gen_all_gno_names()
-    logger.info(f"  ✓ Parsed {len(gno_ids)} total GNO names")
-
-    gno_id_set_str = ", ".join(sorted(gno_names))
-    gno_name_set_str = ", ".join(sorted(gno_ids))
 
     gno_entries = list(_get_gno_entries(data))
     logger.info(f"  ✓ Parsed {len(gno_entries)} GNO entries")

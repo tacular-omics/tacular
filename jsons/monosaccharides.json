@@ -1,9 +1,10 @@
 {
     "metadata": {
-        "generated_date": "2026-01-16T11:12:19.351339",
-        "generator": "peptacular data generator",
+        "generated_date": "2026-01-16T15:32:45.032039",
+        "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "peptacular_version": "unknown"
+        "tacular_version": "0.1.0",
+        "data_version": null
     },
     "monosaccharides": [
         {
@@ -302,18 +303,6 @@
                 "H": 17,
                 "N": 1,
                 "O": 9
-            }
-        },
-        {
-            "id": "995CFFA1",
-            "name": "Kdn",
-            "formula": "C9H14O8",
-            "monoisotopic_mass": 250.068867,
-            "average_mass": 250.203033,
-            "composition": {
-                "C": 9,
-                "H": 14,
-                "O": 8
             }
         }
     ]
