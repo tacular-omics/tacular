@@ -4,43 +4,77 @@
 # Use bash for commands
 set shell := ["bash", "-cu"]
 
+# Downloaders
+download-uni:
+	wget https://www.unimod.org/obo/unimod.obo -O data/UNIMOD.obo
+
+download-uni-if-missing:
+	test -f data/UNIMOD.obo || just download-uni
+
+download-psi:
+	wget https://purl.obolibrary.org/obo/mod.obo -O data/PSI-MOD.obo
+
+download-psi-if-missing:
+	test -f data/PSI-MOD.obo || just download-psi
+
+download-gno:
+	wget https://purl.obolibrary.org/obo/gno.obo -O data/GNOme.obo
+
+download-gno-if-missing:
+    test -f data/GNOme.obo || just download-gno
+
+download-xlmod:
+	wget https://purl.obolibrary.org/obo/xlmod.obo -O data/XLMod.obo
+
+download-xlmod-if-missing:
+	test -f data/XLMod.obo || just download-xlmod
+
+download-all: download-uni download-psi download-gno download-xlmod
+	@echo "All downloads complete!"
+
+download-all-if-missing: download-uni-if-missing download-psi-if-missing download-gno-if-missing download-xlmod-if-missing
+	@echo "All downloads complete!"
+
+download: download-all-if-missing
+
 # Individual generator recipes
 gen-mono:
-	uv run gen_monosachs.py
+	uv run generator/gen_monosachs.py
 
-gen-uni:
-	uv run gen_unimod.py
+gen-uni: download-uni-if-missing
+	uv run generator/gen_unimod.py
 
-gen-psi:
-	uv run gen_psimod.py
+gen-psi: download-psi-if-missing
+	uv run generator/gen_psimod.py
 
 gen-aa:
-	uv run gen_amino_acids.py
+	uv run generator/gen_amino_acids.py
 
 gen-frag:
-	uv run gen_fragment_ions.py
+	uv run generator/gen_fragment_ions.py
 
 gen-pro:
-	uv run gen_proteases.py
+	uv run generator/gen_proteases.py
 
 gen-ref:
-	uv run gen_refmol.py
+	uv run generator/gen_refmol.py
 
 gen-delta:
-	uv run gen_neutral_deltas.py
+	uv run generator/gen_neutral_deltas.py
 
-# Run the full generation script (all generators)
-gen-all:
-	just gen-mono
-	just gen-uni
-	just gen-psi
-	just gen-aa
-	just gen-frag
-	just gen-pro
-	just gen-ref
-	just gen-delta
+gen-xlmod: download-xlmod-if-missing
+	uv run generator/gen_xlmod.py
 
-# Convenience alias to run the full generation from repo root
-# Usage: just -f data_gen/justfile gen
-gen:
-	just gen-all
+# Included in PSI-MOD download
+gen-resid: download-psi-if-missing
+	uv run generator/gen_resid.py
+
+gen-gno: download-gno-if-missing
+	uv run generator/gen_gno.py
+
+gen-all: gen-mono gen-uni gen-psi gen-aa gen-frag gen-pro gen-ref gen-delta gen-xlmod gen-resid gen-gno
+	@echo "All generators complete!"
+
+gen: gen-all
+
+update: download-all gen-all

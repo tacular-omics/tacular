@@ -4389,4 +4389,4 @@ try:
 
 except Exception as e:
     warnings.warn(f"Exception in element_data: {e}. Using empty dictionaries.", UserWarning, stacklevel=2)
-    ISOTOPES: dict[tuple[Element, int | None], ElementInfo] = {}  # type: ignore
+    ISOTOPES: dict[tuple[Element, int | None], ElementInfo] = {}

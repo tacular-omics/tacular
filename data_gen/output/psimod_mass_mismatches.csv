@@ -1,0 +1,46 @@
+mod_id,modification_name,mass_type,calculated,reported,delta,formula
+00150,L-cysteinyl-L-histidino-homocitryl molybdenum heptairon nonasulfide,Average,991.58422,991.53,0.05422,C7Fe7H6MoNO7S9
+00402,Gygi ICAT(TM) d8 modified cysteine,Average,494.671785,494.3,0.371785,C22[1H30][2H8]N4O6S
+00405,Applied Biosystems original ICAT(TM) d8 modified cysteine,Average,450.619608,450.28,0.339608,C20[1H26][2H8]N4O5S
+00406,Applied Biosystems original ICAT(TM) d0 modified cysteine,Average,442.569394,442.22,0.349394,C20[1H34]N4O5S
+00454,quaternary amine labeling reagent heavy form (+3amu) (N-term & K),Average,130.201815,130.12,0.081815,C7[1H10][2H3]NO
+00455,quaternary amine labeling reagent heavy form (+6amu) (N-term & K),Average,133.221455,133.14,0.081455,C7H7[2H6]NO
+00456,quaternary amine labeling reagent heavy form (+9amu) (N-term & K),Average,136.239476,136.16,0.079476,C7[1H4][2H9]NO
+00458,4x(2)H labeled alpha-amino succinylated residue,Average,104.097565,104.04,0.057565,C4[2H4]O3
+00469,ESP-Tag heavy d10,Average,348.528403,348.24,0.288403,C16[1H16][2H10]N4O2S
+00495,"N-iodoacetyl, p-chlorobenzyl-13C6-glucamine",Average,351.635014,351.12,0.515014,[12C9][13C6]ClH20NO6
+00532,Shimadzu 13CNBS,Average,159.114252,159.01,0.104252,[13C6]H3NO2S
+00533,Shimadzu 12CNBS,Average,153.094123,152.99,0.104123,[12C6]H3NO2S
+00549,APTA d3,Average,174.27694,174.17,0.10694,C9[1H16][2H3]N2O
+00551,EAPTA d5,Average,189.308055,189.19,0.118055,C10[1H15][2H5]N2O
+00562,N-ethyl iodoacetamide-d5,Average,90.135211,90.08,0.055211,C4[1H2][2H5]NO
+00605,"Sulfanilic Acid (SA), light C12",Average,155.110004,155.0,0.110004,[12C6]H5NO2S
+00606,"Sulfanilic Acid (SA), heavy C13",Average,161.130133,161.02,0.110133,[13C6]H5NO2S
+00871,(2)H5-phenyl isocyanate derivatized residue,Average,124.151768,124.07,0.081768,C7[2H5]NO
+00880,6x(13)C labeled 4-sulfophenyl isothiocyanate derivatized residue,Average,221.194326,220.99,0.204326,[12C][13C6]H5NO3S2
+00932,IDBEST tag for quantitation,Average,299.025684,298.02,1.005684,Br[12C10][13C2]H13N2O2
+00944,d9-4-trimethylammoniumbutanoyl derivatized residue,Average,137.247301,137.16,0.087301,C7[1H5][2H9]NO
+01188,N-ethyl iodoacetamide-d5 - site Y,Average,90.135211,90.08,0.055211,C4[1H2][2H5]NO
+01189,N-ethyl iodoacetamide-d5 - site C,Average,90.135211,90.08,0.055211,C4[1H2][2H5]NO
+01217,"Sulfanilic Acid (SA), light C12 - site D",Average,155.110004,155.0,0.110004,[12C6]H5NO2S
+01218,"Sulfanilic Acid (SA), light C12 - site E",Average,155.110004,155.0,0.110004,[12C6]H5NO2S
+01219,"Sulfanilic Acid (SA), heavy C13 - site D",Average,161.130133,161.02,0.110133,[13C6]H5NO2S
+01220,"Sulfanilic Acid (SA), heavy C13 - site E",Average,161.130133,161.02,0.110133,[13C6]H5NO2S
+01315,4x(2)H labeled N6-succinyl-L-lysine,Average,104.097565,104.04,0.057565,C4[2H4]O3
+01335,6x(13)C labeled 4-sulfophenyl isothiocyanate derivatized lysine,Average,221.194326,220.99,0.204326,[12C][13C6]H5NO3S2
+01340,ESP-Tag heavy d10 - site K,Average,348.528403,348.24,0.288403,C16[1H16][2H10]N4O2S
+01358,"Bruker Daltonics SERVA-ICPL(TM) quantification chemistry, medium form - site N-term",Average,109.119106,109.05,0.069106,C6[1H-1][2H4]NO
+01359,"Bruker Daltonics SERVA-ICPL(TM) quantification chemistry, medium form - site K",Average,109.119106,109.05,0.069106,C6[1H-1][2H4]NO
+01822,cysTMT6plex-zero reporter+balance reagent cysteine disulfide,Average,299.271338,299.17,0.101338,[12C14]H25[14N3]O2S
+01823,cysTMT6plex-126 reporter+balance reagent cysteine disulfide,Average,304.281792,304.18,0.101792,[12C10][13C4]H25[14N2][15N]O2S
+01824,cysTMT6plex-127 reporter+balance reagent cysteine disulfide,Average,304.281792,304.18,0.101792,[12C10][13C4]H25[14N2][15N]O2S
+01825,cysTMT6plex-128 reporter+balance reagent cysteine disulfide,Average,304.281792,304.18,0.101792,[12C10][13C4]H25[14N2][15N]O2S
+01826,cysTMT6plex-129 reporter+balance reagent cysteine disulfide,Average,304.281792,304.18,0.101792,[12C10][13C4]H25[14N2][15N]O2S
+01827,cysTMT6plex-130 reporter+balance reagent cysteine disulfide,Average,304.281792,304.18,0.101792,[12C10][13C4]H25[14N2][15N]O2S
+01828,cysTMT6plex-131 reporter+balance reagent cysteine disulfide,Average,304.281792,304.18,0.101792,[12C10][13C4]H25[14N2][15N]O2S
+01909,6x(13)C labeled 4-sulfophenyl isothiocyanate alpha-amino derivatized residue,Average,221.194326,220.99,0.204326,[12C][13C6]H5NO3S2
+02022,N6-cervonoyl-L-lysine,Average,310.473817,310.53,-0.056183,C22H30O
+02023,N-cervonoylated residue,Average,310.473817,310.53,-0.056183,C22H30O
+02024,cervonoylated residue,Average,310.473817,310.53,-0.056183,C22H30O
+02105,"L-2,5-dihydroxyphenylalanine (Phe)",Monoisotopic,15.994915,31.989828,-15.994913,O
+02105,"L-2,5-dihydroxyphenylalanine (Phe)",Average,15.999405,32.0,-16.000595,O

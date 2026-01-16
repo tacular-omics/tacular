@@ -41,6 +41,28 @@ def format_composition_string(composition: dict[str, int]) -> str:
     return "".join(parts)
 
 
+def get_obo_metadata(file: IO[str]) -> dict[str, str]:
+    """Extract metadata headers from an OBO file."""
+    file.seek(0)
+    metadata: dict[str, str] = {}
+
+    for line in file:
+        line = line.strip()
+        if not line:
+            continue
+
+        if line.startswith("["):
+            # Reached the first term/stanza
+            break
+
+        if ":" in line:
+            key, val = line.split(":", 1)
+            metadata[key.strip()] = val.strip()
+
+    file.seek(0)
+    return metadata
+
+
 def read_obo(file: IO[str]) -> list[dict[str, Any]]:
     file.seek(0)
 

@@ -394,7 +394,7 @@ except Exception as e:
         UserWarning,
         stacklevel=2
     )
-    ISOTOPES: dict[tuple[Element, int | None], ElementInfo] = {{}} # type: ignore
+    ISOTOPES: dict[tuple[Element, int | None], ElementInfo] = {{}}
 '''
 
     with open(output_file, "w") as f:

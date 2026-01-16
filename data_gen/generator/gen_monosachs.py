@@ -113,11 +113,11 @@ def gen_mono(output_file: str = OutputFile.MONOSACCHARIDES):
     with open("./data/monosaccharides.obo") as f:
         data = read_obo(f)
 
-    logger.info("  📖 Reading from: data_gen/data/additional_monosaccharides.obo")
-    with open("./data/additional_monosaccharides.obo") as f:
-        additional_data = read_obo(f)
+    # logger.info("  📖 Reading from: data_gen/data/additional_monosaccharides.obo")
+    # with open("./data/additional_monosaccharides.obo") as f:
+    #    additional_data = read_obo(f)
 
-    data.extend(additional_data)
+    # data.extend(additional_data)
 
     monosaccharides = list(_get_monosaccharide_entries(data))
     logger.info("  ✓ Parsed %d monosaccharides", len(monosaccharides))

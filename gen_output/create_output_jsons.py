@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import peptacular as pt
+import tacular as pt
 
 OUTPUT_DIR = "gen_output/output"
 Path(OUTPUT_DIR).mkdir(parents=True, exist_ok=True)

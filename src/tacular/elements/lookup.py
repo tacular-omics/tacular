@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 
 from .data import ISOTOPES, Element
 from .dclass import ElementInfo
@@ -394,7 +394,7 @@ ELEMENT_LOOKUP = ElementLookup(ISOTOPES)
 
 
 # {'C13': 10, 'H2': 5, 'O18': 8} -> {ElementInfo(...), 10, ElementInfo(...), 5, ElementInfo(...), 8}
-def parse_composition(comp_dict: dict[str, int]) -> dict[ElementInfo, int]:
+def parse_composition(comp_dict: Mapping[str, int]) -> dict[ElementInfo, int]:
     """
     Parse a composition dictionary with string keys into ElementInfo keys.
     """

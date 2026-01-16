@@ -4,6 +4,8 @@
 from .dclass import UnimodInfo
 import warnings
 
+VERSION = "17:06:2025 11:31"
+
 
 try:
     UNIMOD_MODIFICATIONS: dict[str, UnimodInfo] = {
@@ -12427,5 +12429,5 @@ except Exception as e:
         UserWarning,
         stacklevel=2
     )
-    UNIMOD_MODIFICATIONS: dict[str, UnimodInfo] = {} # type: ignore
-    UNIMOD_NAME_TO_ID: dict[str, str] = {} # type: ignore
+    UNIMOD_MODIFICATIONS: dict[str, UnimodInfo] = {}
+    UNIMOD_NAME_TO_ID: dict[str, str] = {}

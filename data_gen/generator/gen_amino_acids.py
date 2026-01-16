@@ -97,7 +97,7 @@ AA_THREE_LETTER: dict[str, str] = {
 }
 
 
-def gen(output_file: str = OutputFile.AMINO_ACIDS) -> None:
+def gen_aa(output_file: str = OutputFile.AMINO_ACIDS) -> None:
     """Generate the amino_acid_data.py file with calculated masses"""
 
     logger.info("\n" + "=" * 60)
@@ -221,4 +221,4 @@ AMINO_ACID_INFOS: dict[AminoAcid, AminoAcidInfo] = {{
 
 
 if __name__ == "__main__":
-    gen()
+    gen_aa()

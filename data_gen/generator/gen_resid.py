@@ -1,44 +1,65 @@
 import os
+import re
 from collections.abc import Generator
 from typing import Any
 
 from constants import OutputFile
 from logging_utils import setup_logger
-from utils import calculate_mass, get_id_and_name, is_obsolete, parse_formula_to_dict, read_obo
+from utils import calculate_mass, get_id_and_name, get_obo_metadata, is_obsolete, parse_formula_to_dict, read_obo
 
 import tacular as pt
 
 logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
-def _get_psimod_entries(
+def _get_resid_entries(
     terms: list[dict[str, Any]],
-) -> Generator[pt.PsimodInfo, None, None]:
+) -> Generator[pt.ResidInfo, None, None]:
     for term in terms:
         term_id, term_name = get_id_and_name(term)
-        term_id = term_id.replace("MOD:", "")
 
         if is_obsolete(term):
             continue
 
+        # Extract RESID IDs from definition field
+        definition = term.get("def", [None])[0]
+        if not definition:
+            continue
+
+        # Extract RESID:AA0001 from definition
+        regex_str = r"RESID:(AA\d+)(?:#\w+)?"
+        resid_matches = re.findall(regex_str, str(definition))
+
+        if not resid_matches:
+            continue
+
+        if len(resid_matches) > 1:
+            logger.warning("[RESID] Multiple RESID IDs for %s %s: %s", term_id, term_name, resid_matches)
+
+        # Extract xref property values
         property_values: dict[str, list[str]] = {}
         for val in term.get("xref", []):
             elems = val.split('"')
             if len(elems) < 2:
+                # Try colon split for values like "Origin: S"
+                parts = val.split(":", 1)
+                if len(parts) == 2:
+                    k = parts[0].strip()
+                    v = parts[1].strip()
+                    property_values.setdefault(k, []).append(v)
                 continue
 
-            k = elems[0].rstrip().replace(":", "")
+            k = elems[0].rstrip().replace(":", "").strip()
             v = elems[1].strip()
-
             property_values.setdefault(k, []).append(v)
 
-        # helper to extract a single value from lists coming from OBO properties
+        # Helper to extract a single value from lists
         def _extract_single(values: list[Any] | Any, label: str) -> Any:
             if isinstance(values, list):
                 if len(values) == 0:
                     return None
                 if len(values) > 1:
-                    logger.warning("[PSI-MOD] Multiple %s for %s %s %s", label, term_id, term_name, values)
+                    logger.warning("[RESID] Multiple %s for %s %s %s", label, term_id, term_name, values)
                 val = values[0]
             else:
                 val = values
@@ -66,7 +87,7 @@ def _get_psimod_entries(
         if isinstance(delta_composition, str):
             delta_composition_parts = delta_composition.split()
 
-            # PSI-MOD format: "(12)C 7 H 12 (14)N 2 (16)O 1"
+            # PSI-MOD format: "C 16 H 28 N 0 O 1"
             # Parse element/isotope and count pairs
             formula_parts: list[str] = []
             i = 0
@@ -128,8 +149,8 @@ def _get_psimod_entries(
                     parsed_formula = formula_str
                 except Exception as e:
                     logger.warning(
-                        "[PSI-MOD] Error parsing formula for %s %s: %s -> %s, %s",
-                        term_id,
+                        "[RESID] Error parsing formula for %s %s: %s -> %s, %s",
+                        resid_matches[0],
                         term_name,
                         delta_composition,
                         formula_str,
@@ -162,12 +183,11 @@ def _get_psimod_entries(
             calc_avg = calculate_mass(composition, monoisotopic=False)
 
             if mono_mass is not None and abs(calc_mono - mono_mass) > 0.01:
-                # red sign if > 1.0 Da difference
                 symbol = "🔴" if abs(calc_mono - mono_mass) > 1.0 else "⚠️"
                 logger.warning(
-                    "%s PSI-MOD MASS MISMATCH [%s] %s: Monoisotopic calculated=%.6f reported=%.6f Formula=%s",
+                    "%s RESID MASS MISMATCH [%s] %s: Monoisotopic calculated=%.6f reported=%.6f Formula=%s",
                     symbol,
-                    term_id,
+                    resid_matches[0],
                     term_name,
                     calc_mono,
                     mono_mass,
@@ -177,41 +197,48 @@ def _get_psimod_entries(
             if avg_mass is not None and abs(calc_avg - avg_mass) > 0.2:
                 symbol = "⚠️⚠️" if abs(calc_avg - avg_mass) > 1.0 else "⚠️"
                 logger.warning(
-                    "%s PSI-MOD MASS MISMATCH [%s] %s: Average calculated=%.6f reported=%.6f Formula=%s",
+                    "%s RESID MASS MISMATCH [%s] %s: Average calculated=%.6f reported=%.6f Formula=%s",
                     symbol,
-                    term_id,
+                    resid_matches[0],
                     term_name,
                     calc_avg,
                     avg_mass,
                     str(formula).lstrip("Formula:"),
                 )
 
-        yield pt.PsimodInfo(
-            id=term_id,
-            name=term_name,
-            formula=formula,
-            monoisotopic_mass=mono_mass,
-            average_mass=avg_mass,
-            dict_composition=composition,
-        )
+        # Yield one entry per RESID ID found
+        for resid_id in resid_matches:
+            yield pt.ResidInfo(
+                id=resid_id,
+                name=term_name,
+                formula=formula,
+                monoisotopic_mass=mono_mass,
+                average_mass=avg_mass,
+                dict_composition=composition,
+            )
 
 
-def gen_psi(output_file: str = OutputFile.PSIMOD):
+def gen_resid(output_file: str = OutputFile.RESID):
     logger.info("\n" + "=" * 60)
-    logger.info("GENERATING PSI-MOD DATA")
+    logger.info("GENERATING RESID DATA")
     logger.info("=" * 60)
 
     logger.info("  📖 Reading from: data_gen/data/PSI-MOD.obo")
     with open("./data/PSI-MOD.obo") as f:
         data = read_obo(f)
+        metadata = get_obo_metadata(f)
 
-    unimod_entries = list(_get_psimod_entries(data))
-    logger.info(f"  ✓ Parsed {len(unimod_entries)} PSI-MOD entries")
+    version = metadata.get("data-version", "unknown")
+    logger.info(f"  ℹ️  Version: {version}")
 
-    # print stats on number of entries missing mono avg or formula
-    missing_mono = sum(1 for mod in unimod_entries if mod.monoisotopic_mass is None)
-    missing_avg = sum(1 for mod in unimod_entries if mod.average_mass is None)
-    missing_formula = sum(1 for mod in unimod_entries if mod.formula is None)
+    resid_entries = list(_get_resid_entries(data))
+    logger.info(f"  ✓ Parsed {len(resid_entries)} RESID entries")
+
+    # Print stats on number of entries missing mono avg or formula
+    missing_mono = sum(1 for mod in resid_entries if mod.monoisotopic_mass is None)
+    missing_avg = sum(1 for mod in resid_entries if mod.average_mass is None)
+    missing_formula = sum(1 for mod in resid_entries if mod.formula is None)
+
     if missing_mono > 0 or missing_avg > 0 or missing_formula > 0:
         logger.warning("\n  ⚠️  Data Completeness:")
         if missing_mono > 0:
@@ -221,29 +248,40 @@ def gen_psi(output_file: str = OutputFile.PSIMOD):
         if missing_formula > 0:
             logger.warning(f"      Missing formula: {missing_formula}")
 
-    # write a file of missing entries
-    missing_entries_file = "./output/psimod_missing_entries.txt"
-    logger.info(f"\n  📄 Writing missing entries to: {missing_entries_file}")
-    with open(missing_entries_file, "w") as f:
-        for mod in unimod_entries:
-            if mod.monoisotopic_mass is None or mod.average_mass is None or mod.formula is None:
-                f.write(f"{mod.id}\t{mod.name}\n")
-
     logger.info(f"\n  📝 Writing to: {output_file}")
 
-    # Generate the Unimod entries
+    seen_ids: set[str] = set()
+    dup_ids: set[str] = set()
+    resid_entries = list(resid_entries)
+    starting_entry_count = len(resid_entries)
+    for mod in resid_entries:
+        if mod.id in seen_ids:
+            logger.warning(f"[RESID] Duplicate RESID ID found: {mod.id} {mod.name}")
+            dup_ids.add(mod.id)
+        seen_ids.add(mod.id)
+
+    # keep only ids with no duplicates
+    resid_entries = [mod for mod in resid_entries if mod.id not in dup_ids]
+    if len(resid_entries) < starting_entry_count:
+        logger.info(f"  ✓ Removed {starting_entry_count - len(resid_entries)} duplicate RESID entries")
+
+    # Generate the RESID entries
     entries: list[str] = []
-    for mod in unimod_entries:
+    for mod in resid_entries:
+        # skip terms without formula dn masses
+        if (
+            mod.formula is None
+            and mod.monoisotopic_mass is None
+            and mod.average_mass is None
+            and mod.dict_composition is None
+        ):
+            logger.debug(f"  ⚠️  Skipping RESID entry with no formula or masses: {mod.id} {mod.name}")
+            continue
+
         # Format formula properly - None without quotes, strings with quotes
         formula_str = f'"{mod.formula}"' if mod.formula is not None else "None"
 
-        # Format composition properly - None without parse_composition, dict with it
-        if mod.dict_composition is not None:
-            composition_str = f"parse_composition({mod.dict_composition})"
-        else:
-            composition_str = "None"
-
-        entry = f'''    "{mod.id}": PsimodInfo(
+        entry = f'''        "{mod.id}": ResidInfo(
         id="{mod.id}",
         name="{mod.name}",
         formula={formula_str},
@@ -256,39 +294,40 @@ def gen_psi(output_file: str = OutputFile.PSIMOD):
     entries_str = "\n".join(entries)
 
     # Write the complete file
-    content = f'''"""Auto-generated PSI-MOD data"""
-# DO NOT EDIT - generated by gen_psimod.py
+    content = f'''"""Auto-generated RESID data"""
+# DO NOT EDIT - generated by gen_resid.py
 
 import warnings
 
-from .dclass import PsimodInfo
+from .dclass import ResidInfo
 
+VERSION = "{version}"
 
 try:
-    PSI_MODIFICATIONS: dict[str, PsimodInfo] = {{
+    RESID_MODIFICATIONS: dict[str, ResidInfo] = {{
 {entries_str}
     }}
 
-    PSI_NAME_TO_ID: dict[str, str] = {{
+    RESID_NAME_TO_ID: dict[str, str] = {{
         mod.name: mod.id
-        for mod in PSI_MODIFICATIONS.values()
+        for mod in RESID_MODIFICATIONS.values()
     }}
 except Exception as e:
     warnings.warn(
-        f"Exception in psimod_data: {{e}}. Using empty dictionaries.",
+        f"Exception in resid_data: {{e}}. Using empty dictionaries.",
         UserWarning,
         stacklevel=2
     )
-    PSI_MODIFICATIONS: dict[str, PsimodInfo] = {{}} # type: ignore
-    PSI_NAME_TO_ID: dict[str, str] = {{}} # type: ignore
+    RESID_MODIFICATIONS: dict[str, ResidInfo] = {{}}
+    RESID_NAME_TO_ID: dict[str, str] = {{}}
 '''
 
     with open(output_file, "w") as f:
         f.write(content)
 
     logger.info(f"✅ Successfully generated {output_file}")
-    logger.info(f"   Total entries: {len(unimod_entries)}")
+    logger.info(f"   Total entries: {len(resid_entries)}")
 
 
 if __name__ == "__main__":
-    gen_psi()
+    gen_resid()

@@ -360,12 +360,14 @@ class ElementLookup:
         if isinstance(key, ElementInfo):
             key = key.symbol
 
-        isotopes = self.get_all_isotopes(key)
-        mono_isotope = self.get_monoisotopic(key)
+        isotopes: list[ElementInfo] = self.get_all_isotopes(key)
+        mono_isotope: ElementInfo = self.get_monoisotopic(key)
         result: list[tuple[int, float]] = []
         for iso in isotopes:
             neutron_offset = iso.neutron_count - mono_isotope.neutron_count
-            result.append((neutron_offset, iso.abundance))  # type: ignore
+            if iso.abundance is None:
+                raise ValueError(f"Isotope {iso} has no abundance data")
+            result.append((neutron_offset, iso.abundance))
         return result
 
     def get_masses_and_abundances(self, key: str | Element | ElementInfo) -> list[tuple[float, float]]:

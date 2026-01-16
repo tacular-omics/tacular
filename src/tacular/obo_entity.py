@@ -1,3 +1,4 @@
+from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import StrEnum
 from functools import cached_property
@@ -29,7 +30,7 @@ class OboEntity:
     formula: str | None
     monoisotopic_mass: float | None
     average_mass: float | None
-    dict_composition: dict[str, int] | None
+    dict_composition: Mapping[str, int] | None
     cv: CV | None = None
 
     def __str__(self) -> str:
@@ -81,13 +82,13 @@ class ModEntity(OboEntity):
 
 
 def filter_infos(
-    infos: list[T],
+    infos: list[Any],
     has_monoisotopic_mass: bool | None = None,
     has_composition: bool | None = None,
     **criteria: Any,
-) -> list[T]:
+) -> list[Any]:
     """Filter a list of OboEntity or its subclasses based on criteria."""
-    filtered: list[T] = []
+    filtered: list[Any] = []
     for info in infos:
         match = True
 

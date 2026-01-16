@@ -33,7 +33,6 @@ class Monosaccharide(StrEnum):
     HexNAcS = "HexNAcS"
     NeuAc = "NeuAc"
     NeuGc = "NeuGc"
-    Kdn = "Kdn"
 
     @classmethod
     def from_str(cls, name: str) -> "Monosaccharide":
@@ -234,14 +233,6 @@ try:
         monoisotopic_mass=307.090331126,
         average_mass=307.25443521334626,
         dict_composition={'C': 11, 'H': 17, 'N': 1, 'O': 9},
-    ),
-    Monosaccharide.Kdn: MonosaccharideInfo(
-        id="995CFFA1",
-        name=Monosaccharide.Kdn,
-        formula="C9H14O8",
-        monoisotopic_mass=250.06886740778,
-        average_mass=250.20303302194432,
-        dict_composition={'C': 9, 'H': 14, 'O': 8},
     ),
     }
 

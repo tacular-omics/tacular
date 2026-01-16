@@ -9,6 +9,7 @@ from logging_utils import setup_logger
 from utils import (
     format_composition_string,
     get_id_and_name,
+    get_obo_metadata,
     is_obsolete,
     parse_formula_to_dict,
     read_obo,
@@ -214,6 +215,11 @@ def _get_unimod_entries(
         if delta_average_mass is None and comp_avg_mass is not None:
             delta_average_mass = comp_avg_mass
 
+        # skip terms without formula dn masses
+        if formula is None and delta_monoisotopic_mass is None and delta_average_mass is None:
+            logger.debug(f"  ⚠️  Skipping Unimod entry with no formula or masses: {term_id} {term_name}")
+            continue
+
         yield t.UnimodInfo(
             id=term_id,
             name=term_name,
@@ -229,9 +235,13 @@ def gen_uni(output_file: str = OutputFile.UNIMOD):
     logger.info("GENERATING UNIMOD DATA")
     logger.info("=" * 60)
 
-    logger.info("  📖 Reading from: data_gen/data/unimod.obo")
-    with open("./data/unimod.obo") as f:
+    logger.info("  📖 Reading from: data_gen/data/UNIMOD.obo")
+    with open("./data/UNIMOD.obo") as f:
         data = read_obo(f)
+        metadata = get_obo_metadata(f)
+
+    version = metadata.get("date", "unknown")
+    logger.info(f"  ℹ️  Version: {version}")
 
     unimod_entries = list(_get_unimod_entries(data))
     logger.info("  ✓ Parsed %d Unimod entries", len(unimod_entries))
@@ -282,6 +292,8 @@ def gen_uni(output_file: str = OutputFile.UNIMOD):
 from .dclass import UnimodInfo
 import warnings
 
+VERSION = "{version}"
+
 
 try:
     UNIMOD_MODIFICATIONS: dict[str, UnimodInfo] = {{
@@ -298,8 +310,8 @@ except Exception as e:
         UserWarning,
         stacklevel=2
     )
-    UNIMOD_MODIFICATIONS: dict[str, UnimodInfo] = {{}} # type: ignore
-    UNIMOD_NAME_TO_ID: dict[str, str] = {{}} # type: ignore
+    UNIMOD_MODIFICATIONS: dict[str, UnimodInfo] = {{}}
+    UNIMOD_NAME_TO_ID: dict[str, str] = {{}}
 '''
 
     with open(output_file, "w") as f:

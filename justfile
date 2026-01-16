@@ -10,7 +10,7 @@ lint:
 
 # Format code
 format:
-	uv run ruff check --select I --fix src
+	uv run ruff check --select I --fix src data_gen
 	uv run ruff format src
 
 # Run type checking
@@ -22,5 +22,8 @@ test:
     uv run pytest tests
 
 # Generate Data Files
-gen-data:
-    uv run ./data_gen/generate.py
+gen:
+    just --justfile data_gen/justfile gen
+
+update:
+    just --justfile data_gen/justfile update
