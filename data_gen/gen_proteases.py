@@ -1,22 +1,27 @@
 import json
+import os
+
+from constants import OutputFile
+from logging_utils import setup_logger
+
+logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
-def gen_proteases() -> None:
+def gen_proteases(output_file: str = OutputFile.PROTEASES) -> None:
     """Generate protease data file from JSON"""
 
-    print("\n" + "=" * 60)
-    print("GENERATING PROTEASE DATA")
-    print("=" * 60)
+    logger.info("\n" + "=" * 60)
+    logger.info("GENERATING PROTEASE DATA")
+    logger.info("=" * 60)
 
-    print("  📖 Reading from: data_gen/data/proteases.json")
-    with open("data_gen/data/proteases.json") as f:
+    logger.info("  📖 Reading from: ./data/proteases.json")
+    with open("./data/proteases.json") as f:
         data = json.load(f)
 
     proteases_data = data["proteases"]
-    print(f"  ✓ Parsed {len(proteases_data)} proteases")
+    logger.info(f"  ✓ Parsed {len(proteases_data)} proteases")
 
-    output_file = "src/tacular/digestion/data.py"
-    print(f"\n  📝 Writing to: {output_file}")
+    logger.info(f"\n  📝 Writing to: {output_file}")
 
     # Generate StrEnum entries
     enum_entries: list[str] = []
@@ -80,8 +85,8 @@ PROTEASES_DICT: dict[Proteases, ProteaseInfo] = {{
     with open(output_file, "w") as f:
         f.write(content)
 
-    print(f"✅ Successfully generated {output_file}")
-    print(f"   Total entries: {len(proteases_data)}")
+    logger.info(f"✅ Successfully generated {output_file}")
+    logger.info(f"   Total entries: {len(proteases_data)}")
 
 
 if __name__ == "__main__":

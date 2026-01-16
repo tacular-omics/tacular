@@ -4,7 +4,7 @@ from collections import Counter
 from dataclasses import dataclass
 from functools import cached_property
 
-from ...elements import ElementInfo, parse_composition
+from ..elements import ElementInfo, parse_composition
 
 
 @dataclass(frozen=True)

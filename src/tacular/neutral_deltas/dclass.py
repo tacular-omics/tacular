@@ -2,9 +2,8 @@ from collections import Counter
 from dataclasses import dataclass
 from functools import cached_property
 
-from ...elements.dclass import ElementInfo
-from ...elements.lookup import parse_composition
-from ...proforma_components.comps import ChargedFormula
+from ..elements.dclass import ElementInfo
+from ..elements.lookup import parse_composition
 
 
 @dataclass(frozen=True)
@@ -31,11 +30,6 @@ class NeutralDeltaInfo:
     def composition(self) -> Counter[ElementInfo]:
         """Get the composition as a Counter"""
         return Counter(parse_composition(dict(self.dict_composition)))
-
-    @cached_property
-    def charged_formula(self) -> ChargedFormula:
-        """Get the ChargedFormula representation of the neutral delta"""
-        return ChargedFormula.from_composition(self.composition)
 
     def calculate_loss_sites(self, sequence: str) -> int:
         """Calculate the number of possible loss sites in a sequence"""

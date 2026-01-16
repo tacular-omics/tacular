@@ -1,16 +1,27 @@
-import warnings
+import os
+import re
 from collections import defaultdict
 from collections.abc import Generator
 from typing import Any
 
-from utils import get_id_and_name, is_obsolete, read_obo
+from constants import OutputFile
+from logging_utils import setup_logger
+from utils import (
+    format_composition_string,
+    get_id_and_name,
+    is_obsolete,
+    parse_formula_to_dict,
+    read_obo,
+)
 
-import tacular as pt
+import tacular as t
+
+logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
 def _get_unimod_entries(
     terms: list[dict[str, Any]],
-) -> Generator[pt.UnimodInfo, None, None]:
+) -> Generator[t.UnimodInfo, None, None]:
     for term in terms:
         term_id, term_name = get_id_and_name(term)
         term_id = term_id.replace("UNIMOD:", "")
@@ -29,27 +40,20 @@ def _get_unimod_entries(
 
             property_values.setdefault(k, []).append(v)
 
-        delta_composition = property_values.get("delta_composition", [None])
-        delta_monoisotopic_mass = property_values.get("delta_mono_mass", [None])
-        delta_average_mass = property_values.get("delta_avge_mass", [None])
+        def _extract_single(values: list[Any] | Any, label: str) -> Any:
+            if isinstance(values, list):
+                if len(values) == 0:
+                    return None
+                if len(values) > 1:
+                    logger.warning("[UNIMOD] Multiple %s for %s %s %s", label, term_id, term_name, values)
+                val = values[0]
+            else:
+                val = values
+            return None if val is None else val
 
-        if len(delta_composition) > 1:
-            warnings.warn(f"[UNIMOD] Multiple delta compositions for {term_id} {term_name} {delta_composition}")
-            delta_composition = delta_composition[0]
-        elif len(delta_composition) == 1:
-            delta_composition = delta_composition[0]
-
-        if len(delta_monoisotopic_mass) > 1:
-            warnings.warn(f"[UNIMOD] Multiple delta mono masses for {term_id} {term_name} {delta_monoisotopic_mass}")
-            delta_monoisotopic_mass = delta_monoisotopic_mass[0]
-        elif len(delta_monoisotopic_mass) == 1:
-            delta_monoisotopic_mass = delta_monoisotopic_mass[0]
-
-        if len(delta_average_mass) > 1:
-            warnings.warn(f"[UNIMOD] Multiple delta average masses for {term_id} {term_name} {delta_average_mass}")
-            delta_average_mass = delta_average_mass[0]
-        elif len(delta_average_mass) == 1:
-            delta_average_mass = delta_average_mass[0]
+        delta_composition = _extract_single(property_values.get("delta_composition", [None]), "delta compositions")
+        delta_monoisotopic_mass = _extract_single(property_values.get("delta_mono_mass", [None]), "delta mono masses")
+        delta_average_mass = _extract_single(property_values.get("delta_avge_mass", [None]), "delta average masses")
 
         # Parse composition if available
         formula = None
@@ -68,78 +72,110 @@ def _get_unimod_entries(
                     count = 1
                 formuals_counts.append((key, count))
 
-            # replace glycan with formuals
+            # replace glycan with formulas or canonical equivalents
             for i, (key, count) in enumerate(formuals_counts):
-                if key == "HexA":
-                    key = "aHex"
+                match key:
+                    case "Hex":
+                        formuals_counts[i] = ("C6H10O5", count)
+                        continue
+                    case "HexNAc":
+                        formuals_counts[i] = ("C8H13N1O5", count)
+                        continue
+                    case "HexA":
+                        formuals_counts[i] = ("C6H8O6", count)
+                        continue
+                    case "dHex":
+                        formuals_counts[i] = ("C6H10O4", count)
+                        continue
+                    case "NeuAc":
+                        formuals_counts[i] = ("C11H17N1O8", count)
+                        continue
+                    case "Pent":
+                        formuals_counts[i] = ("C5H8O4", count)
+                        continue
+                    case "HexN":
+                        formuals_counts[i] = ("C6H11N1O4", count)
+                        continue
+                    case "NeuGc":
+                        formuals_counts[i] = ("C11H17N1O9", count)
+                        continue
+                    case "sulfate" | "Sulf":
+                        formuals_counts[i] = ("H0O3S1", count)
+                        continue
+                    case "Ac":
+                        formuals_counts[i] = ("C2H2O", count)
+                        continue
+                    case "Me":
+                        formuals_counts[i] = ("CH2", count)
+                        continue
+                    case "Kdn":
+                        formuals_counts[i] = ("C9H14O8", count)
+                        continue
+                    case "Su":
+                        formuals_counts[i] = ("C4H4O4", count)
+                        continue
+                    case "Hep":
+                        formuals_counts[i] = ("C7H12O6", count)
+                        continue
+                    case _:
+                        continue
 
-                if key == "Pent":
-                    key = "Pen"
-
-                if key == "Su":
-                    key = "Sug"
-
-                if key == "Sulf":
-                    key = "sulfate"
-
-                if key == "Ac":
-                    formuals_counts[i] = ("C2H2O", count)
-                    continue
-
-                if key == "Kdn":
-                    formuals_counts[i] = ("C9H14O8", count)
-                    continue
-
-                if key == "Me":
-                    formuals_counts[i] = ("CH2", count)
-                    continue
-
-                monossacharide = pt.MONOSACCHARIDE_LOOKUP.get(key)
-                if monossacharide is not None:
-                    glycan_formula = monossacharide.formula
-                    formuals_counts[i] = (glycan_formula, count)
-
-            composition: dict[pt.ElementInfo, int] = defaultdict(int)
+            # Build element counts, tracking any explicit isotope-specified counts
+            base_counts: dict[str, int] = defaultdict(int)
+            isotope_counts: dict[tuple[str, int], int] = defaultdict(int)
             try:
-                for formula_part, count in formuals_counts:
-                    if count == 0:
-                        continue  # skip zero counts
+                for formula_part, cnt in formuals_counts:
+                    if cnt == 0:
+                        continue
 
-                    # if formula_part starts with digit enclose in parentheses
-                    if formula_part[0].isdigit():
-                        formula_part = f"[{formula_part}]"
+                    part = str(formula_part).strip()
 
-                    chem_formula = pt.ChargedFormula.from_string(f"Formula:{formula_part}", allow_zero=True)
+                    # If part starts with digits (isotope prefix), e.g., '13C' or '15N'
+                    m = re.match(r"^(\d+)([A-Za-z].*)$", part)
+                    if m:
+                        iso = int(m.group(1))
+                        rest = m.group(2)
+                        # If rest is a simple element symbol (C, N, O, etc.)
+                        if re.match(r"^[A-Z][a-z]?$", rest):
+                            elem_sym = rest
+                            isotope_counts[(elem_sym, iso)] += cnt
+                            base_counts[elem_sym] += cnt
+                            continue
+                        else:
+                            # Otherwise treat rest as a formula string and parse normally
+                            part = rest
 
-                    # Remove any elements with zero count from the composition
-                    elements = tuple(elem for elem in chem_formula.formula if elem.occurance != 0)
-
-                    # Check for non-zero charge
-                    if chem_formula.charge is not None:
-                        raise ValueError(
-                            f"Unimod {term_id} {term_name} has non-zero charge in formula {delta_composition}"
-                        )
-
-                    comp_comp = pt.ChargedFormula(formula=elements, charge=chem_formula.charge).get_composition()
-                    for elem, elem_count in comp_comp.items():
-                        composition[elem] += elem_count * count
+                    # Normal formula or element (e.g., 'C', 'CH2', 'C9H14O8')
+                    parsed = parse_formula_to_dict(part) if part else {}
+                    for elem_sym, elem_count in parsed.items():
+                        base_counts[elem_sym] += elem_count * cnt
             except Exception as e:
                 raise ValueError(
                     f"Error parsing composition for Unimod {term_id} {term_name} with formula {delta_composition}: {e}"
                 ) from e
 
-            # print({term_name: {str(k): v for k, v in composition.items()}})
-            merged_formula = pt.ChargedFormula.from_composition(composition)
-            # print(f"  Merged formula: {merged_formula}")
+            # Merge base_counts into a simple composition dict
+            composition = dict(base_counts)
 
-            calc_average_mass = merged_formula.get_mass(monoisotopic=False)
-            # print(f"  Calculated average mass: {calc_average_mass}")
-            calc_mono_mass = merged_formula.get_mass(monoisotopic=True)
-            # print(f"  Calculated monoisotopic mass: {calc_mono_mass}")
+            # Calculate masses accounting for isotopic-specification when present
+            comp_mass = 0.0
+            comp_avg_mass = 0.0
+            # handle isotope-specific contributions
+            for (elem_sym, iso), iso_count in isotope_counts.items():
+                comp_mass += t.ELEMENT_LOOKUP.mass(f"{iso}{elem_sym}") * iso_count
+                comp_avg_mass += t.ELEMENT_LOOKUP.mass(f"{iso}{elem_sym}") * iso_count
+                # subtract isotope counts from base_counts since we'll add base (non-isotope) separately
+                composition[elem_sym] = composition.get(elem_sym, 0) - iso_count
 
-            comp_mass = calc_mono_mass
-            comp_avg_mass = calc_average_mass
-            formula = merged_formula
+            # add remaining base (non-isotope-specified) contributions using monoisotopic or average
+            for elem_sym, total_count in composition.items():
+                if total_count == 0:
+                    continue
+                comp_mass += t.ELEMENT_LOOKUP.mass(elem_sym, monoisotopic=True) * total_count
+                comp_avg_mass += t.ELEMENT_LOOKUP.mass(elem_sym, monoisotopic=False) * total_count
+
+            # canonical formula string
+            formula = format_composition_string({k: v for k, v in composition.items() if v != 0})
 
         delta_monoisotopic_mass = float(delta_monoisotopic_mass) if delta_monoisotopic_mass else None
         delta_average_mass = float(delta_average_mass) if delta_average_mass else None
@@ -148,18 +184,28 @@ def _get_unimod_entries(
         if delta_monoisotopic_mass is not None and comp_mass is not None:
             if abs(float(delta_monoisotopic_mass) - comp_mass) > 0.01:
                 symbol = "🔴" if abs(float(delta_monoisotopic_mass) - comp_mass) > 1.0 else "⚠️"
-                warnings.warn(
-                    f"\n  {symbol}  UNIMOD MASS MISMATCH [{term_id}] {term_name}\n"
-                    f"      Monoisotopic: calculated={comp_mass:.6f}, reported={delta_monoisotopic_mass}\n"
-                    f"      Formula: {delta_composition}"
+                logger.warning(
+                    "%s UNIMOD MASS MISMATCH [%s] %s: Mono Mass calculated=%.6f reported=%s Formula=%s Composition=%s",
+                    symbol,
+                    term_id,
+                    term_name,
+                    comp_mass,
+                    delta_monoisotopic_mass,
+                    delta_composition,
+                    composition,
                 )
         if delta_average_mass is not None and comp_avg_mass is not None:
             if abs(float(delta_average_mass) - comp_avg_mass) > 0.2:
                 symbol = "⚠️⚠️" if abs(float(delta_average_mass) - comp_avg_mass) > 1.0 else "⚠️"
-                warnings.warn(
-                    f"\n  {symbol}  UNIMOD MASS MISMATCH [{term_id}] {term_name}\n"
-                    f"      Average: calculated={comp_avg_mass:.6f}, reported={delta_average_mass}\n"
-                    f"      Formula: {delta_composition}"
+                logger.warning(
+                    "%s UNIMOD MASS MISMATCH [%s] %s: Avg MMass calculated=%.6f reported=%s Formula=%s Composition=%s",
+                    symbol,
+                    term_id,
+                    term_name,
+                    comp_avg_mass,
+                    delta_average_mass,
+                    delta_composition,
+                    composition,
                 )
 
         # Use calculated masses if reported masses are missing
@@ -168,43 +214,42 @@ def _get_unimod_entries(
         if delta_average_mass is None and comp_avg_mass is not None:
             delta_average_mass = comp_avg_mass
 
-        yield pt.UnimodInfo(
+        yield t.UnimodInfo(
             id=term_id,
             name=term_name,
-            formula=str(formula).lstrip("Formula:"),
+            formula=str(formula) if formula else None,
             monoisotopic_mass=float(delta_monoisotopic_mass) if delta_monoisotopic_mass else None,
             average_mass=float(delta_average_mass) if delta_average_mass else None,
-            dict_composition=formula.get_dict_composition() if formula else None,
+            dict_composition=(composition if isinstance(composition, dict) and composition else None),
         )
 
 
-def run():
-    print("\n" + "=" * 60)
-    print("GENERATING UNIMOD DATA")
-    print("=" * 60)
+def gen_uni(output_file: str = OutputFile.UNIMOD):
+    logger.info("\n" + "=" * 60)
+    logger.info("GENERATING UNIMOD DATA")
+    logger.info("=" * 60)
 
-    print("  📖 Reading from: data_gen/data/unimod.obo")
-    with open("data_gen/data/unimod.obo") as f:
+    logger.info("  📖 Reading from: data_gen/data/unimod.obo")
+    with open("./data/unimod.obo") as f:
         data = read_obo(f)
 
     unimod_entries = list(_get_unimod_entries(data))
-    print(f"  ✓ Parsed {len(unimod_entries)} Unimod entries")
+    logger.info("  ✓ Parsed %d Unimod entries", len(unimod_entries))
 
     # print stats on number of entries missing mono avg or formula
     missing_mono = sum(1 for mod in unimod_entries if mod.monoisotopic_mass is None)
     missing_avg = sum(1 for mod in unimod_entries if mod.average_mass is None)
     missing_formula = sum(1 for mod in unimod_entries if mod.formula is None)
     if missing_mono > 0 or missing_avg > 0 or missing_formula > 0:
-        print("\n  ⚠️  Data Completeness:")
+        logger.warning("\n  ⚠️  Data Completeness:")
         if missing_mono > 0:
-            print(f"      Missing monoisotopic mass: {missing_mono}")
+            logger.warning("      Missing monoisotopic mass: %d", missing_mono)
         if missing_avg > 0:
-            print(f"      Missing average mass: {missing_avg}")
+            logger.warning("      Missing average mass: %d", missing_avg)
         if missing_formula > 0:
-            print(f"      Missing formula: {missing_formula}")
+            logger.warning("      Missing formula: %d", missing_formula)
 
-    output_file = "src/tacular/mods/unimod/data.py"
-    print(f"\n  📝 Writing to: {output_file}")
+    logger.info("\n  📝 Writing to: %s", output_file)
 
     # Generate the Unimod entries
     entries: list[str] = []
@@ -234,7 +279,7 @@ def run():
     content = f'''"""Auto-generated Unimod data"""
 # DO NOT EDIT - generated by gen_unimod.py
 
-from ..dclass import UnimodInfo
+from .dclass import UnimodInfo
 import warnings
 
 
@@ -260,9 +305,9 @@ except Exception as e:
     with open(output_file, "w") as f:
         f.write(content)
 
-    print(f"✅ Successfully generated {output_file}")
-    print(f"   Total entries: {len(unimod_entries)}")
+    logger.info("✅ Successfully generated %s", output_file)
+    logger.info("   Total entries: %d", len(unimod_entries))
 
 
 if __name__ == "__main__":
-    run()
+    gen_uni()

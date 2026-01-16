@@ -2,8 +2,9 @@ from collections.abc import Iterable
 from functools import cached_property
 from random import choice
 
-from ..dclass import UnimodInfo, filter_infos
+from ..obo_entity import filter_infos
 from .data import UNIMOD_MODIFICATIONS
+from .dclass import UnimodInfo
 
 
 class UnimodLookup:

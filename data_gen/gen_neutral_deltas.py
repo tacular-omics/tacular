@@ -1,9 +1,12 @@
 import json
+import os
 import re
 
+from constants import OutputFile
+from logging_utils import setup_logger
 from utils import calculate_mass
 
-output_file = "src/tacular/neutral_deltas/data.py"
+logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
 def parse_formula_to_dict(formula: str) -> dict[str, int]:
@@ -20,20 +23,19 @@ def parse_formula_to_dict(formula: str) -> dict[str, int]:
     return element_dict
 
 
-def gen_neutral_deltas() -> None:
+def gen_deltas(output_file: str = OutputFile.NEUTRAL_DELTAS) -> None:
     """Generate neutral delta data file from JSON"""
 
-    print("\n" + "=" * 60)
-    print("GENERATING NEUTRAL DELTA DATA")
-    print("=" * 60)
+    logger.info("\n" + "=" * 60)
+    logger.info("GENERATING NEUTRAL DELTA DATA")
+    logger.info("=" * 60)
 
-    print("  📖 Reading from: data_gen/data/neutral_losses.json")
-    with open("data_gen/data/neutral_losses.json") as f:
+    logger.info("  📖 Reading from: ./data/neutral_losses.json")
+    with open("./data/neutral_losses.json") as f:
         data = json.load(f)
 
-    print(f"  ✓ Parsed {len(data)} neutral deltas")
-
-    print(f"\n  📝 Writing to: {output_file}")
+    logger.info(f"  ✓ Parsed {len(data)} neutral deltas")
+    logger.info(f"\n  📝 Writing to: {output_file}")
 
     # Generate NeutralDelta enum entries
     enum_entries: list[str] = []
@@ -108,9 +110,9 @@ NEUTRAL_DELTA_DICT: dict[NeutralDelta, NeutralDeltaInfo] = {{
     with open(output_file, "w") as f:
         f.write(content)
 
-    print(f"✅ Successfully generated {output_file}")
-    print(f"   Total entries: {len(data)}")
+    logger.info(f"✅ Successfully generated {output_file}")
+    logger.info(f"   Total entries: {len(data)}")
 
 
 if __name__ == "__main__":
-    gen_neutral_deltas()
+    gen_deltas()

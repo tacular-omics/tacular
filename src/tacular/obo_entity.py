@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import StrEnum
 from functools import cached_property
 from typing import Any, Self, TypeVar
@@ -76,26 +76,8 @@ class OboEntity:
         }
 
 
-class MonosaccharideInfo(OboEntity):
-    """Class to store information about a monosaccharide"""
-
-
 class ModEntity(OboEntity):
     cv: CV
-
-
-@dataclass(frozen=True, slots=True)
-class UnimodInfo(ModEntity):
-    """Class to store information about a Unimod modification"""
-
-    cv: CV = field(default=CV.UNIMOD)
-
-
-@dataclass(frozen=True, slots=True)
-class PsimodInfo(ModEntity):
-    """Class to store information about a PSI-MOD modification"""
-
-    cv: CV = field(default=CV.PSI_MOD)
 
 
 def filter_infos(

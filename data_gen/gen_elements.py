@@ -1,4 +1,16 @@
-import tacular as pt
+"""
+This should never have to be regenerated as by 2025, we can assume that all elements data is stable.
+However, this script was used to generate the initial data file from NIST data. It is required for parsing
+the other data files. A bit of chicken-and-egg situation.
+"""
+
+import logging
+import os
+
+from elements import ElementInfo
+from logging_utils import setup_logger
+
+logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
 def construct_element_info(
@@ -8,7 +20,7 @@ def construct_element_info(
     mass: float | None,
     abundance: float | None,
     average_mass: float | None = None,
-) -> pt.ElementInfo:
+) -> ElementInfo:
     if number is None:
         raise ValueError("Atomic number must be provided")
     if symbol is None:
@@ -26,7 +38,7 @@ def construct_element_info(
     if symbol == "D" or symbol == "T":
         symbol = "H"  # Deuterium
 
-    return pt.ElementInfo(
+    return ElementInfo(
         number=number,
         symbol=symbol,
         mass_number=mass_number,
@@ -37,10 +49,10 @@ def construct_element_info(
     )
 
 
-def get_element_info(chem_file_path: str) -> list[pt.ElementInfo]:
+def get_element_info(chem_file_path: str) -> list[ElementInfo]:
     # From https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=&all=all&ascii=ascii2
 
-    element_infos: list[pt.ElementInfo] = []
+    element_infos: list[ElementInfo] = []
     with open(chem_file_path) as file:
         # Initialize variables
         atomic_number = None
@@ -75,7 +87,7 @@ def get_element_info(chem_file_path: str) -> list[pt.ElementInfo]:
                     key = elems[0].rstrip()
                     value = elems[1].lstrip()
                 except IndexError as e:
-                    print(f"Could not parse line: {line}")
+                    logging.getLogger(__name__).warning("Could not parse line: %s", line)
                     raise e
 
                 if key == "Atomic Number":
@@ -112,7 +124,7 @@ def get_element_info(chem_file_path: str) -> list[pt.ElementInfo]:
     return element_infos
 
 
-def calculate_average_masses(elements: list[pt.ElementInfo]) -> dict[int, float]:
+def calculate_average_masses(elements: list[ElementInfo]) -> dict[int, float]:
     """
     Calculate the average mass for each element based on natural isotopic abundances.
 
@@ -125,7 +137,7 @@ def calculate_average_masses(elements: list[pt.ElementInfo]) -> dict[int, float]
     from collections import defaultdict
 
     # Group isotopes by atomic number
-    by_atomic_number: dict[int, list[pt.ElementInfo]] = defaultdict(list)
+    by_atomic_number: dict[int, list[ElementInfo]] = defaultdict(list)
     for elem in elements:
         by_atomic_number[elem.number].append(elem)
 
@@ -137,6 +149,8 @@ def calculate_average_masses(elements: list[pt.ElementInfo]) -> dict[int, float]
         total_abundance = 0.0
 
         for isotope in isotopes:
+            if isotope.abundance is None:
+                raise ValueError(f"Isotope {isotope} has no abundance value")
             # Only include naturally occurring isotopes (abundance > 0)
             if isotope.abundance > 0.0:
                 total_mass += isotope.mass * isotope.abundance
@@ -157,22 +171,22 @@ def calculate_average_masses(elements: list[pt.ElementInfo]) -> dict[int, float]
     return average_masses
 
 
-def add_average_masses(elements: list[pt.ElementInfo]) -> list[pt.ElementInfo]:
+def add_average_masses(elements: list[ElementInfo]) -> list[ElementInfo]:
     """
-    Create new pt.ElementInfo objects with average_mass populated.
+    Create new ElementInfo objects with average_mass populated.
 
     Args:
-        elements: List of pt.ElementInfo without average_mass
+        elements: List of ElementInfo without average_mass
 
     Returns:
-        New list of pt.ElementInfo with average_mass added
+        New list of ElementInfo with average_mass added
     """
     average_masses = calculate_average_masses(elements)
 
-    new_elements: list[pt.ElementInfo] = []
+    new_elements: list[ElementInfo] = []
     for elem in elements:
         avg_mass = average_masses[elem.number]
-        new_elem = pt.ElementInfo(
+        new_elem = ElementInfo(
             number=elem.number,
             symbol=elem.symbol,
             mass_number=elem.mass_number,
@@ -186,15 +200,15 @@ def add_average_masses(elements: list[pt.ElementInfo]) -> list[pt.ElementInfo]:
     return new_elements
 
 
-def add_explicit_isotope(elements: dict[tuple[str, int | None], pt.ElementInfo]) -> None:
-    """Given a list of pt.ElementInfo, add explicit isotopes for each element"""
+def add_explicit_isotope(elements: dict[tuple[str, int | None], ElementInfo]) -> None:
+    """Given a list of ElementInfo, add explicit isotopes for each element"""
     # groupby atomic number
     # sort by abundance
     # for the most abundant isotope, use its atomic symbol without mass number and add to list
     # for example C, 12 -> C, None
     from collections import defaultdict
 
-    grouped_elements: dict[int, list[pt.ElementInfo]] = defaultdict(list)
+    grouped_elements: dict[int, list[ElementInfo]] = defaultdict(list)
     for elem in elements.values():
         grouped_elements[elem.number].append(elem)
 
@@ -206,7 +220,7 @@ def add_explicit_isotope(elements: dict[tuple[str, int | None], pt.ElementInfo])
         elements[key] = most_abundant
 
 
-def fix_hydrogen_isotopes(elements: dict[tuple[str, int | None], pt.ElementInfo]) -> None:
+def fix_hydrogen_isotopes(elements: dict[tuple[str, int | None], ElementInfo]) -> None:
     """Fix Hydrogen isotopes so that H, None points to Protium"""
     # Default uses H, D, T
     # add H, None, D, None, T, None
@@ -223,16 +237,16 @@ def fix_hydrogen_isotopes(elements: dict[tuple[str, int | None], pt.ElementInfo]
     elements[("H", 3)] = tritium
 
 
-def update_monoisotopic_flags(elements: list[pt.ElementInfo]) -> list[pt.ElementInfo]:
+def update_monoisotopic_flags(elements: list[ElementInfo]) -> list[ElementInfo]:
     """Update is_monoisotopic flags based on most abundant isotope per element"""
     from collections import defaultdict
 
     # Group isotopes by atomic number
-    by_atomic_number: dict[int, list[pt.ElementInfo]] = defaultdict(list)
+    by_atomic_number: dict[int, list[ElementInfo]] = defaultdict(list)
     for elem in elements:
         by_atomic_number[elem.number].append(elem)
 
-    new_elements: list[pt.ElementInfo] = []
+    new_elements: list[ElementInfo] = []
 
     for _, isotopes in by_atomic_number.items():
         # Find the most abundant isotope
@@ -240,7 +254,7 @@ def update_monoisotopic_flags(elements: list[pt.ElementInfo]) -> list[pt.Element
 
         for isotope in isotopes:
             is_monoisotopic = isotope == most_abundant
-            new_elem = pt.ElementInfo(
+            new_elem = ElementInfo(
                 number=isotope.number,
                 symbol=isotope.symbol,
                 mass_number=isotope.mass_number,
@@ -254,13 +268,13 @@ def update_monoisotopic_flags(elements: list[pt.ElementInfo]) -> list[pt.Element
     return new_elements
 
 
-def add_unspecified_isotope(elements: list[pt.ElementInfo]) -> list[pt.ElementInfo]:
+def add_unspecified_isotope(elements: list[ElementInfo]) -> list[ElementInfo]:
     # For every element group, add one which has an unspecified isotope
-    new_elems: list[pt.ElementInfo] = []
+    new_elems: list[ElementInfo] = []
 
     for elem in elements:
         if elem.is_monoisotopic:
-            unspecified = pt.ElementInfo(
+            unspecified = ElementInfo(
                 number=elem.number,
                 symbol=elem.symbol,
                 mass_number=None,
@@ -276,33 +290,33 @@ def add_unspecified_isotope(elements: list[pt.ElementInfo]) -> list[pt.ElementIn
     return new_elems
 
 
-def gen():
+def gen_elements(output_file: str = "src/tacular/elements/data.py") -> None:
     """Generate the element_data.py file with hardcoded element data"""
 
-    print("\n" + "=" * 60)
-    print("GENERATING ELEMENT DATA")
-    print("=" * 60)
+    logger.info("\n" + "=" * 60)
+    logger.info("GENERATING ELEMENT DATA")
+    logger.info("=" * 60)
 
     data_path = "data_gen/data/elements.txt"
-    print(f"  📖 Reading from: {data_path}")
+    logger.info(f"  📖 Reading from: {data_path}")
 
     # Load and process element data
     elements = get_element_info(data_path)
-    print(f"  ✓ Loaded {len(elements)} isotopes")
+    logger.info(f"  ✓ Loaded {len(elements)} isotopes")
 
     # Update monoisotopic flags
     elements = update_monoisotopic_flags(elements)
-    print("  ✓ Updated monoisotopic flags")
+    logger.info("  ✓ Updated monoisotopic flags")
 
     # Add average masses
     elements = add_average_masses(elements)
-    print("  ✓ Calculated average masses")
+    logger.info("  ✓ Calculated average masses")
 
     # add unspecified isotopes and fix hydrogen
     elements = add_unspecified_isotope(elements)
 
     # Build lookup dictionary
-    element_lookup: dict[tuple[str, int | None], pt.ElementInfo] = {}
+    element_lookup: dict[tuple[str, int | None], ElementInfo] = {}
     for elem in elements:
         key = (elem.symbol, elem.mass_number)
         element_lookup[key] = elem
@@ -310,7 +324,7 @@ def gen():
     # Add explicit isotopes and fix hydrogen
     # add_explicit_isotope(element_lookup)
     # fix_hydrogen_isotopes(element_lookup)
-    print(f"Total entries after processing: {len(element_lookup)}")
+    logger.info(f"Total entries after processing: {len(element_lookup)}")
 
     # Sort by atomic number, then mass number
     element_lookup = dict(
@@ -320,9 +334,7 @@ def gen():
     )
 
     # Generate the output file
-    output_file = "src/tacular/elements/data.py"
-    # output_file = 'temp_elements_data.py'  # for testing
-    print(f"\n  📝 Writing to: {output_file}")
+    logger.info(f"\n  📝 Writing to: {output_file}")
 
     # Build element entries
     entries: list[str] = []
@@ -388,16 +400,16 @@ except Exception as e:
     with open(output_file, "w") as f:
         f.write(content)
 
-    print(f"✅ Successfully generated {output_file}")
-    print(f"   Total entries: {len(element_lookup)}")
+    logger.info(f"✅ Successfully generated {output_file}")
+    logger.info(f"   Total entries: {len(element_lookup)}")
 
     # Print some statistics
     natural_isotopes = sum(1 for e in element_lookup.values() if e.abundance is not None and e.abundance > 0)
     monoisotopic_entries = sum(1 for k in element_lookup.keys() if k[1] is None)
-    print(f"   Natural isotopes: {natural_isotopes}")
-    print(f"   Monoisotopic entries: {monoisotopic_entries}")
-    print(f"   Radioactive isotopes: {len(element_lookup) - natural_isotopes - monoisotopic_entries}")
+    logger.info(f"   Natural isotopes: {natural_isotopes}")
+    logger.info(f"   Monoisotopic entries: {monoisotopic_entries}")
+    logger.info(f"   Radioactive isotopes: {len(element_lookup) - natural_isotopes - monoisotopic_entries}")
 
 
 if __name__ == "__main__":
-    gen()
+    gen_elements()

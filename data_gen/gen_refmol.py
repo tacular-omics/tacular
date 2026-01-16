@@ -1,25 +1,27 @@
 import json
-import warnings
+import os
 
-import tacular as pt
+from constants import PROTON_MASS, OutputFile
+from logging_utils import setup_logger
+from utils import calculate_mass, parse_formula_to_dict
 
-output_file = "src/tacular/fragment/refmol/data.py"
+logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
-def gen_refmol() -> None:
+def gen_refmol(output_file: str = OutputFile.REFMOL) -> None:
     """Generate reference molecule data file from JSON"""
 
-    print("\n" + "=" * 60)
-    print("GENERATING REFERENCE MOLECULE DATA")
-    print("=" * 60)
+    logger.info("\n" + "=" * 60)
+    logger.info("GENERATING REFERENCE MOLECULE DATA")
+    logger.info("=" * 60)
 
-    print("  📖 Reading from: data_gen/data/mzpaf_reference_molecules.json")
-    with open("data_gen/data/mzpaf_reference_molecules.json") as f:
+    logger.info("  📖 Reading from: ./data/mzpaf_reference_molecules.json")
+    with open("./data/mzpaf_reference_molecules.json") as f:
         data = json.load(f)
 
-    print(f"  ✓ Parsed {len(data)} reference molecules")
+    logger.info(f"  ✓ Parsed {len(data)} reference molecules")
 
-    print(f"\n  📝 Writing to: {output_file}")
+    logger.info(f"\n  📝 Writing to: {output_file}")
 
     # Generate enum entries and dictionary entries
     enum_entries: list[str] = []
@@ -38,30 +40,18 @@ def gen_refmol() -> None:
         molecule_type = info.get("molecule_type", "")
         chemical_formula = info.get("chemical_formula", "")
 
-        # Parse formula using ChargedFormula
-        formula = None
+        # Parse formula using lightweight parser and compute masses
         composition_dict = {}
         monoisotopic_mass = 0.0
         average_mass = 0.0
 
         if chemical_formula:
             try:
-                formula = pt.ChargedFormula.from_string(f"Formula:{chemical_formula}", allow_zero=True)
-
-                # Remove any elements with zero count from the composition
-                elements = tuple(elem for elem in formula.formula if elem.occurance != 0)
-
-                # Check for non-zero charge
-                if formula.charge is not None:
-                    raise ValueError(f"Non-zero charge in formula: {chemical_formula}")
-
-                formula = pt.ChargedFormula(formula=elements, charge=formula.charge)
-                composition_dict = formula.get_dict_composition()
-                monoisotopic_mass = formula.get_mass(monoisotopic=True)
-                average_mass = formula.get_mass(monoisotopic=False)
-
+                composition_dict = parse_formula_to_dict(chemical_formula)
+                monoisotopic_mass = calculate_mass(composition_dict, monoisotopic=True)
+                average_mass = calculate_mass(composition_dict, monoisotopic=False)
             except Exception as e:
-                warnings.warn(f"Error parsing formula for {name}: {chemical_formula}, {e}")
+                logger.warning(f"Error parsing formula for {name}: {chemical_formula}, {e}")
 
         # Override with provided masses if available
         if "neutral_mass" in info:
@@ -69,7 +59,7 @@ def gen_refmol() -> None:
             if monoisotopic_mass != 0.0 and abs(provided_mass - monoisotopic_mass) > 0.01:
                 symbol = "🔴" if abs(provided_mass - monoisotopic_mass) > 1.0 else "⚠️"
 
-                warnings.warn(
+                logger.warning(
                     f"\n  {symbol}  REFMOL MASS MISMATCH: {name} | NEUTRAL MASS\n"
                     f"      Calculated: {monoisotopic_mass:.6f}, Provided: {provided_mass:.6f}\n"
                     f"      Difference: {abs(provided_mass - monoisotopic_mass):.6f}\n"
@@ -79,11 +69,11 @@ def gen_refmol() -> None:
         if "ion_mz" in info:
             # For ions, subtract proton mass to get neutral mass
             provided_mz = info["ion_mz"]
-            neutral_mass = provided_mz - pt.PROTON_MASS
+            neutral_mass = provided_mz - PROTON_MASS
             if monoisotopic_mass != 0.0 and abs(neutral_mass - monoisotopic_mass) > 0.01:
                 symbol = "🔴" if abs(neutral_mass - monoisotopic_mass) > 1.0 else "⚠️"
 
-                warnings.warn(
+                logger.warning(
                     f"\n  {symbol}  REFMOL MASS MISMATCH: {name} | ION M/Z\n"
                     f"      Calculated: {monoisotopic_mass:.6f}, Ion m/z: {neutral_mass:.6f}\n"
                     f"      Difference: {abs(neutral_mass - monoisotopic_mass):.6f}\n"
@@ -132,8 +122,8 @@ REFMOL_DICT: dict[RefMolID, RefMolInfo] = {{
     with open(output_file, "w") as f:
         f.write(content)
 
-    print(f"✅ Successfully generated {output_file}")
-    print(f"   Total entries: {len(data)}")
+    logger.info(f"✅ Successfully generated {output_file}")
+    logger.info(f"   Total entries: {len(data)}")
 
 
 if __name__ == "__main__":

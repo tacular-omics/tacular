@@ -5,11 +5,11 @@ from dataclasses import dataclass
 from enum import Flag, auto
 from functools import cached_property
 
-from ...elements import ElementInfo, parse_composition
+from ..elements import ElementInfo, parse_composition
 
 # type checking
 if typing.TYPE_CHECKING:
-    from ...fragment import IonType
+    from .data import IonType
 
 
 class IonTypeProperty(Flag):

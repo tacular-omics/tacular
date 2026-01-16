@@ -1,10 +1,14 @@
-import warnings
+import os
 from collections.abc import Generator
 from typing import Any
 
-from utils import get_id_and_name, is_obsolete, read_obo
+from constants import OutputFile
+from logging_utils import setup_logger
+from utils import calculate_mass, get_id_and_name, is_obsolete, parse_formula_to_dict, read_obo
 
 import tacular as pt
+
+logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
 def _get_monosaccharide_entries(
@@ -25,68 +29,64 @@ def _get_monosaccharide_entries(
 
             property_values.setdefault(k, []).append(v)
 
-        delta_formula = property_values.get("has_chemical_formula", [None])
-        delta_monoisotopic_mass = property_values.get("has_monoisotopic_mass", [None])
-        delta_average_mass = property_values.get("has_average_mass", [None])
+        # helper to extract a single value from lists coming from OBO properties
+        def _extract_single(values: list[Any] | Any, label: str) -> Any:
+            if isinstance(values, list):
+                if len(values) == 0:
+                    return None
+                if len(values) > 1:
+                    logger.warning("[MONOSACCHARIDES] Multiple %s for %s %s %s", label, term_id, term_name, values)
+                val = values[0]
+            else:
+                val = values
+            # treat explicit None placeholders
+            return None if val is None else val
 
-        if len(delta_formula) > 1:
-            warnings.warn(f"[MONOSACCHARIDES] Multiple delta compositions for {term_id} {term_name} {delta_formula}")
-            delta_formula = delta_formula[0]
-        elif len(delta_formula) == 1:
-            delta_formula = delta_formula[0]
+        delta_formula = _extract_single(property_values.get("has_chemical_formula", [None]), "delta compositions")
+        delta_monoisotopic_mass = _extract_single(
+            property_values.get("has_monoisotopic_mass", [None]), "delta mono masses"
+        )
+        delta_average_mass = _extract_single(property_values.get("has_average_mass", [None]), "delta average masses")
 
-        if len(delta_monoisotopic_mass) > 1:
-            warnings.warn(
-                f"[MONOSACCHARIDES] Multiple delta mono masses for {term_id} {term_name} {delta_monoisotopic_mass}"
-            )
-            delta_monoisotopic_mass = delta_monoisotopic_mass[0]
-        elif len(delta_monoisotopic_mass) == 1:
-            delta_monoisotopic_mass = delta_monoisotopic_mass[0]
+        if delta_formula is not None and not isinstance(delta_formula, str):
+            raise ValueError("Invalid formula for %s %s: %r" % (term_id, term_name, delta_formula))
 
-        if len(delta_average_mass) > 1:
-            warnings.warn(
-                f"[MONOSACCHARIDES] Multiple delta average masses for {term_id} {term_name} {delta_average_mass}"
-            )
-            delta_average_mass = delta_average_mass[0]
-        elif len(delta_average_mass) == 1:
-            delta_average_mass = delta_average_mass[0]
-
-        formula = pt.ChargedFormula.from_string(f"Formula:{delta_formula}", allow_zero=True) if delta_formula else None
-
-        # remove any elements with zero count from the composition
+        composition: dict[str, int] | None = parse_formula_to_dict(delta_formula) if delta_formula else None
+        # remove elements with zero count
+        if composition:
+            composition = {k: v for k, v in composition.items() if v != 0}
 
         comp_mass: float | None = None
         comp_avg_mass: float | None = None
 
-        if formula:
-            elements = tuple(elem for elem in formula.formula if elem.occurance != 0)
+        if composition:
+            comp_mass = calculate_mass(composition, monoisotopic=True)
+            comp_avg_mass = calculate_mass(composition, monoisotopic=False)
 
-            # if charge is not None... raise an error
-            if formula.charge is not None:
-                raise ValueError(f"Monosaccharide {term_id} {term_name} has non-zero charge in formula {delta_formula}")
-
-            formula = pt.ChargedFormula(formula=elements, charge=formula.charge)
-            comp_mass = formula.get_mass(monoisotopic=True)
-            comp_avg_mass = formula.get_mass(monoisotopic=False)
-
-        delta_monoisotopic_mass = float(delta_monoisotopic_mass) if delta_monoisotopic_mass else None
-        delta_average_mass = float(delta_average_mass) if delta_average_mass else None
+        delta_monoisotopic_mass = float(delta_monoisotopic_mass) if delta_monoisotopic_mass is not None else None
+        delta_average_mass = float(delta_average_mass) if delta_average_mass is not None else None
 
         if delta_monoisotopic_mass is not None and comp_mass is not None:
             # assert that they are equal within 0.01 Da
             if abs(float(delta_monoisotopic_mass) - comp_mass) > 0.01:
-                warnings.warn(
-                    f"\n  ⚠️  MONOSACCHARIDE MASS MISMATCH [{term_id}] {term_name}\n"
-                    f"      Monoisotopic: calculated={comp_mass:.6f}, reported={delta_monoisotopic_mass}\n"
-                    f"      Formula: {delta_formula}"
+                logger.warning(
+                    "MONOSACCHARIDE MASS MISMATCH [%s] %s: calculated=%.6f reported=%s Formula=%s",
+                    term_id,
+                    term_name,
+                    comp_mass,
+                    delta_monoisotopic_mass,
+                    delta_formula,
                 )
         if delta_average_mass is not None and comp_avg_mass is not None:
             # assert that they are equal within 0.01 Da
             if abs(float(delta_average_mass) - comp_avg_mass) > 0.01:
-                warnings.warn(
-                    f"\n  ⚠️  MONOSACCHARIDE MASS MISMATCH [{term_id}] {term_name}\n"
-                    f"      Average: calculated={comp_avg_mass:.6f}, reported={delta_average_mass}\n"
-                    f"      Formula: {delta_formula}"
+                logger.warning(
+                    "MONOSACCHARIDE MASS MISMATCH [%s] %s: calculated=%.6f reported=%s Formula=%s",
+                    term_id,
+                    term_name,
+                    comp_avg_mass,
+                    delta_average_mass,
+                    delta_formula,
                 )
 
         if delta_monoisotopic_mass is None and comp_mass is not None:
@@ -100,30 +100,29 @@ def _get_monosaccharide_entries(
             formula=delta_formula,
             monoisotopic_mass=float(delta_monoisotopic_mass) if delta_monoisotopic_mass else None,
             average_mass=float(delta_average_mass) if delta_average_mass else None,
-            dict_composition=formula.get_dict_composition() if formula else None,
+            dict_composition=composition,
         )
 
 
-def run():
-    print("\n" + "=" * 60)
-    print("GENERATING MONOSACCHARIDE DATA")
-    print("=" * 60)
+def gen_mono(output_file: str = OutputFile.MONOSACCHARIDES):
+    logger.info("\n" + "=" * 60)
+    logger.info("GENERATING MONOSACCHARIDE DATA")
+    logger.info("=" * 60)
 
-    print("  📖 Reading from: data_gen/data/monosaccharides.obo")
-    with open("data_gen/data/monosaccharides.obo") as f:
+    logger.info("  📖 Reading from: data_gen/data/monosaccharides.obo")
+    with open("./data/monosaccharides.obo") as f:
         data = read_obo(f)
 
-    print("  📖 Reading from: data_gen/data/additional_monosaccharides.obo")
-    with open("data_gen/data/additional_monosaccharides.obo") as f:
+    logger.info("  📖 Reading from: data_gen/data/additional_monosaccharides.obo")
+    with open("./data/additional_monosaccharides.obo") as f:
         additional_data = read_obo(f)
 
     data.extend(additional_data)
 
     monosaccharides = list(_get_monosaccharide_entries(data))
-    print(f"  ✓ Parsed {len(monosaccharides)} monosaccharides")
+    logger.info("  ✓ Parsed %d monosaccharides", len(monosaccharides))
 
-    output_file = "src/tacular/monosaccharides/data.py"
-    print(f"\n  📝 Writing to: {output_file}")
+    logger.info("\n  📝 Writing to: %s", output_file)
 
     # Generate the monosaccharide entries
     entries: list[str] = []
@@ -177,10 +176,10 @@ def run():
     content = f'''"""Auto-generated monosaccharide data"""
 # DO NOT EDIT - generated by gen_monosachs.py
 
+import warnings
 from enum import StrEnum
 
-from ..dclass import MonosaccharideInfo
-import warnings
+from .dclass import MonosaccharideInfo
 
 
 class Monosaccharide(StrEnum):
@@ -204,15 +203,15 @@ except Exception as e:
         UserWarning,
         stacklevel=2
     )
-    MONOSACCHARIDES: dict[Monosaccharide, MonosaccharideInfo] = {{}} # type: ignore
+    MONOSACCHARIDES: dict[Monosaccharide, MonosaccharideInfo] = {{}}
 '''
 
     with open(output_file, "w") as f:
         f.write(content)
 
-    print(f"✅ Successfully generated {output_file}")
-    print(f"   Total entries: {len(monosaccharides)}")
+    logger.info("✅ Successfully generated %s", output_file)
+    logger.info("   Total entries: %d", len(monosaccharides))
 
 
 if __name__ == "__main__":
-    run()
+    gen_mono()

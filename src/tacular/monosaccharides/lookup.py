@@ -1,7 +1,7 @@
 from collections.abc import Iterable
 
-from ..dclass import MonosaccharideInfo
 from .data import MONOSACCHARIDES, Monosaccharide
+from .dclass import MonosaccharideInfo
 
 
 class MonosaccharideLookup:

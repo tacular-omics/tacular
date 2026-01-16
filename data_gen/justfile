@@ -1,0 +1,46 @@
+# Justfile for data generation tasks (data_gen directory)
+# Run these commands from the repo root with: just -f data_gen/justfile <recipe>
+
+# Use bash for commands
+set shell := ["bash", "-cu"]
+
+# Individual generator recipes
+gen-mono:
+	uv run gen_monosachs.py
+
+gen-uni:
+	uv run gen_unimod.py
+
+gen-psi:
+	uv run gen_psimod.py
+
+gen-aa:
+	uv run gen_amino_acids.py
+
+gen-frag:
+	uv run gen_fragment_ions.py
+
+gen-pro:
+	uv run gen_proteases.py
+
+gen-ref:
+	uv run gen_refmol.py
+
+gen-delta:
+	uv run gen_neutral_deltas.py
+
+# Run the full generation script (all generators)
+gen-all:
+	just gen-mono
+	just gen-uni
+	just gen-psi
+	just gen-aa
+	just gen-frag
+	just gen-pro
+	just gen-ref
+	just gen-delta
+
+# Convenience alias to run the full generation from repo root
+# Usage: just -f data_gen/justfile gen
+gen:
+	just gen-all

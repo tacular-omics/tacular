@@ -1,6 +1,12 @@
 """Generate amino acid data with calculated masses"""
 
+import os
+
+from constants import OutputFile
+from logging_utils import setup_logger
 from utils import calculate_mass, format_composition_string
+
+logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 # Raw amino acid composition data
 AA_COMPOSITIONS: dict[str, dict[str, int]] = {
@@ -91,12 +97,12 @@ AA_THREE_LETTER: dict[str, str] = {
 }
 
 
-def gen():
+def gen(output_file: str = OutputFile.AMINO_ACIDS) -> None:
     """Generate the amino_acid_data.py file with calculated masses"""
 
-    print("\n" + "=" * 60)
-    print("GENERATING AMINO ACID DATA")
-    print("=" * 60)
+    logger.info("\n" + "=" * 60)
+    logger.info("GENERATING AMINO ACID DATA")
+    logger.info("=" * 60)
 
     # Calculate masses for each amino acid
     aa_data: dict[str, dict] = {}
@@ -142,8 +148,7 @@ def gen():
     sorted_aa_codes = sorted(aa_data.keys())
 
     # Generate the output file
-    output_file = "src/tacular/amino_acids/data.py"
-    print(f"\n  📝 Writing to: {output_file}")
+    logger.info(f"\n  📝 Writing to: {output_file}")
 
     # Build AminoAcidInfo entries
     info_entries: list[str] = []
@@ -205,22 +210,14 @@ AMINO_ACID_INFOS: dict[AminoAcid, AminoAcidInfo] = {{
     with open(output_file, "w") as f:
         f.write(content)
 
-    print(f"\n✅ Successfully generated {output_file}")
-    print(f"   Total amino acids: {len(aa_data)}")
+    logger.info(f"\n✅ Successfully generated {output_file}")
+    logger.info(f"   Total amino acids: {len(aa_data)}")
 
     # Print some statistics
     with_mass = sum(1 for d in aa_data.values() if d["monoisotopic_mass"] is not None)
     without_mass = len(aa_data) - with_mass
-    print(f"   With calculated mass: {with_mass}")
-    print(f"   Without mass (ambiguous): {without_mass}")
-
-    # Print a few examples
-    print("\n  📊 Example masses:")
-    for aa_code in ["G", "A", "W", "U"]:
-        if aa_code in aa_data:
-            data = aa_data[aa_code]
-            if data["monoisotopic_mass"]:
-                print(f"   {aa_code} ({data['name']}): {data['monoisotopic_mass']:.6f} Da")
+    logger.info(f"   With calculated mass: {with_mass}")
+    logger.info(f"   Without mass (ambiguous): {without_mass}")
 
 
 if __name__ == "__main__":

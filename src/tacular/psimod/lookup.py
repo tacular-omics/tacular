@@ -2,8 +2,9 @@ from collections.abc import Iterable
 from functools import cached_property
 from random import choice
 
-from ..dclass import PsimodInfo, filter_infos
+from ..obo_entity import filter_infos
 from .data import PSI_MODIFICATIONS
+from .dclass import PsimodInfo
 
 
 class PsimodLookup:

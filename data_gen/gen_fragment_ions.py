@@ -1,6 +1,10 @@
 import json
+import os
 
-output_file = "src/tacular/ion_types/data.py"
+from constants import OutputFile
+from logging_utils import setup_logger
+
+logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
 # Map fragment ion IDs to IonType enum values when they differ
@@ -21,21 +25,21 @@ ID_TO_ION_TYPE = {
 }
 
 
-def gen_fragment_ions() -> None:
+def gen_frag(output_file: str = OutputFile.FRAGMENT_IONS) -> None:
     """Generate fragment ion data file from JSON"""
 
-    print("\n" + "=" * 60)
-    print("GENERATING FRAGMENT ION DATA")
-    print("=" * 60)
+    logger.info("\n" + "=" * 60)
+    logger.info("GENERATING FRAGMENT ION DATA")
+    logger.info("=" * 60)
 
-    print("  📖 Reading from: data_gen/data/fragment_ions.json")
-    with open("data_gen/data/fragment_ions.json") as f:
+    logger.info("  📖 Reading from: data_gen/data/fragment_ions.json")
+    with open("./data/fragment_ions.json") as f:
         data = json.load(f)
 
     fragment_ions = data["fragment_ions"]
-    print(f"  ✓ Parsed {len(fragment_ions)} fragment ions")
+    logger.info(f"  ✓ Parsed {len(fragment_ions)} fragment ions")
 
-    print(f"\n  📝 Writing to: {output_file}")
+    logger.info(f"\n  📝 Writing to: {output_file}")
 
     # Generate IonType enum entries
     iontype_entries: list[str] = []
@@ -109,7 +113,6 @@ def gen_fragment_ions() -> None:
     properties={properties_str},
 ),'''
         entries.append(entry)
-        # print(entry)
 
     entries_str = "\n".join(entries)
 
@@ -139,9 +142,9 @@ ION_TYPE_DICT: dict[IonType, FragmentIonInfo] = {{
     with open(output_file, "w") as f:
         f.write(content)
 
-    print(f"✅ Successfully generated {output_file}")
-    print(f"   Total entries: {len(fragment_ions)}")
+    logger.info(f"✅ Successfully generated {output_file}")
+    logger.info(f"   Total entries: {len(fragment_ions)}")
 
 
 if __name__ == "__main__":
-    gen_fragment_ions()
+    gen_frag()

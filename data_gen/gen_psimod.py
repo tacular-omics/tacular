@@ -1,10 +1,14 @@
-import warnings
+import os
 from collections.abc import Generator
 from typing import Any
 
-from utils import get_id_and_name, is_obsolete, read_obo
+from constants import OutputFile
+from logging_utils import setup_logger
+from utils import calculate_mass, get_id_and_name, is_obsolete, parse_formula_to_dict, read_obo
 
 import tacular as pt
+
+logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
 def _get_psimod_entries(
@@ -28,27 +32,21 @@ def _get_psimod_entries(
 
             property_values.setdefault(k, []).append(v)
 
-        delta_composition = property_values.get("DiffFormula", [None])
-        delta_monoisotopic_mass = property_values.get("DiffMono", [None])
-        delta_average_mass = property_values.get("DiffAvg", [None])
+        # helper to extract a single value from lists coming from OBO properties
+        def _extract_single(values: list[Any] | Any, label: str) -> Any:
+            if isinstance(values, list):
+                if len(values) == 0:
+                    return None
+                if len(values) > 1:
+                    logger.warning("[PSI-MOD] Multiple %s for %s %s %s", label, term_id, term_name, values)
+                val = values[0]
+            else:
+                val = values
+            return None if val is None else val
 
-        if len(delta_composition) > 1:
-            warnings.warn(f"[PSI-MOD] Multiple delta compositions for {term_id} {term_name} {delta_composition}")
-            delta_composition = delta_composition[0]
-        elif len(delta_composition) == 1:
-            delta_composition = delta_composition[0]
-
-        if len(delta_monoisotopic_mass) > 1:
-            warnings.warn(f"[PSI-MOD] Multiple delta mono masses for {term_id} {term_name} {delta_monoisotopic_mass}")
-            delta_monoisotopic_mass = delta_monoisotopic_mass[0]
-        elif len(delta_monoisotopic_mass) == 1:
-            delta_monoisotopic_mass = delta_monoisotopic_mass[0]
-
-        if len(delta_average_mass) > 1:
-            warnings.warn(f"[PSI-MOD] Multiple delta average masses for {term_id} {term_name} {delta_average_mass}")
-            delta_average_mass = delta_average_mass[0]
-        elif len(delta_average_mass) == 1:
-            delta_average_mass = delta_average_mass[0]
+        delta_composition = _extract_single(property_values.get("DiffFormula", [None]), "delta compositions")
+        delta_monoisotopic_mass = _extract_single(property_values.get("DiffMono", [None]), "delta mono masses")
+        delta_average_mass = _extract_single(property_values.get("DiffAvg", [None]), "delta average masses")
 
         # Check if values are 'none'
         if delta_monoisotopic_mass == "none":
@@ -125,15 +123,21 @@ def _get_psimod_entries(
                 composition = {}
             else:
                 try:
-                    parsed_formula = pt.ChargedFormula.from_string(f"Formula:{formula_str}", allow_zero=True)
                     formula = formula_str
-                    composition = parsed_formula.get_dict_composition()
+                    composition: dict[str, int] | None = parse_formula_to_dict(formula_str) if formula_str else None
+                    parsed_formula = formula_str
                 except Exception as e:
-                    warnings.warn(
-                        f"[PSI-MOD] Error parsing formula for {term_id} {term_name}: {delta_composition} -> {formula_str}, {e}"
+                    logger.warning(
+                        "[PSI-MOD] Error parsing formula for %s %s: %s -> %s, %s",
+                        term_id,
+                        term_name,
+                        delta_composition,
+                        formula_str,
+                        e,
                     )
                     formula = None
                     composition = None
+                    parsed_formula = None
 
         # Convert mass strings to floats
         mono_mass: float | None = None
@@ -151,24 +155,35 @@ def _get_psimod_entries(
 
         # Validate formula masses against provided masses
         if parsed_formula is not None:
-            calc_mono = parsed_formula.get_mass(monoisotopic=True)
-            calc_avg = parsed_formula.get_mass(monoisotopic=False)
+            if composition is None:
+                raise ValueError("Composition should not be None if parsed_formula is set")
+
+            calc_mono = calculate_mass(composition, monoisotopic=True)
+            calc_avg = calculate_mass(composition, monoisotopic=False)
 
             if mono_mass is not None and abs(calc_mono - mono_mass) > 0.01:
                 # red sign if > 1.0 Da difference
                 symbol = "🔴" if abs(calc_mono - mono_mass) > 1.0 else "⚠️"
-                warnings.warn(
-                    f"\n  {symbol}  PSI-MOD MASS MISMATCH [{term_id}] {term_name}\n"
-                    f"      Monoisotopic: calculated={calc_mono:.6f}, reported={mono_mass:.6f}\n"
-                    f"      Formula: {str(formula).lstrip('Formula:')}"
+                logger.warning(
+                    "%s PSI-MOD MASS MISMATCH [%s] %s: Monoisotopic calculated=%.6f reported=%.6f Formula=%s",
+                    symbol,
+                    term_id,
+                    term_name,
+                    calc_mono,
+                    mono_mass,
+                    str(formula).lstrip("Formula:"),
                 )
 
             if avg_mass is not None and abs(calc_avg - avg_mass) > 0.2:
                 symbol = "⚠️⚠️" if abs(calc_avg - avg_mass) > 1.0 else "⚠️"
-                warnings.warn(
-                    f"\n  {symbol}  PSI-MOD MASS MISMATCH [{term_id}] {term_name}\n"
-                    f"      Average: calculated={calc_avg:.6f}, reported={avg_mass:.6f}\n"
-                    f"      Formula: {str(formula).lstrip('Formula:')}"
+                logger.warning(
+                    "%s PSI-MOD MASS MISMATCH [%s] %s: Average calculated=%.6f reported=%.6f Formula=%s",
+                    symbol,
+                    term_id,
+                    term_name,
+                    calc_avg,
+                    avg_mass,
+                    str(formula).lstrip("Formula:"),
                 )
 
         yield pt.PsimodInfo(
@@ -181,41 +196,40 @@ def _get_psimod_entries(
         )
 
 
-def run():
-    print("\n" + "=" * 60)
-    print("GENERATING PSI-MOD DATA")
-    print("=" * 60)
+def gen_psi(output_file: str = OutputFile.PSIMOD):
+    logger.info("\n" + "=" * 60)
+    logger.info("GENERATING PSI-MOD DATA")
+    logger.info("=" * 60)
 
-    print("  📖 Reading from: data_gen/data/PSI-MOD.obo")
-    with open("data_gen/data/PSI-MOD.obo") as f:
+    logger.info("  📖 Reading from: data_gen/data/PSI-MOD.obo")
+    with open("./data/PSI-MOD.obo") as f:
         data = read_obo(f)
 
     unimod_entries = list(_get_psimod_entries(data))
-    print(f"  ✓ Parsed {len(unimod_entries)} PSI-MOD entries")
+    logger.info(f"  ✓ Parsed {len(unimod_entries)} PSI-MOD entries")
 
     # print stats on number of entries missing mono avg or formula
     missing_mono = sum(1 for mod in unimod_entries if mod.monoisotopic_mass is None)
     missing_avg = sum(1 for mod in unimod_entries if mod.average_mass is None)
     missing_formula = sum(1 for mod in unimod_entries if mod.formula is None)
     if missing_mono > 0 or missing_avg > 0 or missing_formula > 0:
-        print("\n  ⚠️  Data Completeness:")
+        logger.warning("\n  ⚠️  Data Completeness:")
         if missing_mono > 0:
-            print(f"      Missing monoisotopic mass: {missing_mono}")
+            logger.warning(f"      Missing monoisotopic mass: {missing_mono}")
         if missing_avg > 0:
-            print(f"      Missing average mass: {missing_avg}")
+            logger.warning(f"      Missing average mass: {missing_avg}")
         if missing_formula > 0:
-            print(f"      Missing formula: {missing_formula}")
+            logger.warning(f"      Missing formula: {missing_formula}")
 
     # write a file of missing entries
-    missing_entries_file = "data_gen/data/psimod_missing_entries.txt"
-    print(f"\n  📄 Writing missing entries to: {missing_entries_file}")
+    missing_entries_file = "./output/psimod_missing_entries.txt"
+    logger.info(f"\n  📄 Writing missing entries to: {missing_entries_file}")
     with open(missing_entries_file, "w") as f:
         for mod in unimod_entries:
             if mod.monoisotopic_mass is None or mod.average_mass is None or mod.formula is None:
                 f.write(f"{mod.id}\t{mod.name}\n")
 
-    output_file = "src/tacular/mods/psimod/data.py"
-    print(f"\n  📝 Writing to: {output_file}")
+    logger.info(f"\n  📝 Writing to: {output_file}")
 
     # Generate the Unimod entries
     entries: list[str] = []
@@ -245,8 +259,9 @@ def run():
     content = f'''"""Auto-generated PSI-MOD data"""
 # DO NOT EDIT - generated by gen_psimod.py
 
-from ..dclass import PsimodInfo
 import warnings
+
+from .dclass import PsimodInfo
 
 
 try:
@@ -271,9 +286,9 @@ except Exception as e:
     with open(output_file, "w") as f:
         f.write(content)
 
-    print(f"✅ Successfully generated {output_file}")
-    print(f"   Total entries: {len(unimod_entries)}")
+    logger.info(f"✅ Successfully generated {output_file}")
+    logger.info(f"   Total entries: {len(unimod_entries)}")
 
 
 if __name__ == "__main__":
-    run()
+    gen_psi()
