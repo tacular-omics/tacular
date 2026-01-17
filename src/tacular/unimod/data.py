@@ -637,7 +637,7 @@ try:
         "123": UnimodInfo(
             id="123",
             name="ICAT-H",
-            formula="C15ClH20NO6",
+            formula="C15H20ClNO6",
             monoisotopic_mass=345.097915,
             average_mass=345.7754,
             dict_composition={"H": 20, "C": 15, "N": 1, "O": 6, "Cl": 1},
@@ -645,7 +645,7 @@ try:
         "124": UnimodInfo(
             id="124",
             name="ICAT-H:13C(6)",
-            formula="C9ClH20NO6",
+            formula="C9H20ClNO6",
             monoisotopic_mass=351.118044,
             average_mass=351.7313,
             dict_composition={"H": 20, "C": 9, "N": 1, "O": 6, "Cl": 1},
@@ -661,7 +661,7 @@ try:
         "127": UnimodInfo(
             id="127",
             name="Fluoro",
-            formula="FH-1",
+            formula="H-1F",
             monoisotopic_mass=17.990578,
             average_mass=17.9905,
             dict_composition={"H": -1, "F": 1},
@@ -1141,7 +1141,7 @@ try:
         "243": UnimodInfo(
             id="243",
             name="IGBP",
-            formula="BrC12H13N2O2",
+            formula="C12H13BrN2O2",
             monoisotopic_mass=296.016039,
             average_mass=297.1478,
             dict_composition={"H": 13, "C": 12, "N": 2, "O": 2, "Br": 1},
@@ -1629,7 +1629,7 @@ try:
         "340": UnimodInfo(
             id="340",
             name="Bromo",
-            formula="BrH-1",
+            formula="H-1Br",
             monoisotopic_mass=77.910511,
             average_mass=78.8961,
             dict_composition={"H": -1, "Br": 1},
@@ -1933,7 +1933,7 @@ try:
         "390": UnimodInfo(
             id="390",
             name="Heme",
-            formula="C34FeH32N4O4",
+            formula="C34H32FeN4O4",
             monoisotopic_mass=616.177295,
             average_mass=616.4873,
             dict_composition={"H": 32, "C": 34, "N": 4, "O": 4, "Fe": 1},
@@ -2253,7 +2253,7 @@ try:
         "436": UnimodInfo(
             id="436",
             name="Hydroxyheme",
-            formula="C34FeH30N4O4",
+            formula="C34H30FeN4O4",
             monoisotopic_mass=614.161645,
             average_mass=614.4714,
             dict_composition={"H": 30, "C": 34, "N": 4, "O": 4, "Fe": 1},
@@ -2277,7 +2277,7 @@ try:
         "439": UnimodInfo(
             id="439",
             name="Diironsubcluster",
-            formula="C5Fe2H-1N2O5S2",
+            formula="C5H-1Fe2N2O5S2",
             monoisotopic_mass=342.786916,
             average_mass=342.876,
             dict_composition={"H": -1, "C": 5, "N": 2, "O": 5, "S": 2, "Fe": 2},
@@ -2309,7 +2309,7 @@ try:
         "444": UnimodInfo(
             id="444",
             name="CuSMo",
-            formula="C19CuH24MoN8O15P2S3",
+            formula="C19H24CuMoN8O15P2S3",
             monoisotopic_mass=922.834855,
             average_mass=922.067,
             dict_composition={"H": 24, "C": 19, "N": 8, "O": 15, "P": 2, "S": 3, "Cu": 1, "Mo": 1},
@@ -2501,7 +2501,7 @@ try:
         "499": UnimodInfo(
             id="499",
             name="IGBP:13C(2)",
-            formula="BrC10H13N2O2",
+            formula="C10H13BrN2O2",
             monoisotopic_mass=298.022748,
             average_mass=299.1331,
             dict_composition={"H": 13, "C": 10, "N": 2, "O": 2, "Br": 1},
@@ -2677,7 +2677,7 @@ try:
         "531": UnimodInfo(
             id="531",
             name="Cation:Cu[I]",
-            formula="CuH-1",
+            formula="H-1Cu",
             monoisotopic_mass=61.921774,
             average_mass=62.5381,
             dict_composition={"H": -1, "Cu": 1},
@@ -2701,7 +2701,7 @@ try:
         "534": UnimodInfo(
             id="534",
             name="Dibromo",
-            formula="Br2H-2",
+            formula="H-2Br2",
             monoisotopic_mass=155.821022,
             average_mass=157.7921,
             dict_composition={"H": -2, "Br": 2},
@@ -3837,7 +3837,7 @@ try:
         "684": UnimodInfo(
             id="684",
             name="BDMAPP",
-            formula="BrC11H12NO",
+            formula="C11H12BrNO",
             monoisotopic_mass=253.010225,
             average_mass=254.1231,
             dict_composition={"H": 12, "C": 11, "N": 1, "O": 1, "Br": 1},
@@ -4093,7 +4093,7 @@ try:
         "750": UnimodInfo(
             id="750",
             name="trifluoro",
-            formula="F3H-3",
+            formula="H-3F3",
             monoisotopic_mass=53.971735,
             average_mass=53.9714,
             dict_composition={"H": -3, "F": 3},
@@ -4109,7 +4109,7 @@ try:
         "762": UnimodInfo(
             id="762",
             name="IDEnT",
-            formula="C9Cl2H7NO",
+            formula="C9H7Cl2NO",
             monoisotopic_mass=214.990469,
             average_mass=216.064,
             dict_composition={"H": 7, "C": 9, "N": 1, "O": 1, "Cl": 2},
@@ -4397,7 +4397,7 @@ try:
         "861": UnimodInfo(
             id="861",
             name="ZGB",
-            formula="BC37F2H53N6O6S",
+            formula="C37H53BF2N6O6S",
             monoisotopic_mass=758.380841,
             average_mass=758.7261,
             dict_composition={"H": 53, "B": 1, "C": 37, "N": 6, "O": 6, "F": 2, "S": 1},
@@ -4573,7 +4573,7 @@ try:
         "902": UnimodInfo(
             id="902",
             name="DimethylArsino",
-            formula="AsC2H5",
+            formula="C2H5As",
             monoisotopic_mass=103.960719,
             average_mass=103.9827,
             dict_composition={"H": 5, "C": 2, "As": 1},
@@ -4725,7 +4725,7 @@ try:
         "936": UnimodInfo(
             id="936",
             name="Chlorination",
-            formula="ClH-1",
+            formula="H-1Cl",
             monoisotopic_mass=33.961028,
             average_mass=34.4451,
             dict_composition={"H": -1, "Cl": 1},
@@ -4733,7 +4733,7 @@ try:
         "937": UnimodInfo(
             id="937",
             name="dichlorination",
-            formula="Cl2H-2",
+            formula="H-2Cl2",
             monoisotopic_mass=67.922055,
             average_mass=68.8901,
             dict_composition={"H": -2, "Cl": 2},
@@ -4837,7 +4837,7 @@ try:
         "951": UnimodInfo(
             id="951",
             name="Cation:Ca[II]",
-            formula="CaH-2",
+            formula="H-2Ca",
             monoisotopic_mass=37.946941,
             average_mass=38.0621,
             dict_composition={"H": -2, "Ca": 1},
@@ -4845,7 +4845,7 @@ try:
         "952": UnimodInfo(
             id="952",
             name="Cation:Fe[II]",
-            formula="FeH-2",
+            formula="H-2Fe",
             monoisotopic_mass=53.919289,
             average_mass=53.8291,
             dict_composition={"H": -2, "Fe": 1},
@@ -4869,7 +4869,7 @@ try:
         "955": UnimodInfo(
             id="955",
             name="Cation:Ag",
-            formula="AgH-1",
+            formula="H-1Ag",
             monoisotopic_mass=105.897267,
             average_mass=106.8603,
             dict_composition={"H": -1, "Ag": 1},
@@ -10965,7 +10965,7 @@ try:
         "1870": UnimodInfo(
             id="1870",
             name="Cation:Fe[III]",
-            formula="FeH-3",
+            formula="H-3Fe",
             monoisotopic_mass=52.911464,
             average_mass=52.8212,
             dict_composition={"H": -3, "Fe": 1},
@@ -11197,7 +11197,7 @@ try:
         "1910": UnimodInfo(
             id="1910",
             name="Cation:Al[III]",
-            formula="AlH-3",
+            formula="H-3Al",
             monoisotopic_mass=23.958063,
             average_mass=23.9577,
             dict_composition={"H": -3, "Al": 1},
@@ -11669,7 +11669,7 @@ try:
         "1971": UnimodInfo(
             id="1971",
             name="Unknown:177",
-            formula="Fe3H-7O",
+            formula="H-7Fe3O",
             monoisotopic_mass=176.744957,
             average_mass=176.4788,
             dict_composition={"H": -7, "O": 1, "Fe": 3},
@@ -11813,7 +11813,7 @@ try:
         "2006": UnimodInfo(
             id="2006",
             name="Haloxon",
-            formula="C4Cl2H7O3P",
+            formula="C4H7Cl2O3P",
             monoisotopic_mass=203.950987,
             average_mass=204.9763,
             dict_composition={"H": 7, "C": 4, "O": 3, "P": 1, "Cl": 2},

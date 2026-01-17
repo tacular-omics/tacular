@@ -1,14 +1,11 @@
 from collections.abc import Iterable
 from functools import cached_property
 from random import choice
-from typing import Generic, TypeVar
 
-from .obo_entity import filter_infos
-
-T = TypeVar("T")
+from .obo_entity import OboEntity, filter_infos
 
 
-class OntologyLookup(Generic[T]):
+class OntologyLookup[T: OboEntity]:
     """Base class for ontology lookups with common functionality."""
 
     def __init__(
@@ -33,7 +30,7 @@ class OntologyLookup(Generic[T]):
         self.name_prefixes = tuple(p.lower() for p in name_prefixes)
 
         self.id_to_info: dict[str, T] = data
-        self.name_to_info: dict[str, T] = {info.name: info for info in data.values()}  # type: ignore
+        self.name_to_info: dict[str, T] = {info.name: info for info in data.values()}
 
         # make keys lowercase for case-insensitive lookup
         self.id_to_info = {k.lower(): v for k, v in self.id_to_info.items()}
@@ -70,7 +67,7 @@ class OntologyLookup(Generic[T]):
         """Query by mass within a given tolerance."""
         matches: list[T] = []
         for info in self.id_to_info.values():
-            mod_mass = info.monoisotopic_mass if monoisotopic else info.average_mass  # type: ignore
+            mod_mass = info.monoisotopic_mass if monoisotopic else info.average_mass
             if mod_mass is not None and abs(mod_mass - mass) <= tolerance:
                 matches.append(info)
 
@@ -79,14 +76,13 @@ class OntologyLookup(Generic[T]):
         elif len(matches) > 1:
             # if all have the same composition, return the first one
             compositions = {
-                tuple(sorted(m.dict_composition.items() if m.dict_composition is not None else []))  # type: ignore
-                for m in matches
+                tuple(sorted(m.dict_composition.items() if m.dict_composition is not None else [])) for m in matches
             }
             if len(compositions) == 1:
                 return matches[0]
             raise ValueError(
                 f"Multiple {self.ontology_name} modifications found for mass {mass} within tolerance {tolerance}: "
-                f"{[(m.id, m.monoisotopic_mass, m.formula) for m in matches]}"  # type: ignore
+                f"{[(m.id, m.monoisotopic_mass, m.formula) for m in matches]}"
             )
         return None
 

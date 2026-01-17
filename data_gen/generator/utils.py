@@ -29,15 +29,13 @@ def format_composition_string(composition: dict[str, int]) -> str:
     if not composition:
         return ""
 
-    # Sort by element symbol for consistency
+    # Sort by elements using Hill system (C, H, then alphabetical)
     parts: list[str] = []
-    for element in sorted(composition.keys()):
+    elements = list(composition.keys())
+    elements.sort(key=lambda el: (0, el) if el == "C" else (1, el) if el == "H" else (2, el))
+    for element in elements:
         count = composition[element]
-        if count == 1:
-            parts.append(element)
-        else:
-            parts.append(f"{element}{count}")
-
+        parts.append(f"{element}{count if count != 1 else ''}")
     return "".join(parts)
 
 

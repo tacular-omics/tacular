@@ -2,7 +2,7 @@ from types import MappingProxyType
 
 import pytest
 
-from tacular.obo_entity import CV, ModEntity, OboEntity, filter_infos
+from tacular.obo_entity import OboEntity, filter_infos
 
 
 class DummyElement:
@@ -17,7 +17,6 @@ def test_obo_entity_str_and_repr():
         monoisotopic_mass=18.0106,
         average_mass=18.015,
         dict_composition=MappingProxyType({"H": 2, "O": 1}),
-        cv=CV.PSI_MOD,
     )
     assert str(entity) == "TestEntity (H2O)"
     assert "OboEntity" in repr(entity)
@@ -40,7 +39,6 @@ def test_obo_entity_update():
         monoisotopic_mass=18.0106,
         average_mass=18.015,
         dict_composition=MappingProxyType({"H": 2, "O": 1}),
-        cv=CV.PSI_MOD,
     )
     updated = entity.update(name="UpdatedEntity", monoisotopic_mass=20.0)
     assert updated.name == "UpdatedEntity"
@@ -50,26 +48,14 @@ def test_obo_entity_update():
 
 
 def test_modentity_inherits_cv():
-    mod = ModEntity(
+    mod = OboEntity(
         id="M1",
         name="ModEntity",
         formula=None,
         monoisotopic_mass=None,
         average_mass=None,
         dict_composition=None,
-        cv=CV.UNIMOD,
     )
-    assert mod.cv == CV.UNIMOD
-
-
-def test_cv_enum():
-    assert CV.UNIMOD.value == "UNIMOD"
-    assert CV.PSI_MOD.value == "MOD"
-    assert CV.RESID.value == "RESID"
-    assert CV.GNOME.value == "GNO"
-    assert CV.XL_MOD.value == "XLMOD"
-    assert CV.CUSTOM.value == "CUSTOM"
-    assert CV.OBSERVED.value == "OBSERVED"
 
 
 def test_filter_infos():

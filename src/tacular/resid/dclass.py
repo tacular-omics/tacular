@@ -1,10 +1,10 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from ..obo_entity import CV, ModEntity
+from ..obo_entity import OboEntity
 
 
 @dataclass(frozen=True, slots=True)
-class ResidInfo(ModEntity):
+class ResidInfo(OboEntity):
     """Class to store information about a RESID modification"""
 
-    cv: CV = field(default=CV.RESID)
+    pass

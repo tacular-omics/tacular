@@ -76,7 +76,7 @@ try:
         "01008": XlModInfo(
             id="01008",
             name="hydrolyzed BS3-d4",
-            formula="C8D4H8O3",
+            formula="C8H8D4O3",
             monoisotopic_mass=160.103751286,
             average_mass=160.20403509176305,
             dict_composition={"C": 8, "D": 4, "H": 8, "O": 3},
@@ -84,7 +84,7 @@ try:
         "01009": XlModInfo(
             id="01009",
             name="ammonium amidated BS3-d4",
-            formula="C8D4H9NO2",
+            formula="C8H9D4NO2",
             monoisotopic_mass=159.119735691,
             average_mass=159.21927413294634,
             dict_composition={"C": 8, "D": 4, "H": 9, "N": 1, "O": 2},
@@ -124,7 +124,7 @@ try:
         "01014": XlModInfo(
             id="01014",
             name="hydrolyzed DSG-d4",
-            formula="C5D4H2O3",
+            formula="C5H2D4O3",
             monoisotopic_mass=118.0567741,
             average_mass=118.12418287722261,
             dict_composition={"C": 5, "D": 4, "H": 2, "O": 3},
@@ -132,7 +132,7 @@ try:
         "01015": XlModInfo(
             id="01015",
             name="ammonium amidated DSG-d4",
-            formula="C5D4H3NO2",
+            formula="C5H3D4NO2",
             monoisotopic_mass=117.072758505,
             average_mass=117.13942191840592,
             dict_composition={"C": 5, "D": 4, "H": 3, "N": 1, "O": 2},
@@ -140,7 +140,7 @@ try:
         "01016": XlModInfo(
             id="01016",
             name="hydrolyzed BS2G-d4",
-            formula="C5D4H2O3",
+            formula="C5H2D4O3",
             monoisotopic_mass=118.056801076,
             average_mass=118.12418287722261,
             dict_composition={"C": 5, "D": 4, "H": 2, "O": 3},
@@ -148,7 +148,7 @@ try:
         "01017": XlModInfo(
             id="01017",
             name="ammonium amidated BS2G-d4",
-            formula="C5D4H3NO2",
+            formula="C5H3D4NO2",
             monoisotopic_mass=117.072785481,
             average_mass=117.13942191840592,
             dict_composition={"C": 5, "D": 4, "H": 3, "N": 1, "O": 2},
@@ -284,7 +284,7 @@ try:
         "01034": XlModInfo(
             id="01034",
             name="ammonium amidated DTSSP-d8",
-            formula="C6D8HNO2S2",
+            formula="C6HD8NO2S2",
             monoisotopic_mass=191.00747,
             average_mass=199.32025823176377,
             dict_composition={"C": 6, "D": 8, "H": 1, "N": 1, "O": 2, "S": 2},
@@ -300,7 +300,7 @@ try:
         "01036": XlModInfo(
             id="01036",
             name="ammonium amidated DSP-d8",
-            formula="C6D8HNO2S2",
+            formula="C6HD8NO2S2",
             monoisotopic_mass=199.05763,
             average_mass=199.32025823176377,
             dict_composition={"C": 6, "D": 8, "H": 1, "N": 1, "O": 2, "S": 2},
@@ -372,7 +372,7 @@ try:
         "01045": XlModInfo(
             id="01045",
             name="hydrolyzed CBDPS-d8",
-            formula="C19D8H17N7O5S3",
+            formula="C19H17D8N7O5S3",
             monoisotopic_mass=535.15754,
             average_mass=535.6900984019711,
             dict_composition={"C": 19, "D": 8, "H": 17, "N": 7, "O": 5, "S": 3},
@@ -380,7 +380,7 @@ try:
         "01046": XlModInfo(
             id="01046",
             name="ammonium amidated CBDPS-d8",
-            formula="C19D8H17N8O4S3",
+            formula="C19H17D8N8O4S3",
             monoisotopic_mass=534.17352,
             average_mass=533.6973966890987,
             dict_composition={"C": 19, "D": 8, "H": 17, "N": 8, "O": 4, "S": 3},
@@ -404,7 +404,7 @@ try:
         "01049": XlModInfo(
             id="01049",
             name="hydrolyzed CBDPSS-d8",
-            formula="C19D8H17N7O5S3",
+            formula="C19H17D8N7O5S3",
             monoisotopic_mass=535.15754,
             average_mass=535.6900984019711,
             dict_composition={"C": 19, "D": 8, "H": 17, "N": 7, "O": 5, "S": 3},
@@ -412,7 +412,7 @@ try:
         "01050": XlModInfo(
             id="01050",
             name="ammonium amidated CBDPSS-d8",
-            formula="C19D8H17N8O4S3",
+            formula="C19H17D8N8O4S3",
             monoisotopic_mass=534.17352,
             average_mass=533.6973966890987,
             dict_composition={"C": 19, "D": 8, "H": 17, "N": 8, "O": 4, "S": 3},
@@ -428,7 +428,7 @@ try:
         "01052": XlModInfo(
             id="01052",
             name="ammonium amidated BS3-d12",
-            formula="C8D12HNO2",
+            formula="C8HD12NO2",
             monoisotopic_mass=167.17035,
             average_mass=167.26856232546015,
             dict_composition={"C": 8, "D": 12, "H": 1, "N": 1, "O": 2},
@@ -444,7 +444,7 @@ try:
         "01054": XlModInfo(
             id="01054",
             name="ammonium amidated DSG-d6",
-            formula="C5D6HNO2",
+            formula="C5HD6NO2",
             monoisotopic_mass=119.09081,
             average_mass=119.15174396653437,
             dict_composition={"C": 5, "D": 6, "H": 1, "N": 1, "O": 2},
@@ -460,7 +460,7 @@ try:
         "01056": XlModInfo(
             id="01056",
             name="ammonium amidated BS2G-d6",
-            formula="C5D6HNO2",
+            formula="C5HD6NO2",
             monoisotopic_mass=119.08475,
             average_mass=119.15174396653437,
             dict_composition={"C": 5, "D": 6, "H": 1, "N": 1, "O": 2},
@@ -476,7 +476,7 @@ try:
         "01058": XlModInfo(
             id="01058",
             name="hydrolyzed SDH-d12",
-            formula="C8D12H4N4O",
+            formula="C8H4D12N4O",
             monoisotopic_mass=196.207732118,
             average_mass=196.31308929764657,
             dict_composition={"C": 8, "D": 12, "H": 4, "N": 4, "O": 1},
@@ -492,7 +492,7 @@ try:
         "01060": XlModInfo(
             id="01060",
             name="hydrolyzed ADH-d8",
-            formula="C6D8H4N4O",
+            formula="C6H4D8N4O",
             monoisotopic_mass=164.151325002,
             average_mass=164.23521039169606,
             dict_composition={"C": 6, "D": 8, "H": 4, "N": 4, "O": 1},
@@ -508,7 +508,7 @@ try:
         "01062": XlModInfo(
             id="01062",
             name="hydrolyzed GDH-d6",
-            formula="C5D6H4N4O",
+            formula="C5H4D6N4O",
             monoisotopic_mass=148.123121444,
             average_mass=148.1962709387208,
             dict_composition={"C": 5, "D": 6, "H": 4, "N": 4, "O": 1},
@@ -756,7 +756,7 @@ try:
         "01095": XlModInfo(
             id="01095",
             name="hydrolyzed PDH-d10",
-            formula="C7D10H2N4",
+            formula="C7H2D10N4",
             monoisotopic_mass=180.17952856,
             average_mass=162.25886341224148,
             dict_composition={"C": 7, "D": 10, "H": 2, "N": 4},
@@ -892,7 +892,7 @@ try:
         "02002": XlModInfo(
             id="02002",
             name="DSS-d4",
-            formula="C8D4H6O2",
+            formula="C8H6D4O2",
             monoisotopic_mass=142.093186586,
             average_mass=142.1887486593332,
             dict_composition={"C": 8, "D": 4, "H": 6, "O": 2},
@@ -1108,7 +1108,7 @@ try:
         "02054": XlModInfo(
             id="02054",
             name="CBDPS-d8",
-            formula="C19D8H15N7O4S3",
+            formula="C19H15D8N7O4S3",
             monoisotopic_mass=517.14698,
             average_mass=517.6748119695413,
             dict_composition={"C": 19, "D": 8, "H": 15, "N": 7, "O": 4, "S": 3},
@@ -1124,7 +1124,7 @@ try:
         "02056": XlModInfo(
             id="02056",
             name="CBDPSS-d8",
-            formula="C19D8H15N7O4S3",
+            formula="C19H15D8N7O4S3",
             monoisotopic_mass=517.14698,
             average_mass=517.6748119695413,
             dict_composition={"C": 19, "D": 8, "H": 15, "N": 7, "O": 4, "S": 3},
@@ -1140,7 +1140,7 @@ try:
         "02058": XlModInfo(
             id="02058",
             name="SDH-d12",
-            formula="C8D12H2N4",
+            formula="C8H2D12N4",
             monoisotopic_mass=178.1971667418,
             average_mass=178.29780286521674,
             dict_composition={"C": 8, "D": 12, "H": 2, "N": 4},
@@ -1156,7 +1156,7 @@ try:
         "02060": XlModInfo(
             id="02060",
             name="ADH-d8",
-            formula="C6D8H2N4",
+            formula="C6H2D8N4",
             monoisotopic_mass=146.140760302,
             average_mass=146.21992395926623,
             dict_composition={"C": 6, "D": 8, "H": 2, "N": 4},
@@ -1172,7 +1172,7 @@ try:
         "02062": XlModInfo(
             id="02062",
             name="GDH-d6",
-            formula="C5D6H2N4",
+            formula="C5H2D6N4",
             monoisotopic_mass=130.112556744,
             average_mass=130.18098450629097,
             dict_composition={"C": 5, "D": 6, "H": 2, "N": 4},
@@ -1388,7 +1388,7 @@ try:
         "02210": XlModInfo(
             id="02210",
             name="PDH-d10",
-            formula="C7D10H2N4",
+            formula="C7H2D10N4",
             monoisotopic_mass=162.16896386,
             average_mass=162.25886341224148,
             dict_composition={"C": 7, "D": 10, "H": 2, "N": 4},
@@ -1484,7 +1484,7 @@ try:
         "03009": XlModInfo(
             id="03009",
             name="NNP9",
-            formula="C7D10H2N4",
+            formula="C7H2D10N4",
             monoisotopic_mass=314.1127,
             average_mass=162.25886341224148,
             dict_composition={"C": 7, "D": 10, "H": 2, "N": 4},

@@ -1,6 +1,6 @@
 import pytest
 
-from tacular.amino_acids import AA_LOOKUP as db
+from tacular import AA_LOOKUP as db
 from tacular.amino_acids import AminoAcid
 
 

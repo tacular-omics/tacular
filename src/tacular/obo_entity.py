@@ -1,24 +1,10 @@
 from collections.abc import Mapping
 from dataclasses import dataclass
-from enum import StrEnum
-from functools import cached_property
 from typing import Any, Self, TypeVar
 
 from .elements import ElementInfo, parse_composition
 
 T = TypeVar("T", bound="OboEntity")
-
-
-class CV(StrEnum):
-    """One of the five supported controlled vocabularies"""
-
-    UNIMOD = "UNIMOD"
-    PSI_MOD = "MOD"
-    RESID = "RESID"
-    GNOME = "GNO"
-    XL_MOD = "XLMOD"
-    CUSTOM = "CUSTOM"
-    OBSERVED = "OBSERVED"
 
 
 @dataclass(frozen=True, slots=True)
@@ -31,15 +17,16 @@ class OboEntity:
     monoisotopic_mass: float | None
     average_mass: float | None
     dict_composition: Mapping[str, int] | None
-    cv: CV | None = None
 
     def __str__(self) -> str:
         return f"{self.name} ({self.formula})"
 
-    @cached_property
+    @property
     def composition(self) -> dict[ElementInfo, int] | None:
         """Get the composition as a dict of element symbols to counts"""
-        return parse_composition(self.dict_composition) if self.dict_composition is not None else None
+        if self.dict_composition is None:
+            return None
+        return parse_composition(self.dict_composition)
 
     def __repr__(self) -> str:
         return (
@@ -76,19 +63,23 @@ class OboEntity:
             "composition": self.dict_composition,
         }
 
+    def __hash__(self) -> int:
+        return hash(
+            (
+                self.id,
+                self.name,
+            )
+        )
 
-class ModEntity(OboEntity):
-    cv: CV
 
-
-def filter_infos(
-    infos: list[Any],
+def filter_infos[T: OboEntity](
+    infos: list[T],
     has_monoisotopic_mass: bool | None = None,
     has_composition: bool | None = None,
     **criteria: Any,
-) -> list[Any]:
+) -> list[T]:
     """Filter a list of OboEntity or its subclasses based on criteria."""
-    filtered: list[Any] = []
+    filtered: list[T] = []
     for info in infos:
         match = True
 

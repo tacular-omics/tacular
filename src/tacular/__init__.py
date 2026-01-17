@@ -4,6 +4,7 @@ from .gno import *
 from .ion_types import *
 from .monosaccharides import *
 from .neutral_deltas import *
+from .obo_entity import OboEntity
 from .proteases import *
 from .psimod import *
 from .refmol import *

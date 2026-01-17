@@ -1,10 +1,10 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from ..obo_entity import CV, ModEntity
+from ..obo_entity import OboEntity
 
 
 @dataclass(frozen=True, slots=True)
-class PsimodInfo(ModEntity):
+class PsimodInfo(OboEntity):
     """Class to store information about a PSI-MOD modification"""
 
-    cv: CV = field(default=CV.PSI_MOD)
+    pass
