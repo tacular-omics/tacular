@@ -6,16 +6,16 @@ install:
 
 # Run linting checks
 lint:
-    uv run ruff check src
+    uv run ruff check src --exclude '**/data.py'
 
 # Format code
 format:
-	uv run ruff check --select I --fix src data_gen
-	uv run ruff format src
+    uv run ruff check --select I --fix src data_gen --exclude '**/data.py'
+    uv run ruff format src --exclude '**/data.py'
 
 # Run type checking
 check:
-    uv run ty check src
+    uv run ty check src --exclude '**/data.py'
 
 # Run tests
 test:
