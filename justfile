@@ -21,6 +21,9 @@ check:
 test:
     uv run pytest tests
 
+test-docs:
+    uv run pytest --doctest-modules src
+
 # Generate Data Files
 gen:
     just --justfile data_gen/justfile gen

@@ -161,11 +161,6 @@ def parse_formula_to_dict(formula: str) -> dict[str, int]:
     - Mixed: "C2[13C6]H5" -> {"C": 2, "13C": 6, "H": 5}
     - Negative counts: "C-1H2" -> {"C": -1, "H": 2}
 
-    Examples:
-        parse_formula_to_dict("C2H6O") -> {"C": 2, "H": 6, "O": 1}
-        parse_formula_to_dict("[13C2]H6") -> {"13C": 2, "H": 6}
-        parse_formula_to_dict("C2[13C6]H5") -> {"C": 2, "13C": 6, "H": 5}
-        parse_formula_to_dict("[13C][12C2]H2") -> {"13C": 1, "12C": 2, "H": 2}
     """
     composition: dict[str, int] = {}
     if not formula:

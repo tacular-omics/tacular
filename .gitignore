@@ -3,6 +3,8 @@
 *UNIMOD.obo
 *XLMod.obo
 
+*try_*.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -149,15 +149,6 @@ class ElementLookup:
         Raises:
             KeyError: If the element symbol doesn't exist at all
             ValueError: If the key format is invalid
-
-        Examples:
-            >>> lookup[('C', 12)]        # Carbon-12
-            >>> lookup[('C', None)]      # Most abundant carbon (12C)
-            >>> lookup['C']              # Most abundant carbon (12C)
-            >>> lookup['13C']            # Carbon-13
-            >>> lookup['14C']            # Carbon-14 (auto-generated if not in DB)
-            >>> lookup['D']              # Deuterium (2H)
-            >>> lookup['2H']             # Deuterium (same as 'D')
         """
         # Use lazy error handling - try to parse, only validate on exception
         symbol, mass_number = _handle_key_input(key)
@@ -193,11 +184,6 @@ class ElementLookup:
         Note: This only checks for existing entries, it does NOT trigger
         automatic isotope generation.
 
-        Examples:
-            >>> 'C' in lookup          # True
-            >>> '13C' in lookup        # True if in DB
-            >>> ('C', 12) in lookup    # True
-            >>> 'Xx' in lookup         # False
         """
         try:
             symbol, mass_number = _handle_key_input(key)
@@ -224,10 +210,6 @@ class ElementLookup:
 
         Returns:
             ElementInfo for the most abundant isotope
-
-        Examples:
-            >>> lookup.get_monoisotopic('C')  # Returns 12C
-            >>> lookup.get_monoisotopic('D')  # Returns 2H (deuterium)
         """
 
         for info in self.get_all_isotopes(symbol):
@@ -248,10 +230,6 @@ class ElementLookup:
         Returns:
             ElementInfo for the requested isotope
 
-        Examples:
-            >>> lookup.get_isotope('C', 13)  # Carbon-13
-            >>> lookup.get_isotope('H', 2)   # Deuterium
-            >>> lookup.get_isotope('C', 14)  # Carbon-14 (auto-generated)
         """
         if mass_number is None:
             raise ValueError("Mass number cannot be None for get_isotope()")
@@ -275,10 +253,6 @@ class ElementLookup:
         Returns:
             List of ElementInfo for all isotopes, sorted by mass number
 
-        Examples:
-            >>> carbon_isotopes = lookup.get_all_isotopes('C')
-            >>> [iso.mass_number for iso in carbon_isotopes]
-            [12, 13, 14]
         """
         if isinstance(symbol, str):
             try:
@@ -302,9 +276,6 @@ class ElementLookup:
         Returns:
             Sorted list of unique element symbols
 
-        Examples:
-            >>> lookup.get_elements()[:5]
-            ['H', 'D', 'T', 'He', 'Li']
         """
         return sorted({sym for sym, _ in self.element_data.keys()})
 
@@ -328,13 +299,6 @@ class ElementLookup:
 
         Returns:
             Mass in Daltons
-
-        Examples:
-            >>> lookup.mass('C')                      # 12.0 (monoisotopic)
-            >>> lookup.mass('C', monoisotopic=False)  # 12.011 (average)
-            >>> lookup.mass('13C')                    # 13.003... (always exact isotope mass)
-            >>> lookup.mass('13C', monoisotopic=False) # 13.003... (still exact isotope mass!)
-            >>> lookup.mass(('C', 13))                # 13.003... (always exact isotope mass)
         """
         # Parse the key to determine if specific isotope was requested
         _, mass_number = _handle_key_input(key)

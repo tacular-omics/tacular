@@ -1,7 +1,7 @@
 [project]
 name = "tacular"
-version = "0.1.0"
-description = "common utils for tacular ecosystem"
+dynamic = ["version"]
+description = "Common utils/lookups for tacular ecosystem"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
@@ -12,12 +12,22 @@ maintainers = [
     { name = "Patrick Garrett", email = "pgarrett@scripps.edu" }
 ]
 classifiers = [
-    # TODO
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
 ]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/tacular/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/tacular"]

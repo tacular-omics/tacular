@@ -19,15 +19,11 @@ class RefMolLookup:
 
             # Group by label type
             if refmol_info.label_type:
-                self._label_type_to_data.setdefault(
-                    refmol_info.label_type.lower(), []
-                ).append(refmol_info)
+                self._label_type_to_data.setdefault(refmol_info.label_type.lower(), []).append(refmol_info)
 
             # Group by molecule type
             if refmol_info.molecule_type:
-                self._molecule_type_to_data.setdefault(
-                    refmol_info.molecule_type.lower(), []
-                ).append(refmol_info)
+                self._molecule_type_to_data.setdefault(refmol_info.molecule_type.lower(), []).append(refmol_info)
 
     def query_id(self, refmol_id: RefMolID) -> RefMolInfo | None:
         """Query by RefMolID enum"""
