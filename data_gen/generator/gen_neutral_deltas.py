@@ -64,6 +64,10 @@ def gen_deltas(output_file: str = OutputFile.NEUTRAL_DELTAS) -> None:
         # Parse formula to get element counts as a dict
         element_dict = parse_formula_to_dict(formula)
 
+        # make all values negative for neutral losses
+        for elem in element_dict:
+            element_dict[elem] = -abs(element_dict[elem])
+
         # Calculate masses
         monoisotopic_mass = calculate_mass(element_dict, monoisotopic=True)
         average_mass = calculate_mass(element_dict, monoisotopic=False)

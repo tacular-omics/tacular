@@ -8,8 +8,6 @@ class UnimodLookup(OntologyLookup[UnimodInfo]):
         super().__init__(
             data=data,
             ontology_name="UNIMOD",
-            id_prefixes=("unimod",),
-            name_prefixes=("u",),
             _version=version,
         )
 

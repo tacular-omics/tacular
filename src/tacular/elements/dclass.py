@@ -25,33 +25,51 @@ class ElementInfo:
             return (self.number, self.mass_number) == (other.number, other.mass_number)
         return NotImplemented
 
+    def _hill_order_key(self) -> tuple[int, str, int, int]:
+        """Generate a sorting key for Hill ordering with isotope priorities"""
+        # Hill ordering: C first, H second, then alphabetical
+        if self.symbol == "C":
+            hill_priority = 0
+        elif self.symbol == "H":
+            hill_priority = 1
+        else:
+            hill_priority = 2
+
+        # For same symbol:
+        # 1. is_monoisotopic == None comes first
+        if self.is_monoisotopic is None:
+            mono_priority = 0
+        else:
+            mono_priority = 1
+
+        # 2. Then sort by neutron count (lowest first)
+        # If mass_number is None, treat neutron count as -1 (comes before 0)
+        if self.mass_number is None:
+            neutron = -1
+        else:
+            neutron = self.mass_number - self.number
+
+        return (hill_priority, self.symbol, mono_priority, neutron)
+
     def __lt__(self, other: object) -> bool:
         if not isinstance(other, ElementInfo):
             return NotImplemented
-        mn = self.mass_number if self.mass_number is not None else 0
-        on = other.mass_number if other.mass_number is not None else 0
-        return (self.number, mn) < (other.number, on)
+        return self._hill_order_key() < other._hill_order_key()
 
     def __le__(self, other: object) -> bool:
         if not isinstance(other, ElementInfo):
             return NotImplemented
-        mn = self.mass_number if self.mass_number is not None else 0
-        on = other.mass_number if other.mass_number is not None else 0
-        return (self.number, mn) <= (other.number, on)
+        return self._hill_order_key() <= other._hill_order_key()
 
     def __gt__(self, other: object) -> bool:
         if not isinstance(other, ElementInfo):
             return NotImplemented
-        mn = self.mass_number if self.mass_number is not None else 0
-        on = other.mass_number if other.mass_number is not None else 0
-        return (self.number, mn) > (other.number, on)
+        return self._hill_order_key() > other._hill_order_key()
 
     def __ge__(self, other: object) -> bool:
         if not isinstance(other, ElementInfo):
             return NotImplemented
-        mn = self.mass_number if self.mass_number is not None else 0
-        on = other.mass_number if other.mass_number is not None else 0
-        return (self.number, mn) >= (other.number, on)
+        return self._hill_order_key() >= other._hill_order_key()
 
     @property
     def neutron_count(self) -> int:
@@ -107,3 +125,16 @@ class ElementInfo:
             "is_monoisotopic": self.is_monoisotopic,
         }
         return self.__class__(**{**current_values, **kwargs})  # type: ignore
+
+    def serialize(self, count: int) -> str:
+        """Serialize the ElementInfo to a string"""
+        if count == 0:
+            raise ValueError("Count cannot be zero for serialization")
+        if count == 1:
+            if self.mass_number is not None:
+                return f"[{str(self)}]"
+            return str(self)
+        else:
+            if self.mass_number is not None:
+                return f"[{str(self)}{count}]"
+            return f"{self.symbol}{count}"

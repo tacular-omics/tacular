@@ -8,8 +8,6 @@ class ResidLookup(OntologyLookup[ResidInfo]):
         super().__init__(
             data=data,
             ontology_name="RESID",
-            id_prefixes=("resid",),
-            name_prefixes=("r",),
             _version=version,
         )
 

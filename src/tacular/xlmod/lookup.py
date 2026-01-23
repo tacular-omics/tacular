@@ -8,8 +8,6 @@ class XlModLookup(OntologyLookup[XlModInfo]):
         super().__init__(
             data=data,
             ontology_name="XLMOD",
-            id_prefixes=("xlmod",),
-            name_prefixes=("x",),
             _version=version,
         )
 

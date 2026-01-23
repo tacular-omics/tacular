@@ -8,8 +8,6 @@ class PsimodLookup(OntologyLookup[PsimodInfo]):
         super().__init__(
             data=data,
             ontology_name="PSI-MOD",
-            id_prefixes=("mod", "psi-mod"),
-            name_prefixes=("m",),
             _version=version,
         )
 

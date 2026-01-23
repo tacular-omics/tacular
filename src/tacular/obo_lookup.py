@@ -5,62 +5,70 @@ from random import choice
 from .obo_entity import OboEntity, filter_infos
 
 
-class OntologyLookup[T: OboEntity]:
-    """Base class for ontology lookups with common functionality."""
+def convert_key(key: str) -> int | None:
+    # remove non digit characters for integer keys
+    try:
+        return int("".join(filter(str.isdigit, key)).lstrip("0"))
+    except ValueError:
+        return None
 
+
+class OntologyLookup[T: OboEntity]:
     def __init__(
         self,
         data: dict[str, T],
         ontology_name: str,
-        id_prefixes: tuple[str, ...] = (),
-        name_prefixes: tuple[str, ...] = (),
         _version: str = "",
     ) -> None:
-        """
-        Initialize ontology lookup.
-
-        Args:
-            data: Dictionary mapping IDs to info objects
-            ontology_name: Name of the ontology (e.g., "UNIMOD", "PSI-MOD")
-            id_prefixes: Tuple of case-insensitive prefixes to strip from IDs (e.g., ("unimod", "u"))
-            name_prefixes: Tuple of case-insensitive prefixes to strip from names (e.g., ("u",))
-        """
         self.ontology_name = ontology_name
-        self.id_prefixes = tuple(p.lower() for p in id_prefixes)
-        self.name_prefixes = tuple(p.lower() for p in name_prefixes)
-
-        self.id_to_info: dict[str, T] = data
-        self.name_to_info: dict[str, T] = {info.name: info for info in data.values()}
-
-        # make keys lowercase for case-insensitive lookup
-        self.id_to_info = {k.lower(): v for k, v in self.id_to_info.items()}
-        self.name_to_info = {k.lower(): v for k, v in self.name_to_info.items()}
         self._version = _version
+
+        # Store raw data, defer processing
+        self._raw_data = data
+        self._id_to_info: dict[int, T] | None = None
+        self._name_to_info: dict[str, T] | None = None
+
+    def _ensure_initialized(self) -> None:
+        """Lazy initialization of lookup dictionaries."""
+        if self._id_to_info is not None:
+            return
+
+        # Build lowercase lookup dicts
+        self._id_to_info = {ki: v for k, v in self._raw_data.items() if (ki := convert_key(k)) is not None}
+        self._name_to_info = {info.name.lower(): info for info in self._raw_data.values()}
+
+        if len(self._id_to_info) != len(self._raw_data):
+            raise ValueError(f"Duplicate or missing IDs found in {self.ontology_name} data.")
+
+    @property
+    def id_to_info(self) -> dict[int, T]:
+        """Get the ID to info mapping."""
+        self._ensure_initialized()
+        return self._id_to_info  # type: ignore[return-value]
+
+    @property
+    def name_to_info(self) -> dict[str, T]:
+        """Get the name to info mapping."""
+        self._ensure_initialized()
+        return self._name_to_info  # type: ignore[return-value]
 
     @property
     def version(self) -> str:
         """Get the version of the ontology data."""
         return self._version
 
-    def _strip_prefix(self, value: str, prefixes: tuple[str, ...]) -> str:
-        """Strip known prefixes from a value."""
-        if ":" in value:
-            prefix, rest = value.split(":", 1)
-            if prefix.lower() in prefixes:
-                return rest
-        return value
-
     def query_id(self, mod_id: str | int) -> T | None:
         """Query by ID, stripping known prefixes."""
         if isinstance(mod_id, int):
             mod_id = str(mod_id)
 
-        mod_id = self._strip_prefix(mod_id, self.id_prefixes)
-        return self.id_to_info.get(mod_id.lower())
+        ki = convert_key(mod_id)
+        if ki is None:
+            return None
+        return self.id_to_info.get(ki)
 
     def query_name(self, name: str) -> T | None:
         """Query by name, stripping known prefixes."""
-        name = self._strip_prefix(name, self.name_prefixes)
         return self.name_to_info.get(name.lower())
 
     def query_mass(self, mass: float, tolerance: float = 0.01, monoisotopic: bool = True) -> T | None:

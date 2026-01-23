@@ -20,11 +20,10 @@ def make_entity(id, name, mass=None, avg=None, comp=None):
 def test_query_id_and_name():
     e1 = make_entity("1", "A")
     e2 = make_entity("2", "B")
-    lookup = OntologyLookup({e1.id: e1, e2.id: e2}, "TEST", id_prefixes=("t",), name_prefixes=("a",))
+    lookup = OntologyLookup({e1.id: e1, e2.id: e2}, "TEST")
     assert lookup.query_id("1") is e1
-    assert lookup.query_id("T:1") is e1
+    assert lookup.query_id(1) is e1
     assert lookup.query_name("A") is e1
-    assert lookup.query_name("a:A") is e1
     assert lookup.get("B") is e2
     assert lookup.get("2") is e2
     assert lookup.get("notfound") is None

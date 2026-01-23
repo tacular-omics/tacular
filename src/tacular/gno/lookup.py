@@ -8,8 +8,6 @@ class GnoLookup(OntologyLookup[GnoInfo]):
         super().__init__(
             data=data,
             ontology_name="GNO",
-            id_prefixes=("gno",),
-            name_prefixes=("g",),
             _version=version,
         )
 
