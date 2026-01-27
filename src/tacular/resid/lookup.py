@@ -9,6 +9,7 @@ class ResidLookup(OntologyLookup[ResidInfo]):
             data=data,
             ontology_name="RESID",
             _version=version,
+            _id_prefix="AA",
         )
 
 

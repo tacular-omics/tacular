@@ -2,6 +2,7 @@ from types import MappingProxyType
 
 import pytest
 
+import tacular as t
 from tacular.obo_entity import OboEntity
 from tacular.obo_lookup import OntologyLookup
 
@@ -122,3 +123,29 @@ def test_choice_compositions():
     for _ in range(50):
         res = lookup.choice(require_monoisotopic_mass=False, require_composition=False)
         assert res in (e_full, e_mass, e_comp, e_none)
+
+
+def test_lookup_UNIMOD():
+    assert 1 in t.UNIMOD_LOOKUP
+    assert "1" in t.UNIMOD_LOOKUP
+    assert "0001" in t.UNIMOD_LOOKUP
+    assert "Acetyl" in t.UNIMOD_LOOKUP
+    assert "aceTyl" in t.UNIMOD_LOOKUP
+
+def test_lookup_RESID():
+    assert 2 in t.RESID_LOOKUP
+    assert "2" in t.RESID_LOOKUP
+    assert "0002" in t.RESID_LOOKUP
+    assert "AA0002" in t.RESID_LOOKUP
+    assert "AA2" in t.RESID_LOOKUP
+    assert "L-arginine residue" in t.RESID_LOOKUP
+    assert "l-Arginine ReSidue" in t.RESID_LOOKUP
+
+
+def test_lookup_GNO():
+    assert "8BG" in t.GNO_LOOKUP
+    assert "G00008BG" in t.GNO_LOOKUP
+    assert "G008BG" in t.GNO_LOOKUP
+    assert "G00008BG" in t.GNO_LOOKUP
+    assert "G00008bg" in t.GNO_LOOKUP
+

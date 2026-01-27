@@ -1,7 +1,7 @@
 [project]
 name = "tacular"
 dynamic = ["version"]
-description = "Common utils/lookups for tacular ecosystem"
+description = "Includes lookups for modifications, amino acids, and other data types."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []

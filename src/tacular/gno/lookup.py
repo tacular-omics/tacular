@@ -9,6 +9,7 @@ class GnoLookup(OntologyLookup[GnoInfo]):
             data=data,
             ontology_name="GNO",
             _version=version,
+            _id_prefix="G",
         )
 
 

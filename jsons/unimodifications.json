@@ -1,9 +1,9 @@
 {
     "metadata": {
-        "generated_date": "2026-01-16T15:32:45.042775",
+        "generated_date": "2026-01-27T14:04:56.391181",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "tacular_version": "0.1.0",
+        "tacular_version": "1.0.0",
         "data_version": "17:06:2025 11:31"
     },
     "unimodifications": [
@@ -997,7 +997,7 @@
         {
             "id": "123",
             "name": "ICAT-H",
-            "formula": "C15ClH20NO6",
+            "formula": "C15H20ClNO6",
             "monoisotopic_mass": 345.097915,
             "average_mass": 345.7754,
             "composition": {
@@ -1011,7 +1011,7 @@
         {
             "id": "124",
             "name": "ICAT-H:13C(6)",
-            "formula": "C9ClH20NO6",
+            "formula": "C9H20ClNO6",
             "monoisotopic_mass": 351.118044,
             "average_mass": 351.7313,
             "composition": {
@@ -1038,7 +1038,7 @@
         {
             "id": "127",
             "name": "Fluoro",
-            "formula": "FH-1",
+            "formula": "H-1F",
             "monoisotopic_mass": 17.990578,
             "average_mass": 17.9905,
             "composition": {
@@ -1786,7 +1786,7 @@
         {
             "id": "243",
             "name": "IGBP",
-            "formula": "BrC12H13N2O2",
+            "formula": "C12H13BrN2O2",
             "monoisotopic_mass": 296.016039,
             "average_mass": 297.1478,
             "composition": {
@@ -2551,7 +2551,7 @@
         {
             "id": "340",
             "name": "Bromo",
-            "formula": "BrH-1",
+            "formula": "H-1Br",
             "monoisotopic_mass": 77.910511,
             "average_mass": 78.8961,
             "composition": {
@@ -3015,7 +3015,7 @@
         {
             "id": "390",
             "name": "Heme",
-            "formula": "C34FeH32N4O4",
+            "formula": "C34H32FeN4O4",
             "monoisotopic_mass": 616.177295,
             "average_mass": 616.4873,
             "composition": {
@@ -3521,7 +3521,7 @@
         {
             "id": "436",
             "name": "Hydroxyheme",
-            "formula": "C34FeH30N4O4",
+            "formula": "C34H30FeN4O4",
             "monoisotopic_mass": 614.161645,
             "average_mass": 614.4714,
             "composition": {
@@ -3561,7 +3561,7 @@
         {
             "id": "439",
             "name": "Diironsubcluster",
-            "formula": "C5Fe2H-1N2O5S2",
+            "formula": "C5H-1Fe2N2O5S2",
             "monoisotopic_mass": 342.786916,
             "average_mass": 342.876,
             "composition": {
@@ -3616,7 +3616,7 @@
         {
             "id": "444",
             "name": "CuSMo",
-            "formula": "C19CuH24MoN8O15P2S3",
+            "formula": "C19H24CuMoN8O15P2S3",
             "monoisotopic_mass": 922.834855,
             "average_mass": 922.067,
             "composition": {
@@ -3924,7 +3924,7 @@
         {
             "id": "499",
             "name": "IGBP:13C(2)",
-            "formula": "BrC10H13N2O2",
+            "formula": "C10H13BrN2O2",
             "monoisotopic_mass": 298.022748,
             "average_mass": 299.1331,
             "composition": {
@@ -4201,7 +4201,7 @@
         {
             "id": "531",
             "name": "Cation:Cu[I]",
-            "formula": "CuH-1",
+            "formula": "H-1Cu",
             "monoisotopic_mass": 61.921774,
             "average_mass": 62.5381,
             "composition": {
@@ -4238,7 +4238,7 @@
         {
             "id": "534",
             "name": "Dibromo",
-            "formula": "Br2H-2",
+            "formula": "H-2Br2",
             "monoisotopic_mass": 155.821022,
             "average_mass": 157.7921,
             "composition": {
@@ -5922,7 +5922,7 @@
         {
             "id": "684",
             "name": "BDMAPP",
-            "formula": "BrC11H12NO",
+            "formula": "C11H12BrNO",
             "monoisotopic_mass": 253.010225,
             "average_mass": 254.1231,
             "composition": {
@@ -6334,7 +6334,7 @@
         {
             "id": "750",
             "name": "trifluoro",
-            "formula": "F3H-3",
+            "formula": "H-3F3",
             "monoisotopic_mass": 53.971735,
             "average_mass": 53.9714,
             "composition": {
@@ -6358,7 +6358,7 @@
         {
             "id": "762",
             "name": "IDEnT",
-            "formula": "C9Cl2H7NO",
+            "formula": "C9H7Cl2NO",
             "monoisotopic_mass": 214.990469,
             "average_mass": 216.064,
             "composition": {
@@ -6816,7 +6816,7 @@
         {
             "id": "861",
             "name": "ZGB",
-            "formula": "BC37F2H53N6O6S",
+            "formula": "C37H53BF2N6O6S",
             "monoisotopic_mass": 758.380841,
             "average_mass": 758.7261,
             "composition": {
@@ -7098,7 +7098,7 @@
         {
             "id": "902",
             "name": "DimethylArsino",
-            "formula": "AsC2H5",
+            "formula": "C2H5As",
             "monoisotopic_mass": 103.960719,
             "average_mass": 103.9827,
             "composition": {
@@ -7345,7 +7345,7 @@
         {
             "id": "936",
             "name": "Chlorination",
-            "formula": "ClH-1",
+            "formula": "H-1Cl",
             "monoisotopic_mass": 33.961028,
             "average_mass": 34.4451,
             "composition": {
@@ -7356,7 +7356,7 @@
         {
             "id": "937",
             "name": "dichlorination",
-            "formula": "Cl2H-2",
+            "formula": "H-2Cl2",
             "monoisotopic_mass": 67.922055,
             "average_mass": 68.8901,
             "composition": {
@@ -7518,7 +7518,7 @@
         {
             "id": "951",
             "name": "Cation:Ca[II]",
-            "formula": "CaH-2",
+            "formula": "H-2Ca",
             "monoisotopic_mass": 37.946941,
             "average_mass": 38.0621,
             "composition": {
@@ -7529,7 +7529,7 @@
         {
             "id": "952",
             "name": "Cation:Fe[II]",
-            "formula": "FeH-2",
+            "formula": "H-2Fe",
             "monoisotopic_mass": 53.919289,
             "average_mass": 53.8291,
             "composition": {
@@ -7562,7 +7562,7 @@
         {
             "id": "955",
             "name": "Cation:Ag",
-            "formula": "AgH-1",
+            "formula": "H-1Ag",
             "monoisotopic_mass": 105.897267,
             "average_mass": 106.8603,
             "composition": {
@@ -17289,7 +17289,7 @@
         {
             "id": "1870",
             "name": "Cation:Fe[III]",
-            "formula": "FeH-3",
+            "formula": "H-3Fe",
             "monoisotopic_mass": 52.911464,
             "average_mass": 52.8212,
             "composition": {
@@ -17657,7 +17657,7 @@
         {
             "id": "1910",
             "name": "Cation:Al[III]",
-            "formula": "AlH-3",
+            "formula": "H-3Al",
             "monoisotopic_mass": 23.958063,
             "average_mass": 23.9577,
             "composition": {
@@ -18400,7 +18400,7 @@
         {
             "id": "1971",
             "name": "Unknown:177",
-            "formula": "Fe3H-7O",
+            "formula": "H-7Fe3O",
             "monoisotopic_mass": 176.744957,
             "average_mass": 176.4788,
             "composition": {
@@ -18634,7 +18634,7 @@
         {
             "id": "2006",
             "name": "Haloxon",
-            "formula": "C4Cl2H7O3P",
+            "formula": "C4H7Cl2O3P",
             "monoisotopic_mass": 203.950987,
             "average_mass": 204.9763,
             "composition": {

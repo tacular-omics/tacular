@@ -165,6 +165,23 @@ def gen_gno(output_file: str = OutputFile.GNO):
 
     logger.info(f"\n  📝 Writing to: {output_file}")
 
+    # see if there are any duplicates
+    ids = [mod.id for mod in gno_entries]
+    id_counts = Counter(ids)
+    duplicate_ids = [mod_id for mod_id, count in id_counts.items() if count > 1]
+    if duplicate_ids:
+        logger.warning(f"  ⚠️  Found {len(duplicate_ids)} duplicate GNO IDs:")
+        for dup_id in duplicate_ids:
+            logger.warning(f"      Duplicate ID: {dup_id}")
+
+    names = [mod.name for mod in gno_entries]
+    name_counts = Counter(names)
+    duplicate_names = [name for name, count in name_counts.items() if count > 1]
+    if duplicate_names:
+        logger.warning(f"  ⚠️  Found {len(duplicate_names)} duplicate GNO names:")
+        for dup_name in duplicate_names:
+            logger.warning(f"      Duplicate name: {dup_name}")
+
     # Generate the GNO entries
     entries: list[str] = []
     for mod in gno_entries:

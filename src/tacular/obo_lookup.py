@@ -5,10 +5,20 @@ from random import choice
 from .obo_entity import OboEntity, filter_infos
 
 
-def convert_key(key: str) -> int | None:
+def strip_id(key: str, prefix: str | None = None) -> str:
+    """Strip known prefix from ID"""
+    key = key.lower()
+    if prefix is not None and key.startswith(prefix):
+        key = key[len(prefix) :]
+    key = key.lstrip("0")
+    return key
+
+
+def convert_key(key: str, prefix: str | None = None) -> int | None:
     # remove non digit characters for integer keys
     try:
-        return int("".join(filter(str.isdigit, key)).lstrip("0"))
+        key = strip_id(key, prefix)
+        return int(key)
     except ValueError:
         return None
 
@@ -19,29 +29,46 @@ class OntologyLookup[T: OboEntity]:
         data: dict[str, T],
         ontology_name: str,
         _version: str = "",
+        _id_prefix: str | None = None,
     ) -> None:
         self.ontology_name = ontology_name
         self._version = _version
 
         # Store raw data, defer processing
         self._raw_data = data
-        self._id_to_info: dict[int, T] | None = None
+        self._num_to_info: dict[int, T] | None = None
+        self._id_to_info: dict[str, T] | None = None
         self._name_to_info: dict[str, T] | None = None
+        self._id_prefix = _id_prefix.lower() if _id_prefix is not None else None
 
     def _ensure_initialized(self) -> None:
         """Lazy initialization of lookup dictionaries."""
-        if self._id_to_info is not None:
+        if self._num_to_info is not None:
             return
 
         # Build lowercase lookup dicts
-        self._id_to_info = {ki: v for k, v in self._raw_data.items() if (ki := convert_key(k)) is not None}
+        self._num_to_info = {
+            ki: v for k, v in self._raw_data.items() if (ki := convert_key(k, self._id_prefix)) is not None
+        }
+        self._id_to_info = {strip_id(k, self._id_prefix): v for k, v in self._raw_data.items()}
         self._name_to_info = {info.name.lower(): info for info in self._raw_data.values()}
 
-        if len(self._id_to_info) != len(self._raw_data):
-            raise ValueError(f"Duplicate or missing IDs found in {self.ontology_name} data.")
+        if len(self._id_to_info) != len(self._raw_data) != len(self._name_to_info):
+            raise ValueError(
+                f"Duplicate or missing IDs found in {self.ontology_name} data. Number of entries: \
+             {len(self._raw_data)}, IDs: {len(self._id_to_info)}, names: {len(self._name_to_info)}"
+            )
 
     @property
-    def id_to_info(self) -> dict[int, T]:
+    def num_to_info(self) -> dict[int, T]:
+        """Get the numeric ID to info mapping."""
+        self._ensure_initialized()
+        if self._num_to_info is None:
+            raise RuntimeError("OntologyLookup not properly initialized.")
+        return self._num_to_info
+
+    @property
+    def id_to_info(self) -> dict[str, T]:
         """Get the ID to info mapping."""
         self._ensure_initialized()
         if self._id_to_info is None:
@@ -64,12 +91,23 @@ class OntologyLookup[T: OboEntity]:
     def query_id(self, mod_id: str | int) -> T | None:
         """Query by ID, stripping known prefixes."""
         if isinstance(mod_id, int):
-            mod_id = str(mod_id)
+            return self.num_to_info.get(mod_id)
 
-        ki = convert_key(mod_id)
-        if ki is None:
-            return None
-        return self.id_to_info.get(ki)
+        mod_id = strip_id(mod_id, self._id_prefix)
+        info = self.id_to_info.get(mod_id)
+        if info is not None:
+            return info
+
+        # try to convert to int
+        try:
+            ki = int(mod_id)
+        except ValueError:
+            ki = None
+
+        if ki is not None:
+            return self.num_to_info.get(ki)
+
+        return None
 
     def query_name(self, name: str) -> T | None:
         """Query by name, stripping known prefixes."""
@@ -98,10 +136,11 @@ class OntologyLookup[T: OboEntity]:
             )
         return None
 
-    def __getitem__(self, key: str) -> T:
-        info = self.query_name(key)
-        if info is not None:
-            return info
+    def __getitem__(self, key: str | int) -> T:
+        if isinstance(key, str):
+            info = self.query_name(key)
+            if info is not None:
+                return info
 
         info = self.query_id(key)
         if info is not None:
@@ -109,14 +148,14 @@ class OntologyLookup[T: OboEntity]:
 
         raise KeyError(f"{self.ontology_name} modification '{key}' not found by name or ID.")
 
-    def __contains__(self, key: str) -> bool:
+    def __contains__(self, key: str | int) -> bool:
         try:
             self[key]
             return True
         except KeyError:
             return False
 
-    def get(self, key: str) -> T | None:
+    def get(self, key: str | int) -> T | None:
         try:
             return self[key]
         except KeyError:
@@ -175,3 +214,9 @@ class OntologyLookup[T: OboEntity]:
             raise ValueError(f"No valid {self.ontology_name} entries found matching the criteria.")
 
         return choice(valid_infos)
+
+    def __str__(self) -> str:
+        return f"<OntologyLookup {self.ontology_name} v{self._version} with {len(self._raw_data)} entries>"
+
+    def __repr__(self) -> str:
+        return self.__str__()
