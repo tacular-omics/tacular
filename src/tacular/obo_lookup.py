@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterator
 from functools import cached_property
 from random import choice
 
@@ -44,13 +44,17 @@ class OntologyLookup[T: OboEntity]:
     def id_to_info(self) -> dict[int, T]:
         """Get the ID to info mapping."""
         self._ensure_initialized()
-        return self._id_to_info  # type: ignore[return-value]
+        if self._id_to_info is None:
+            raise RuntimeError("OntologyLookup not properly initialized.")
+        return self._id_to_info
 
     @property
     def name_to_info(self) -> dict[str, T]:
         """Get the name to info mapping."""
         self._ensure_initialized()
-        return self._name_to_info  # type: ignore[return-value]
+        if self._name_to_info is None:
+            raise RuntimeError("OntologyLookup not properly initialized.")
+        return self._name_to_info
 
     @property
     def version(self) -> str:
@@ -118,17 +122,17 @@ class OntologyLookup[T: OboEntity]:
         except KeyError:
             return None
 
-    def __iter__(self) -> Iterable[T]:
+    def __iter__(self) -> Iterator[T]:
         """Iterator over all entries in the lookup."""
         return iter(self.name_to_info.values())
 
-    def values(self) -> Iterable[T]:
+    def values(self) -> list[T]:
         """Get all entries in the lookup."""
-        return self.name_to_info.values()
+        return list(self.name_to_info.values())
 
-    def keys(self) -> Iterable[str]:
+    def keys(self) -> list[str]:
         """Get all keys (names) in the lookup."""
-        return self.name_to_info.keys()
+        return list(self.name_to_info.keys())
 
     @cached_property
     def _all_infos_tuple(self) -> tuple[T, ...]:

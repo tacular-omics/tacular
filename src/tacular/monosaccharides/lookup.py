@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterator
 
 from .data import MONOSACCHARIDES, Monosaccharide
 from .dclass import MonosaccharideInfo
@@ -39,7 +39,7 @@ class MonosaccharideLookup:
             raise KeyError(f"Monosaccharide '{name}' not found by ProForma name.")
         return val
 
-    def __iter__(self) -> Iterable[MonosaccharideInfo]:
+    def __iter__(self) -> Iterator[MonosaccharideInfo]:
         """Iterator over all MonosaccharideInfo entries in the lookup."""
         return iter(self.proforma_to_monosaccharide.values())
 

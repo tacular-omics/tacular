@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterator
 from functools import cache, cached_property
 
 from ..elements import ElementInfo
@@ -94,25 +94,21 @@ class AALookup:
             if aa.monoisotopic_mass is not None and aa.average_mass is not None
         )
 
-    @cache
     def is_ambiguous(self, key: str) -> bool:
         """Check if the amino acid identified by key is ambiguous"""
         aa_info = self[key]
         return aa_info.is_ambiguous
 
-    @cache
     def is_mass_ambiguous(self, key: str) -> bool:
         """Check if the amino acid identified by key has mass ambiguity"""
         aa_info = self[key]
         return aa_info.is_mass_ambiguous
 
-    @cache
     def is_unambiguous(self, key: str) -> bool:
         """Check if the amino acid identified by key is unambiguous"""
         aa_info = self[key]
         return not aa_info.is_ambiguous
 
-    @cache
     def is_mass_unambiguous(self, key: str) -> bool:
         """Check if the amino acid identified by key has no mass ambiguity"""
         aa_info = self[key]
@@ -137,7 +133,7 @@ class AALookup:
             raise ValueError(f"Amino acid '{key}' does not have a defined elemental composition.")
         return aa_info.composition
 
-    def __iter__(self) -> Iterable[AminoAcidInfo]:
+    def __iter__(self) -> Iterator[AminoAcidInfo]:
         """Iterator over all amino acids in order of one-letter codes A-Z"""
         yield from self.ordered_amino_acids
 

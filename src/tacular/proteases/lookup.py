@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterator
 
 from .data import PROTEASES_DICT, Proteases
 from .dclass import ProteaseInfo
@@ -49,7 +49,7 @@ class ProteaseLookup:
         except KeyError:
             return None
 
-    def __iter__(self) -> Iterable[ProteaseInfo]:
+    def __iter__(self) -> Iterator[ProteaseInfo]:
         """Iterator over all ProteaseInfo entries in the lookup."""
         return iter(self.id_to_info.values())
 

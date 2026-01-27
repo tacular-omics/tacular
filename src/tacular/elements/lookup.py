@@ -1,4 +1,4 @@
-from collections.abc import Iterable, Mapping
+from collections.abc import Iterator, Mapping
 
 from .data import ISOTOPES, Element
 from .dclass import ElementInfo
@@ -34,8 +34,8 @@ def _handle_key_input(
         if isinstance(symbol, str):
             try:
                 symbol = Element(symbol)
-            except ValueError:
-                raise KeyError(f"Symbol '{symbol}' is not a valid Element")
+            except ValueError as e:
+                raise KeyError(f"Symbol '{symbol}' is not a valid Element") from e
 
         return (symbol, mass_number)
     elif isinstance(key, str):
@@ -67,8 +67,8 @@ def _handle_key_input(
 
             try:
                 symbol = Element(symbol_str)
-            except ValueError:
-                raise KeyError(f"Symbol '{symbol_str}' is not a valid Element")
+            except ValueError as e:
+                raise KeyError(f"Symbol '{symbol_str}' is not a valid Element") from e
 
             return (symbol, mass_number)
         else:
@@ -86,8 +86,8 @@ def _handle_key_input(
 
             try:
                 symbol = Element(symbol_str)
-            except ValueError:
-                raise KeyError(f"Symbol '{symbol_str}' is not a valid Element")
+            except ValueError as e:
+                raise KeyError(f"Symbol '{symbol_str}' is not a valid Element") from e
 
             return (symbol, mass_number)
 
@@ -237,7 +237,7 @@ class ElementLookup:
             element_symbol = Element(symbol) if isinstance(symbol, str) else symbol
             lookup_key: tuple[Element, int] = (element_symbol, mass_number)
         except ValueError as e:
-            raise KeyError(f"Invalid element key: {symbol}-{mass_number}: {e}")
+            raise KeyError(f"Invalid element key: {symbol}-{mass_number}") from e
         if lookup_key not in self.element_data:
             raise KeyError(f"Isotope {symbol}-{mass_number} not found (auto_generate=False)")
         return self.element_data[lookup_key]
@@ -257,8 +257,8 @@ class ElementLookup:
         if isinstance(symbol, str):
             try:
                 symbol = Element(symbol)
-            except ValueError:
-                raise KeyError(f"Invalid element symbol '{symbol}'")
+            except ValueError as e:
+                raise KeyError(f"Invalid element symbol '{symbol}'") from e
 
         isotopes: list[ElementInfo] = [
             elem for (sym, mass_number), elem in self.element_data.items() if sym == symbol and mass_number is not None
@@ -315,10 +315,6 @@ class ElementLookup:
         else:
             return elem.average_mass
 
-    def __iter__(self) -> Iterable[ElementInfo]:
-        """Iterator over all ElementInfo entries in the lookup."""
-        return iter(self.element_data.values())
-
     def get_neutron_offsets_and_abundances(self, key: str | Element | ElementInfo) -> list[tuple[int, float]]:
         # get the element info
         if isinstance(key, ElementInfo):
@@ -344,13 +340,17 @@ class ElementLookup:
             result.append((iso.mass, iso.abundance))  # type: ignore
         return result
 
-    def values(self) -> Iterable[ElementInfo]:
+    def values(self) -> list[ElementInfo]:
         """Get an iterable of all ElementInfo values in the lookup."""
-        return self.element_data.values()
+        return list(self.element_data.values())
 
-    def keys(self) -> Iterable[tuple[str, int | None]]:
+    def keys(self) -> list[tuple[str, int | None]]:
         """Get an iterable of all keys in the lookup."""
-        return self.element_data.keys()
+        return list(self.element_data.keys())
+
+    def __iter__(self) -> Iterator[ElementInfo]:
+        """Iterator over all ElementInfo entries in the lookup."""
+        return iter(self.element_data.values())
 
 
 # Create the global lookup instance

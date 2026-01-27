@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterator
 
 from .data import REFMOL_DICT, RefMolID
 from .dclass import RefMolInfo
@@ -71,7 +71,7 @@ class RefMolLookup:
         except KeyError:
             return None
 
-    def __iter__(self) -> Iterable[RefMolInfo]:
+    def __iter__(self) -> Iterator[RefMolInfo]:
         """Iterator over all RefMolInfo entries in the lookup."""
         return iter(self._refmol_data.values())
 

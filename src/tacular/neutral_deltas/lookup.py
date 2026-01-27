@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterator
 
 from .data import NEUTRAL_DELTA_DICT, NeutralDelta
 from .dclass import NeutralDeltaInfo
@@ -58,7 +58,7 @@ class NeutralDeltaLookup:
         except KeyError:
             return False
 
-    def __iter__(self) -> Iterable[NeutralDeltaInfo]:
+    def __iter__(self) -> Iterator[NeutralDeltaInfo]:
         """Iterate over all neutral delta infos"""
         return iter(self._neutral_delta_data.values())
 

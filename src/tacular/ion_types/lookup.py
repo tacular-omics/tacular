@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterator
 
 from .data import ION_TYPE_DICT, IonType
 from .dclass import FragmentIonInfo
@@ -65,7 +65,7 @@ class FragmentIonLookup:
         except KeyError:
             return None
 
-    def __iter__(self) -> Iterable[FragmentIonInfo]:
+    def __iter__(self) -> Iterator[FragmentIonInfo]:
         """Iterator over all FragmentIonInfo entries in the lookup."""
         return iter(self._fragment_ion_data.values())
 
