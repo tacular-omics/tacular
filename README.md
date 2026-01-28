@@ -1,5 +1,11 @@
 # tacular
 
+[![Python package](https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml/badge.svg)](https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml)
+[![codecov](https://codecov.io/gh/pgarrett-scripps/tacular/branch/main/graph/badge.svg)](https://codecov.io/gh/pgarrett-scripps/tacular)
+[![PyPI version](https://badge.fury.io/py/tacular.svg)](https://badge.fury.io/py/tacular)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A helper package for peptacular and paftacular. Includes lookups for modifications, amino acids, and other data types.
 
 ## Generate Data
