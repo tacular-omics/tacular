@@ -127,7 +127,7 @@ class ElementInfo:
         return self.__class__(**{**current_values, **kwargs})  # type: ignore
 
     def serialize(self, count: int) -> str:
-        """Serialize the ElementInfo to a string"""
+        """Serialize the ElementInfo to a proforma formula element compatible string"""
         if count == 0:
             raise ValueError("Count cannot be zero for serialization")
         if count == 1:
