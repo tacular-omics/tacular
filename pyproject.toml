@@ -54,4 +54,7 @@ select = [
     "B",   # flake8-bugbear
     "UP",  # pyupgrade
 ]
+ignore = [
+    "B019",  # Use of functools.lru_cache/cache on methods - intentional for lookup performance
+]
 

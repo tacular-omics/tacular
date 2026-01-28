@@ -22,7 +22,7 @@ test:
     uv run pytest tests
 
 test-cov:
-    uv run pytest tests --cov=src/tacular --cov-report=term-missing --cov-report=html
+    uv run pytest tests --cov=src/tacular --cov-report=term-missing --cov-report=html --cov-report=xml
 
 test-docs:
     uv run pytest --doctest-modules src
