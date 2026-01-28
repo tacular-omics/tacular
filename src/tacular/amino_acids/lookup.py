@@ -22,18 +22,21 @@ class AALookup:
     def _query_name(self, name: str) -> AminoAcidInfo | None:
         return self.name_to_info.get(name.lower())
 
+    @cache
     def one_letter(self, code: str) -> AminoAcidInfo:
         val = self._query_one_letter(code)
         if val is not None:
             return val
         raise KeyError(f"Amino acid with one-letter code '{code}' not found.")
 
+    @cache
     def three_letter(self, code: str) -> AminoAcidInfo:
         val = self._query_three_letter(code)
         if val is not None:
             return val
         raise KeyError(f"Amino acid with three-letter code '{code}' not found.")
 
+    @cache
     def name(self, name: str) -> AminoAcidInfo:
         val = self._query_name(name)
         if val is not None:
@@ -136,6 +139,13 @@ class AALookup:
     def __iter__(self) -> Iterator[AminoAcidInfo]:
         """Iterator over all amino acids in order of one-letter codes A-Z"""
         yield from self.ordered_amino_acids
+
+    def get(self, key: str, default: AminoAcidInfo | None = None) -> AminoAcidInfo | None:
+        """Get amino acid info or None if not found"""
+        try:
+            return self[key]
+        except KeyError:
+            return default
 
 
 AA_LOOKUP = AALookup(AMINO_ACID_INFOS)

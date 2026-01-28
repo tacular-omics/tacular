@@ -21,6 +21,9 @@ check:
 test:
     uv run pytest tests
 
+test-cov:
+    uv run pytest tests --cov=src/tacular --cov-report=term-missing --cov-report=html
+
 test-docs:
     uv run pytest --doctest-modules src
 

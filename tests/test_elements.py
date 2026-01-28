@@ -1,5 +1,6 @@
 import pytest
 
+import tacular as t
 from tacular.elements import ELEMENT_LOOKUP, parse_composition
 
 
@@ -54,7 +55,7 @@ def test_element_mass():
 
 def test_parse_composition():
     comp = {"C": 2, "H": 4, "13C": 1}
-    parsed = parse_composition(comp)
+    parsed: dict[t.ElementInfo, int] = parse_composition(comp)
 
     # Check keys are ElementInfo
     keys = list(parsed.keys())
@@ -68,3 +69,7 @@ def test_parse_composition():
     assert parsed[c_info] == 2
     assert parsed[h_info] == 4
     assert parsed[c13_info] == 1
+
+    # Element info is hashable, so the following works too
+    assert parsed['C'] == 2 # type: ignore
+    assert parsed['13C'] == 1 # type: ignore

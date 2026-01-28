@@ -7,4 +7,6 @@ from ..obo_entity import OboEntity
 class PsimodInfo(OboEntity):
     """Class to store information about a PSI-MOD modification"""
 
-    pass
+    @property
+    def id_tag(self) -> str:
+        return self.id.lstrip("0")

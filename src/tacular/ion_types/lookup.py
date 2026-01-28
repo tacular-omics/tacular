@@ -58,12 +58,12 @@ class FragmentIonLookup:
         except KeyError:
             return False
 
-    def get(self, key: str | IonType) -> FragmentIonInfo | None:
+    def get(self, key: str | IonType, default: FragmentIonInfo | None = None) -> FragmentIonInfo | None:
         """Get fragment ion or None if not found"""
         try:
             return self[key]
         except KeyError:
-            return None
+            return default
 
     def __iter__(self) -> Iterator[FragmentIonInfo]:
         """Iterator over all FragmentIonInfo entries in the lookup."""

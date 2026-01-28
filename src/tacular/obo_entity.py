@@ -71,6 +71,10 @@ class OboEntity:
             )
         )
 
+    @property
+    def id_tag(self) -> str:
+        return self.id.lstrip("0")
+
 
 def filter_infos[T: OboEntity](
     infos: list[T],

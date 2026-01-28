@@ -7,4 +7,8 @@ from ..obo_entity import OboEntity
 class GnoInfo(OboEntity):
     """Class to store information about a PSI-MOD modification"""
 
-    pass
+    @property
+    def id_tag(self) -> str:
+        if self.id.startswith("G"):
+            return self.id[1:].lstrip('0')
+        return self.id.lstrip('0')

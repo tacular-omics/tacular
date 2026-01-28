@@ -352,6 +352,24 @@ class ElementLookup:
         """Iterator over all ElementInfo entries in the lookup."""
         return iter(self.element_data.values())
 
+    def get(
+        self, key: tuple[str | Element, int | None] | str | Element, default: ElementInfo | None = None
+    ) -> ElementInfo | None:
+        """
+        Get element info by key, or return default if not found.
+
+        Args:
+            key: Key in various formats (see __getitem__)
+            default: Value to return if key is not found
+
+        Returns:
+            ElementInfo or default if not found
+        """
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
 
 # Create the global lookup instance
 ELEMENT_LOOKUP = ElementLookup(ISOTOPES)

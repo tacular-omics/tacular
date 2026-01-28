@@ -7,4 +7,6 @@ from ..obo_entity import OboEntity
 class UnimodInfo(OboEntity):
     """Class to store information about a Unimod modification"""
 
-    pass
+    @property
+    def id_tag(self) -> str:
+        return self.id.lstrip("0")

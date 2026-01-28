@@ -7,4 +7,8 @@ from ..obo_entity import OboEntity
 class ResidInfo(OboEntity):
     """Class to store information about a RESID modification"""
 
-    pass
+    @property
+    def id_tag(self) -> str:
+        if self.id.startswith("AA"):
+            return self.id[2:].lstrip("0")
+        return self.id.lstrip("0")
