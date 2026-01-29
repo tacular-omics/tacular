@@ -21,8 +21,12 @@ check:
 test:
     uv run pytest tests
 
+# Run tests with coverage
 test-cov:
     uv run pytest tests --cov=src/tacular --cov-branch --cov-report=term-missing --cov-report=html --cov-report=xml
+
+codecov-tests:
+    uv run pytest tests --cov --junitxml=junit.xml -o junit_family=legacy
 
 test-docs:
     uv run pytest --doctest-modules src

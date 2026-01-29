@@ -120,3 +120,11 @@ dmypy.json
 # editors
 .vscode/
 .idea/
+
+# Other
+coverage.xml
+htmlcov/
+.coverage
+*.cover
+.pytest_cache/
+junit.xml

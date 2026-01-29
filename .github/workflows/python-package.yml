@@ -5,10 +5,11 @@ name: Python package
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+    paths:
+      - 'src/**'
+      - 'tests/**'
+  workflow_dispatch:
+    
 jobs:
   build:
 
@@ -35,10 +36,18 @@ jobs:
     - name: Type check with ty
       run: just check
     - name: Test with pytest
-      run: just test-cov
+      run: just test-cov codecov-tests
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         slug: tacular-omics/tacular
+        fail_ci_if_error: false
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: tacular-omics/tacular
+        report_type: test_results
         fail_ci_if_error: false
