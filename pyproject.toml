@@ -22,6 +22,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -36,9 +37,12 @@ packages = ["src/tacular"]
 package = true
 dev-dependencies = [
     "pytest>=9.0.2",
-    "pytest-cov>=6.0.0",
     "ruff>=0.14.11",
     "ty>=0.0.11",
+    "pytest-cov>=6.0.0",
+    "sphinx>=7.0",
+    "sphinx-rtd-theme>=2.0",
+    "sphinx-autodoc-typehints>=1.25",
 ]
 
 [tool.ruff]

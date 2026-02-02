@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generated_date": "2026-01-27T14:04:56.400256",
+        "generated_date": "2026-02-02T12:47:10.997940",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
         "tacular_version": "1.0.0",
@@ -40,10 +40,10 @@
             "name": "Water",
             "description": "From -OH and -COOH groups",
             "amino_acids": [
-                "T",
-                "S",
                 "D",
-                "E"
+                "E",
+                "S",
+                "T"
             ],
             "monoisotopic_mass": -18.010565,
             "average_mass": -18.015286,
@@ -57,8 +57,8 @@
             "name": "Carbon monoxide",
             "description": "For backbone fragments, use 'a' instead of 'b-CO'. But for internal fragments, use 'mx:y-CO'. Also seen as a neutral loss from formylated serine or threonine",
             "amino_acids": [
-                "T",
-                "S"
+                "S",
+                "T"
             ],
             "monoisotopic_mass": -27.994915,
             "average_mass": -28.010141,
@@ -72,8 +72,8 @@
             "name": "Carbon dioxide",
             "description": "From -COOH groups",
             "amino_acids": [
-                "D",
-                "E"
+                "E",
+                "D"
             ],
             "monoisotopic_mass": -43.989829,
             "average_mass": -44.009546,
@@ -104,8 +104,8 @@
             "name": "Formic acid",
             "description": "From -COOH groups",
             "amino_acids": [
-                "D",
-                "E"
+                "E",
+                "D"
             ],
             "monoisotopic_mass": -29.00274,
             "average_mass": -29.018082,
@@ -150,8 +150,8 @@
             "name": "Metaphosphoric acid",
             "description": "From phosphotyrosine and sometimes from phosphoserine and phosphothreonine",
             "amino_acids": [
-                "T",
                 "S",
+                "T",
                 "Y"
             ],
             "monoisotopic_mass": -79.966331,
@@ -200,8 +200,8 @@
             "name": "Phosphoric acid",
             "description": "From phosphoserine and phosphothreonine",
             "amino_acids": [
-                "T",
-                "S"
+                "S",
+                "T"
             ],
             "monoisotopic_mass": -97.976896,
             "average_mass": -97.995204,

@@ -10,5 +10,5 @@ class GnoInfo(OboEntity):
     @property
     def id_tag(self) -> str:
         if self.id.startswith("G"):
-            return self.id[1:].lstrip('0')
-        return self.id.lstrip('0')
+            return self.id[1:].lstrip("0")
+        return self.id.lstrip("0")

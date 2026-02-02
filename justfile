@@ -40,3 +40,23 @@ update:
 
 gen-jsons:
     uv run create_output_jsons.py
+
+# Build documentation
+docs:
+    cd docs && uv run sphinx-build -b html . _build/html
+
+# Run documentation tests
+docs-test:
+    cd docs && uv run sphinx-build -b doctest . _build/doctest
+
+# Clean documentation build
+docs-clean:
+    rm -rf docs/_build
+
+# Build and open documentation
+docs-open:
+    just docs
+    python -c "import webbrowser; webbrowser.open('file://{{justfile_directory()}}/docs/_build/html/index.html')"
+
+
+pre-release: format lint check test gen-jsons docs-test
