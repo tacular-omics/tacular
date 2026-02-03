@@ -271,3 +271,7 @@ class TestAADataIntegrity:
         for aa in db:
             assert aa.three_letter_code is not None
             assert len(aa.three_letter_code) == 3
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

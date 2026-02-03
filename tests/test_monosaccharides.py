@@ -150,3 +150,7 @@ class TestMonosaccharideDataIntegrity:
                 # Should contain at least one letter (element symbol)
                 assert any(c.isalpha() for c in entry.formula)
                 break  # Just check a few
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

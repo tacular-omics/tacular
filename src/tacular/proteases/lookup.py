@@ -53,5 +53,9 @@ class ProteaseLookup:
         """Iterator over all ProteaseInfo entries in the lookup."""
         return iter(self.id_to_info.values())
 
+    def __len__(self) -> int:
+        """Number of proteases in the lookup."""
+        return len(self.id_to_info)
+
 
 PROTEASE_LOOKUP = ProteaseLookup(PROTEASES_DICT)

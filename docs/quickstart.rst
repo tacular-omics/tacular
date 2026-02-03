@@ -1,6 +1,8 @@
 Quick Start Guide
 =================
 
+All lookups are case-insensitive, except element symbols which are case-sensitive.
+
 Basic Usage
 -----------
 
@@ -9,11 +11,7 @@ Import tacular and access the various lookup modules:
 .. testcode::
 
    import tacular as t
-   print("Tacular imported successfully")
 
-.. testoutput::
-
-   Tacular imported successfully
 
 Amino Acid Lookups
 ------------------
@@ -28,8 +26,8 @@ Query amino acids by single-letter code, three-letter code, or name:
    # By three-letter code
    ala = t.AA_LOOKUP['Ala']
    
-   # By name
-   ala = t.AA_LOOKUP['Alanine']
+   # By name 
+   ala = t.AA_LOOKUP['AlaNine']
    
    # Access properties
    print(f"Mass: {ala.monoisotopic_mass}")
@@ -68,6 +66,10 @@ Query elements and isotopes:
 
 Modification Lookups
 --------------------
+
+Since modification databses can be large, they are lazily loaded on first access. 
+Supported databases include Unimod, PSI-MOD, RESID, XLmod, and GNOme. Currently only valid 
+modifications are included (Must have at least one valid mass, or composition). 
 
 Query modifications from various databases:
 
@@ -143,7 +145,7 @@ Query protease cleavage patterns:
 .. testcode::
 
    # Query by name
-   trypsin = t.PROTEASE_LOOKUP['Trypsin']
+   trypsin = t.PROTEASE_LOOKUP['trypsin']
    print(f"Trypsin name: {trypsin.name}")
    
    # Access regex pattern
@@ -203,16 +205,14 @@ Most lookups support iteration and contain checks:
    
    # Get ordered amino acids
    ordered = t.AA_LOOKUP.ordered_amino_acids
-   print(f"Ordered AAs count: {len(ordered)}")
-   
-   # Get only unambiguous amino acids
-   unambiguous = t.AA_LOOKUP.unambiguous_amino_acids
-   print(f"Unambiguous AAs count: {len(unambiguous)}")
+   ambiguous_amino_acids = t.AA_LOOKUP.ambiguous_amino_acids
+   mass_amino_acids = t.AA_LOOKUP.mass_amino_acids
+   unambiguous_amino_acids = t.AA_LOOKUP.unambiguous_amino_acids
+   mass_unambiguous_amino_acids = t.AA_LOOKUP.mass_unambiguous_amino_acids
+
 
 .. testoutput::
 
    Acetyl modification exists
    ...
    NonExistent mod: None
-   Ordered AAs count: ...
-   Unambiguous AAs count: ...

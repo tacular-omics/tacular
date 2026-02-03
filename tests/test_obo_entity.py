@@ -82,3 +82,7 @@ def test_filter_infos():
     assert filter_infos(infos, has_composition=False) == [e2]
     assert filter_infos(infos, id="1") == [e1]
     assert filter_infos(infos, name="B") == [e2]
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

@@ -194,3 +194,7 @@ class TestXlmodDataIntegrity:
                 count_checked += 1
                 if count_checked >= 10:
                     break
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

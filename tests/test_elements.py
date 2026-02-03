@@ -71,5 +71,9 @@ def test_parse_composition():
     assert parsed[c13_info] == 1
 
     # Element info is hashable, so the following works too
-    assert parsed['C'] == 2 # type: ignore
-    assert parsed['13C'] == 1 # type: ignore
+    assert parsed["C"] == 2  # type: ignore
+    assert parsed["13C"] == 1  # type: ignore
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

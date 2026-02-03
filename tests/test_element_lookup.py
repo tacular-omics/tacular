@@ -680,3 +680,7 @@ class TestElementLookupComprehensive:
         assert updated.symbol == c12.symbol
         assert updated.mass == c12.mass
         assert updated.mass_number == c12.mass_number
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

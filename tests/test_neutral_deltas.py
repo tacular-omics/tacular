@@ -4,23 +4,30 @@ from tacular import NEUTRAL_DELTA_LOOKUP as db
 from tacular.neutral_deltas import NeutralDelta
 
 
+@pytest.fixture
+def first_delta():
+    """Fixture to provide the first neutral delta from the database"""
+    deltas = list(db)
+    if not deltas:
+        pytest.skip("No neutral deltas in database")
+    return deltas[0]
+
+
 class TestNeutralDeltaLookupBasics:
     """Test basic neutral delta lookup operations"""
 
     def test_getitem_by_formula(self):
         """Test __getitem__ with chemical formulas"""
         # H2O (water) is a common neutral loss
-        if "H2O" in db:
-            water = db["H2O"]
+        if "water" in db:
+            water = db["water"]
             assert water.formula == "H2O"
             assert water.name is not None
 
-    def test_getitem_by_name(self):
+    def test_getitem_by_name(self, first_delta):
         """Test __getitem__ with names"""
-        if len(list(db)) > 0:
-            first_entry = next(iter(db))
-            result = db[first_entry.name]
-            assert result.name.lower() == first_entry.name.lower()
+        result = db[first_delta.name]
+        assert result.name.lower() == first_delta.name.lower()
 
     def test_getitem_by_neutral_delta_enum(self):
         """Test __getitem__ with NeutralDelta enum"""
@@ -82,13 +89,11 @@ class TestNeutralDeltaLookupQueryMethods:
         result = db.query_formula("XYZ123")
         assert result is None
 
-    def test_query_name(self):
+    def test_query_name(self, first_delta):
         """Test query_name method"""
-        if len(list(db)) > 0:
-            first_entry = next(iter(db))
-            result = db.query_name(first_entry.name)
-            assert result is not None
-            assert result.name.lower() == first_entry.name.lower()
+        result = db.query_name(first_delta.name)
+        assert result is not None
+        assert result.name.lower() == first_delta.name.lower()
 
     def test_query_name_not_found(self):
         """Test query_name with non-existent name"""
@@ -120,27 +125,21 @@ class TestNeutralDeltaSpecialFeatures:
             expected = sum(1 for aa in sequence if aa in water.amino_acids)
             assert sites == expected
 
-    def test_calculate_loss_sites_no_sites(self):
+    def test_calculate_loss_sites_no_sites(self, first_delta):
         """Test calculate_loss_sites with sequence having no loss sites"""
-        if len(list(db)) > 0:
-            first_delta = next(iter(db))
-            # Create sequence with no matching amino acids
-            sequence = "G" * 10  # Glycine typically doesn't lose much
-            sites = first_delta.calculate_loss_sites(sequence)
-            assert sites >= 0
+        # Create sequence with no matching amino acids
+        sequence = "G" * 10  # Glycine typically doesn't lose much
+        sites = first_delta.calculate_loss_sites(sequence)
+        assert sites >= 0
 
-    def test_calculate_loss_sites_empty_sequence(self):
+    def test_calculate_loss_sites_empty_sequence(self, first_delta):
         """Test calculate_loss_sites with empty sequence"""
-        if len(list(db)) > 0:
-            first_delta = next(iter(db))
-            sites = first_delta.calculate_loss_sites("")
-            assert sites == 0
+        sites = first_delta.calculate_loss_sites("")
+        assert sites == 0
 
-    def test_amino_acids_frozenset(self):
+    def test_amino_acids_frozenset(self, first_delta):
         """Test amino_acids is a frozenset"""
-        if len(list(db)) > 0:
-            first_delta = next(iter(db))
-            assert isinstance(first_delta.amino_acids, frozenset)
+        assert isinstance(first_delta.amino_acids, frozenset)
 
     def test_amino_acids_contains_valid_codes(self):
         """Test amino_acids contains valid single-letter codes"""
@@ -158,42 +157,34 @@ class TestNeutralDeltaSpecialFeatures:
 class TestNeutralDeltaMethods:
     """Test NeutralDeltaInfo methods"""
 
-    def test_get_mass_monoisotopic(self):
+    def test_get_mass_monoisotopic(self, first_delta):
         """Test get_mass with monoisotopic=True"""
-        if len(list(db)) > 0:
-            delta = next(iter(db))
-            mass = delta.get_mass(monoisotopic=True)
-            assert mass == delta.monoisotopic_mass
-            assert isinstance(mass, float)
+        mass = first_delta.get_mass(monoisotopic=True)
+        assert mass == first_delta.monoisotopic_mass
+        assert isinstance(mass, float)
 
-    def test_get_mass_average(self):
+    def test_get_mass_average(self, first_delta):
         """Test get_mass with monoisotopic=False"""
-        if len(list(db)) > 0:
-            delta = next(iter(db))
-            mass = delta.get_mass(monoisotopic=False)
-            assert mass == delta.average_mass
-            assert isinstance(mass, float)
+        mass = first_delta.get_mass(monoisotopic=False)
+        assert mass == first_delta.average_mass
+        assert isinstance(mass, float)
 
-    def test_composition_property(self):
+    def test_composition_property(self, first_delta):
         """Test composition cached property"""
-        if len(list(db)) > 0:
-            delta = next(iter(db))
-            comp = delta.composition
-            assert comp is not None
-            assert len(comp) > 0
+        comp = first_delta.composition
+        assert comp is not None
+        assert len(comp) > 0
 
-    def test_to_dict(self):
+    def test_to_dict(self, first_delta):
         """Test to_dict conversion"""
-        if len(list(db)) > 0:
-            delta = next(iter(db))
-            d = delta.to_dict()
-            assert d["formula"] == delta.formula
-            assert d["name"] == delta.name
-            assert "description" in d
-            assert "amino_acids" in d
-            assert "monoisotopic_mass" in d
-            assert "average_mass" in d
-            assert "dict_composition" in d
+        d = first_delta.to_dict()
+        assert d["formula"] == first_delta.formula
+        assert d["name"] == first_delta.name
+        assert "description" in d
+        assert "amino_acids" in d
+        assert "monoisotopic_mass" in d
+        assert "average_mass" in d
+        assert "dict_composition" in d
 
     def test_hash(self):
         """Test __hash__ for use in sets/dicts"""
@@ -226,22 +217,15 @@ class TestNeutralDeltaEdgeCases:
 class TestNeutralDeltaDataIntegrity:
     """Test data integrity for neutral deltas"""
 
-    def test_all_have_formulas(self):
-        """Test all entries have non-empty formulas"""
+    @pytest.mark.parametrize("attr", ["formula", "name", "description"])
+    def test_all_have_required_fields(self, attr):
+        """Test all entries have required fields populated"""
         for delta in db:
-            assert delta.formula is not None
-            assert len(delta.formula) > 0
-
-    def test_all_have_names(self):
-        """Test all entries have non-empty names"""
-        for delta in db:
-            assert delta.name is not None
-            assert len(delta.name) > 0
-
-    def test_all_have_descriptions(self):
-        """Test all entries have descriptions"""
-        for delta in db:
-            assert delta.description is not None
+            value = getattr(delta, attr)
+            assert value is not None
+            if attr != "description":  # description can be empty? logic from old test implied not None.
+                # Old tests checked len > 0 for formula and name, not explicitly for description just not None
+                assert len(value) > 0
 
     def test_masses_are_reasonable(self):
         """Test masses are within reasonable ranges"""
@@ -260,13 +244,11 @@ class TestNeutralDeltaDataIntegrity:
         # At least some common losses should exist
         assert found_count > 0
 
-    def test_formula_name_lookup_consistency(self):
+    def test_formula_name_lookup_consistency(self, first_delta):
         """Test formula and name lookups return same object"""
-        if len(list(db)) > 0:
-            first_delta = next(iter(db))
-            by_formula = db.query_formula(first_delta.formula)
-            by_name = db.query_name(first_delta.name)
-            assert by_formula is by_name
+        by_formula = db.query_formula(first_delta.formula)
+        by_name = db.query_name(first_delta.name)
+        assert by_formula is by_name
 
     def test_composition_matches_formula(self):
         """Test composition is consistent with formula"""
@@ -275,5 +257,8 @@ class TestNeutralDeltaDataIntegrity:
             # Composition should have at least one element
             assert len(comp) > 0
             # Total atom count should be reasonable
-            total_atoms = sum(comp.values())
+            _ = sum(comp.values())
 
+
+if __name__ == "__main__":
+    pytest.main([__file__])

@@ -319,3 +319,7 @@ class TestRefMolDataIntegrity:
         """Test there are no duplicate names"""
         names = [m.name.lower() for m in db]
         assert len(names) == len(set(names))
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

@@ -128,6 +128,7 @@ def test_lookup_UNIMOD():
     assert "Acetyl" in t.UNIMOD_LOOKUP
     assert "aceTyl" in t.UNIMOD_LOOKUP
 
+
 def test_lookup_RESID():
     assert 2 in t.RESID_LOOKUP
     assert "2" in t.RESID_LOOKUP
@@ -244,11 +245,11 @@ class TestResidLookupComprehensive:
         # Get first entry with mass
         for entry in t.RESID_LOOKUP:
             if entry.monoisotopic_mass is not None:
-                results = t.RESID_LOOKUP.query_mass(
-                    entry.monoisotopic_mass,
-                    tolerance=0.01
-                )
+                results = t.RESID_LOOKUP.query_mass(entry.monoisotopic_mass, tolerance=0.01)
                 assert len(results) > 0
                 assert any(r.id == entry.id for r in results)
                 break
 
+
+if __name__ == "__main__":
+    pytest.main([__file__])

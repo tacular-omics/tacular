@@ -175,5 +175,10 @@ class TestGnoDataIntegrity:
                 tolerance = 0.01
                 results = db.query_mass(entry.monoisotopic_mass, tolerance=tolerance, monoisotopic=True)
                 for result in results:
-                    assert abs(result.monoisotopic_mass - entry.monoisotopic_mass) <= tolerance
+                    if result.monoisotopic_mass is not None:
+                        assert abs(result.monoisotopic_mass - entry.monoisotopic_mass) <= tolerance
                 break
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

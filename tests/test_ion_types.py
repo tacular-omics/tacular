@@ -139,7 +139,6 @@ class TestFragmentIonProperties:
                 assert not ion.is_backward
                 break
 
-
     def test_property_flags(self):
         """Test IonTypeProperty flags are set correctly"""
         for ion in db:
@@ -279,3 +278,7 @@ class TestFragmentIonDataIntegrity:
             assert isinstance(ion_type, IonType)
             assert ion_type.value == ion.id
             break
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

@@ -137,7 +137,6 @@ class TestPsimodSpecialFeatures:
             choice2 = db.choice()
             assert choice2 is not None
 
-
     def test_getitem_tries_name_then_id(self):
         """Test __getitem__ tries name first, then ID"""
         if len(list(db)) > 0:
@@ -241,3 +240,7 @@ class TestPsimodDataIntegrity:
         list1 = list(db)
         list2 = list(db)
         assert [e.id for e in list1] == [e.id for e in list2]
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

@@ -10,8 +10,8 @@ lint:
 
 # Format code
 format:
-    uv run ruff check --select I --fix src data_gen --exclude '**/data.py'
-    uv run ruff format src --exclude '**/data.py'
+    uv run ruff check --select I --fix src tests data_gen --exclude '**/data.py'
+    uv run ruff format src tests --exclude '**/data.py'
 
 # Run type checking
 check:
