@@ -13,9 +13,11 @@ format:
     uv run ruff check --select I --fix src tests data_gen --exclude '**/data.py'
     uv run ruff format src tests --exclude '**/data.py'
 
-# Run type checking
-check:
+ty:
     uv run ty check src --exclude '**/data.py'
+
+# Run type checking
+check: format lint ty test
 
 # Run tests
 test:

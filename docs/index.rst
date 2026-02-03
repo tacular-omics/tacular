@@ -1,5 +1,7 @@
-tacular Documentation
-=====================
+.. image:: _static/tacular_logo.png
+   :alt: Tacular Logo
+   :align: center
+   :width: 300px
 
 Welcome to tacular's documentation! This package provides comprehensive lookups for modifications, amino acids, elements, and other biochemistry data types commonly used in mass spectrometry and proteomics.
 

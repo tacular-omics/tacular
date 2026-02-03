@@ -40,6 +40,26 @@ Query amino acids by single-letter code, three-letter code, or name:
    Formula: C3H5NO
    Composition: {'C': 3, 'H': 5, 'N': 1, 'O': 1}
 
+Amino Acid Collections
+~~~~~~~~~~~~~~~~~~~~~~
+
+The amino acid lookup provides several predefined collections:
+
+.. testcode::
+
+   # Groups of amino acids by category
+   ordered = t.AA_LOOKUP.ordered_amino_acids
+   ambiguous = t.AA_LOOKUP.ambiguous_amino_acids
+   mass_aas = t.AA_LOOKUP.mass_amino_acids
+   unambiguous = t.AA_LOOKUP.unambiguous_amino_acids
+   mass_unambiguous = t.AA_LOOKUP.mass_unambiguous_amino_acids
+   
+   print(f"Ordered count: {len(ordered)}")
+
+.. testoutput::
+
+   Ordered count: ...
+
 Element Lookups
 ---------------
 
@@ -58,18 +78,64 @@ Query elements and isotopes:
    print(f"Mass: {carbon_13.mass}")
    print(f"Abundance: {carbon_13.abundance}")
 
+   # Get monoisotopic element (most abundant isotope)
+   mono_carbon = t.ELEMENT_LOOKUP.get_monoisotopic('C')
+   print(f"Monoisotopic Carbon Mass: {mono_carbon.mass}")
+
+   # Get all isotopes of an element
+   isotopes = t.ELEMENT_LOOKUP.get_all_isotopes('C')
+   print(f"Number of Carbon isotopes: {len(isotopes)}")
+
 .. testoutput::
 
    Symbol: C
    Mass: 13.00335483507
    Abundance: 0.0107
+   Monoisotopic Carbon Mass: 12.0
+   Number of Carbon isotopes: 3
+
+Element Info
+------------
+
+The return type for element lookups is ``ElementInfo``, which contains the following properties:
+
+.. code-block:: python
+
+   from dataclasses import dataclass
+
+   @dataclass(frozen=True, slots=True)
+   class ElementInfo:
+       number: int
+       mass_number: int | None
+       symbol: str
+       mass: float
+       abundance: float | None
+       average_mass: float
+       is_monoisotopic: bool | None
+
+- ``number`` is the atomic number
+- ``mass_number`` is the atomic number + neutron number
+- ``symbol`` is the element symbol
+- ``mass`` is the isotopic mass
+- ``abundance`` is the natural abundance (``None`` for synthetic isotopes)
+- ``average_mass`` is the average atomic mass for the element
+- ``is_monoisotopic`` can be ``False``, ``True``, or ``None``
+
+  - ``None`` indicates that the ElementInfo is not specified, in other words it represents the element as a whole rather than a specific isotope
+  - ``True`` indicates that this isotope is the most abundant isotope for the element
+  - ``False`` indicates that this isotope is not the most abundant isotope for the element 
+
 
 Modification Lookups
 --------------------
 
-Since modification databses can be large, they are lazily loaded on first access. 
-Supported databases include Unimod, PSI-MOD, RESID, XLmod, and GNOme. Currently only valid 
-modifications are included (Must have at least one valid mass, or composition). 
+Since modification databases can be large, they are lazily loaded on first access.
+Supported databases include Unimod, PSI-MOD, RESID, XLmod, and GNOme. Currently only valid
+modifications are included (must have at least one valid mass or composition).
+
+RESID IDs have an ``AA`` prefix (e.g., ``AA0002``), which is optional when querying.
+GNOme IDs have a ``G`` prefix (e.g., ``G00008BG``), which is optional when querying.
+In addition, all leading zeros are removed, and when applicable, integer IDs can be used.
 
 Query modifications from various databases:
 
@@ -79,23 +145,36 @@ Query modifications from various databases:
    acetyl = t.UNIMOD_LOOKUP['Acetyl']
    print(f"Acetyl ID: {acetyl.id}")
    
-   acetyl_by_id = t.UNIMOD_LOOKUP['1']
+   acetyl_by_id = t.UNIMOD_LOOKUP[1]  # Can also use int IDs
    print(f"Acetyl by ID: {acetyl_by_id.name}")
-   
+ 
    # PSI-MOD
    phospho = t.PSIMOD_LOOKUP.query_name('phosphorylated residue')
    print(f"PSI-MOD found: {phospho is not None}")
+
+   phospho_by_id = t.PSIMOD_LOOKUP['00696']  # Can also use int IDs: 696
+   print(f"Phospho by ID name: {phospho_by_id.name}")
    
-   # Query by mass
-   mods = t.UNIMOD_LOOKUP.query_mass(42.01, tolerance=0.01)
-   print(f"Mods at mass 42.01: {len(mods)}")
+   # Query by mass (default: tolerance=0.01, monoisotopic=True)
+   mods1 = t.UNIMOD_LOOKUP.query_mass(42.01)
+   print(f"Mods at mass 42.01: {len(mods1)}")
+
+   mods2 = t.UNIMOD_LOOKUP.query_mass(42.01, tolerance=0.02, monoisotopic=False)
+   print(f"Mods at mass 42.01 (tol=0.02, avg): {len(mods2)}")
+
+   # Other databases
+   t.GNO_LOOKUP
+   t.RESID_LOOKUP
+   t.XLMOD_LOOKUP
 
 .. testoutput::
 
    Acetyl ID: 1
    Acetyl by ID: Acetyl
    PSI-MOD found: True
+   Phospho by ID name: phosphorylated residue
    Mods at mass 42.01: ...
+   Mods at mass 42.01 (tol=0.02, avg): ...
 
 Fragment Ion Lookups
 --------------------
@@ -124,9 +203,13 @@ Query neutral losses:
 
 .. testcode::
 
-   # Query water loss
+   # Query water loss by formula
    water = t.NEUTRAL_DELTA_LOOKUP['H2O']
    print(f"Water loss name: {water.name}")
+
+   # Can also query by name
+   water_by_name = t.NEUTRAL_DELTA_LOOKUP['water']
+   print(f"Water loss name: {water_by_name.name}")
    
    # Calculate possible loss sites in sequence
    sites = water.calculate_loss_sites('PEPTIDE')
@@ -134,6 +217,7 @@ Query neutral losses:
 
 .. testoutput::
 
+   Water loss name: Water
    Water loss name: Water
    Possible water loss sites: ...
 
@@ -202,17 +286,10 @@ Most lookups support iteration and contain checks:
    # Get with default
    mod = t.UNIMOD_LOOKUP.get('NonExistent', default=None)
    print(f"NonExistent mod: {mod}")
-   
-   # Get ordered amino acids
-   ordered = t.AA_LOOKUP.ordered_amino_acids
-   ambiguous_amino_acids = t.AA_LOOKUP.ambiguous_amino_acids
-   mass_amino_acids = t.AA_LOOKUP.mass_amino_acids
-   unambiguous_amino_acids = t.AA_LOOKUP.unambiguous_amino_acids
-   mass_unambiguous_amino_acids = t.AA_LOOKUP.mass_unambiguous_amino_acids
-
 
 .. testoutput::
 
    Acetyl modification exists
    ...
    NonExistent mod: None
+

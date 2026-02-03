@@ -19,7 +19,7 @@ from .resid import RESID_LOOKUP, ResidInfo, ResidLookup
 from .unimod import UNIMOD_LOOKUP, UnimodInfo, UnimodLookup
 from .xlmod import XLMOD_LOOKUP, XlModInfo, XlModLookup
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 __all__ = [
     "AA_LOOKUP",

@@ -1,9 +1,9 @@
 {
     "metadata": {
-        "generated_date": "2026-02-02T12:47:10.997940",
+        "generated_date": "2026-02-03T14:29:44.244521",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "tacular_version": "1.0.0",
+        "tacular_version": "1.0.1",
         "data_version": null
     },
     "neutral_losses": [
@@ -23,9 +23,9 @@
             "name": "Ammonia",
             "description": "From amine groups",
             "amino_acids": [
+                "R",
                 "N",
                 "K",
-                "R",
                 "Q"
             ],
             "monoisotopic_mass": -17.026549,
@@ -41,8 +41,8 @@
             "description": "From -OH and -COOH groups",
             "amino_acids": [
                 "D",
-                "E",
                 "S",
+                "E",
                 "T"
             ],
             "monoisotopic_mass": -18.010565,
@@ -150,9 +150,9 @@
             "name": "Metaphosphoric acid",
             "description": "From phosphotyrosine and sometimes from phosphoserine and phosphothreonine",
             "amino_acids": [
+                "Y",
                 "S",
-                "T",
-                "Y"
+                "T"
             ],
             "monoisotopic_mass": -79.966331,
             "average_mass": -79.979918,

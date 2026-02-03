@@ -3,8 +3,16 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True, slots=True)
 class ElementInfo:
-    """
-    Class to store information about an element isotope
+    """Represents an element or specific isotope with its properties.
+
+    Attributes:
+        number: Atomic number (number of protons)
+        mass_number: Atomic mass number (protons + neutrons), None for non-specific element
+        symbol: Element symbol (e.g., 'C', 'H', 'O')
+        mass: Isotopic mass in Daltons
+        abundance: Natural abundance as fraction (0.0-1.0), None for synthetic isotopes
+        average_mass: Average atomic mass for the element
+        is_monoisotopic: True if most abundant isotope, False if not, None if element is non-specific
     """
 
     number: int
@@ -73,16 +81,19 @@ class ElementInfo:
 
     @property
     def neutron_count(self) -> int:
+        """Calculate the number of neutrons in this isotope."""
         if self.mass_number is None:
             raise ValueError("Mass number is None, cannot calculate neutron count")
         return self.mass_number - self.number
 
     @property
     def proton_count(self) -> int:
+        """Return the number of protons (same as atomic number)."""
         return self.number
 
     @property
     def is_radioactive(self) -> bool:
+        """Return True if this isotope is radioactive (zero natural abundance)."""
         return self.abundance == 0.0
 
     def __str__(self) -> str:
@@ -91,11 +102,19 @@ class ElementInfo:
         return f"{self.mass_number}{self.symbol}"
 
     def get_mass(self, monoisotopic: bool = True) -> float:
-        """Get the mass of this element isotope"""
+        """Get the mass of this element isotope.
+
+        Args:
+            monoisotopic: If True, return isotopic mass; if False, return average mass
+        """
         return self.mass if monoisotopic else self.average_mass
 
     def to_dict(self, float_precision: int = 6) -> dict[str, object]:
-        """Convert the ElementInfo to a dictionary"""
+        """Convert the ElementInfo to a dictionary.
+
+        Args:
+            float_precision: Number of decimal places for mass values
+        """
         return {
             "number": self.number,
             "symbol": self.symbol,
@@ -113,7 +132,11 @@ class ElementInfo:
         )
 
     def update(self, **kwargs: object) -> "ElementInfo":
-        """Return a new ElementInfo with updated fields"""
+        """Return a new ElementInfo with updated fields.
+
+        Args:
+            **kwargs: Field names and new values to update
+        """
         # Since we use slots=True, we need to get fields manually
         current_values: dict[str, object] = {
             "number": self.number,
@@ -127,7 +150,11 @@ class ElementInfo:
         return self.__class__(**{**current_values, **kwargs})  # type: ignore
 
     def serialize(self, count: int) -> str:
-        """Serialize the ElementInfo to a proforma formula element compatible string"""
+        """Serialize the ElementInfo to a ProForma formula element compatible string.
+
+        Args:
+            count: Number of atoms of this element
+        """
         if count == 0:
             raise ValueError("Count cannot be zero for serialization")
         if count == 1:
