@@ -122,6 +122,7 @@ def gen_frag(output_file: str = OutputFile.FRAGMENT_IONS) -> None:
 
 from enum import StrEnum
 from typing import Literal
+
 from .dclass import FragmentIonInfo, IonTypeProperty
 
 
