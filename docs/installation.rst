@@ -30,3 +30,4 @@ Using uv (recommended for development)
    git clone https://github.com/tacular-omics/tacular.git
    cd tacular
    uv sync
+
