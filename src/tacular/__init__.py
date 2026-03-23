@@ -17,6 +17,7 @@ from .psimod import PSIMOD_LOOKUP, PsimodInfo, PsimodLookup
 from .refmol import REFMOL_LOOKUP, RefMolID, RefMolInfo, RefMolLiteral, RefMolLookup
 from .resid import RESID_LOOKUP, ResidInfo, ResidLookup
 from .unimod import UNIMOD_LOOKUP, UnimodInfo, UnimodLookup
+from .uniprot_ptm import UNIPROT_PTM_LOOKUP, UniprotPtmInfo, UniprotPtmLookup
 from .xlmod import XLMOD_LOOKUP, XlModInfo, XlModLookup
 
 __version__ = "1.0.1"
@@ -72,6 +73,9 @@ __all__ = [
     "UNIMOD_LOOKUP",
     "UnimodInfo",
     "UnimodLookup",
+    "UNIPROT_PTM_LOOKUP",
+    "UniprotPtmInfo",
+    "UniprotPtmLookup",
     "XLMOD_LOOKUP",
     "XlModInfo",
     "XlModLookup",
