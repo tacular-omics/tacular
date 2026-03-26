@@ -10,6 +10,21 @@ import tacular as pt
 logger = setup_logger(__name__, os.path.splitext(os.path.basename(__file__))[0])
 
 
+def _esc(s: str | None) -> str:
+    """Escape a string for inclusion in generated Python source, or return 'None'."""
+    if s is None:
+        return "None"
+    return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def _esc_tuple(t: tuple[str, ...]) -> str:
+    """Serialize a tuple of strings for inclusion in generated Python source."""
+    if not t:
+        return "()"
+    items = ", ".join('"' + v.replace("\\", "\\\\").replace('"', '\\"') + '"' for v in t)
+    return f"({items},)"
+
+
 def _parse_ptmlist(lines: list[str]) -> tuple[str, Generator[pt.UniprotPtmInfo, None, None]]:
     """Parse ptmlist.txt lines into (version, generator of UniprotPtmInfo)."""
 
@@ -20,7 +35,7 @@ def _parse_ptmlist(lines: list[str]) -> tuple[str, Generator[pt.UniprotPtmInfo, 
             break
 
     def _entries() -> Generator[pt.UniprotPtmInfo, None, None]:
-        current: dict[str, str] = {}
+        current: dict[str, object] = {}
 
         for raw_line in lines:
             line = raw_line.rstrip("\n")
@@ -28,6 +43,7 @@ def _parse_ptmlist(lines: list[str]) -> tuple[str, Generator[pt.UniprotPtmInfo, 
             if line.startswith("//"):
                 if current:
                     entry = _build_entry(current)
+
                     if entry is not None:
                         yield entry
                 current = {}
@@ -39,13 +55,20 @@ def _parse_ptmlist(lines: list[str]) -> tuple[str, Generator[pt.UniprotPtmInfo, 
             code = line[:2]
             value = line[5:].strip() if len(line) > 5 else ""
 
-            if code in ("ID", "AC", "CF", "MM", "MA"):
+            if code in ("ID", "AC", "FT", "TG", "PA", "PP", "CF", "MM", "MA", "LC"):
                 current[code] = value
+            elif code in ("TR", "KW", "DR"):
+                existing = current.get(code, [])
+                current[code] = existing + [value]  # type: ignore[operator]
 
     return version, _entries()
 
 
-def _build_entry(fields: dict[str, str]) -> pt.UniprotPtmInfo | None:
+def _build_entry(fields: dict[str, object]) -> pt.UniprotPtmInfo | None:
+    if fields.get("FT") == "CROSSLNK":
+        # Skip crosslink entries as they don't represent standalone modifications
+        return None
+
     name = fields.get("ID")
     ac = fields.get("AC")
 
@@ -53,7 +76,7 @@ def _build_entry(fields: dict[str, str]) -> pt.UniprotPtmInfo | None:
         return None
 
     # Strip "PTM-" prefix, keep zero-padded numeric string e.g. "0450"
-    term_id = ac.removeprefix("PTM-")
+    term_id = str(ac).removeprefix("PTM-")
 
     cf_raw = fields.get("CF")
     mm_raw = fields.get("MM")
@@ -65,7 +88,7 @@ def _build_entry(fields: dict[str, str]) -> pt.UniprotPtmInfo | None:
 
     if cf_raw:
         try:
-            composition = parse_formula_to_dict(cf_raw)
+            composition = parse_formula_to_dict(str(cf_raw))
             formula = format_composition_string(composition)
         except Exception as e:
             logger.warning(
@@ -84,13 +107,13 @@ def _build_entry(fields: dict[str, str]) -> pt.UniprotPtmInfo | None:
 
     if mm_raw:
         try:
-            mono_mass = float(mm_raw)
+            mono_mass = float(str(mm_raw))
         except ValueError:
             logger.warning("[UniProt-PTM] Invalid MM for %s %s: %s", term_id, name, mm_raw)
 
     if ma_raw:
         try:
-            avg_mass = float(ma_raw)
+            avg_mass = float(str(ma_raw))
         except ValueError:
             logger.warning("[UniProt-PTM] Invalid MA for %s %s: %s", term_id, name, ma_raw)
 
@@ -102,10 +125,9 @@ def _build_entry(fields: dict[str, str]) -> pt.UniprotPtmInfo | None:
         if mono_mass is not None and abs(calc_mono - mono_mass) > 0.01:
             symbol = "🔴" if abs(calc_mono - mono_mass) > 1.0 else "⚠️"
             logger.warning(
-                "%s UniProt-PTM MASS MISMATCH [%s] %s: Monoisotopic calculated=%.6f reported=%.6f Formula=%s",
+                "%s UniProt-PTM MASS MISMATCH [%s]: Monoisotopic calculated=%.6f reported=%.6f Formula=%s",
                 symbol,
                 term_id,
-                name,
                 calc_mono,
                 mono_mass,
                 cf_raw,
@@ -114,22 +136,39 @@ def _build_entry(fields: dict[str, str]) -> pt.UniprotPtmInfo | None:
         if avg_mass is not None and abs(calc_avg - avg_mass) > 0.2:
             symbol = "⚠️⚠️" if abs(calc_avg - avg_mass) > 1.0 else "⚠️"
             logger.warning(
-                "%s UniProt-PTM MASS MISMATCH [%s] %s: Average calculated=%.6f reported=%.6f Formula=%s",
+                "%s UniProt-PTM MASS MISMATCH [%s]: Average calculated=%.6f reported=%.6f Formula=%s",
                 symbol,
                 term_id,
-                name,
                 calc_avg,
                 avg_mass,
                 cf_raw,
             )
 
+    # Extract new fields
+    feature_key = fields.get("FT")
+    target = fields.get("TG")
+    position_aa = fields.get("PA")
+    position_polypeptide = fields.get("PP")
+    cellular_location = fields.get("LC")
+    taxonomic_range = tuple(fields.get("TR") or [])
+    keywords = tuple(fields.get("KW") or [])
+    cross_references = tuple(fields.get("DR") or [])
+
     return pt.UniprotPtmInfo(
         id=term_id,
-        name=name,
+        name=str(name),
         formula=formula,
         monoisotopic_mass=mono_mass,
         average_mass=avg_mass,
         dict_composition=composition,
+        feature_key=str(feature_key) if feature_key is not None else None,
+        target=str(target) if target is not None else None,
+        position_aa=str(position_aa) if position_aa is not None else None,
+        position_polypeptide=str(position_polypeptide) if position_polypeptide is not None else None,
+        cellular_location=str(cellular_location) if cellular_location is not None else None,
+        taxonomic_range=taxonomic_range,
+        keywords=keywords,
+        cross_references=cross_references,
     )
 
 
@@ -189,6 +228,14 @@ def gen_uniprot_ptm(output_file: str = OutputFile.UNIPROT_PTM):
         monoisotopic_mass={mod.monoisotopic_mass},
         average_mass={mod.average_mass},
         dict_composition={mod.dict_composition},
+        feature_key={_esc(mod.feature_key)},
+        target={_esc(mod.target)},
+        position_aa={_esc(mod.position_aa)},
+        position_polypeptide={_esc(mod.position_polypeptide)},
+        cellular_location={_esc(mod.cellular_location)},
+        taxonomic_range={_esc_tuple(mod.taxonomic_range)},
+        keywords={_esc_tuple(mod.keywords)},
+        cross_references={_esc_tuple(mod.cross_references)},
     ),'''
         entries.append(entry)
 
