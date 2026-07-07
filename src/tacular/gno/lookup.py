@@ -1,3 +1,4 @@
+from .._cache import resolve
 from ..obo_lookup import OntologyLookup
 from .data import GNO_GLYCANS, VERSION
 from .dclass import GnoInfo
@@ -13,4 +14,4 @@ class GnoLookup(OntologyLookup[GnoInfo]):
         )
 
 
-GNO_LOOKUP = GnoLookup(GNO_GLYCANS, VERSION)
+GNO_LOOKUP = GnoLookup(*resolve("gnome_modifications.json", GnoInfo, GNO_GLYCANS, VERSION))

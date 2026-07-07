@@ -35,6 +35,22 @@ class OboEntity:
             f"composition={self.dict_composition})"
         )
 
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> Self:
+        """Reconstruct an OboEntity from its ``to_dict`` representation.
+
+        The inverse of :meth:`to_dict`; note ``to_dict`` serialises
+        ``dict_composition`` under the ``"composition"`` key.
+        """
+        return cls(
+            id=data["id"],
+            name=data["name"],
+            formula=data.get("formula"),
+            monoisotopic_mass=data.get("monoisotopic_mass"),
+            average_mass=data.get("average_mass"),
+            dict_composition=data.get("composition"),
+        )
+
     def update(self, **kwargs: Any) -> Self:
         """Return a new instance with updated fields"""
         return self.__class__(
@@ -50,16 +66,26 @@ class OboEntity:
         """Get the mass of the entity"""
         return self.monoisotopic_mass if monoisotopic else self.average_mass
 
-    def to_dict(self, float_precision: int = 6) -> dict[str, object]:
-        """Convert the OboEntity to a dictionary"""
+    def to_dict(self, float_precision: int | None = 6) -> dict[str, object]:
+        """Convert the OboEntity to a dictionary.
+
+        ``float_precision`` rounds the masses (default 6, as used for the bundled
+        ``jsons/*.json``). Pass ``None`` to preserve full float precision, e.g. when
+        round-tripping through the runtime cache so an updated install matches the
+        precision of the bundled ``data.py``.
+        """
+
+        def _round(value: float | None) -> float | None:
+            if value is None or float_precision is None:
+                return value
+            return round(value, float_precision)
+
         return {
             "id": self.id,
             "name": self.name,
             "formula": self.formula,
-            "monoisotopic_mass": round(self.monoisotopic_mass, float_precision)
-            if self.monoisotopic_mass is not None
-            else None,
-            "average_mass": round(self.average_mass, float_precision) if self.average_mass is not None else None,
+            "monoisotopic_mass": _round(self.monoisotopic_mass),
+            "average_mass": _round(self.average_mass),
             "composition": self.dict_composition,
         }
 

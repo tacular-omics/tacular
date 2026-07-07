@@ -1,3 +1,4 @@
+from .._cache import resolve
 from ..obo_lookup import OntologyLookup
 from .data import RESID_MODIFICATIONS, VERSION
 from .dclass import ResidInfo
@@ -13,4 +14,4 @@ class ResidLookup(OntologyLookup[ResidInfo]):
         )
 
 
-RESID_LOOKUP = ResidLookup(RESID_MODIFICATIONS, VERSION)
+RESID_LOOKUP = ResidLookup(*resolve("resid_modifications.json", ResidInfo, RESID_MODIFICATIONS, VERSION))

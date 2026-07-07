@@ -1,3 +1,4 @@
+from .._cache import resolve
 from ..obo_lookup import OntologyLookup
 from .data import UNIMOD_MODIFICATIONS, VERSION
 from .dclass import UnimodInfo
@@ -12,4 +13,4 @@ class UnimodLookup(OntologyLookup[UnimodInfo]):
         )
 
 
-UNIMOD_LOOKUP = UnimodLookup(UNIMOD_MODIFICATIONS, VERSION)
+UNIMOD_LOOKUP = UnimodLookup(*resolve("unimodifications.json", UnimodInfo, UNIMOD_MODIFICATIONS, VERSION))

@@ -1,3 +1,4 @@
+from .._cache import resolve
 from ..obo_lookup import OntologyLookup
 from .data import VERSION, XLMOD_MODIFICATIONS
 from .dclass import XlModInfo
@@ -12,4 +13,4 @@ class XlModLookup(OntologyLookup[XlModInfo]):
         )
 
 
-XLMOD_LOOKUP = XlModLookup(XLMOD_MODIFICATIONS, VERSION)
+XLMOD_LOOKUP = XlModLookup(*resolve("xlmodifications.json", XlModInfo, XLMOD_MODIFICATIONS, VERSION))

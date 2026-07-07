@@ -1,3 +1,4 @@
+from .._cache import resolve
 from ..obo_lookup import OntologyLookup
 from .data import PSI_MODIFICATIONS, VERSION
 from .dclass import PsimodInfo
@@ -12,4 +13,4 @@ class PsimodLookup(OntologyLookup[PsimodInfo]):
         )
 
 
-PSIMOD_LOOKUP = PsimodLookup(PSI_MODIFICATIONS, VERSION)
+PSIMOD_LOOKUP = PsimodLookup(*resolve("psimodifications.json", PsimodInfo, PSI_MODIFICATIONS, VERSION))

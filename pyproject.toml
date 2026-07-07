@@ -22,6 +22,9 @@ classifiers = [
     "Typing :: Typed",
 ]
 
+[project.scripts]
+tacular = "tacular.update:main"
+
 
 [build-system]
 requires = ["hatchling"]

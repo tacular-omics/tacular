@@ -17,6 +17,26 @@
   
 </div>
 
+## Updating data from the latest ontologies
+
+tacular ships with a snapshot of each ontology baked into the package. To refresh
+to the latest releases without reinstalling, use the `tacular` CLI. It downloads
+the current `.obo` sources, regenerates the data, and stores it in a per-user
+cache that the lookups prefer over the bundled snapshot on the next import.
+
+```bash
+tacular update                 # refresh all pullable ontologies (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme)
+tacular update unimod xlmod    # refresh a subset (GNOme is a large download; opt in explicitly)
+tacular update --offline DIR   # regenerate from local .obo files in DIR (no network)
+tacular status                 # show bundled vs cached versions
+tacular clear                  # remove the cache and revert to the bundled data
+tacular where                  # print the cache directory
+```
+
+The refresh takes effect on the next `import tacular`. Environment variables:
+`TACULAR_DATA_DIR` overrides the cache location; `TACULAR_DISABLE_CACHE=1` ignores
+the cache and always uses the bundled data. Equivalent to the CLI: `python -m tacular ...`.
+
 ## Generate Data
 
 See data_gen/README.md
