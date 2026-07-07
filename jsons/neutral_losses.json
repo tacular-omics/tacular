@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generated_date": "2026-02-03T14:29:44.244521",
+        "generated_date": "2026-07-07T14:55:16.213811",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
         "tacular_version": "1.0.1",
@@ -23,10 +23,10 @@
             "name": "Ammonia",
             "description": "From amine groups",
             "amino_acids": [
-                "R",
-                "N",
                 "K",
-                "Q"
+                "R",
+                "Q",
+                "N"
             ],
             "monoisotopic_mass": -17.026549,
             "average_mass": -17.030525,
@@ -72,8 +72,8 @@
             "name": "Carbon dioxide",
             "description": "From -COOH groups",
             "amino_acids": [
-                "E",
-                "D"
+                "D",
+                "E"
             ],
             "monoisotopic_mass": -43.989829,
             "average_mass": -44.009546,
@@ -87,13 +87,13 @@
             "name": "Formamide",
             "description": "From -CONH2 groups",
             "amino_acids": [
-                "N",
-                "Q"
+                "Q",
+                "N"
             ],
-            "monoisotopic_mass": -44.013639,
-            "average_mass": -44.032726,
+            "monoisotopic_mass": -45.021464,
+            "average_mass": -45.040666,
             "dict_composition": {
-                "H": -2,
+                "H": -3,
                 "C": -1,
                 "O": -1,
                 "N": -1
@@ -104,15 +104,15 @@
             "name": "Formic acid",
             "description": "From -COOH groups",
             "amino_acids": [
-                "E",
-                "D"
+                "D",
+                "E"
             ],
-            "monoisotopic_mass": -29.00274,
-            "average_mass": -29.018082,
+            "monoisotopic_mass": -46.005479,
+            "average_mass": -46.025427,
             "dict_composition": {
-                "H": -1,
+                "H": -2,
                 "C": -1,
-                "O": -1
+                "O": -2
             }
         },
         {
@@ -150,9 +150,9 @@
             "name": "Metaphosphoric acid",
             "description": "From phosphotyrosine and sometimes from phosphoserine and phosphothreonine",
             "amino_acids": [
-                "Y",
                 "S",
-                "T"
+                "T",
+                "Y"
             ],
             "monoisotopic_mass": -79.966331,
             "average_mass": -79.979918,

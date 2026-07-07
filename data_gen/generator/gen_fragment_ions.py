@@ -95,7 +95,8 @@ def gen_frag(output_file: str = OutputFile.FRAGMENT_IONS) -> None:
             for elem, count_str in matches:
                 if elem:
                     count = int(count_str) if count_str and count_str != "-" else (1 if not count_str else -1)
-                    element_dict[elem] = count
+                    # accumulate: an element may appear more than once in a formula
+                    element_dict[elem] = element_dict.get(elem, 0) + count
             formula = f"'{str(formula)}'"
         elif formula is None:
             formula = None

@@ -19,7 +19,8 @@ def parse_formula_to_dict(formula: str) -> dict[str, int]:
         for elem, count_str in matches:
             if elem:
                 count = int(count_str) if count_str and count_str != "-" else (1 if not count_str else -1)
-                element_dict[elem] = count
+                # accumulate: an element may appear more than once in a formula (e.g. HCOOH)
+                element_dict[elem] = element_dict.get(elem, 0) + count
     return element_dict
 
 
