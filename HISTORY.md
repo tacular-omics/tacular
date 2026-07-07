@@ -18,5 +18,8 @@
 * Fix repeated element symbols collapsing in neutral-loss/fragment-ion
   formula parsing (e.g. formic acid, formamide).
 * Refresh bundled UNIMOD data to the latest release.
+* Fix all 9 internal fragment ion offsets, which were systematically wrong
+  (the table was shifted so `by` was `-CO` instead of `0`). Corrected to
+  `internal(F,B) = δF + δB - H2O`, consistent with the a/b/c/x/y/z offsets.
 * Single-source the OBO parsing logic (shared by the build pipeline and
   `tacular update`).
