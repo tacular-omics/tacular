@@ -123,10 +123,27 @@ def _build_entry(fields: dict[str, str | list[str]]) -> UniprotPtmInfo | None:
                 exc_info=True,
             )
 
-    # Validate the parsed composition is internally consistent (matches upstream sanity check).
+    # Validate every element/isotope symbol in the parsed composition resolves in ELEMENT_LOOKUP
+    # (an unrecognized symbol would otherwise only surface as a KeyError much later, e.g. from
+    # tacular's mass-consistency check). This doesn't cross-check against the reported MM/MA --
+    # that's done separately, see update.py's _mass_mismatches() and data_gen/README.md.
     if composition is not None:
-        calculate_mass(composition, monoisotopic=True)
-        calculate_mass(composition, monoisotopic=False)
+        try:
+            calculate_mass(composition, monoisotopic=True)
+            calculate_mass(composition, monoisotopic=False)
+        except Exception as e:
+            logger.warning(
+                "[UniProt-PTM] Composition failed element validation for %s %s: CF=%r -> %r: %s: %s",
+                term_id,
+                name,
+                cf_raw,
+                composition,
+                type(e).__name__,
+                e,
+                exc_info=True,
+            )
+            formula = None
+            composition = None
 
     feature_key = fields.get("FT")
     target = fields.get("TG")

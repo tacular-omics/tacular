@@ -7,7 +7,7 @@ from io import StringIO
 
 import pytest
 
-from tacular._datagen import psimod, resid, unimod, xlmod
+from tacular._datagen import psimod, resid, unimod, uniprot_ptm, xlmod
 from tacular._datagen._utils import read_obo
 
 
@@ -199,3 +199,46 @@ class TestXlmodEdgeCases:
         )
         infos = list(xlmod._entries(terms))
         assert infos[0].average_mass == pytest.approx(96.086, abs=1e-2)
+
+
+class TestUniprotPtmEdgeCases:
+    def test_unresolvable_element_symbol_drops_composition_not_raised(self, caplog):
+        """CF="Zz2" parses structurally fine (parse_formula_to_dict doesn't validate
+        symbols) but "Zz" isn't a real element, so calculate_mass raises KeyError.
+        This must be caught and logged, not propagate out of _build_entry and abort
+        the whole build() for every other entry."""
+        fields = {
+            "ID": "Test Mod",
+            "AC": "PTM-9999",
+            "FT": "MOD_RES",
+            "TG": "Serine.",
+            "CF": "Zz2",
+            "MM": "10.0",
+        }
+        with caplog.at_level("WARNING"):
+            info = uniprot_ptm._build_entry(fields)
+        assert info is not None
+        assert info.formula is None
+        assert info.dict_composition is None
+        assert info.monoisotopic_mass == 10.0
+        assert "KeyError" in caplog.text
+
+    def test_crosslink_entry_skipped(self):
+        fields = {"ID": "Test Crosslink", "AC": "PTM-9998", "FT": "CROSSLNK", "TG": "Alanine-Arginine."}
+        assert uniprot_ptm._build_entry(fields) is None
+
+    def test_malformed_formula_drops_composition_not_raised(self, caplog):
+        fields = {
+            "ID": "Test Mod",
+            "AC": "PTM-9997",
+            "FT": "MOD_RES",
+            "TG": "Serine.",
+            "CF": "[unclosed",
+            "MM": "10.0",
+        }
+        with caplog.at_level("WARNING"):
+            info = uniprot_ptm._build_entry(fields)
+        assert info is not None
+        assert info.formula is None
+        assert info.dict_composition is None
+        assert "Error parsing formula" in caplog.text

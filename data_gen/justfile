@@ -33,7 +33,7 @@ download-uniprot-ptm:
 	wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/docs/ptmlist.txt -O data/ptmlist.txt
 
 download-uniprot-ptm-if-missing:
-	test -f data/ptmlist.txt || just -f data_gen/justfile download-uniprot-ptm
+	test -f data/ptmlist.txt || just download-uniprot-ptm
 
 download-all: download-uni download-psi download-gno download-xlmod download-uniprot-ptm
 	@echo "All downloads complete!"
