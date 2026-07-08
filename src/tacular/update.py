@@ -13,18 +13,29 @@ Usage::
     tacular status                 # show bundled vs cached versions
     tacular clear                  # remove the cache (revert to bundled data)
     tacular where                  # print the cache directory
+
+If regenerating data hits an entry it can't parse (e.g. an ontology release
+adds a formula format the parser doesn't recognize), a warning is always
+printed with the offending id/name, the raw input that failed, the exception
+type and message, and a full traceback — enough to diagnose the root cause
+directly from the log without re-running under a debugger. ``-v``/``-vv``
+raise the overall verbosity (INFO/DEBUG) for additional progress detail
+beyond that.
 """
 
 from __future__ import annotations
 
 import argparse
 import importlib
+import logging
 import shutil
 import sys
 import urllib.request
 from pathlib import Path
 
 from . import _cache
+
+logger = logging.getLogger(__name__)
 
 # OBO source files. Several ontologies can share one source (resid derives from PSI-MOD).
 OBO_SOURCES: dict[str, tuple[str, str]] = {
@@ -160,9 +171,32 @@ def _cmd_clear() -> int:
     return 0
 
 
+def _configure_logging(verbosity: int) -> None:
+    """Set up root logging for CLI runs: -v -> INFO, -vv -> DEBUG (with tracebacks)."""
+    level = logging.WARNING if verbosity <= 0 else logging.INFO if verbosity == 1 else logging.DEBUG
+    logging.basicConfig(level=level, format="%(levelname)s [%(name)s] %(message)s", stream=sys.stderr, force=True)
+
+
 def main(argv: list[str] | None = None) -> int:
+    """Entry point for the ``tacular`` console script and ``python -m tacular``.
+
+    Args:
+        argv: Arguments to parse (defaults to ``sys.argv[1:]`` via argparse).
+
+    Returns:
+        Process exit code: ``0`` on success, ``1`` on a handled error (unknown
+        ontology, missing offline file, or a download/OS failure -- see the
+        ``except`` clause below), ``2`` from argparse itself for bad CLI usage.
+    """
     parser = argparse.ArgumentParser(
         prog="tacular", description="Refresh bundled ontology data from the latest OBO releases."
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
+        help="raise verbosity beyond warnings (-v: info, -vv: debug); parsing failures always warn with a traceback",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -175,6 +209,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("where", help="print the cache directory")
 
     args = parser.parse_args(argv)
+    _configure_logging(args.verbose)
 
     if args.command == "update":
         names = args.ontologies or None
@@ -183,7 +218,10 @@ def main(argv: list[str] | None = None) -> int:
         try:
             refreshed = update(names, offline=args.offline)
         except (ValueError, FileNotFoundError, OSError) as exc:
-            print(f"error: {exc}", file=sys.stderr)
+            # Log the full traceback at DEBUG (visible with -vv) before the concise
+            # one-line message every user sees, so the root cause is never lost.
+            logger.debug("`tacular update` failed", exc_info=True)
+            print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
             return 1
         print(f"\ndone: refreshed {refreshed}. Changes take effect on next `import tacular`.")
         return 0

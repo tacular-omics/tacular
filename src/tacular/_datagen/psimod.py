@@ -139,13 +139,16 @@ def _entries(terms: list[dict[str, Any]]) -> Iterator[PsimodInfo]:
                     formula = formula_str
                     composition = parse_formula_to_dict(formula_str) if formula_str else None
                     parsed_formula = formula_str
-                except Exception:
+                except Exception as e:
                     logger.warning(
-                        "[PSI-MOD] Error parsing formula for %s %s: %s -> %s",
+                        "[PSI-MOD] Error parsing formula for %s %s: DiffFormula=%r -> generated %r: %s: %s",
                         term_id,
                         term_name,
                         delta_composition,
                         formula_str,
+                        type(e).__name__,
+                        e,
+                        exc_info=True,
                     )
                     formula = None
                     composition = None

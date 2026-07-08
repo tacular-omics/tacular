@@ -236,8 +236,16 @@ def _entries(terms: list[dict[str, Any]]) -> Iterator[XlModInfo]:
                 composition = {k: v for k, v in composition.items() if v != 0}
                 # canonical formula string
                 formula = format_composition_string(composition)
-            except Exception:
-                logger.warning("[XLMOD] Error parsing formula for %s %s: %s", term_id, term_name, raw_formula)
+            except Exception as e:
+                logger.warning(
+                    "[XLMOD] Error parsing formula for %s %s: raw_formula=%r: %s: %s",
+                    term_id,
+                    term_name,
+                    raw_formula,
+                    type(e).__name__,
+                    e,
+                    exc_info=True,
+                )
                 formula = None
                 composition = None
                 calc_mono = None
@@ -249,12 +257,28 @@ def _entries(terms: list[dict[str, Any]]) -> Iterator[XlModInfo]:
         if mono_mass is not None:
             try:
                 reported_mono = float(mono_mass)
-            except Exception:
+            except Exception as e:
+                logger.debug(
+                    "[XLMOD] Could not parse monoIsotopicMass %r for %s %s: %s: %s",
+                    mono_mass,
+                    term_id,
+                    term_name,
+                    type(e).__name__,
+                    e,
+                )
                 reported_mono = None
         if avg_mass is not None:
             try:
                 reported_avg = float(avg_mass)
-            except Exception:
+            except Exception as e:
+                logger.debug(
+                    "[XLMOD] Could not parse average mass %r for %s %s: %s: %s",
+                    avg_mass,
+                    term_id,
+                    term_name,
+                    type(e).__name__,
+                    e,
+                )
                 reported_avg = None
 
         # skip entries with no formula and no masses

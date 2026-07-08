@@ -172,3 +172,20 @@ def test_save_then_load_roundtrip(cache_env):
     data, version = loaded
     assert version == "saved-v2"
     assert data["1"] == BAKED["1"]
+
+
+def test_obo_dir_is_under_cache_dir(cache_env):
+    assert _cache.obo_dir() == _cache.cache_dir() / "obo"
+
+
+def test_cache_file_with_only_metadata_key_falls_back(cache_env):
+    data_dir = cache_env / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    (data_dir / "unimodifications.json").write_text(json.dumps({"metadata": {"data_version": "v1"}}))
+    data, version = _cache.resolve("unimodifications.json", UnimodInfo, BAKED, BAKED_VERSION)
+    assert data is BAKED
+    assert version == BAKED_VERSION
+
+
+def test_no_data_file_returns_none_from_load_cached(cache_env):
+    assert _cache.load_cached("unimodifications.json", UnimodInfo) is None

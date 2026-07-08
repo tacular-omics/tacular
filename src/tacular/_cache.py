@@ -118,12 +118,16 @@ def load_cached[T: OboEntity](name: str, cls: type[T]) -> tuple[dict[str, T], st
         return data, version
     except Exception as exc:  # noqa: BLE001 - any corruption falls back to bundled data
         # Use logging (not warnings.warn) so a corrupt cache never raises under
-        # warnings-as-errors; the whole point is to transparently fall back.
+        # warnings-as-errors; the whole point is to transparently fall back. exc_info=True
+        # attaches a full traceback so the exact cause (bad JSON, schema mismatch, etc.)
+        # is diagnosable from the log alone.
         logger.warning(
-            "tacular: ignoring unreadable cached data at %s (%s); using bundled data. "
+            "tacular: ignoring unreadable cached data at %s (%s: %s); using bundled data. "
             "Run `tacular update` to refresh it or `tacular clear` to remove it.",
             path,
+            type(exc).__name__,
             exc,
+            exc_info=True,
         )
         return None
 

@@ -47,7 +47,12 @@ def _parse_glycan_composition(composition_str: str) -> Counter[str] | None:
 
         for symbol, count in tokens:
             if symbol not in _GLYCAN_COMPOSITIONS:
-                logger.warning("Unknown glycan symbol: %s", symbol)
+                logger.warning(
+                    "Unknown glycan symbol %r in composition %r (known symbols: %s)",
+                    symbol,
+                    composition_str,
+                    sorted(_GLYCAN_COMPOSITIONS),
+                )
                 return None
 
             glycan_comp = _GLYCAN_COMPOSITIONS[symbol]
@@ -55,8 +60,10 @@ def _parse_glycan_composition(composition_str: str) -> Counter[str] | None:
                 total_composition[elem] += c * int(count)
 
         return total_composition
-    except Exception:
-        logger.warning("Error parsing glycan composition %r", composition_str)
+    except Exception as e:
+        logger.warning(
+            "Error parsing glycan composition %r: %s: %s", composition_str, type(e).__name__, e, exc_info=True
+        )
         return None
 
 
@@ -119,8 +126,16 @@ def _entries(terms: list[dict[str, Any]]) -> Iterator[GnoInfo]:
                 try:
                     mono_mass = calculate_mass(composition_dict, monoisotopic=True)
                     avg_mass = calculate_mass(composition_dict, monoisotopic=False)
-                except Exception:
-                    logger.warning("[GNO] Error calculating mass for %s %s", term_id, term_name)
+                except Exception as e:
+                    logger.warning(
+                        "[GNO] Error calculating mass for %s %s (composition=%r): %s: %s",
+                        term_id,
+                        term_name,
+                        composition_dict,
+                        type(e).__name__,
+                        e,
+                        exc_info=True,
+                    )
 
         if formula is None and mono_mass is None and avg_mass is None:
             continue
