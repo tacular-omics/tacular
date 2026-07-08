@@ -23,3 +23,11 @@
   `internal(F,B) = δF + δB - H2O`, consistent with the a/b/c/x/y/z offsets.
 * Single-source the OBO parsing logic (shared by the build pipeline and
   `tacular update`).
+* Improve logging/error diagnosability: `_datagen` parser failures now log the
+  exception type/message and a full traceback (not just "something failed"),
+  and a corrupt runtime cache logs via `logging` instead of `warnings.warn` so
+  it can never raise under `-W error`. Add `-v`/`-vv` verbosity flags to the
+  `tacular` CLI.
+* Add `CLAUDE.md`/`AGENTS.md`/`llms.txt` for AI coding agents and LLM tooling;
+  fill in missing module/function docstrings across the public API; correct
+  stale claims in `data_gen/README.md`.

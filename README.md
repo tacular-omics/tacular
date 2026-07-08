@@ -31,11 +31,17 @@ tacular update --offline DIR   # regenerate from local .obo files in DIR (no net
 tacular status                 # show bundled vs cached versions
 tacular clear                  # remove the cache and revert to the bundled data
 tacular where                  # print the cache directory
+tacular -vv update             # -v/-vv raise verbosity (info/debug); parsing failures always warn with a traceback
 ```
 
 The refresh takes effect on the next `import tacular`. Environment variables:
 `TACULAR_DATA_DIR` overrides the cache location; `TACULAR_DISABLE_CACHE=1` ignores
 the cache and always uses the bundled data. Equivalent to the CLI: `python -m tacular ...`.
+
+If an ontology release contains an entry `tacular` can't parse (or a cached file
+gets corrupted), a warning is logged with the offending id/name, the raw input,
+the exception type/message, and a full traceback — the root cause should be
+diagnosable directly from the log without a debugger.
 
 ## Generate Data
 
@@ -79,10 +85,20 @@ The following lookups are available:
 Each lookup contains three core components:
 
 - **data.py**: Auto-generated data file (should not be modified manually)
-- **dclass.py**: Dataclass definitions for the data structures
-- **lookup.py**: Lookup implementation with query methods
+- **dclass.py**: Dataclass definitions for the data structures (subclass `OboEntity`, see `obo_entity.py`)
+- **lookup.py**: Lookup implementation with query methods (subclass `OntologyLookup`, see `obo_lookup.py`)
 
 Each lookup provides multiple query options to enable data retrieval by various means. Lookups are cached for faster repeat queries.
+
+Two more pieces support the 5 OBO-sourced ontologies (UNIMOD, PSI-MOD, RESID,
+XLMOD, GNOme) specifically:
+
+- **`_datagen/`**: the OBO/formula parsing logic, one module per ontology. This
+  is the single source of truth — both the developer generators (`data_gen/`)
+  and the `tacular update` CLI call into it. See `data_gen/README.md`.
+- **`_cache.py`**: resolves each lookup's data from a refreshed per-user cache
+  if present, else the bundled `data.py` — see "Updating data from the latest
+  ontologies" above.
 
 ## Usage
 
@@ -93,3 +109,9 @@ import tacular as t
 alanine = t.AA_LOOKUP['A']
 carbon_13 = t.ELEMENT_LOOKUP['13C']
 ```
+
+## Contributing / working with an AI agent
+
+See [`CLAUDE.md`](CLAUDE.md) for an architecture and command reference aimed at
+AI coding agents (also generally useful for new contributors); [`AGENTS.md`](AGENTS.md)
+points here for tools that look for that filename instead.
