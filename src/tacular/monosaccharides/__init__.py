@@ -1,3 +1,5 @@
+"""Monosaccharide lookups (``MONOSACCHARIDE_LOOKUP``): query by ProForma name."""
+
 from .data import Monosaccharide, MonosaccharideInfo
 from .lookup import MONOSACCHARIDE_LOOKUP, MonosaccharideLookup
 

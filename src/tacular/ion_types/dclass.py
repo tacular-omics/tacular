@@ -1,3 +1,7 @@
+"""``FragmentIonInfo``: mass/composition/properties for a fragment ion type (a, b, c, x, y,
+z, ...), plus the ``IonTypeProperty`` flag enum used to classify them.
+"""
+
 import typing
 from collections import Counter
 from collections.abc import Mapping
@@ -38,6 +42,8 @@ class FragmentIonInfo:
 
     @property
     def ion_type(self) -> "IonType":
+        """Resolve `id` to its :class:`~tacular.ion_types.data.IonType` enum member
+        (returned unchanged if `id` is already an `IonType`)."""
         from .data import IonType
 
         if isinstance(self.id, IonType):

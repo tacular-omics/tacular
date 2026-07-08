@@ -1,3 +1,5 @@
+"""``AALookup`` (singleton ``AA_LOOKUP``): query amino acids by one-letter code, three-letter code, or name."""
+
 from collections.abc import Iterator
 from functools import cache, cached_property
 
@@ -8,6 +10,7 @@ from .dclass import AminoAcidInfo
 
 class AALookup:
     def __init__(self, data: dict[AminoAcid, AminoAcidInfo]):
+        """Build one-letter, three-letter, and name lookup dicts from `data`."""
         # Convert all keys to their string representation for one-letter codes
         self.one_letter_to_info = {str(aa): info for aa, info in data.items()}
         self.three_letter_to_info = {info.three_letter_code.lower(): info for info in data.values()}
@@ -24,6 +27,11 @@ class AALookup:
 
     @cache
     def one_letter(self, code: str) -> AminoAcidInfo:
+        """Look up by one-letter code (case-insensitive).
+
+        Raises:
+            KeyError: if `code` matches no amino acid.
+        """
         val = self._query_one_letter(code)
         if val is not None:
             return val
@@ -31,6 +39,11 @@ class AALookup:
 
     @cache
     def three_letter(self, code: str) -> AminoAcidInfo:
+        """Look up by three-letter code (case-insensitive).
+
+        Raises:
+            KeyError: if `code` matches no amino acid.
+        """
         val = self._query_three_letter(code)
         if val is not None:
             return val
@@ -38,6 +51,11 @@ class AALookup:
 
     @cache
     def name(self, name: str) -> AminoAcidInfo:
+        """Look up by name (case-insensitive).
+
+        Raises:
+            KeyError: if `name` matches no amino acid.
+        """
         val = self._query_name(name)
         if val is not None:
             return val
@@ -45,6 +63,11 @@ class AALookup:
 
     @cache
     def __getitem__(self, key: str) -> AminoAcidInfo:
+        """`lookup[key]`: query by one-letter code, then three-letter code, then name.
+
+        Raises:
+            KeyError: if `key` matches none of the three.
+        """
         info = self._query_one_letter(key)
         if info is not None:
             return info
@@ -60,6 +83,7 @@ class AALookup:
         raise KeyError(f"Amino acid '{key}' not found by one-letter code, three-letter code, or name.")
 
     def __contains__(self, key: str) -> bool:
+        """`key in lookup`: True if `key` resolves by one-letter code, three-letter code, or name."""
         try:
             _ = self[key]
             return True

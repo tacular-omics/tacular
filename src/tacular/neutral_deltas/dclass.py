@@ -1,3 +1,7 @@
+"""The ``NeutralDeltaInfo`` dataclass: a neutral loss/gain (e.g. water, ammonia) with its
+formula, mass, composition, and the amino acids it can occur at.
+"""
+
 from collections import Counter
 from dataclasses import dataclass
 from functools import cached_property
@@ -17,6 +21,8 @@ class NeutralDeltaInfo:
     dict_composition: dict[str, int]
 
     def __hash__(self) -> int:
+        """Hash on `name` only, since `dict_composition` (a plain `dict`) isn't
+        hashable and would otherwise break the default frozen-dataclass hash."""
         return hash(self.name)
 
     def get_mass(self, monoisotopic: bool = True) -> float:

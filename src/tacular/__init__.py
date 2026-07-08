@@ -1,3 +1,20 @@
+"""tacular: lookups for amino acids, elements, and mass spectrometry ontologies.
+
+Each ontology (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme) and data type (amino acids,
+elements, fragment ion types, monosaccharides, neutral losses, proteases, mzPAF
+reference molecules) exposes a module-level ``*_LOOKUP`` singleton -- e.g.
+``UNIMOD_LOOKUP``, ``ELEMENT_LOOKUP`` -- built on the shared :class:`OboLookup`
+and :class:`OboEntity` base classes in ``obo_lookup.py`` / ``obo_entity.py``.
+Query by id, name, or (for ontologies) approximate mass; see each lookup class's
+docstring for its specific query methods.
+
+Data for the 5 OBO-sourced ontologies ships baked into the package as of the
+version above, but can be refreshed to the latest upstream release without
+reinstalling via the ``tacular update`` CLI (see :mod:`tacular.update`); each
+lookup transparently prefers a refreshed cache over the bundled copy if one
+exists (see :mod:`tacular._cache`).
+"""
+
 from .amino_acids import AA_LOOKUP, AMINO_ACID_INFOS, ORDERED_AMINO_ACIDS, AALookup, AminoAcid, AminoAcidInfo
 from .elements import ELEMENT_LOOKUP, Element, ElementInfo, ElementLookup, parse_composition
 from .gno import GNO_LOOKUP, GnoInfo, GnoLookup

@@ -1,3 +1,5 @@
+"""Amino acid lookups (``AA_LOOKUP``): query by one-letter code, three-letter code, or name."""
+
 from .data import AMINO_ACID_INFOS, AminoAcid
 from .dclass import AminoAcidInfo
 from .lookup import AA_LOOKUP, ORDERED_AMINO_ACIDS, AALookup

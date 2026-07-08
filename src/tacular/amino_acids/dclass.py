@@ -1,3 +1,5 @@
+"""The ``AminoAcidInfo`` dataclass: a single amino acid's identity, mass, and elemental composition."""
+
 from collections import Counter
 from dataclasses import dataclass
 from functools import cached_property
@@ -27,6 +29,7 @@ class AminoAcidInfo:
 
     @property
     def one_letter_code(self) -> str:
+        """Alias for :attr:`id`, the amino acid's one-letter code (e.g. ``"A"``)."""
         return self.id
 
     def get_mass(self, monoisotopic: bool = True) -> float | None:
