@@ -251,5 +251,24 @@ class TestResidLookupComprehensive:
                 break
 
 
+@pytest.mark.parametrize(
+    "lookup",
+    [
+        t.UNIMOD_LOOKUP,
+        t.PSIMOD_LOOKUP,
+        t.RESID_LOOKUP,
+        t.XLMOD_LOOKUP,
+        t.GNO_LOOKUP,
+    ],
+    ids=["unimod", "psimod", "resid", "xlmod", "gno"],
+)
+def test_id_tag_is_a_property_returning_str(lookup):
+    # Regression test: XlModInfo.id_tag was previously defined without @property,
+    # so `entity.id_tag` returned a bound method instead of the stripped id string.
+    entries = list(lookup)
+    assert entries, f"{lookup.ontology_name} lookup has no entries to check"
+    assert isinstance(entries[0].id_tag, str)
+
+
 if __name__ == "__main__":
     pytest.main([__file__])

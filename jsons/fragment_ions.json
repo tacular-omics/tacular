@@ -1,9 +1,9 @@
 {
     "metadata": {
-        "generated_date": "2026-02-03T14:29:44.209903",
+        "generated_date": "2026-07-07T16:00:26.358951",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "tacular_version": "1.0.1",
+        "tacular_version": "1.1.0",
         "data_version": null
     },
     "fragment_ions": [
@@ -328,102 +328,98 @@
         {
             "id": "by",
             "name": "by internal fragment",
-            "formula": "C-1O-1",
-            "monoisotopic_mass": -27.994915,
-            "average_mass": -28.010141,
-            "composition": {
-                "C": -1,
-                "O": -1
-            }
-        },
-        {
-            "id": "ax",
-            "name": "ax internal fragment",
-            "formula": "C-1O-1",
-            "monoisotopic_mass": -27.994915,
-            "average_mass": -28.010141,
-            "composition": {
-                "C": -1,
-                "O": -1
-            }
-        },
-        {
-            "id": "cz",
-            "name": "cz internal fragment",
-            "formula": "C-1O-1",
-            "monoisotopic_mass": -27.994915,
-            "average_mass": -28.010141,
-            "composition": {
-                "C": -1,
-                "O": -1
-            }
-        },
-        {
-            "id": "ay",
-            "name": "ay internal fragment",
-            "formula": "C-2O-2",
-            "monoisotopic_mass": -55.989829,
-            "average_mass": -56.020282,
-            "composition": {
-                "C": -2,
-                "O": -2
-            }
-        },
-        {
-            "id": "az",
-            "name": "az internal fragment",
-            "formula": "C-2H-1N-1O-2",
-            "monoisotopic_mass": -71.000728,
-            "average_mass": -71.034926,
-            "composition": {
-                "C": -2,
-                "H": -1,
-                "N": -1,
-                "O": -2
-            }
-        },
-        {
-            "id": "bx",
-            "name": "bx internal fragment",
             "formula": "",
             "monoisotopic_mass": 0.0,
             "average_mass": 0.0,
             "composition": {}
         },
         {
-            "id": "bz",
-            "name": "bz internal fragment",
-            "formula": "C-1H-1N-1O-1",
-            "monoisotopic_mass": -43.005814,
-            "average_mass": -43.024785,
+            "id": "ax",
+            "name": "ax internal fragment",
+            "formula": "H-2",
+            "monoisotopic_mass": -2.01565,
+            "average_mass": -2.015882,
+            "composition": {
+                "H": -2
+            }
+        },
+        {
+            "id": "cz",
+            "name": "cz internal fragment",
+            "formula": "",
+            "monoisotopic_mass": 0.0,
+            "average_mass": 0.0,
+            "composition": {}
+        },
+        {
+            "id": "ay",
+            "name": "ay internal fragment",
+            "formula": "C-1O-1",
+            "monoisotopic_mass": -27.994915,
+            "average_mass": -28.010141,
             "composition": {
                 "C": -1,
-                "H": -1,
+                "O": -1
+            }
+        },
+        {
+            "id": "az",
+            "name": "az internal fragment",
+            "formula": "C-1H-3N-1O-1",
+            "monoisotopic_mass": -45.021464,
+            "average_mass": -45.040666,
+            "composition": {
+                "C": -1,
+                "H": -3,
                 "N": -1,
                 "O": -1
             }
         },
         {
+            "id": "bx",
+            "name": "bx internal fragment",
+            "formula": "CH-2O",
+            "monoisotopic_mass": 25.979265,
+            "average_mass": 25.994259,
+            "composition": {
+                "C": 1,
+                "H": -2,
+                "O": 1
+            }
+        },
+        {
+            "id": "bz",
+            "name": "bz internal fragment",
+            "formula": "H-3N-1",
+            "monoisotopic_mass": -17.026549,
+            "average_mass": -17.030525,
+            "composition": {
+                "H": -3,
+                "N": -1
+            }
+        },
+        {
             "id": "cx",
             "name": "cx internal fragment",
-            "formula": "N",
-            "monoisotopic_mass": 14.003074,
-            "average_mass": 14.006703,
+            "formula": "CHNO",
+            "monoisotopic_mass": 43.005814,
+            "average_mass": 43.024785,
             "composition": {
-                "N": 1
+                "C": 1,
+                "H": 1,
+                "N": 1,
+                "O": 1
             }
         },
         {
             "id": "cy",
             "name": "cy internal fragment",
-            "formula": "C-1H-1NO-1",
-            "monoisotopic_mass": -14.999666,
-            "average_mass": -15.011378,
+            "formula": "H3N",
+            "monoisotopic_mass": 17.026549,
+            "average_mass": 17.030525,
             "composition": {
-                "C": -1,
-                "H": -1,
-                "N": 1,
-                "O": -1
+                "H": 3,
+                "N": 1
             }
         }
     ]

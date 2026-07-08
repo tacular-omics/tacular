@@ -1,3 +1,7 @@
+"""``RefMolLookup`` (singleton ``REFMOL_LOOKUP``): query reference molecules by id, name,
+label type, or molecule type.
+"""
+
 from collections.abc import Iterator
 
 from .data import REFMOL_DICT, RefMolID
@@ -6,6 +10,7 @@ from .dclass import RefMolInfo
 
 class RefMolLookup:
     def __init__(self, refmol_data: dict[RefMolID, RefMolInfo]) -> None:
+        """Build id/name/label-type/molecule-type lookup dicts from `refmol_data`."""
         self._refmol_data = refmol_data
 
         self._refmolid_to_data: dict[RefMolID, RefMolInfo] = {}

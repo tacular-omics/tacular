@@ -16,3 +16,4 @@ class OutputFile(StrEnum):
     NEUTRAL_DELTAS = "../src/tacular/neutral_deltas/data.py"
     RESID = "../src/tacular/resid/data.py"
     GNO = "../src/tacular/gno/data.py"
+    UNIPROT_PTM = "../src/tacular/uniprot_ptm/data.py"

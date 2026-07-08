@@ -1,3 +1,5 @@
+"""The ``ProteaseInfo`` dataclass: a protease's cleavage regex and identifying names."""
+
 import re
 from dataclasses import dataclass
 from functools import cached_property

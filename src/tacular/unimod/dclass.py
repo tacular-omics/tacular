@@ -1,3 +1,5 @@
+"""``UnimodInfo``: a UNIMOD ontology entry."""
+
 from dataclasses import dataclass
 
 from ..obo_entity import OboEntity
@@ -9,4 +11,6 @@ class UnimodInfo(OboEntity):
 
     @property
     def id_tag(self) -> str:
+        """`id` with leading zeros stripped, e.g. ``"042"`` -> ``"42"``. Same
+        behavior as :attr:`OboEntity.id_tag`; UNIMOD ids have no extra prefix to strip."""
         return self.id.lstrip("0")

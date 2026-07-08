@@ -67,3 +67,16 @@ GNOme
    :members:
    :undoc-members:
    :show-inheritance:
+
+UniProt-PTM
+-----------
+
+.. automodule:: tacular.uniprot_ptm.lookup
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: tacular.uniprot_ptm.dclass
+   :members:
+   :undoc-members:
+   :show-inheritance:

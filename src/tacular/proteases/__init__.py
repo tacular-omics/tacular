@@ -1,3 +1,5 @@
+"""Protease lookups (``PROTEASE_LOOKUP``): query digestion enzymes by id or name."""
+
 from .data import PROTEASE_LITERALS, PROTEASES_DICT, Proteases
 from .dclass import ProteaseInfo
 from .lookup import PROTEASE_LOOKUP

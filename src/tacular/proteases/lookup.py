@@ -1,3 +1,5 @@
+"""``ProteaseLookup`` (singleton ``PROTEASE_LOOKUP``): query proteases by id or name."""
+
 from collections.abc import Iterator
 
 from .data import PROTEASES_DICT, Proteases
@@ -6,6 +8,7 @@ from .dclass import ProteaseInfo
 
 class ProteaseLookup:
     def __init__(self, data: dict[Proteases, ProteaseInfo]) -> None:
+        """Build id/name lookup dicts (keys lowercased) from `data`."""
         self.name_to_info: dict[str, ProteaseInfo] = {info.name: info for info in data.values()}
 
         # make keys lowercase for case-insensitive lookup

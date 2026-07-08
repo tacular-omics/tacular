@@ -1,3 +1,7 @@
+"""``FragmentIonLookup`` (singleton ``FRAGMENT_ION_LOOKUP``): query fragment ion types by
+``IonType``, id, or name.
+"""
+
 from collections.abc import Iterator
 
 from .data import ION_TYPE_DICT, IonType
@@ -6,6 +10,7 @@ from .dclass import FragmentIonInfo
 
 class FragmentIonLookup:
     def __init__(self, fragment_ion_data: dict[IonType, FragmentIonInfo]) -> None:
+        """Build ion-type/id/name lookup dicts from `fragment_ion_data`."""
         self._fragment_ion_data = fragment_ion_data
 
         self._iontype_to_data: dict[IonType, FragmentIonInfo] = {}

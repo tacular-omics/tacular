@@ -3,7 +3,7 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/tacular-omics/tacular/main/tacular_logo.png" alt="tacular Logo" width="400" style="margin: 50px;"/>
 
-  A Python library for looking up common MS-proteomics values. Includes the following modifications: UNIMOD, RESID, XLMOD, GNOme, and PSIMOD. Also contains a lookup of elements, MS ion types, neutral deltas, proteases, and some reference molecules. Tacular is mainly a helper package for peptacular and paftacular.
+  A Python library for looking up common MS-proteomics values. Includes the following modifications: UNIMOD, RESID, XLMOD, GNOme, PSIMOD, and UniProt-PTM. Also contains a lookup of elements, MS ion types, neutral deltas, proteases, and some reference molecules. Tacular is mainly a helper package for peptacular and paftacular.
 
     
 [![Python package](https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml/badge.svg)](https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml)
@@ -16,6 +16,32 @@
 
   
 </div>
+
+## Updating data from the latest ontologies
+
+tacular ships with a snapshot of each ontology baked into the package. To refresh
+to the latest releases without reinstalling, use the `tacular` CLI. It downloads
+the current `.obo` sources, regenerates the data, and stores it in a per-user
+cache that the lookups prefer over the bundled snapshot on the next import.
+
+```bash
+tacular update                 # refresh all pullable ontologies (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM)
+tacular update unimod xlmod    # refresh a subset (GNOme is a large download; opt in explicitly)
+tacular update --offline DIR   # regenerate from local .obo files in DIR (no network)
+tacular status                 # show bundled vs cached versions
+tacular clear                  # remove the cache and revert to the bundled data
+tacular where                  # print the cache directory
+tacular -vv update             # -v/-vv raise verbosity (info/debug); parsing failures always warn with a traceback
+```
+
+The refresh takes effect on the next `import tacular`. Environment variables:
+`TACULAR_DATA_DIR` overrides the cache location; `TACULAR_DISABLE_CACHE=1` ignores
+the cache and always uses the bundled data. Equivalent to the CLI: `python -m tacular ...`.
+
+If an ontology release contains an entry `tacular` can't parse (or a cached file
+gets corrupted), a warning is logged with the offending id/name, the raw input,
+the exception type/message, and a full traceback — the root cause should be
+diagnosable directly from the log without a debugger.
 
 ## Generate Data
 
@@ -41,7 +67,7 @@ The following lookups are available:
 ### Modifications
 - Post-translational modifications (PTMs)
 - Query by modification name, ID, or delta mass
-- Support for Unimod, PSI-MOD, RESID, XLMOD and GNOme
+- Support for Unimod, PSI-MOD, RESID, XLMOD, GNOme, and UniProt-PTM
 
 ### Elements
 - Chemical element data
@@ -59,10 +85,21 @@ The following lookups are available:
 Each lookup contains three core components:
 
 - **data.py**: Auto-generated data file (should not be modified manually)
-- **dclass.py**: Dataclass definitions for the data structures
-- **lookup.py**: Lookup implementation with query methods
+- **dclass.py**: Dataclass definitions for the data structures (subclass `OboEntity`, see `obo_entity.py`)
+- **lookup.py**: Lookup implementation with query methods (subclass `OntologyLookup`, see `obo_lookup.py`)
 
 Each lookup provides multiple query options to enable data retrieval by various means. Lookups are cached for faster repeat queries.
+
+Two more pieces support the 6 ontologies that can be refreshed at runtime
+(UNIMOD, PSI-MOD, RESID, XLMOD, GNOme -- all OBO-sourced -- and UniProt-PTM,
+sourced from UniProt's own `ptmlist.txt` flat file) specifically:
+
+- **`_datagen/`**: the parsing logic, one module per ontology. This is the
+  single source of truth — both the developer generators (`data_gen/`) and the
+  `tacular update` CLI call into it. See `data_gen/README.md`.
+- **`_cache.py`**: resolves each lookup's data from a refreshed per-user cache
+  if present, else the bundled `data.py` — see "Updating data from the latest
+  ontologies" above.
 
 ## Usage
 
@@ -73,3 +110,9 @@ import tacular as t
 alanine = t.AA_LOOKUP['A']
 carbon_13 = t.ELEMENT_LOOKUP['13C']
 ```
+
+## Contributing / working with an AI agent
+
+See [`CLAUDE.md`](CLAUDE.md) for an architecture and command reference aimed at
+AI coding agents (also generally useful for new contributors); [`AGENTS.md`](AGENTS.md)
+points here for tools that look for that filename instead.

@@ -1,3 +1,7 @@
+"""``NeutralDeltaLookup`` (singleton ``NEUTRAL_DELTA_LOOKUP``): query neutral deltas by
+``NeutralDelta`` enum, formula, or name.
+"""
+
 from collections.abc import Iterator
 
 from .data import NEUTRAL_DELTA_DICT, NeutralDelta
@@ -6,6 +10,7 @@ from .dclass import NeutralDeltaInfo
 
 class NeutralDeltaLookup:
     def __init__(self, neutral_delta_data: dict[NeutralDelta, NeutralDeltaInfo]) -> None:
+        """Build delta/formula/name lookup dicts from `neutral_delta_data`."""
         self._neutral_delta_data = neutral_delta_data
 
         self._delta_to_data: dict[NeutralDelta, NeutralDeltaInfo] = {}
@@ -67,6 +72,7 @@ class NeutralDeltaLookup:
         return len(self._neutral_delta_data)
 
     def __repr__(self) -> str:
+        """E.g. ``"NeutralDeltaLookup(24 neutral deltas)"``."""
         return f"NeutralDeltaLookup({len(self)} neutral deltas)"
 
 

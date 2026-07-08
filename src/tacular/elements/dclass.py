@@ -1,3 +1,5 @@
+"""The ``ElementInfo`` dataclass: a chemical element or one specific isotope of it."""
+
 from dataclasses import dataclass
 
 
@@ -24,9 +26,12 @@ class ElementInfo:
     is_monoisotopic: bool | None
 
     def __hash__(self) -> int:
+        """Hash on ``str(self)`` (e.g. ``"13C"``), matching :meth:`__eq__`'s string comparison."""
         return hash(str(self))
 
     def __eq__(self, other: object) -> bool:
+        """Equal to another ``ElementInfo`` with the same ``(number, mass_number)``,
+        or to a string equal to ``str(self)`` (e.g. ``ElementInfo(...) == "13C"``)."""
         if isinstance(other, str):
             return str(self) == other
         if isinstance(other, ElementInfo):
@@ -60,21 +65,26 @@ class ElementInfo:
         return (hill_priority, self.symbol, mono_priority, neutron)
 
     def __lt__(self, other: object) -> bool:
+        """Order by Hill convention (C, then H, then alphabetical; ties broken by
+        isotope specificity then neutron count), for sorting a composition's elements."""
         if not isinstance(other, ElementInfo):
             return NotImplemented
         return self._hill_order_key() < other._hill_order_key()
 
     def __le__(self, other: object) -> bool:
+        """See :meth:`__lt__`."""
         if not isinstance(other, ElementInfo):
             return NotImplemented
         return self._hill_order_key() <= other._hill_order_key()
 
     def __gt__(self, other: object) -> bool:
+        """See :meth:`__lt__`."""
         if not isinstance(other, ElementInfo):
             return NotImplemented
         return self._hill_order_key() > other._hill_order_key()
 
     def __ge__(self, other: object) -> bool:
+        """See :meth:`__lt__`."""
         if not isinstance(other, ElementInfo):
             return NotImplemented
         return self._hill_order_key() >= other._hill_order_key()
@@ -97,6 +107,8 @@ class ElementInfo:
         return self.abundance == 0.0
 
     def __str__(self) -> str:
+        """The isotope symbol tacular uses as a composition key: ``"C"`` for the
+        non-specific element, ``"13C"`` for a specific isotope."""
         if self.mass_number is None:
             return f"{self.symbol}"
         return f"{self.mass_number}{self.symbol}"
@@ -125,6 +137,7 @@ class ElementInfo:
         }
 
     def __repr__(self) -> str:
+        """Eval-ish repr including all fields."""
         return (
             f"ElementInfo(number={self.number}, symbol={self.symbol}, mass_number={self.mass_number}, "
             f"mass={self.mass}, abundance={self.abundance}, average_mass={self.average_mass}, "

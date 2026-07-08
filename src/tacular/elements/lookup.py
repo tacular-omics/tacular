@@ -1,3 +1,9 @@
+"""``ELEMENT_LOOKUP``: the periodic-table + isotope lookup every other ontology's
+mass/composition math is built on. Accepts flexible keys -- a bare symbol (``"C"``,
+most abundant isotope), an isotope string (``"13C"``), or a ``(symbol, mass_number)``
+tuple -- see :func:`_handle_key_input` and :meth:`ElementLookup.__getitem__`.
+"""
+
 from collections.abc import Iterator, Mapping
 
 from .data import ISOTOPES, Element
@@ -316,7 +322,12 @@ class ElementLookup:
             return elem.average_mass
 
     def get_neutron_offsets_and_abundances(self, key: str | Element | ElementInfo) -> list[tuple[int, float]]:
-        # get the element info
+        """All isotopes of the element ``key``, as ``(neutron_offset, abundance)`` pairs.
+
+        ``neutron_offset`` is relative to the monoisotopic (most abundant) isotope,
+        e.g. ``0`` for ``12C``, ``1`` for ``13C``. Useful for isotope envelope
+        calculations that need offsets rather than absolute mass numbers.
+        """
         if isinstance(key, ElementInfo):
             key = key.symbol
 
@@ -329,8 +340,7 @@ class ElementLookup:
         return result
 
     def get_masses_and_abundances(self, key: str | Element | ElementInfo) -> list[tuple[float, float]]:
-        # get the element info
-
+        """All isotopes of the element ``key``, as ``(mass, abundance)`` pairs."""
         if isinstance(key, ElementInfo):
             key = key.symbol
 

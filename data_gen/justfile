@@ -29,10 +29,16 @@ download-xlmod:
 download-xlmod-if-missing:
 	test -f data/XLMod.obo || just download-xlmod
 
-download-all: download-uni download-psi download-gno download-xlmod
+download-uniprot-ptm:
+	wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/docs/ptmlist.txt -O data/ptmlist.txt
+
+download-uniprot-ptm-if-missing:
+	test -f data/ptmlist.txt || just download-uniprot-ptm
+
+download-all: download-uni download-psi download-gno download-xlmod download-uniprot-ptm
 	@echo "All downloads complete!"
 
-download-all-if-missing: download-uni-if-missing download-psi-if-missing download-gno-if-missing download-xlmod-if-missing
+download-all-if-missing: download-uni-if-missing download-psi-if-missing download-gno-if-missing download-xlmod-if-missing download-uniprot-ptm-if-missing
 	@echo "All downloads complete!"
 
 download: download-all-if-missing
@@ -72,7 +78,10 @@ gen-resid: download-psi-if-missing
 gen-gno: download-gno-if-missing
 	uv run generator/gen_gno.py
 
-gen-all: gen-mono gen-uni gen-psi gen-aa gen-frag gen-pro gen-ref gen-delta gen-xlmod gen-resid gen-gno
+gen-uniprot-ptm: download-uniprot-ptm-if-missing
+	uv run generator/gen_uniprot_ptm.py
+
+gen-all: gen-mono gen-uni gen-psi gen-aa gen-frag gen-pro gen-ref gen-delta gen-xlmod gen-resid gen-gno gen-uniprot-ptm
 	@echo "All generators complete!"
 
 gen: gen-all

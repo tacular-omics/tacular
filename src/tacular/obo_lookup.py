@@ -1,3 +1,10 @@
+"""Shared lookup base class (:class:`OntologyLookup`) used by every per-ontology
+``*_LOOKUP`` singleton in this package (``UNIMOD_LOOKUP``, ``PSIMOD_LOOKUP``, ...).
+Handles id/name normalization, query-by-id/name/mass, iteration, and random
+sampling; each ontology's ``*Lookup`` subclass just supplies its data, name, and
+optional id prefix (see e.g. ``unimod/lookup.py``).
+"""
+
 from collections.abc import Iterator
 from functools import cached_property
 from random import choice
@@ -6,7 +13,10 @@ from .obo_entity import OboEntity, filter_infos
 
 
 def strip_id(key: str, prefix: str | None = None) -> str:
-    """Strip known prefix from ID"""
+    """Lowercase ``key``, strip a leading ``prefix`` (if present) and leading zeros.
+
+    E.g. ``strip_id("UNIMOD:00042", "unimod:")`` -> ``"42"``.
+    """
     key = key.lower()
     if prefix is not None and key.startswith(prefix):
         key = key[len(prefix) :]
@@ -15,7 +25,8 @@ def strip_id(key: str, prefix: str | None = None) -> str:
 
 
 def convert_key(key: str, prefix: str | None = None) -> int | None:
-    # remove non digit characters for integer keys
+    """``strip_id`` then parse as ``int``, or ``None`` if the result isn't numeric
+    (e.g. RESID's ``"AA0001"`` ids, whose non-numeric suffix can't convert)."""
     try:
         key = strip_id(key, prefix)
         return int(key)
@@ -24,6 +35,14 @@ def convert_key(key: str, prefix: str | None = None) -> int | None:
 
 
 class OntologyLookup[T: OboEntity]:
+    """Id/name/mass lookup over a dict of :class:`OboEntity` subclass instances.
+
+    Lookup dictionaries are built lazily on first access (see
+    :meth:`_ensure_initialized`), not in ``__init__``, so constructing a lookup
+    with cache-resolved data (see :mod:`tacular._cache`) is cheap even before
+    any query is made.
+    """
+
     def __init__(
         self,
         data: dict[str, T],
@@ -31,6 +50,14 @@ class OntologyLookup[T: OboEntity]:
         _version: str = "",
         _id_prefix: str | None = None,
     ) -> None:
+        """
+        Args:
+            data: Entries keyed by their raw id (e.g. UNIMOD's ``"1"``, ``"536"``, ...).
+            ontology_name: Display name used in error messages (e.g. ``"UNIMOD"``).
+            _version: Data version string, exposed via :attr:`version`.
+            _id_prefix: Prefix to strip from ids/queries before matching (e.g. RESID
+                uses ``"aa"`` so ``"AA0001"`` and ``"0001"`` both resolve to the same entry).
+        """
         self.ontology_name = ontology_name
         self._version = _version
 
@@ -124,6 +151,12 @@ class OntologyLookup[T: OboEntity]:
         return matches
 
     def __getitem__(self, key: str | int) -> T:
+        """``lookup[key]``: query by name first, then by id.
+
+        Raises:
+            KeyError: if ``key`` matches no entry by name or id. The message
+                names the ontology and the exact key that failed to resolve.
+        """
         if isinstance(key, str):
             info = self.query_name(key)
             if info is not None:
@@ -136,6 +169,7 @@ class OntologyLookup[T: OboEntity]:
         raise KeyError(f"{self.ontology_name} modification '{key}' not found by name or ID.")
 
     def __contains__(self, key: str | int) -> bool:
+        """``key in lookup``: True if ``key`` resolves by name or id."""
         try:
             self[key]
             return True
@@ -143,6 +177,7 @@ class OntologyLookup[T: OboEntity]:
             return False
 
     def get(self, key: str | int, default: T | None = None) -> T | None:
+        """Like ``lookup[key]``, but return ``default`` instead of raising ``KeyError``."""
         try:
             return self[key]
         except KeyError:
@@ -203,10 +238,13 @@ class OntologyLookup[T: OboEntity]:
         return choice(valid_infos)
 
     def __str__(self) -> str:
+        """E.g. ``"<OntologyLookup UNIMOD v1.0 with 1560 entries>"``."""
         return f"<OntologyLookup {self.ontology_name} v{self._version} with {len(self._raw_data)} entries>"
 
     def __repr__(self) -> str:
+        """Same as :meth:`__str__`."""
         return self.__str__()
 
     def __len__(self) -> int:
+        """``len(lookup)``: total number of entries."""
         return len(self._raw_data)

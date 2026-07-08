@@ -356,18 +356,18 @@ try:
         "01043": XlModInfo(
             id="01043",
             name="hydrolyzed DSA-13C6",
-            formula="H8O3",
+            formula="H813C6O3",
             monoisotopic_mass=134.06696,
             average_mass=134.08186981582105,
-            dict_composition={'H': 8, 'O': 3},
+            dict_composition={'H': 8, 'O': 3, '13C': 6},
     ),
         "01044": XlModInfo(
             id="01044",
             name="ammonium amidated DSA-13C6",
-            formula="H9NO2",
+            formula="H913C6NO2",
             monoisotopic_mass=133.08294,
             average_mass=133.09710885700434,
-            dict_composition={'H': 9, 'N': 1, 'O': 2},
+            dict_composition={'H': 9, 'N': 1, 'O': 2, '13C': 6},
     ),
         "01045": XlModInfo(
             id="01045",
@@ -1100,10 +1100,10 @@ try:
         "02053": XlModInfo(
             id="02053",
             name="DSA-13C6",
-            formula="H6O2",
+            formula="H613C6O2",
             monoisotopic_mass=116.0564,
             average_mass=116.06658338339122,
-            dict_composition={'H': 6, 'O': 2},
+            dict_composition={'H': 6, 'O': 2, '13C': 6},
     ),
         "02054": XlModInfo(
             id="02054",
@@ -1396,10 +1396,10 @@ try:
         "02215": XlModInfo(
             id="02215",
             name="SDA-13C5",
-            formula="H6O",
+            formula="H613C5O",
             monoisotopic_mass=87.05866484,
             average_mass=87.06382362400294,
-            dict_composition={'H': 6, 'O': 1},
+            dict_composition={'H': 6, 'O': 1, '13C': 5},
     ),
         "02227": XlModInfo(
             id="02227",

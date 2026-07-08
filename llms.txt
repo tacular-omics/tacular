@@ -1,0 +1,35 @@
+# tacular
+
+> Python library of lookups for MS-proteomics values: post-translational
+> modification ontologies (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM),
+> amino acids, chemical elements/isotopes, fragment ion types, neutral losses,
+> proteases, and mzPAF reference molecules. No runtime dependencies.
+
+Each ontology/data type exposes a module-level `*_LOOKUP` singleton (e.g.
+`tacular.UNIMOD_LOOKUP`, `tacular.ELEMENT_LOOKUP`), queryable by id, name, or
+(for ontologies) approximate mass — `import tacular as t; t.UNIMOD_LOOKUP["Acetyl"]`.
+Ontology data ships baked into the package but can be refreshed to the latest
+upstream release without reinstalling via the `tacular update` CLI.
+
+tacular is mainly a helper/data package for the `peptacular` and `paftacular`
+packages (same author), which build peptide-level logic on top of it. It does
+not depend on them, and they should not be treated as authoritative for
+tacular's own chemistry/mass data — always verify against the ontology's
+original `.obo` source or an external standard instead.
+
+## Docs
+
+- [README](README.md): installation, usage examples, the `tacular update` CLI, architecture overview
+- [CLAUDE.md](CLAUDE.md): architecture and command reference for AI coding agents, including logging/exception-handling conventions and known data-correctness gotchas
+- [HISTORY.md](HISTORY.md): changelog
+- [data_gen/README.md](data_gen/README.md): how ontology data is parsed and regenerated, and known data-quality issues in the upstream ontologies (PSI-MOD, XLMOD, RESID, GNOme, UniProt-PTM)
+- [Read the Docs](https://tacular.readthedocs.io/en/latest/): full API reference (Sphinx)
+
+## Source
+
+- [GitHub repository](https://github.com/tacular-omics/tacular)
+- [PyPI package](https://pypi.org/project/tacular/)
+
+## Optional
+
+- [mzPAF specification](https://github.com/HUPO-PSI/mzpaf): the HUPO-PSI peak annotation format standard; the authoritative source for fragment-ion-offset conventions tacular's `ion_types` data follows (only the default internal fragment type, `by`, is part of the actual mzPAF grammar)
