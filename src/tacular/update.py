@@ -37,12 +37,17 @@ from . import _cache
 
 logger = logging.getLogger(__name__)
 
-# OBO source files. Several ontologies can share one source (resid derives from PSI-MOD).
+# Source files to download (not all are OBO -- uniprot_ptm is UniProt's own flat-file
+# format). Several ontologies can share one source (resid derives from PSI-MOD).
 OBO_SOURCES: dict[str, tuple[str, str]] = {
     "unimod": ("https://www.unimod.org/obo/unimod.obo", "UNIMOD.obo"),
     "psimod": ("https://purl.obolibrary.org/obo/mod.obo", "PSI-MOD.obo"),
     "gno": ("https://purl.obolibrary.org/obo/gno.obo", "GNOme.obo"),
     "xlmod": ("https://purl.obolibrary.org/obo/xlmod.obo", "XLMod.obo"),
+    "uniprot_ptm": (
+        "https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/docs/ptmlist.txt",
+        "ptmlist.txt",
+    ),
 }
 
 # Output ontology -> (builder module, OBO source key). Order = default update order.
@@ -52,6 +57,7 @@ ONTOLOGIES: dict[str, tuple[str, str]] = {
     "psimod": ("tacular._datagen.psimod", "psimod"),
     "resid": ("tacular._datagen.resid", "psimod"),
     "gno": ("tacular._datagen.gno", "gno"),
+    "uniprot_ptm": ("tacular._datagen.uniprot_ptm", "uniprot_ptm"),
 }
 
 # Heads-up for the heavy one.
@@ -149,15 +155,17 @@ def _cmd_status() -> int:
         "psimod": t.PSIMOD_LOOKUP,
         "resid": t.RESID_LOOKUP,
         "gno": t.GNO_LOOKUP,
+        "uniprot_ptm": t.UNIPROT_PTM_LOOKUP,
     }
     print(f"cache dir: {_cache.cache_dir()}")
     print(f"cache {'DISABLED' if _cache.cache_disabled() else 'enabled'}\n")
-    print(f"{'ontology':10} {'cached':8} {'active version':24} entries")
+    name_width = max(len("ontology"), *(len(n) for n in ONTOLOGIES)) + 1
+    print(f"{'ontology':{name_width}} {'cached':8} {'active version':24} entries")
     for name, (module_path, _src) in ONTOLOGIES.items():
         builder = importlib.import_module(module_path)
         cached = _cache.data_file(builder.JSON_NAME).is_file()
         lk = lookups[name]
-        print(f"{name:10} {'yes' if cached else 'no':8} {lk.version:24} {len(lk.values())}")
+        print(f"{name:{name_width}} {'yes' if cached else 'no':8} {lk.version:24} {len(lk.values())}")
     return 0
 
 

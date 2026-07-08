@@ -3,9 +3,9 @@
 ## Project Overview
 
 tacular is a Python library of lookups for MS-proteomics values: post-translational
-modifications (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme), amino acids, chemical elements
-and isotopes, fragment ion types, neutral losses, proteases, and mzPAF reference
-molecules. It has no runtime dependencies. It is mainly a helper/data package for
+modifications (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM), amino acids,
+chemical elements and isotopes, fragment ion types, neutral losses, proteases, and
+mzPAF reference molecules. It has no runtime dependencies. It is mainly a helper/data package for
 `peptacular` and `paftacular` (sibling repos, same author) — those packages import
 `tacular` and build peptide-level logic (fragmentation, ProForma parsing, etc.) on
 top of its lookups. **tacular does not depend on them; treat them as downstream
@@ -46,7 +46,8 @@ src/tacular/
   _datagen/             # OBO/formula parsing logic -- the single source of truth,
                         # used by BOTH data_gen/'s dev generators and `tacular update`
     _utils.py            # shared OBO reading + formula parsing helpers
-    unimod.py, xlmod.py, psimod.py, resid.py, gno.py   # one builder per ontology
+    unimod.py, xlmod.py, psimod.py, resid.py, gno.py   # one builder per OBO ontology
+    uniprot_ptm.py         # ptmlist.txt flat-file builder (not OBO, same build()/DATA_KEY/JSON_NAME contract)
   update.py             # `tacular update`/`status`/`clear`/`where` CLI (console script)
   __main__.py           # `python -m tacular` entrypoint
   <ontology>/            # one package per ontology/data type, e.g. unimod/, elements/

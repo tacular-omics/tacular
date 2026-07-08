@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import TYPE_CHECKING, Any, Self
 
-from tacular import AminoAcid
-
+from ..amino_acids import AminoAcid
 from ..obo_entity import OboEntity
 
 if TYPE_CHECKING:
@@ -14,31 +14,98 @@ if TYPE_CHECKING:
 
 
 class ModLocation(StrEnum):
-    """Enum for PTM location types"""
+    """Enum for the polypeptide-position values ("PP" field) used by UniProt PTM entries."""
 
     ANYWHERE = "Anywhere."
-    NTERM = "N-terminus."
-    CTERM = "C-terminus."
+    NTERM = "N-terminal."
+    CTERM = "C-terminal."
+    PROTEIN_CORE = "Protein core."
 
 
 @dataclass(frozen=True, slots=True)
 class UniprotPtmInfo(OboEntity):
-    """Class to store information about a UniProt PTM entry"""
+    """A UniProt PTM entry (one ``ptmlist.txt`` record).
 
-    feature_key: str | None = field(default=None)  # FT
-    target: str | None = field(default=None)  # TG
-    position_aa: str | None = field(default=None)  # PA
-    position_polypeptide: str | None = field(default=None)  # PP
-    cellular_location: str | None = field(default=None)  # LC
-    taxonomic_range: tuple[str, ...] = field(default=())  # TR (multi-value)
-    keywords: tuple[str, ...] = field(default=())  # KW (multi-value)
-    cross_references: tuple[str, ...] = field(default=())  # DR (multi-value)
+    Adds UniProt-specific fields on top of :class:`~tacular.OboEntity`'s id/name/
+    formula/mass/composition; see :attr:`location` and :attr:`residue` for derived
+    single-value views of :attr:`position_polypeptide` and :attr:`target`.
+    """
+
+    feature_key: str | None = field(default=None)
+    """UniProt feature key (``FT``), e.g. ``"MOD_RES"``, ``"CARBOHYD"``, ``"LIPID"``."""
+    target: str | None = field(default=None)
+    """Target amino acid name (``TG``), e.g. ``"Serine."``. See :attr:`residue`."""
+    position_aa: str | None = field(default=None)
+    """Position of the modification on the amino acid (``PA``), e.g. ``"Amino acid side chain."``."""
+    position_polypeptide: str | None = field(default=None)
+    """Position of the modification in the polypeptide (``PP``). See :attr:`location`."""
+    cellular_location: str | None = field(default=None)
+    """Cellular location (``LC``), if given."""
+    taxonomic_range: tuple[str, ...] = field(default=())
+    """Taxonomic range entries (``TR``), one per occurrence."""
+    keywords: tuple[str, ...] = field(default=())
+    """Keyword entries (``KW``), one per occurrence."""
+    cross_references: tuple[str, ...] = field(default=())
+    """Cross-reference entries (``DR``), e.g. ``"PSI-MOD; MOD:01624."``. See :attr:`has_psimod`/:meth:`get_psimod`."""
 
     @property
     def id_tag(self) -> str:
+        """`id` with leading zeros stripped, e.g. ``"0450"`` -> ``"450"``."""
         return self.id.lstrip("0")
 
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> Self:
+        """Reconstruct a UniprotPtmInfo from its ``to_dict`` representation.
+
+        Extends the base id/name/formula/mass/composition fields (see
+        :meth:`OboEntity.from_dict`) with this ontology's extra fields, so a
+        value round-tripped through :mod:`tacular._cache` keeps them.
+        """
+        return cls(
+            id=data["id"],
+            name=data["name"],
+            formula=data.get("formula"),
+            monoisotopic_mass=data.get("monoisotopic_mass"),
+            average_mass=data.get("average_mass"),
+            dict_composition=data.get("composition"),
+            feature_key=data.get("feature_key"),
+            target=data.get("target"),
+            position_aa=data.get("position_aa"),
+            position_polypeptide=data.get("position_polypeptide"),
+            cellular_location=data.get("cellular_location"),
+            taxonomic_range=tuple(data.get("taxonomic_range") or ()),
+            keywords=tuple(data.get("keywords") or ()),
+            cross_references=tuple(data.get("cross_references") or ()),
+        )
+
+    def to_dict(self, float_precision: int | None = 6) -> dict[str, object]:
+        """Convert to a dictionary, extending :meth:`OboEntity.to_dict` with this
+        ontology's extra fields (see :meth:`from_dict` for the inverse).
+
+        Note:
+            Calls ``OboEntity.to_dict(self, ...)`` explicitly rather than zero-arg
+            ``super()``: ``@dataclass(slots=True)`` rebuilds the class object,
+            which leaves zero-arg ``super()`` referencing a stale ``__class__``
+            cell and raises ``TypeError: super(type, obj): obj must be an
+            instance or subtype of type``.
+        """
+        data = OboEntity.to_dict(self, float_precision)
+        data.update(
+            feature_key=self.feature_key,
+            target=self.target,
+            position_aa=self.position_aa,
+            position_polypeptide=self.position_polypeptide,
+            cellular_location=self.cellular_location,
+            # Lists, not tuples: to_dict's output must be plain-JSON-serializable, and match
+            # what a JSON round-trip (json.dump then json.load) produces byte-for-byte.
+            taxonomic_range=list(self.taxonomic_range),
+            keywords=list(self.keywords),
+            cross_references=list(self.cross_references),
+        )
+        return data
+
     def update(self, **kwargs: Any) -> Self:
+        """Return a new instance with updated fields."""
         return self.__class__(
             id=kwargs.get("id", self.id),
             name=kwargs.get("name", self.name),
@@ -61,12 +128,14 @@ class UniprotPtmInfo(OboEntity):
     # ------------------------------------------------------------------
 
     def _psimod_id(self) -> str | None:
+        """The referenced PSI-MOD id (e.g. ``"01624"``), or ``None`` if not cross-referenced."""
         for ref in self.cross_references:
             if ref.startswith("PSI-MOD; MOD:"):
                 return ref[len("PSI-MOD; MOD:") :].rstrip(".")
         return None
 
     def _unimod_id(self) -> str | None:
+        """The referenced UNIMOD id (e.g. ``"1"``), or ``None`` if not cross-referenced."""
         for ref in self.cross_references:
             if ref.startswith("Unimod; "):
                 return ref[len("Unimod; ") :].rstrip(".")
@@ -74,13 +143,17 @@ class UniprotPtmInfo(OboEntity):
 
     @property
     def has_psimod(self) -> bool:
+        """Whether this entry cross-references a PSI-MOD id."""
         return self._psimod_id() is not None
 
     @property
     def has_unimod(self) -> bool:
+        """Whether this entry cross-references a UNIMOD id."""
         return self._unimod_id() is not None
 
     def get_psimod(self) -> PsimodInfo | None:
+        """The cross-referenced :class:`~tacular.PsimodInfo`, or ``None`` if not
+        cross-referenced (or the referenced id no longer resolves)."""
         from ..psimod import PSIMOD_LOOKUP
 
         mod_id = self._psimod_id()
@@ -89,6 +162,8 @@ class UniprotPtmInfo(OboEntity):
         return PSIMOD_LOOKUP.query_id(mod_id)
 
     def get_unimod(self) -> UnimodInfo | None:
+        """The cross-referenced :class:`~tacular.UnimodInfo`, or ``None`` if not
+        cross-referenced (or the referenced id no longer resolves)."""
         from ..unimod import UNIMOD_LOOKUP
 
         mod_id = self._unimod_id()
@@ -97,19 +172,20 @@ class UniprotPtmInfo(OboEntity):
         return UNIMOD_LOOKUP.query_id(mod_id)
 
     @property
-    def location(self) -> ModLocation:
-        match self.position_polypeptide:
-            case ModLocation.NTERM.value:
-                return ModLocation.NTERM
-            case ModLocation.CTERM.value:
-                return ModLocation.CTERM
-            case ModLocation.ANYWHERE.value:
-                return ModLocation.ANYWHERE
-            case _:
-                raise ValueError(f"Unknown modification location: {self.position_polypeptide}")
+    def location(self) -> ModLocation | None:
+        """:attr:`position_polypeptide` as a :class:`ModLocation`, or ``None`` if
+        unset or not a single recognized value (e.g. a crosslink's compound
+        ``"Anywhere-Protein core."``)."""
+        try:
+            return ModLocation(self.position_polypeptide)
+        except ValueError:
+            return None
 
     @property
-    def residue(self) -> AminoAcid:
+    def residue(self) -> AminoAcid | None:
+        """:attr:`target` as a single :class:`~tacular.AminoAcid`, or ``None`` if
+        unset or not one of the 20 standard residues (e.g. an ambiguous
+        ``"Asparagine or Aspartate."`` or a crosslink's compound target)."""
         match self.target:
             case "Alanine.":
                 return AminoAcid.A
@@ -152,4 +228,4 @@ class UniprotPtmInfo(OboEntity):
             case "Valine.":
                 return AminoAcid.V
             case _:
-                raise ValueError(f"Unknown target amino acid: {self.target}")
+                return None

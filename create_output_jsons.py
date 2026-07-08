@@ -18,6 +18,7 @@ PROTEASE_JSON_PATH = f"{OUTPUT_DIR}/proteases.json"
 XLMOD_JSON_PATH = f"{OUTPUT_DIR}/xlmodifications.json"
 RESID_JSON_PATH = f"{OUTPUT_DIR}/resid_modifications.json"
 GNO_JSON_PATH = f"{OUTPUT_DIR}/gnome_modifications.json"
+UNIPROT_PTM_JSON_PATH = f"{OUTPUT_DIR}/uniprot_ptm_modifications.json"
 
 
 def create_metadata(version: str | None = None) -> dict[str, Any]:
@@ -110,6 +111,14 @@ def gen_resid_modifications():
     write_json_with_metadata(RESID_JSON_PATH, "resid_modifications", resid_dicts, t.RESID_LOOKUP.version)
 
 
+def gen_uniprot_ptm_modifications():
+    ptm_infos: list[t.UniprotPtmInfo] = list(t.UNIPROT_PTM_LOOKUP)
+    ptm_dicts = [ptm_info.to_dict() for ptm_info in ptm_infos]
+    write_json_with_metadata(
+        UNIPROT_PTM_JSON_PATH, "uniprot_ptm_modifications", ptm_dicts, t.UNIPROT_PTM_LOOKUP.version
+    )
+
+
 if __name__ == "__main__":
     gen_aa()
     gen_elem()
@@ -123,3 +132,4 @@ if __name__ == "__main__":
     gen_xlmodifications()
     gen_gnome_modifications()
     gen_resid_modifications()
+    gen_uniprot_ptm_modifications()

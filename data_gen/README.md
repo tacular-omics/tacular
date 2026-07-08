@@ -48,6 +48,12 @@ parsing — verified by cross-checking the source `.obo` files directly:
   stayed correct — this was a bug in tacular's own parser (fixed; see
   `HISTORY.md`), not an upstream data issue. UNIMOD's own source data is
   otherwise clean.
+- **UniProt-PTM** has 29 `CARBOHYD` (glycan) entries whose `CF` composition sums
+  to a monoisotopic mass 0.7-1.4 Da lower than the reported `MM` (e.g. PTM-0745
+  through PTM-0754 and others) — all glycan attachments, none of the ~560
+  non-glycan entries. Verified against `data_gen/data/ptmlist.txt` directly:
+  the source file itself is internally inconsistent for these entries, not a
+  tacular parsing bug.
 
 ### Quick overview
 - Generators: individual scripts named `gen_*.py` render specific outputs

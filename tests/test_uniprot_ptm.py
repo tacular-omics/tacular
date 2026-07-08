@@ -1,6 +1,21 @@
 import pytest
 
 from tacular import UNIPROT_PTM_LOOKUP as db
+from tacular import AminoAcid
+from tacular.uniprot_ptm.dclass import ModLocation, UniprotPtmInfo
+
+
+def _make(**overrides) -> UniprotPtmInfo:
+    defaults: dict = dict(
+        id="9999",
+        name="Test Mod",
+        formula=None,
+        monoisotopic_mass=None,
+        average_mass=None,
+        dict_composition=None,
+    )
+    defaults.update(overrides)
+    return UniprotPtmInfo(**defaults)
 
 
 class TestUniprotPtmLookupBasics:
@@ -249,6 +264,160 @@ class TestUniprotPtmDataIntegrity:
         """Test that the version string is not the stub 'unknown'"""
         assert db._version != "unknown"
         assert len(db._version) > 0
+
+
+class TestUniprotPtmLocation:
+    """`location` maps `position_polypeptide` (PP) to a `ModLocation`, or None if
+    unset/unrecognized -- covers a real bug where the enum values didn't match the
+    data ("N-terminus."/"C-terminus." vs. the actual "N-terminal."/"C-terminal."),
+    so every N/C-terminal entry raised instead of resolving."""
+
+    @pytest.mark.parametrize(
+        "pp,expected",
+        [
+            ("Anywhere.", ModLocation.ANYWHERE),
+            ("N-terminal.", ModLocation.NTERM),
+            ("C-terminal.", ModLocation.CTERM),
+            ("Protein core.", ModLocation.PROTEIN_CORE),
+        ],
+    )
+    def test_recognized_values(self, pp, expected):
+        assert _make(position_polypeptide=pp).location == expected
+
+    def test_missing_pp_is_none(self):
+        assert _make(position_polypeptide=None).location is None
+
+    def test_compound_crosslink_style_value_is_none(self):
+        """Crosslink-style compound PP values (e.g. "Anywhere-Protein core.") don't
+        map to a single ModLocation and must not raise."""
+        assert _make(position_polypeptide="Anywhere-Protein core.").location is None
+
+
+class TestUniprotPtmResidue:
+    """`residue` maps `target` (TG) to a single `AminoAcid`, or None if
+    unset/ambiguous/non-standard -- must never raise for real ptmlist.txt data."""
+
+    def test_standard_residue(self):
+        assert _make(target="Serine.").residue == AminoAcid.S
+
+    def test_missing_target_is_none(self):
+        assert _make(target=None).residue is None
+
+    def test_ambiguous_target_is_none(self):
+        assert _make(target="Asparagine or Aspartate.").residue is None
+
+    def test_non_standard_residue_is_none(self):
+        """Selenocysteine is a real UniProt target but not one of the 20 standard residues."""
+        assert _make(target="Selenocysteine.").residue is None
+
+    def test_compound_crosslink_style_target_is_none(self):
+        assert _make(target="Alanine-Arginine.").residue is None
+
+
+class TestUniprotPtmUpdate:
+    """`update()` is overridden here (not the base OboEntity one) to also carry
+    forward this ontology's extra fields."""
+
+    def test_update_extra_field_leaves_others_unchanged(self):
+        info = _make(target="Serine.", feature_key="MOD_RES")
+        updated = info.update(target="Threonine.")
+        assert updated.target == "Threonine."
+        assert updated.feature_key == "MOD_RES"
+        assert updated.id == info.id
+
+
+class TestUniprotPtmDictRoundTrip:
+    """`to_dict`/`from_dict` must round-trip this ontology's extra fields (not just
+    the base OboEntity ones) -- these were previously silently dropped, which would
+    have made a `tacular update uniprot_ptm` cache refresh lossy."""
+
+    def test_round_trip_preserves_extra_fields(self):
+        info = _make(
+            formula="C2H2O",
+            monoisotopic_mass=42.010565,
+            average_mass=42.0367,
+            dict_composition={"C": 2, "H": 2, "O": 1},
+            feature_key="MOD_RES",
+            target="Serine.",
+            position_aa="Amino acid side chain.",
+            position_polypeptide="Anywhere.",
+            cellular_location="Extracellular and lumenal localisation.",
+            taxonomic_range=("Eukaryota; taxId:2759 (Eukaryota).",),
+            keywords=("Hydroxylation.",),
+            cross_references=("PSI-MOD; MOD:00046.", "Unimod; 1."),
+        )
+        rebuilt = UniprotPtmInfo.from_dict(info.to_dict())
+        assert rebuilt == info
+        assert rebuilt.target == info.target
+        assert rebuilt.location == info.location
+        assert rebuilt.residue == info.residue
+        assert rebuilt.cross_references == info.cross_references
+
+    def test_round_trip_with_empty_multi_value_fields(self):
+        info = _make()
+        rebuilt = UniprotPtmInfo.from_dict(info.to_dict())
+        assert rebuilt == info
+        assert rebuilt.taxonomic_range == ()
+        assert rebuilt.keywords == ()
+        assert rebuilt.cross_references == ()
+
+    def test_to_dict_is_plain_json_serializable(self):
+        """Multi-value fields must serialize as lists, not tuples, so `to_dict()`
+        output matches what a real JSON round-trip (json.dump/json.load) produces."""
+        import json
+
+        info = _make(taxonomic_range=("Bacteria; taxId:2 (Bacteria).",))
+        data = info.to_dict()
+        assert isinstance(data["taxonomic_range"], list)
+        reloaded = json.loads(json.dumps(data))
+        assert reloaded == data
+
+
+class TestUniprotPtmCrossReferences:
+    """`has_psimod`/`has_unimod`/`get_psimod`/`get_unimod` resolve cross-references
+    against the live PSIMOD_LOOKUP/UNIMOD_LOOKUP; a stale/removed id must resolve
+    to None rather than raise."""
+
+    def test_resolves_psimod_reference(self):
+        entry = db.query_id("0476")
+        assert entry is not None
+        assert entry.has_psimod
+        assert entry.get_psimod() is not None
+
+    def test_resolves_unimod_reference(self):
+        entry = db.query_id("0369")
+        assert entry is not None
+        assert entry.has_unimod
+        assert entry.get_unimod() is not None
+
+    def test_stale_psimod_reference_resolves_to_none(self):
+        """PTM-0722 cross-references PSI-MOD MOD:01875, which isn't in the bundled
+        PSI-MOD snapshot (version skew between the two ontology sources) -- must
+        resolve to None, not raise."""
+        entry = db.query_id("0722")
+        assert entry is not None
+        assert entry.has_psimod
+        assert entry.get_psimod() is None
+
+    def test_no_cross_reference(self):
+        entry = db.query_id("0663")
+        assert entry is not None
+        assert not entry.has_psimod
+        assert not entry.has_unimod
+        assert entry.get_psimod() is None
+        assert entry.get_unimod() is None
+
+
+class TestUniprotPtmDataProperties:
+    """`location`/`residue` must never raise across the full bundled dataset."""
+
+    def test_location_never_raises(self):
+        for entry in db:
+            entry.location  # noqa: B018 - accessing for side-effect-free validation
+
+    def test_residue_never_raises(self):
+        for entry in db:
+            entry.residue  # noqa: B018 - accessing for side-effect-free validation
 
 
 if __name__ == "__main__":

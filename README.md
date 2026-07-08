@@ -3,7 +3,7 @@
 <div align="center">
   <img src="tacular_logo.png" alt="tacular Logo" width="400" style="margin: 50px;"/>
 
-  A Python library for looking up common MS-proteomics values. Includes the following modifications: UNIMOD, RESID, XLMOD, GNOme, and PSIMOD. Also contains a lookup of elements, MS ion types, neutral deltas, proteases, and soem reference molecules. Tacular is mainly a helper package for peptacular and paftacular.
+  A Python library for looking up common MS-proteomics values. Includes the following modifications: UNIMOD, RESID, XLMOD, GNOme, PSIMOD, and UniProt-PTM. Also contains a lookup of elements, MS ion types, neutral deltas, proteases, and soem reference molecules. Tacular is mainly a helper package for peptacular and paftacular.
 
     
 [![Python package](https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml/badge.svg)](https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml)
@@ -25,7 +25,7 @@ the current `.obo` sources, regenerates the data, and stores it in a per-user
 cache that the lookups prefer over the bundled snapshot on the next import.
 
 ```bash
-tacular update                 # refresh all pullable ontologies (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme)
+tacular update                 # refresh all pullable ontologies (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM)
 tacular update unimod xlmod    # refresh a subset (GNOme is a large download; opt in explicitly)
 tacular update --offline DIR   # regenerate from local .obo files in DIR (no network)
 tacular status                 # show bundled vs cached versions
@@ -67,7 +67,7 @@ The following lookups are available:
 ### Modifications
 - Post-translational modifications (PTMs)
 - Query by modification name, ID, or delta mass
-- Support for Unimod, PSI-MOD, RESID, XLMOD and GNOme
+- Support for Unimod, PSI-MOD, RESID, XLMOD, GNOme, and UniProt-PTM
 
 ### Elements
 - Chemical element data
@@ -90,12 +90,13 @@ Each lookup contains three core components:
 
 Each lookup provides multiple query options to enable data retrieval by various means. Lookups are cached for faster repeat queries.
 
-Two more pieces support the 5 OBO-sourced ontologies (UNIMOD, PSI-MOD, RESID,
-XLMOD, GNOme) specifically:
+Two more pieces support the 6 ontologies that can be refreshed at runtime
+(UNIMOD, PSI-MOD, RESID, XLMOD, GNOme -- all OBO-sourced -- and UniProt-PTM,
+sourced from UniProt's own `ptmlist.txt` flat file) specifically:
 
-- **`_datagen/`**: the OBO/formula parsing logic, one module per ontology. This
-  is the single source of truth — both the developer generators (`data_gen/`)
-  and the `tacular update` CLI call into it. See `data_gen/README.md`.
+- **`_datagen/`**: the parsing logic, one module per ontology. This is the
+  single source of truth — both the developer generators (`data_gen/`) and the
+  `tacular update` CLI call into it. See `data_gen/README.md`.
 - **`_cache.py`**: resolves each lookup's data from a refreshed per-user cache
   if present, else the bundled `data.py` — see "Updating data from the latest
   ontologies" above.

@@ -31,3 +31,7 @@
 * Add `CLAUDE.md`/`AGENTS.md`/`llms.txt` for AI coding agents and LLM tooling;
   fill in missing module/function docstrings across the public API; correct
   stale claims in `data_gen/README.md`.
+* Add a `UNIPROT_PTM_LOOKUP` lookup for UniProt's controlled vocabulary of
+  posttranslational modifications (`ptmlist.txt`), with `tacular update`/cache
+  support like the OBO ontologies. Cross-references to PSI-MOD/UNIMOD are
+  resolvable via `get_psimod()`/`get_unimod()`.

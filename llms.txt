@@ -1,9 +1,9 @@
 # tacular
 
 > Python library of lookups for MS-proteomics values: post-translational
-> modification ontologies (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme), amino acids,
-> chemical elements/isotopes, fragment ion types, neutral losses, proteases, and
-> mzPAF reference molecules. No runtime dependencies.
+> modification ontologies (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM),
+> amino acids, chemical elements/isotopes, fragment ion types, neutral losses,
+> proteases, and mzPAF reference molecules. No runtime dependencies.
 
 Each ontology/data type exposes a module-level `*_LOOKUP` singleton (e.g.
 `tacular.UNIMOD_LOOKUP`, `tacular.ELEMENT_LOOKUP`), queryable by id, name, or
@@ -22,7 +22,7 @@ original `.obo` source or an external standard instead.
 - [README](README.md): installation, usage examples, the `tacular update` CLI, architecture overview
 - [CLAUDE.md](CLAUDE.md): architecture and command reference for AI coding agents, including logging/exception-handling conventions and known data-correctness gotchas
 - [HISTORY.md](HISTORY.md): changelog
-- [data_gen/README.md](data_gen/README.md): how ontology data is parsed and regenerated, and known data-quality issues in the upstream ontologies (PSI-MOD, XLMOD, RESID, GNOme)
+- [data_gen/README.md](data_gen/README.md): how ontology data is parsed and regenerated, and known data-quality issues in the upstream ontologies (PSI-MOD, XLMOD, RESID, GNOme, UniProt-PTM)
 - [Read the Docs](https://tacular.readthedocs.io/en/latest/): full API reference (Sphinx)
 
 ## Source
