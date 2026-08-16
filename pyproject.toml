@@ -1,15 +1,17 @@
 [project]
 name = "tacular"
 dynamic = ["version"]
-description = "Includes lookups for modifications, amino acids, and other data types."
+description = "Proteomics ontology and reference-data lookups in Python."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
 authors = [
-    { name = "Patrick Garrett", email = "pgarrett@scripps.edu" }
+    { name = "Patrick T. Garrett", email = "pgarrett@scripps.edu" }
 ]
+license = "MIT"
+license-files = ["LICENSE"]
 maintainers = [
-    { name = "Patrick Garrett", email = "pgarrett@scripps.edu" }
+    { name = "Patrick T. Garrett", email = "pgarrett@scripps.edu" }
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -21,6 +23,14 @@ classifiers = [
     "Operating System :: OS Independent",
     "Typing :: Typed",
 ]
+
+[project.urls]
+Homepage = "https://github.com/tacular-omics/tacular"
+Documentation = "https://tacular.readthedocs.io/"
+Repository = "https://github.com/tacular-omics/tacular"
+Issues = "https://github.com/tacular-omics/tacular/issues"
+Changelog = "https://github.com/tacular-omics/tacular/blob/main/HISTORY.md"
+DOI = "https://doi.org/10.5281/zenodo.18475556"
 
 [project.scripts]
 tacular = "tacular.update:main"
@@ -64,4 +74,3 @@ select = [
 ignore = [
     "B019",  # Use of functools.lru_cache/cache on methods - intentional for lookup performance
 ]
-
