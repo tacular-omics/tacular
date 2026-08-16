@@ -1,0 +1,59 @@
+{
+  "title": "tacular: Proteomics ontology and reference-data lookups in Python",
+  "description": "A Python library for looking up common mass-spectrometry proteomics values, including protein modifications, elements, fragment-ion types, neutral deltas, proteases, and reference molecules.",
+  "creators": [
+    {
+      "name": "Garrett, Patrick T.",
+      "orcid": "0000-0002-8434-9693",
+      "affiliation": "Scripps Research Institute"
+    }
+  ],
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "mit",
+  "language": "eng",
+  "keywords": [
+    "Python",
+    "Proteomics",
+    "Mass Spectrometry",
+    "Ontologies",
+    "Bioinformatics"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://tacular.readthedocs.io/",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://pypi.org/project/tacular/",
+      "relation": "isAlternateIdentifier",
+      "scheme": "url"
+    }
+  ],
+  "communities": [
+    {
+      "identifier": "proteomics"
+    },
+    {
+      "identifier": "hupo-psi"
+    }
+  ],
+  "grants": [
+    {
+      "id": "10.13039/100000002::R01AG077046"
+    },
+    {
+      "id": "10.13039/100000002::R01MH132570"
+    },
+    {
+      "id": "10.13039/100000002::R01MH100175"
+    },
+    {
+      "id": "10.13039/100000002::R01HL165168"
+    },
+    {
+      "id": "10.13039/100000002::U01AG088679"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use tacular in your research, please cite the software using these metadata."
+type: software
+title: "tacular: Proteomics ontology and reference-data lookups in Python"
+abstract: >-
+  A Python library for looking up common mass-spectrometry proteomics values,
+  including protein modifications, elements, fragment-ion types, neutral
+  deltas, proteases, and reference molecules.
+authors:
+  - given-names: Patrick T.
+    family-names: Garrett
+    orcid: https://orcid.org/0000-0002-8434-9693
+    affiliation: Scripps Research Institute
+repository-code: https://github.com/tacular-omics/tacular
+url: https://tacular.readthedocs.io/
+license: MIT
+doi: 10.5281/zenodo.18475556
+version: 1.1.0
+keywords:
+  - Python
+  - Proteomics
+  - Mass Spectrometry
+  - Ontologies
+  - Bioinformatics
