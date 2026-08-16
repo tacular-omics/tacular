@@ -3,9 +3,20 @@ message: "If you use tacular in your research, please cite the software using th
 type: software
 title: "tacular: Proteomics ontology and reference-data lookups in Python"
 abstract: >-
-  A Python library for looking up common mass-spectrometry proteomics values,
-  including protein modifications, elements, fragment-ion types, neutral
-  deltas, proteases, and reference molecules.
+  tacular is a Python library for mass spectrometry and proteomics reference
+  data. It packages versioned snapshots of UniMod, PSI-MOD, RESID, XLMOD,
+  GNOme, and UniProt PTM records behind a common lookup interface. Additional
+  tables describe amino acids, elements and their isotopes, fragment-ion types,
+  neutral deltas, proteases, and mzPAF reference molecules. Applications can
+  query these records by identifiers and names while working with typed Python
+  objects that expose masses, formulas, cross-references, and other available
+  ontology fields. Bundled snapshots allow reproducible and offline use. A
+  command-line interface can download supported upstream sources, regenerate
+  the tables, and place refreshed data in a user cache without reinstalling the
+  package. The same generation tools can export the packaged records as JSON
+  for use outside Python. tacular serves as the shared reference-data layer for
+  peptacular and paftacular, while remaining usable as a standalone lookup
+  library. It requires Python 3.12 or later and has no runtime dependencies.
 authors:
   - given-names: Patrick T.
     family-names: Garrett
