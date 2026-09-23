@@ -17,7 +17,6 @@ class TestRefMolLookupBasics:
     def test_getitem_by_refmol_id(self):
         """Test __getitem__ with RefMolID enum"""
         if len(list(db)) > 0:
-            first_entry = next(iter(db))
             # Try to get via enum if possible
             for refmol_id in RefMolID:
                 result = db[refmol_id]
