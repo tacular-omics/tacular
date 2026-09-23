@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Isotope-labelled formulas are written in ProForma bracket syntax, so they parse back
+  to their own composition: UNIMOD `Label:13C(6)` was `C-613C6` (read as `C-613`) and is
+  now `C-6[13C6]`. 132 UNIMOD and 4 XLMOD `formula` strings (and `jsons/`) changed;
+  compositions and masses were already correct.
+- `OntologyLookup` now raises `ValueError` on duplicate ids or duplicate (case-insensitive)
+  names. A chained `!=` only raised when both counts were off, so duplicates slipped through.
+
 ## [1.1.3] (2026-09-23)
 
 ### Fixed

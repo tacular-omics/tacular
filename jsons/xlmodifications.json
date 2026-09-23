@@ -551,7 +551,7 @@
         {
             "id": "01043",
             "name": "hydrolyzed DSA-13C6",
-            "formula": "H813C6O3",
+            "formula": "H8[13C6]O3",
             "monoisotopic_mass": 134.06696,
             "average_mass": 134.08187,
             "composition": {
@@ -563,7 +563,7 @@
         {
             "id": "01044",
             "name": "ammonium amidated DSA-13C6",
-            "formula": "H913C6NO2",
+            "formula": "H9[13C6]NO2",
             "monoisotopic_mass": 133.08294,
             "average_mass": 133.097109,
             "composition": {
@@ -1655,7 +1655,7 @@
         {
             "id": "02053",
             "name": "DSA-13C6",
-            "formula": "H613C6O2",
+            "formula": "H6[13C6]O2",
             "monoisotopic_mass": 116.0564,
             "average_mass": 116.066583,
             "composition": {
@@ -2056,7 +2056,7 @@
         {
             "id": "02215",
             "name": "SDA-13C5",
-            "formula": "H613C5O",
+            "formula": "H6[13C5]O",
             "monoisotopic_mass": 87.058665,
             "average_mass": 87.063824,
             "composition": {
