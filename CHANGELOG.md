@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [1.1.2] (2026-09-23)
+
+### Fixed
+
+- Zenodo archiving: removed the grant ids and hard-coded version from `.zenodo.json`, which made Zenodo reject the previous release. Funding is now credited in the README.
+
 ## [1.1.1] (2026-09-23)
 
 * Publish from GitHub Actions with PyPI trusted publishing (`publish.yml`),
