@@ -116,3 +116,7 @@ carbon_13 = t.ELEMENT_LOOKUP['13C']
 See [`CLAUDE.md`](CLAUDE.md) for an architecture and command reference aimed at
 AI coding agents (also generally useful for new contributors); [`AGENTS.md`](AGENTS.md)
 points here for tools that look for that filename instead.
+
+## Funding
+
+Supported by NIH grants R01AG077046, R01MH132570, R01MH100175, R01HL165168 and U01AG088679.

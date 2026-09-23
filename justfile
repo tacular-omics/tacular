@@ -69,7 +69,7 @@ pre-release: format lint check test gen-jsons docs-test check-version
 set-version version:
     python scripts/release_version.py sync --set {{version}}
 
-# Copy __version__ to CITATION.cff / .zenodo.json after editing it by hand
+# Copy __version__ to CITATION.cff after editing it by hand
 sync-version:
     python scripts/release_version.py sync
 
