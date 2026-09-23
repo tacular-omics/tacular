@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [1.1.1] (2026-09-23)
+
+* Publish from GitHub Actions with PyPI trusted publishing (`publish.yml`),
+  replacing the API-token workflow; release metadata is checked against the tag.
+* Keep `__version__`, `CITATION.cff` and `.zenodo.json` in sync with
+  `scripts/release_version.py` (`just set-version X.Y.Z`).
+* CI tests Python 3.12-3.14 on Linux plus macOS and Windows, the lowest
+  direct dependency versions, and the built wheel.
+* Rename `HISTORY.md` to `CHANGELOG.md`; standardize citation, Zenodo and
+  package metadata.
+
 ## [1.1.0] (2026-07-07)
 
 * Add `tacular update` CLI to refresh ontology data from the latest OBO
