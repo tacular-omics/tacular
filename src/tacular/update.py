@@ -7,11 +7,11 @@ on the next ``import tacular`` — no reinstall required.
 
 Usage::
 
-    tacular update                 # refresh all pullable ontologies
+    tacular update                 # refresh all six ontologies (includes the large GNOme download)
     tacular update unimod xlmod    # refresh a subset
     tacular update --offline DIR   # regenerate from local .obo files in DIR
     tacular status                 # show bundled vs cached versions
-    tacular clear                  # remove the cache (revert to bundled data)
+    tacular clear                  # remove cached data (revert to bundled); keeps downloaded sources
     tacular where                  # print the cache directory
 
 If regenerating data hits an entry it can't parse (e.g. an ontology release

@@ -23,7 +23,7 @@ approximate mass.
 just install        # uv sync
 just test           # uv run pytest tests
 just test-cov       # pytest with branch coverage (term + html + xml)
-just lint           # ruff check src   (CI runs `ruff check src tests`)
+just lint           # ruff check src tests (same as CI)
 just format         # ruff isort-fix on src/tests/data_gen, ruff format src/tests  -- WRITES FILES
 just ty             # ty check src
 just check          # format + lint + ty + test (so it also rewrites files)
@@ -39,8 +39,7 @@ just check-version  # scripts/release_version.py check
 `gen-xlmod`, `gen-gno`, `gen-uniprot-ptm`, `gen-aa`, `gen-frag`, `gen-pro`, `gen-ref`,
 `gen-delta`, `gen-mono` (and `download-*`). Run as `just -f data_gen/justfile gen-uni`.
 
-`just test-docs` (`pytest --doctest-modules src`) collects no tests and exits 5; use
-`just docs-test` instead.
+`just test-docs` is an alias for `just docs-test` (the sources have no doctests).
 
 CLI: the `tacular` console script (also `python -m tacular`) has `update`, `status`,
 `clear`, `where`, plus `-v`/`-vv`. See "Refreshing ontology data" below.
@@ -219,10 +218,9 @@ and checked). `import tacular as t` is the house style.
 - **Don't trust "this generator's output looks unchanged" from eyeballing a diff.**
   Regenerated `data.py` files are large; verify via the `build()` vs `jsons/*.json`
   id-for-id comparison, not a visual scan.
-- **Accession prefixes are not stripped** for UNIMOD/PSI-MOD/XLMOD/UniProt:
-  `UNIMOD_LOOKUP["UNIMOD:21"]` and `PSIMOD_LOOKUP["MOD:00046"]` raise `KeyError`; use
-  `21`, `"21"`, `"00046"`. Only RESID (`AA`) and GNO (`G`) strip a prefix, despite the
-  `query_id` docstring saying "stripping known prefixes".
+- **Id queries strip only the ontology's own accession prefix** (`_accession_prefix` on each
+  `*Lookup`: `UNIMOD:`, `MOD:`, `XLMOD:`, `RESID:`, `GNO:`, `PTM-`), then RESID `AA` / GNO `G`,
+  then leading zeros. `UNIMOD_LOOKUP["MOD:00046"]` still raises `KeyError`.
 - **Name lookups are case-insensitive** (`"oxidation"` works) and `lookup[key]` tries the
   name before the id.
 - **`NeutralDeltaInfo` masses are signed losses** (`H2O` is -18.0106); fragment-ion

@@ -217,3 +217,11 @@ class TestProteaseDataIntegrity:
 
 if __name__ == "__main__":
     pytest.main([__file__])
+
+
+def test_trypsin_full_name_matches_its_proline_rule():
+    """Trypsin's regex does not cleave before P, so its full_name must not say "no proline rule"."""
+    trypsin = t.PROTEASE_LOOKUP["trypsin"]
+    assert trypsin.pattern.search("KP") is None
+    assert "no proline" not in trypsin.full_name.lower()
+    assert "proline" in trypsin.full_name.lower()

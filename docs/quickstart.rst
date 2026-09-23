@@ -136,6 +136,8 @@ to the latest upstream releases with ``tacular update`` (see :doc:`cli`).
 
 RESID IDs have an ``AA`` prefix (e.g., ``AA0002``), which is optional when querying.
 GNOme IDs have a ``G`` prefix (e.g., ``G00008BG``), which is optional when querying.
+Each database's accession prefix is also accepted: ``UNIMOD:21``, ``MOD:00046``,
+``XLMOD:01000``, ``RESID:AA0002``, ``GNO:G00008BG`` and UniProt's ``PTM-0476``.
 In addition, all leading zeros are removed, and when applicable, integer IDs can be used.
 
 Query modifications from various databases:

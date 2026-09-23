@@ -272,3 +272,30 @@ def test_id_tag_is_a_property_returning_str(lookup):
 
 if __name__ == "__main__":
     pytest.main([__file__])
+
+
+@pytest.mark.parametrize(
+    ("lookup", "key", "expected_id"),
+    [
+        (t.UNIMOD_LOOKUP, "UNIMOD:21", "21"),
+        (t.UNIMOD_LOOKUP, "unimod:21", "21"),
+        (t.UNIMOD_LOOKUP, "UNIMOD:00021", "21"),
+        (t.PSIMOD_LOOKUP, "MOD:00046", "00046"),
+        (t.PSIMOD_LOOKUP, "mod:46", "00046"),
+        (t.XLMOD_LOOKUP, "XLMOD:01000", "01000"),
+        (t.RESID_LOOKUP, "RESID:AA0002", "AA0002"),
+        (t.GNO_LOOKUP, "GNO:G00008BG", "G00008BG"),
+        (t.UNIPROT_PTM_LOOKUP, "PTM-0476", "0476"),
+    ],
+)
+def test_prefixed_accessions_resolve(lookup, key, expected_id):
+    """Full CURIE-style accessions resolve through query_id, [], get and in."""
+    assert lookup.query_id(key).id == expected_id
+    assert lookup[key].id == expected_id
+    assert lookup.get(key).id == expected_id
+    assert key in lookup
+
+
+def test_prefix_of_other_ontology_is_not_stripped():
+    assert t.UNIMOD_LOOKUP.query_id("MOD:00046") is None
+    assert t.PSIMOD_LOOKUP.query_id("UNIMOD:21") is None

@@ -116,7 +116,7 @@ Proteases.PROTEINASE_K: ProteaseInfo(
 Proteases.TRYPSIN: ProteaseInfo(
     id=Proteases.TRYPSIN,
     name="Trypsin",
-    full_name="Trypsin (no proline rule)",
+    full_name="Trypsin with proline restriction",
     regex='(?<=[KR])(?=[^P])',
 ),
 Proteases.TRYPSIN_FULL: ProteaseInfo(

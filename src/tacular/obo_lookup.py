@@ -12,23 +12,27 @@ from random import choice
 from .obo_entity import OboEntity, filter_infos
 
 
-def strip_id(key: str, prefix: str | None = None) -> str:
-    """Lowercase ``key``, strip a leading ``prefix`` (if present) and leading zeros.
+def strip_id(key: str, prefix: str | None = None, accession_prefix: str | None = None) -> str:
+    """Lowercase ``key``, strip a leading ``accession_prefix`` and then ``prefix``
+    (each only if present and given in lowercase), then leading zeros.
 
-    E.g. ``strip_id("UNIMOD:00042", "unimod:")`` -> ``"42"``.
+    E.g. ``strip_id("UNIMOD:00042", accession_prefix="unimod:")`` -> ``"42"`` and
+    ``strip_id("RESID:AA0002", "aa", "resid:")`` -> ``"2"``.
     """
     key = key.lower()
+    if accession_prefix is not None and key.startswith(accession_prefix):
+        key = key[len(accession_prefix) :]
     if prefix is not None and key.startswith(prefix):
         key = key[len(prefix) :]
     key = key.lstrip("0")
     return key
 
 
-def convert_key(key: str, prefix: str | None = None) -> int | None:
+def convert_key(key: str, prefix: str | None = None, accession_prefix: str | None = None) -> int | None:
     """``strip_id`` then parse as ``int``, or ``None`` if the result isn't numeric
     (e.g. RESID's ``"AA0001"`` ids, whose non-numeric suffix can't convert)."""
     try:
-        key = strip_id(key, prefix)
+        key = strip_id(key, prefix, accession_prefix)
         return int(key)
     except ValueError:
         return None
@@ -49,6 +53,7 @@ class OntologyLookup[T: OboEntity]:
         ontology_name: str,
         _version: str = "",
         _id_prefix: str | None = None,
+        _accession_prefix: str | None = None,
     ) -> None:
         """
         Args:
@@ -57,6 +62,9 @@ class OntologyLookup[T: OboEntity]:
             _version: Data version string, exposed via :attr:`version`.
             _id_prefix: Prefix to strip from ids/queries before matching (e.g. RESID
                 uses ``"aa"`` so ``"AA0001"`` and ``"0001"`` both resolve to the same entry).
+            _accession_prefix: Accession namespace to strip from queries before ``_id_prefix``
+                (e.g. UNIMOD uses ``"UNIMOD:"`` so ``"UNIMOD:21"`` resolves like ``"21"``).
+                Matched case-insensitively; only this ontology's own namespace is stripped.
         """
         self.ontology_name = ontology_name
         self._version = _version
@@ -67,6 +75,7 @@ class OntologyLookup[T: OboEntity]:
         self.__id_to_info: dict[str, T] | None = None
         self.__name_to_info: dict[str, T] | None = None
         self._id_prefix = _id_prefix.lower() if _id_prefix is not None else None
+        self._accession_prefix = _accession_prefix.lower() if _accession_prefix is not None else None
 
     def _ensure_initialized(self) -> None:
         """Lazy initialization of lookup dictionaries."""
@@ -116,11 +125,16 @@ class OntologyLookup[T: OboEntity]:
         return self._version
 
     def query_id(self, mod_id: str | int) -> T | None:
-        """Query by ID, stripping known prefixes."""
+        """Query by ID, stripping this ontology's accession namespace (e.g. ``"UNIMOD:"``,
+        ``"MOD:"``), its id prefix (e.g. RESID's ``"AA"``) and leading zeros.
+
+        E.g. ``UNIMOD_LOOKUP.query_id("UNIMOD:21")``, ``query_id("21")`` and ``query_id(21)``
+        all return the same entry. Returns ``None`` if nothing matches.
+        """
         if isinstance(mod_id, int):
             return self._num_to_info.get(mod_id)
 
-        mod_id = strip_id(mod_id, self._id_prefix)
+        mod_id = strip_id(mod_id, self._id_prefix, self._accession_prefix)
         info = self._id_to_info.get(mod_id)
         if info is not None:
             return info
@@ -137,7 +151,7 @@ class OntologyLookup[T: OboEntity]:
         return None
 
     def query_name(self, name: str) -> T | None:
-        """Query by name, stripping known prefixes."""
+        """Query by name (case-insensitive). Returns ``None`` if nothing matches."""
         return self._name_to_info.get(name.lower())
 
     def query_mass(self, mass: float, tolerance: float = 0.01, monoisotopic: bool = True) -> list[T]:
