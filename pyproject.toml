@@ -29,7 +29,7 @@ Homepage = "https://github.com/tacular-omics/tacular"
 Documentation = "https://tacular.readthedocs.io/"
 Repository = "https://github.com/tacular-omics/tacular"
 Issues = "https://github.com/tacular-omics/tacular/issues"
-Changelog = "https://github.com/tacular-omics/tacular/blob/main/HISTORY.md"
+Changelog = "https://github.com/tacular-omics/tacular/blob/main/CHANGELOG.md"
 DOI = "https://doi.org/10.5281/zenodo.18475556"
 
 [project.scripts]
@@ -48,10 +48,12 @@ packages = ["src/tacular"]
 
 [tool.uv]
 package = true
-dev-dependencies = [
+
+[dependency-groups]
+dev = [
     "pytest>=9.0.2",
-    "ruff>=0.14.11",
-    "ty>=0.0.11",
+    "ruff>=0.16.8",
+    "ty>=0.0.83",
     "pytest-cov>=6.0.0",
     "sphinx>=7.0",
     "sphinx-rtd-theme>=2.0",
@@ -61,6 +63,7 @@ dev-dependencies = [
 [tool.ruff]
 target-version = "py312"
 line-length = 120
+extend-exclude = ["**/data.py"]
 
 [tool.ruff.lint]
 select = [

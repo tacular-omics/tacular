@@ -48,7 +48,7 @@ def test_obo_entity_update():
 
 
 def test_modentity_inherits_cv():
-    mod = OboEntity(
+    OboEntity(
         id="M1",
         name="ModEntity",
         formula=None,

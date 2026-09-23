@@ -171,7 +171,8 @@ attribute docstring) — see `obo_entity.py`'s `OboEntity` fields for the patter
 
 - Version lives in `src/tacular/__init__.py` (`__version__`), sourced by
   `[tool.hatch.version]` in `pyproject.toml`.
-- Changelog is `HISTORY.md` (`## X.Y.Z (YYYY-MM-DD)` sections, terse bullet points).
+- Changelog is `CHANGELOG.md` (`## [X.Y.Z] (YYYY-MM-DD)` sections, newest first,
+  terse bullet points).
 - This repo's remote is `https://github.com/tacular-omics/tacular` (a prior
   `pgarrett-scripps/tacular` remote redirects here — update `origin` if you see
   the redirect warning on push).
