@@ -1,7 +1,6 @@
 # AGENTS.md
 
-See [`CLAUDE.md`](CLAUDE.md) for the architecture and command reference for AI
-coding agents working in this repo (commands, module layout, docstring style,
-logging/exception conventions, and hard-won gotchas around mass/formula data).
-That file is kept as the canonical version; this one exists because some tools
-look for `AGENTS.md` specifically rather than `CLAUDE.md`.
+The canonical guide for AI coding agents in this repo is [`CLAUDE.md`](CLAUDE.md):
+commands, module layout, public API, conventions, and hard-won mass/formula gotchas.
+Read it first; this file only exists for tools that look for `AGENTS.md`.
+For *using* tacular as a library, see [`llms-full.txt`](llms-full.txt).

@@ -1,35 +1,41 @@
 # tacular
 
-> Python library of lookups for MS-proteomics values: post-translational
+> Python library of lookups for MS-proteomics reference data: post-translational
 > modification ontologies (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM),
-> amino acids, chemical elements/isotopes, fragment ion types, neutral losses,
-> proteases, and mzPAF reference molecules. No runtime dependencies.
+> amino acids, elements/isotopes, fragment ion types, neutral losses, proteases,
+> monosaccharides, and mzPAF reference molecules. No runtime dependencies.
 
-Each ontology/data type exposes a module-level `*_LOOKUP` singleton (e.g.
-`tacular.UNIMOD_LOOKUP`, `tacular.ELEMENT_LOOKUP`), queryable by id, name, or
-(for ontologies) approximate mass — `import tacular as t; t.UNIMOD_LOOKUP["Acetyl"]`.
-Ontology data ships baked into the package but can be refreshed to the latest
+Install with `pip install tacular` (Python >= 3.12). Each data type exposes a
+module-level `*_LOOKUP` singleton (e.g. `tacular.UNIMOD_LOOKUP`,
+`tacular.ELEMENT_LOOKUP`), queryable by id, name, or (for ontologies) approximate
+mass: `import tacular as t; t.UNIMOD_LOOKUP["Phospho"].monoisotopic_mass`.
+Ontology data ships baked into the package and can be refreshed to the latest
 upstream release without reinstalling via the `tacular update` CLI.
 
-tacular is mainly a helper/data package for the `peptacular` and `paftacular`
-packages (same author), which build peptide-level logic on top of it. It does
-not depend on them, and they should not be treated as authoritative for
-tacular's own chemistry/mass data — always verify against the ontology's
-original `.obo` source or an external standard instead.
+tacular is the shared data layer for `peptacular` (ProForma peptides) and
+`paftacular` (mzPAF fragment annotations). It does not depend on them, and they
+are not authoritative for tacular's own mass data.
 
 ## Docs
 
-- [README](README.md): installation, usage examples, the `tacular update` CLI, architecture overview
-- [CLAUDE.md](CLAUDE.md): architecture and command reference for AI coding agents, including logging/exception-handling conventions and known data-correctness gotchas
-- [CHANGELOG.md](CHANGELOG.md): changelog
-- [data_gen/README.md](data_gen/README.md): how ontology data is parsed and regenerated, and known data-quality issues in the upstream ontologies (PSI-MOD, XLMOD, RESID, GNOme, UniProt-PTM)
-- [Read the Docs](https://tacular.readthedocs.io/en/latest/): full API reference (Sphinx)
+- [llms-full.txt](https://raw.githubusercontent.com/tacular-omics/tacular/main/llms-full.txt): self-contained usage guide for agents: every public name with signature, examples, CLI, gotchas
+- [README](https://github.com/tacular-omics/tacular/blob/main/README.md): installation, quick example, `tacular update` CLI
+- [Quick start](https://tacular.readthedocs.io/en/latest/quickstart.html): tested examples for every lookup
+- [Installation](https://tacular.readthedocs.io/en/latest/installation.html): install options
+- [CHANGELOG](https://github.com/tacular-omics/tacular/blob/main/CHANGELOG.md): release notes
 
-## Source
+## API
 
-- [GitHub repository](https://github.com/tacular-omics/tacular)
-- [PyPI package](https://pypi.org/project/tacular/)
+- [API reference index](https://tacular.readthedocs.io/en/latest/api/index.html): Sphinx autodoc for all lookups
+- [Modifications](https://tacular.readthedocs.io/en/latest/api/modifications.html): UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM lookups
+- [Elements](https://tacular.readthedocs.io/en/latest/api/elements.html): elements and isotopes, `parse_composition`
+- [Amino acids](https://tacular.readthedocs.io/en/latest/api/amino_acids.html): `AA_LOOKUP`, `AminoAcid`
+- [Base classes](https://tacular.readthedocs.io/en/latest/api/base_classes.html): `OboEntity`, `OntologyLookup`
 
 ## Optional
 
-- [mzPAF specification](https://github.com/HUPO-PSI/mzpaf): the HUPO-PSI peak annotation format standard; the authoritative source for fragment-ion-offset conventions tacular's `ion_types` data follows (only the default internal fragment type, `by`, is part of the actual mzPAF grammar)
+- [CLAUDE.md](https://github.com/tacular-omics/tacular/blob/main/CLAUDE.md): guide for coding agents working on tacular itself (architecture, conventions, data-correctness gotchas)
+- [data_gen/README.md](https://github.com/tacular-omics/tacular/blob/main/data_gen/README.md): how ontology data is regenerated, and known upstream data-quality issues
+- [jsons/](https://github.com/tacular-omics/tacular/tree/main/jsons): JSON snapshots of every lookup for non-Python consumers
+- [mzPAF specification](https://github.com/HUPO-PSI/mzpaf): source of the fragment-ion conventions (only the default internal type `by` is in the mzPAF grammar)
+- [GitHub](https://github.com/tacular-omics/tacular) and [PyPI](https://pypi.org/project/tacular/)
