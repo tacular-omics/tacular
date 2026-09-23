@@ -3,9 +3,10 @@
 Each ontology (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM) and data type
 (amino acids, elements, fragment ion types, monosaccharides, neutral losses,
 proteases, mzPAF reference molecules) exposes a module-level ``*_LOOKUP``
-singleton -- e.g. ``UNIMOD_LOOKUP``, ``ELEMENT_LOOKUP`` -- built on the shared
-:class:`OboLookup` and :class:`OboEntity` base classes in ``obo_lookup.py`` /
-``obo_entity.py``. Query by id, name, or (for ontologies) approximate mass; see
+singleton -- e.g. ``UNIMOD_LOOKUP``, ``ELEMENT_LOOKUP``. The 6 ontology lookups
+share the :class:`~tacular.obo_lookup.OntologyLookup` and :class:`OboEntity` base
+classes in ``obo_lookup.py`` / ``obo_entity.py``; the other data types have their
+own lookup classes. Query by id, name, or (for ontologies) approximate mass; see
 each lookup class's docstring for its specific query methods.
 
 Data for the 6 refreshable ontologies (5 OBO-sourced, plus UniProt-PTM from its

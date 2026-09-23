@@ -65,8 +65,8 @@ print(hits[0].name)  # Phospho
 - Refresh any ontology to its latest upstream release without reinstalling:
 
   ```bash
-  tacular update                 # refresh all pullable ontologies
-  tacular update unimod xlmod    # refresh a subset (GNOme is a large download; opt in explicitly)
+  tacular update                 # refresh all six ontologies (includes GNOme, a ~129 MB download)
+  tacular update unimod xlmod    # refresh a subset (skips GNOme unless named)
   tacular status                 # show bundled vs. cached versions
   tacular clear                  # revert to the bundled data
   ```

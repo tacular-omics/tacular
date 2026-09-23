@@ -8,7 +8,7 @@ from .dclass import GnoInfo
 
 class GnoLookup(OntologyLookup[GnoInfo]):
     def __init__(self, data: dict[str, GnoInfo], version: str) -> None:
-        """Wrap `data` in an `OntologyLookup` bound to the GNO ontology, stripping the "GNO:" accession and "G" id prefixes."""
+        """Wrap `data` in an `OntologyLookup` for GNO, stripping the "GNO:" accession and "G" id prefixes."""
         super().__init__(
             data=data,
             ontology_name="GNO",

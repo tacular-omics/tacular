@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Id lookups now accept each ontology's own accession prefix, as `query_id` documented:
+  `UNIMOD_LOOKUP["UNIMOD:21"]`, `PSIMOD_LOOKUP["MOD:00046"]`, `XLMOD:01000`,
+  `RESID:AA0002`, `GNO:G00008BG` and UniProt's `PTM-0476` resolve (case-insensitive)
+  through `[]`, `get`, `in` and `query_id`. Another ontology's prefix is still rejected.
+- Trypsin's `full_name` said "no proline rule" although its regex does not cleave
+  before proline; it now reads "Trypsin with proline restriction".
+- README: `tacular update` with no names refreshes GNOme too (it is not opt-in).
+- `just test-docs` ran a pytest doctest pass that collected nothing and exited 5; it is
+  now an alias for `just docs-test`. `just lint` checks `tests` as CI does.
+- `GnoInfo` docstring said PSI-MOD; package docstring named a nonexistent `OboLookup`.
+
 ## [1.1.2] (2026-09-23)
 
 ### Fixed

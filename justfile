@@ -6,7 +6,7 @@ install:
 
 # Run linting checks
 lint:
-    uv run ruff check src
+    uv run ruff check src tests
 
 # Format code
 format:
@@ -30,8 +30,8 @@ test-cov:
 codecov-tests:
     uv run pytest tests --cov --junitxml=junit.xml -o junit_family=legacy
 
-test-docs:
-    uv run pytest --doctest-modules src
+# Alias for docs-test (the sources have no doctests of their own; the docs do)
+test-docs: docs-test
 
 # Generate Data Files
 gen:

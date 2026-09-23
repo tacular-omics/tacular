@@ -8,7 +8,7 @@ from .dclass import PsimodInfo
 
 class PsimodLookup(OntologyLookup[PsimodInfo]):
     def __init__(self, data: dict[str, PsimodInfo], version: str) -> None:
-        """Wrap `data` in an `OntologyLookup` bound to the PSI-MOD ontology, stripping the "MOD:" accession prefix."""
+        """Wrap `data` in an `OntologyLookup` for PSI-MOD, stripping the "MOD:" accession prefix."""
         super().__init__(
             data=data,
             ontology_name="PSI-MOD",

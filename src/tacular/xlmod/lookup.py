@@ -8,7 +8,7 @@ from .dclass import XlModInfo
 
 class XlModLookup(OntologyLookup[XlModInfo]):
     def __init__(self, data: dict[str, XlModInfo], version: str) -> None:
-        """Wrap `data` in an `OntologyLookup` bound to the XLMOD ontology, stripping the "XLMOD:" accession prefix."""
+        """Wrap `data` in an `OntologyLookup` for XLMOD, stripping the "XLMOD:" accession prefix."""
         super().__init__(
             data=data,
             ontology_name="XLMOD",

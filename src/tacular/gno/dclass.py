@@ -7,7 +7,7 @@ from ..obo_entity import OboEntity
 
 @dataclass(frozen=True, slots=True)
 class GnoInfo(OboEntity):
-    """Class to store information about a PSI-MOD modification"""
+    """Class to store information about a GNOme glycan"""
 
     @property
     def id_tag(self) -> str:
