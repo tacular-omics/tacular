@@ -1,15 +1,8 @@
-# History
+# Changelog
 
-## 1.0.0 (2026-02-02)
+## [Unreleased]
 
-* First release on PyPI.
-
-## 1.0.1 (2026-02-03)
-
-* docs
-* zenodo
-
-## 1.1.0 (2026-07-07)
+## [1.1.0] (2026-07-07)
 
 * Add `tacular update` CLI to refresh ontology data from the latest OBO
   releases at runtime, cached per-user and preferred over bundled data.
@@ -35,3 +28,13 @@
   posttranslational modifications (`ptmlist.txt`), with `tacular update`/cache
   support like the OBO ontologies. Cross-references to PSI-MOD/UNIMOD are
   resolvable via `get_psimod()`/`get_unimod()`.
+
+## [1.0.1] (2026-02-03)
+
+* docs
+* zenodo
+
+## [1.0.0] (2026-02-02)
+
+* First release on PyPI.
+</content>

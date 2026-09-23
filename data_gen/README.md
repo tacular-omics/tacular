@@ -46,7 +46,7 @@ parsing — verified by cross-checking the source `.obo` files directly:
 - **UNIMOD** entries with isotope-labelled atoms (`13C`, `15N`, ...) previously
   had those atoms silently dropped from `composition`/`formula` while the mass
   stayed correct — this was a bug in tacular's own parser (fixed; see
-  `HISTORY.md`), not an upstream data issue. UNIMOD's own source data is
+  `CHANGELOG.md`), not an upstream data issue. UNIMOD's own source data is
   otherwise clean.
 - **UniProt-PTM** has 29 `CARBOHYD` (glycan) entries whose `CF` composition sums
   to a monoisotopic mass 0.7-1.4 Da lower than the reported `MM` (e.g. PTM-0745
