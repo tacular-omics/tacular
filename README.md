@@ -6,7 +6,7 @@
   A Python library for looking up common MS-proteomics values. Includes the following modifications: UNIMOD, RESID, XLMOD, GNOme, PSIMOD, and UniProt-PTM. Also contains a lookup of elements, MS ion types, neutral deltas, proteases, and some reference molecules. Tacular is mainly a helper package for peptacular and paftacular.
 
     
-[![Python package](https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml/badge.svg)](https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml)
+[![Python package](https://github.com/tacular-omics/tacular/actions/workflows/ci.yml/badge.svg)](https://github.com/tacular-omics/tacular/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/tacular-omics/tacular/graph/badge.svg?token=1CTVZVFXF7)](https://codecov.io/github/tacular-omics/tacular)
 [![Documentation Status](https://readthedocs.org/projects/tacular/badge/?version=latest)](https://tacular.readthedocs.io/en/latest/?badge=latest)
 [![PyPI version](https://badge.fury.io/py/tacular.svg)](https://badge.fury.io/py/tacular)
