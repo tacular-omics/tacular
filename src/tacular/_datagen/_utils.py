@@ -22,7 +22,11 @@ def calculate_mass(composition: dict[str, int], monoisotopic: bool = True) -> fl
 
 
 def format_composition_string(composition: dict[str, int]) -> str:
-    """Format composition as a Hill-ordered string like ``C2H3NO``."""
+    """Format composition as a Hill-ordered string like ``C2H3NO``.
+
+    Isotopes use ProForma bracket syntax (``{"C": -6, "13C": 6}`` -> ``C-6[13C6]``), so the
+    result parses back to the same composition with :func:`parse_formula_to_dict`.
+    """
     if not composition:
         return ""
     parts: list[str] = []
@@ -30,7 +34,8 @@ def format_composition_string(composition: dict[str, int]) -> str:
     elements.sort(key=lambda el: (0, el) if el == "C" else (1, el) if el == "H" else (2, el))
     for element in elements:
         count = composition[element]
-        parts.append(f"{element}{count if count != 1 else ''}")
+        part = f"{element}{count if count != 1 else ''}"
+        parts.append(f"[{part}]" if element[0].isdigit() else part)
     return "".join(parts)
 
 

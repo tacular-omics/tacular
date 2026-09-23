@@ -299,3 +299,21 @@ def test_prefixed_accessions_resolve(lookup, key, expected_id):
 def test_prefix_of_other_ontology_is_not_stripped():
     assert t.UNIMOD_LOOKUP.query_id("MOD:00046") is None
     assert t.PSIMOD_LOOKUP.query_id("UNIMOD:21") is None
+
+
+def test_duplicate_ids_raise_even_with_unique_names():
+    # "1" and "01" collapse to the same stripped id; the chained `!=` check missed this
+    # whenever the names were unique.
+    e1 = make_entity("1", "A")
+    e2 = make_entity("01", "B")
+    lookup = OntologyLookup({e1.id: e1, e2.id: e2}, "TEST")
+    with pytest.raises(ValueError, match="Duplicate"):
+        lookup.query_id("1")
+
+
+def test_duplicate_names_raise_even_with_unique_ids():
+    e1 = make_entity("1", "Same")
+    e2 = make_entity("2", "same")
+    lookup = OntologyLookup({e1.id: e1, e2.id: e2}, "TEST")
+    with pytest.raises(ValueError, match="Duplicate"):
+        lookup.query_name("Same")

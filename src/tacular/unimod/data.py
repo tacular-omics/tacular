@@ -76,7 +76,7 @@ try:
     "9": UnimodInfo(
         id="9",
         name="ICAT-G:2H(8)",
-        formula="C22H302H8N4O6S",
+        formula="C22H30[2H8]N4O6S",
         monoisotopic_mass=494.30142,
         average_mass=494.6746,
         dict_composition={'H': 30, 'C': 22, 'N': 4, 'O': 6, 'S': 1, '2H': 8},
@@ -100,7 +100,7 @@ try:
     "12": UnimodInfo(
         id="12",
         name="ICAT-D:2H(8)",
-        formula="C20H262H8N4O5S",
+        formula="C20H26[2H8]N4O5S",
         monoisotopic_mass=450.275205,
         average_mass=450.6221,
         dict_composition={'H': 26, 'C': 20, 'N': 4, 'O': 5, 'S': 1, '2H': 8},
@@ -380,7 +380,7 @@ try:
     "56": UnimodInfo(
         id="56",
         name="Acetyl:2H(3)",
-        formula="C2H-12H3O",
+        formula="C2H-1[2H3]O",
         monoisotopic_mass=45.029395,
         average_mass=45.0552,
         dict_composition={'H': -1, 'C': 2, 'O': 1, '2H': 3},
@@ -396,7 +396,7 @@ try:
     "59": UnimodInfo(
         id="59",
         name="Propionyl:13C(3)",
-        formula="H413C3O",
+        formula="H4[13C3]O",
         monoisotopic_mass=59.036279,
         average_mass=59.0412,
         dict_composition={'H': 4, 'O': 1, '13C': 3},
@@ -412,7 +412,7 @@ try:
     "61": UnimodInfo(
         id="61",
         name="GIST-Quat:2H(3)",
-        formula="C7H102H3NO",
+        formula="C7H10[2H3]NO",
         monoisotopic_mass=130.118544,
         average_mass=130.2027,
         dict_composition={'H': 10, 'C': 7, 'N': 1, 'O': 1, '2H': 3},
@@ -420,7 +420,7 @@ try:
     "62": UnimodInfo(
         id="62",
         name="GIST-Quat:2H(6)",
-        formula="C7H72H6NO",
+        formula="C7H7[2H6]NO",
         monoisotopic_mass=133.137375,
         average_mass=133.2212,
         dict_composition={'H': 7, 'C': 7, 'N': 1, 'O': 1, '2H': 6},
@@ -428,7 +428,7 @@ try:
     "63": UnimodInfo(
         id="63",
         name="GIST-Quat:2H(9)",
-        formula="C7H42H9NO",
+        formula="C7H4[2H9]NO",
         monoisotopic_mass=136.156205,
         average_mass=136.2397,
         dict_composition={'H': 4, 'C': 7, 'N': 1, 'O': 1, '2H': 9},
@@ -444,7 +444,7 @@ try:
     "65": UnimodInfo(
         id="65",
         name="Succinyl:2H(4)",
-        formula="C42H4O3",
+        formula="C4[2H4]O3",
         monoisotopic_mass=104.041151,
         average_mass=104.0974,
         dict_composition={'C': 4, 'O': 3, '2H': 4},
@@ -452,7 +452,7 @@ try:
     "66": UnimodInfo(
         id="66",
         name="Succinyl:13C(4)",
-        formula="H413C4O3",
+        formula="H4[13C4]O3",
         monoisotopic_mass=104.029463,
         average_mass=104.0434,
         dict_composition={'H': 4, 'O': 3, '13C': 4},
@@ -476,7 +476,7 @@ try:
     "91": UnimodInfo(
         id="91",
         name="ESP:2H(10)",
-        formula="C16H162H10N4O2S",
+        formula="C16H16[2H10]N4O2S",
         monoisotopic_mass=348.240414,
         average_mass=348.5299,
         dict_composition={'H': 16, 'C': 16, 'N': 4, 'O': 2, 'S': 1, '2H': 10},
@@ -508,7 +508,7 @@ try:
     "95": UnimodInfo(
         id="95",
         name="IMID:2H(4)",
-        formula="C32H4N2",
+        formula="C3[2H4]N2",
         monoisotopic_mass=72.062555,
         average_mass=72.1019,
         dict_composition={'C': 3, 'N': 2, '2H': 4},
@@ -516,7 +516,7 @@ try:
     "97": UnimodInfo(
         id="97",
         name="Propionamide:2H(3)",
-        formula="C3H22H3NO",
+        formula="C3H2[2H3]NO",
         monoisotopic_mass=74.055944,
         average_mass=74.0964,
         dict_composition={'H': 2, 'C': 3, 'N': 1, 'O': 1, '2H': 3},
@@ -532,7 +532,7 @@ try:
     "106": UnimodInfo(
         id="106",
         name="ICAT-C:13C(9)",
-        formula="CH1713C9N3O3",
+        formula="CH17[13C9]N3O3",
         monoisotopic_mass=236.157185,
         average_mass=236.1942,
         dict_composition={'H': 17, 'C': 1, 'N': 3, 'O': 3, '13C': 9},
@@ -644,7 +644,7 @@ try:
     "124": UnimodInfo(
         id="124",
         name="ICAT-H:13C(6)",
-        formula="C9H2013C6ClNO6",
+        formula="C9H20[13C6]ClNO6",
         monoisotopic_mass=351.118044,
         average_mass=351.7313,
         dict_composition={'H': 20, 'C': 9, 'N': 1, 'O': 6, 'Cl': 1, '13C': 6},
@@ -924,7 +924,7 @@ try:
     "170": UnimodInfo(
         id="170",
         name="Delta:H(-1)N(-1)18O(1)",
-        formula="H-118ON-1",
+        formula="H-1[18O]N-1",
         monoisotopic_mass=2.988261,
         average_mass=2.9845,
         dict_composition={'H': -1, 'N': -1, '18O': 1},
@@ -932,7 +932,7 @@ try:
     "171": UnimodInfo(
         id="171",
         name="NBS:13C(6)",
-        formula="H313C6NO2S",
+        formula="H3[13C6]NO2S",
         monoisotopic_mass=159.008578,
         average_mass=159.1144,
         dict_composition={'H': 3, 'N': 1, 'O': 2, 'S': 1, '13C': 6},
@@ -964,7 +964,7 @@ try:
     "184": UnimodInfo(
         id="184",
         name="Label:13C(9)",
-        formula="C-913C9",
+        formula="C-9[13C9]",
         monoisotopic_mass=9.030193,
         average_mass=8.9339,
         dict_composition={'C': -9, '13C': 9},
@@ -972,7 +972,7 @@ try:
     "185": UnimodInfo(
         id="185",
         name="Label:13C(9)+Phospho",
-        formula="C-9H13C9O3P",
+        formula="C-9H[13C9]O3P",
         monoisotopic_mass=88.996524,
         average_mass=88.9138,
         dict_composition={'H': 1, 'C': -9, 'O': 3, 'P': 1, '13C': 9},
@@ -996,7 +996,7 @@ try:
     "188": UnimodInfo(
         id="188",
         name="Label:13C(6)",
-        formula="C-613C6",
+        formula="C-6[13C6]",
         monoisotopic_mass=6.020129,
         average_mass=5.9559,
         dict_composition={'C': -6, '13C': 6},
@@ -1004,7 +1004,7 @@ try:
     "193": UnimodInfo(
         id="193",
         name="Label:18O(2)",
-        formula="18O2O-2",
+        formula="[18O2]O-2",
         monoisotopic_mass=4.008491,
         average_mass=3.9995,
         dict_composition={'O': -2, '18O': 2},
@@ -1028,7 +1028,7 @@ try:
     "196": UnimodInfo(
         id="196",
         name="QAT:2H(3)",
-        formula="C9H162H3N2O",
+        formula="C9H16[2H3]N2O",
         monoisotopic_mass=174.168569,
         average_mass=174.2784,
         dict_composition={'H': 16, 'C': 9, 'N': 2, 'O': 1, '2H': 3},
@@ -1044,7 +1044,7 @@ try:
     "198": UnimodInfo(
         id="198",
         name="EQAT:2H(5)",
-        formula="C10H152H5N2O",
+        formula="C10H15[2H5]N2O",
         monoisotopic_mass=189.188947,
         average_mass=189.3094,
         dict_composition={'H': 15, 'C': 10, 'N': 2, 'O': 1, '2H': 5},
@@ -1052,7 +1052,7 @@ try:
     "199": UnimodInfo(
         id="199",
         name="Dimethyl:2H(4)",
-        formula="C22H4",
+        formula="C2[2H4]",
         monoisotopic_mass=32.056407,
         average_mass=32.0778,
         dict_composition={'C': 2, '2H': 4},
@@ -1116,7 +1116,7 @@ try:
     "212": UnimodInfo(
         id="212",
         name="NEIAA:2H(5)",
-        formula="C4H22H5NO",
+        formula="C4H2[2H5]NO",
         monoisotopic_mass=90.084148,
         average_mass=90.1353,
         dict_composition={'H': 2, 'C': 4, 'N': 1, 'O': 1, '2H': 5},
@@ -1132,7 +1132,7 @@ try:
     "214": UnimodInfo(
         id="214",
         name="iTRAQ4plex",
-        formula="C4H1213C315NNO",
+        formula="C4H12[13C3][15N]NO",
         monoisotopic_mass=144.102063,
         average_mass=144.1544,
         dict_composition={'H': 12, 'C': 4, 'N': 1, 'O': 1, '13C': 3, '15N': 1},
@@ -1180,7 +1180,7 @@ try:
     "258": UnimodInfo(
         id="258",
         name="Label:18O(1)",
-        formula="18OO-1",
+        formula="[18O]O-1",
         monoisotopic_mass=2.004246,
         average_mass=1.9998,
         dict_composition={'O': -1, '18O': 1},
@@ -1188,7 +1188,7 @@ try:
     "259": UnimodInfo(
         id="259",
         name="Label:13C(6)15N(2)",
-        formula="C-613C615N2N-2",
+        formula="C-6[13C6][15N2]N-2",
         monoisotopic_mass=8.014199,
         average_mass=7.9427,
         dict_composition={'C': -6, 'N': -2, '13C': 6, '15N': 2},
@@ -1212,7 +1212,7 @@ try:
     "262": UnimodInfo(
         id="262",
         name="Label:2H(3)",
-        formula="H-32H3",
+        formula="H-3[2H3]",
         monoisotopic_mass=3.01883,
         average_mass=3.0185,
         dict_composition={'H': -3, '2H': 3},
@@ -1228,7 +1228,7 @@ try:
     "267": UnimodInfo(
         id="267",
         name="Label:13C(6)15N(4)",
-        formula="C-613C615N4N-4",
+        formula="C-6[13C6][15N4]N-4",
         monoisotopic_mass=10.008269,
         average_mass=9.9296,
         dict_composition={'C': -6, 'N': -4, '13C': 6, '15N': 4},
@@ -1236,7 +1236,7 @@ try:
     "268": UnimodInfo(
         id="268",
         name="Label:13C(5)15N(1)",
-        formula="C-513C515NN-1",
+        formula="C-5[13C5][15N]N-1",
         monoisotopic_mass=6.013809,
         average_mass=5.9567,
         dict_composition={'C': -5, 'N': -1, '13C': 5, '15N': 1},
@@ -1244,7 +1244,7 @@ try:
     "269": UnimodInfo(
         id="269",
         name="Label:13C(9)15N(1)",
-        formula="C-913C915NN-1",
+        formula="C-9[13C9][15N]N-1",
         monoisotopic_mass=10.027228,
         average_mass=9.9273,
         dict_composition={'C': -9, 'N': -1, '13C': 9, '15N': 1},
@@ -1316,7 +1316,7 @@ try:
     "284": UnimodInfo(
         id="284",
         name="Methyl:2H(2)",
-        formula="C2H2",
+        formula="C[2H2]",
         monoisotopic_mass=16.028204,
         average_mass=16.0389,
         dict_composition={'C': 1, '2H': 2},
@@ -1332,7 +1332,7 @@ try:
     "286": UnimodInfo(
         id="286",
         name="SulfanilicAcid:13C(6)",
-        formula="H513C6NO2S",
+        formula="H5[13C6]NO2S",
         monoisotopic_mass=161.024228,
         average_mass=161.1303,
         dict_composition={'H': 5, 'N': 1, 'O': 2, 'S': 1, '13C': 6},
@@ -1404,7 +1404,7 @@ try:
     "298": UnimodInfo(
         id="298",
         name="Methyl:2H(3)",
-        formula="CH-12H3",
+        formula="CH-1[2H3]",
         monoisotopic_mass=17.03448,
         average_mass=17.0451,
         dict_composition={'H': -1, 'C': 1, '2H': 3},
@@ -1580,7 +1580,7 @@ try:
     "329": UnimodInfo(
         id="329",
         name="Methyl:2H(3)13C(1)",
-        formula="H-113C2H3",
+        formula="H-1[13C][2H3]",
         monoisotopic_mass=18.037835,
         average_mass=18.0377,
         dict_composition={'H': -1, '2H': 3, '13C': 1},
@@ -1588,7 +1588,7 @@ try:
     "330": UnimodInfo(
         id="330",
         name="Dimethyl:2H(6)13C(2)",
-        formula="H-213C22H6",
+        formula="H-2[13C2][2H6]",
         monoisotopic_mass=36.07567,
         average_mass=36.0754,
         dict_composition={'H': -2, '2H': 6, '13C': 2},
@@ -1772,7 +1772,7 @@ try:
     "364": UnimodInfo(
         id="364",
         name="ICPL:13C(6)",
-        formula="H313C6NO",
+        formula="H3[13C6]NO",
         monoisotopic_mass=111.041593,
         average_mass=111.05,
         dict_composition={'H': 3, 'N': 1, 'O': 1, '13C': 6},
@@ -1788,7 +1788,7 @@ try:
     "366": UnimodInfo(
         id="366",
         name="Deamidated:18O(1)",
-        formula="H-118ON-1",
+        formula="H-1[18O]N-1",
         monoisotopic_mass=2.988261,
         average_mass=2.9845,
         dict_composition={'H': -1, 'N': -1, '18O': 1},
@@ -2084,7 +2084,7 @@ try:
     "412": UnimodInfo(
         id="412",
         name="Phenylisocyanate:2H(5)",
-        formula="C72H5NO",
+        formula="C7[2H5]NO",
         monoisotopic_mass=124.068498,
         average_mass=124.1515,
         dict_composition={'C': 7, 'N': 1, 'O': 1, '2H': 5},
@@ -2404,7 +2404,7 @@ try:
     "464": UnimodInfo(
         id="464",
         name="SPITC:13C(6)",
-        formula="CH513C6NO3S2",
+        formula="CH5[13C6]NO3S2",
         monoisotopic_mass=220.991213,
         average_mass=221.2054,
         dict_composition={'H': 5, 'C': 1, 'N': 1, 'O': 3, 'S': 2, '13C': 6},
@@ -2428,7 +2428,7 @@ try:
     "477": UnimodInfo(
         id="477",
         name="TMAB:2H(9)",
-        formula="C7H52H9NO",
+        formula="C7H5[2H9]NO",
         monoisotopic_mass=137.16403,
         average_mass=137.2476,
         dict_composition={'H': 5, 'C': 7, 'N': 1, 'O': 1, '2H': 9},
@@ -2444,7 +2444,7 @@ try:
     "481": UnimodInfo(
         id="481",
         name="Label:2H(4)",
-        formula="H-42H4",
+        formula="H-4[2H4]",
         monoisotopic_mass=4.025107,
         average_mass=4.0246,
         dict_composition={'H': -4, '2H': 4},
@@ -2500,7 +2500,7 @@ try:
     "499": UnimodInfo(
         id="499",
         name="IGBP:13C(2)",
-        formula="C10H1313C2BrN2O2",
+        formula="C10H13[13C2]BrN2O2",
         monoisotopic_mass=298.022748,
         average_mass=299.1331,
         dict_composition={'H': 13, 'C': 10, 'N': 2, 'O': 2, 'Br': 1, '13C': 2},
@@ -2556,7 +2556,7 @@ try:
     "510": UnimodInfo(
         id="510",
         name="Dimethyl:2H(4)13C(2)",
-        formula="13C22H4",
+        formula="[13C2][2H4]",
         monoisotopic_mass=34.063117,
         average_mass=34.0631,
         dict_composition={'2H': 4, '13C': 2},
@@ -2636,7 +2636,7 @@ try:
     "525": UnimodInfo(
         id="525",
         name="CLIP_TRAQ_2",
-        formula="C6H1213CN2O",
+        formula="C6H12[13C]N2O",
         monoisotopic_mass=141.098318,
         average_mass=141.1756,
         dict_composition={'H': 12, 'C': 6, 'N': 2, 'O': 1, '13C': 1},
@@ -2684,7 +2684,7 @@ try:
     "532": UnimodInfo(
         id="532",
         name="iTRAQ4plex114",
-        formula="C5H1213C218ON2",
+        formula="C5H12[13C2][18O]N2",
         monoisotopic_mass=144.105918,
         average_mass=144.168,
         dict_composition={'H': 12, 'C': 5, 'N': 2, '13C': 2, '18O': 1},
@@ -2692,7 +2692,7 @@ try:
     "533": UnimodInfo(
         id="533",
         name="iTRAQ4plex115",
-        formula="C6H1213C15N18ON",
+        formula="C6H12[13C][15N][18O]N",
         monoisotopic_mass=144.099599,
         average_mass=144.1688,
         dict_composition={'H': 12, 'C': 6, 'N': 1, '13C': 1, '15N': 1, '18O': 1},
@@ -2716,7 +2716,7 @@ try:
     "536": UnimodInfo(
         id="536",
         name="CLIP_TRAQ_3",
-        formula="C11H2013CN3O4",
+        formula="C11H20[13C]N3O4",
         monoisotopic_mass=271.148736,
         average_mass=271.2976,
         dict_composition={'H': 20, 'C': 11, 'N': 3, 'O': 4, '13C': 1},
@@ -2724,7 +2724,7 @@ try:
     "537": UnimodInfo(
         id="537",
         name="CLIP_TRAQ_4",
-        formula="C9H1513CN2O5",
+        formula="C9H15[13C]N2O5",
         monoisotopic_mass=244.101452,
         average_mass=244.2292,
         dict_composition={'H': 15, 'C': 9, 'N': 2, 'O': 5, '13C': 1},
@@ -3860,7 +3860,7 @@ try:
     "687": UnimodInfo(
         id="687",
         name="ICPL:2H(4)",
-        formula="C6H-12H4NO",
+        formula="C6H-1[2H4]NO",
         monoisotopic_mass=109.046571,
         average_mass=109.1188,
         dict_composition={'H': -1, 'C': 6, 'N': 1, 'O': 1, '2H': 4},
@@ -3868,7 +3868,7 @@ try:
     "695": UnimodInfo(
         id="695",
         name="Label:13C(6)15N(1)",
-        formula="C-613C615NN-1",
+        formula="C-6[13C6][15N]N-1",
         monoisotopic_mass=7.017164,
         average_mass=6.9493,
         dict_composition={'C': -6, 'N': -1, '13C': 6, '15N': 1},
@@ -3876,7 +3876,7 @@ try:
     "696": UnimodInfo(
         id="696",
         name="Label:2H(9)13C(6)15N(2)",
-        formula="C-6H-913C615N22H9N-2",
+        formula="C-6H-9[13C6][15N2][2H9]N-2",
         monoisotopic_mass=17.07069,
         average_mass=16.9982,
         dict_composition={'H': -9, 'C': -6, 'N': -2, '2H': 9, '13C': 6, '15N': 2},
@@ -3892,7 +3892,7 @@ try:
     "698": UnimodInfo(
         id="698",
         name="dNIC",
-        formula="C6H2H3NO",
+        formula="C6H[2H3]NO",
         monoisotopic_mass=109.048119,
         average_mass=109.1205,
         dict_composition={'H': 1, 'C': 6, 'N': 1, 'O': 1, '2H': 3},
@@ -3972,7 +3972,7 @@ try:
     "730": UnimodInfo(
         id="730",
         name="iTRAQ8plex",
-        formula="C7H2413C715NN3O3",
+        formula="C7H24[13C7][15N]N3O3",
         monoisotopic_mass=304.20536,
         average_mass=304.3074,
         dict_composition={'H': 24, 'C': 7, 'N': 3, 'O': 3, '13C': 7, '15N': 1},
@@ -3980,7 +3980,7 @@ try:
     "731": UnimodInfo(
         id="731",
         name="iTRAQ8plex:13C(6)15N(2)",
-        formula="C8H2413C615N2N2O3",
+        formula="C8H24[13C6][15N2]N2O3",
         monoisotopic_mass=304.19904,
         average_mass=304.3081,
         dict_composition={'H': 24, 'C': 8, 'N': 2, 'O': 3, '13C': 6, '15N': 2},
@@ -4012,7 +4012,7 @@ try:
     "737": UnimodInfo(
         id="737",
         name="TMT6plex",
-        formula="C8H2013C415NNO2",
+        formula="C8H20[13C4][15N]NO2",
         monoisotopic_mass=229.162932,
         average_mass=229.2634,
         dict_composition={'H': 20, 'C': 8, 'N': 1, 'O': 2, '13C': 4, '15N': 1},
@@ -4020,7 +4020,7 @@ try:
     "738": UnimodInfo(
         id="738",
         name="TMT2plex",
-        formula="C11H2013CN2O2",
+        formula="C11H20[13C]N2O2",
         monoisotopic_mass=225.155833,
         average_mass=225.2921,
         dict_composition={'H': 20, 'C': 11, 'N': 2, 'O': 2, '13C': 1},
@@ -4036,7 +4036,7 @@ try:
     "740": UnimodInfo(
         id="740",
         name="ExacTagThiol",
-        formula="C23H5013C1215N6N8O18",
+        formula="C23H50[13C12][15N6]N8O18",
         monoisotopic_mass=972.365219,
         average_mass=972.7268,
         dict_composition={'H': 50, 'C': 23, 'N': 8, 'O': 18, '13C': 12, '15N': 6},
@@ -4044,7 +4044,7 @@ try:
     "741": UnimodInfo(
         id="741",
         name="ExacTagAmine",
-        formula="C25H5213C1215N6N8O19S",
+        formula="C25H52[13C12][15N6]N8O19S",
         monoisotopic_mass=1046.347854,
         average_mass=1046.8285,
         dict_composition={'H': 52, 'C': 25, 'N': 8, 'O': 19, 'S': 1, '13C': 12, '15N': 6},
@@ -4116,7 +4116,7 @@ try:
     "763": UnimodInfo(
         id="763",
         name="BEMAD_ST:2H(6)",
-        formula="C4H22H6OS2",
+        formula="C4H2[2H6]OS2",
         monoisotopic_mass=142.039317,
         average_mass=142.2727,
         dict_composition={'H': 2, 'C': 4, 'O': 1, 'S': 2, '2H': 6},
@@ -4124,7 +4124,7 @@ try:
     "764": UnimodInfo(
         id="764",
         name="BEMAD_C:2H(6)",
-        formula="C4H22H6O2S",
+        formula="C4H2[2H6]O2S",
         monoisotopic_mass=126.062161,
         average_mass=126.2071,
         dict_composition={'H': 2, 'C': 4, 'O': 2, 'S': 1, '2H': 6},
@@ -4156,7 +4156,7 @@ try:
     "768": UnimodInfo(
         id="768",
         name="Methyl+Acetyl:2H(3)",
-        formula="C3H2H3O",
+        formula="C3H[2H3]O",
         monoisotopic_mass=59.045045,
         average_mass=59.0817,
         dict_composition={'H': 1, 'C': 3, 'O': 1, '2H': 3},
@@ -4172,7 +4172,7 @@ try:
     "772": UnimodInfo(
         id="772",
         name="Label:13C(5)",
-        formula="C-513C5",
+        formula="C-5[13C5]",
         monoisotopic_mass=5.016774,
         average_mass=4.9633,
         dict_composition={'C': -5, '13C': 5},
@@ -4196,7 +4196,7 @@ try:
     "775": UnimodInfo(
         id="775",
         name="Carboxymethyl:13C(2)",
-        formula="H213C2O2",
+        formula="H2[13C2]O2",
         monoisotopic_mass=60.012189,
         average_mass=60.0214,
         dict_composition={'H': 2, 'O': 2, '13C': 2},
@@ -4204,7 +4204,7 @@ try:
     "776": UnimodInfo(
         id="776",
         name="NEM:2H(5)",
-        formula="C6H22H5NO2",
+        formula="C6H2[2H5]NO2",
         monoisotopic_mass=130.079062,
         average_mass=130.1561,
         dict_composition={'H': 2, 'C': 6, 'N': 1, 'O': 2, '2H': 5},
@@ -4212,7 +4212,7 @@ try:
     "792": UnimodInfo(
         id="792",
         name="AEC-MAEC:2H(4)",
-        formula="C2H2H4NO-1S",
+        formula="C2H[2H4]NO-1S",
         monoisotopic_mass=63.044462,
         average_mass=63.158,
         dict_composition={'H': 1, 'C': 2, 'N': 1, 'O': -1, 'S': 1, '2H': 4},
@@ -4228,7 +4228,7 @@ try:
     "799": UnimodInfo(
         id="799",
         name="Label:13C(6)+GG",
-        formula="C-2H613C6N2O2",
+        formula="C-2H6[13C6]N2O2",
         monoisotopic_mass=120.063056,
         average_mass=120.0586,
         dict_composition={'H': 6, 'C': -2, 'N': 2, 'O': 2, '13C': 6},
@@ -4308,7 +4308,7 @@ try:
     "834": UnimodInfo(
         id="834",
         name="Label:2H(4)+Acetyl",
-        formula="C2H-22H4O",
+        formula="C2H-2[2H4]O",
         monoisotopic_mass=46.035672,
         average_mass=46.0613,
         dict_composition={'H': -2, 'C': 2, 'O': 1, '2H': 4},
@@ -4316,7 +4316,7 @@ try:
     "835": UnimodInfo(
         id="835",
         name="Label:13C(6)+Acetyl",
-        formula="C-4H213C6O",
+        formula="C-4H2[13C6]O",
         monoisotopic_mass=48.030694,
         average_mass=47.9926,
         dict_composition={'H': 2, 'C': -4, 'O': 1, '13C': 6},
@@ -4324,7 +4324,7 @@ try:
     "836": UnimodInfo(
         id="836",
         name="Label:13C(6)15N(2)+Acetyl",
-        formula="C-4H213C615N2N-2O",
+        formula="C-4H2[13C6][15N2]N-2O",
         monoisotopic_mass=50.024764,
         average_mass=49.9794,
         dict_composition={'H': 2, 'C': -4, 'N': -2, 'O': 1, '13C': 6, '15N': 2},
@@ -4372,7 +4372,7 @@ try:
     "853": UnimodInfo(
         id="853",
         name="Label:2H(4)+GG",
-        formula="C4H22H4N2O2",
+        formula="C4H2[2H4]N2O2",
         monoisotopic_mass=118.068034,
         average_mass=118.1273,
         dict_composition={'H': 2, 'C': 4, 'N': 2, 'O': 2, '2H': 4},
@@ -4404,7 +4404,7 @@ try:
     "862": UnimodInfo(
         id="862",
         name="Label:13C(1)2H(3)",
-        formula="C-1H-313C2H3",
+        formula="C-1H-3[13C][2H3]",
         monoisotopic_mass=4.022185,
         average_mass=4.0111,
         dict_composition={'H': -3, 'C': -1, '2H': 3, '13C': 1},
@@ -4412,7 +4412,7 @@ try:
     "864": UnimodInfo(
         id="864",
         name="Label:13C(6)15N(2)+GG",
-        formula="C-2H613C615N2O2",
+        formula="C-2H6[13C6][15N2]O2",
         monoisotopic_mass=122.057126,
         average_mass=122.0454,
         dict_composition={'H': 6, 'C': -2, 'O': 2, '13C': 6, '15N': 2},
@@ -4420,7 +4420,7 @@ try:
     "866": UnimodInfo(
         id="866",
         name="ICPL:13C(6)2H(4)",
-        formula="H-113C62H4NO",
+        formula="H-1[13C6][2H4]NO",
         monoisotopic_mass=115.0667,
         average_mass=115.0747,
         dict_composition={'H': -1, 'N': 1, 'O': 1, '2H': 4, '13C': 6},
@@ -4452,7 +4452,7 @@ try:
     "885": UnimodInfo(
         id="885",
         name="Label:13C(1)2H(3)+Oxidation",
-        formula="C-1H-313C2H3O",
+        formula="C-1H-3[13C][2H3]O",
         monoisotopic_mass=20.0171,
         average_mass=20.0105,
         dict_composition={'H': -3, 'C': -1, 'O': 1, '2H': 3, '13C': 1},
@@ -4484,7 +4484,7 @@ try:
     "889": UnimodInfo(
         id="889",
         name="mTRAQ:13C(3)15N(1)",
-        formula="C4H1213C315NNO",
+        formula="C4H12[13C3][15N]NO",
         monoisotopic_mass=144.102063,
         average_mass=144.1544,
         dict_composition={'H': 12, 'C': 4, 'N': 1, 'O': 1, '13C': 3, '15N': 1},
@@ -4540,7 +4540,7 @@ try:
     "897": UnimodInfo(
         id="897",
         name="Label:15N(4)",
-        formula="15N4N-4",
+        formula="[15N4]N-4",
         monoisotopic_mass=3.98814,
         average_mass=3.9736,
         dict_composition={'N': -4, '15N': 4},
@@ -4660,7 +4660,7 @@ try:
     "923": UnimodInfo(
         id="923",
         name="Label:13C(4)15N(2)+GG",
-        formula="H613C415N2O2",
+        formula="H6[13C4][15N2]O2",
         monoisotopic_mass=120.050417,
         average_mass=120.0601,
         dict_composition={'H': 6, 'O': 2, '13C': 4, '15N': 2},
@@ -4788,7 +4788,7 @@ try:
     "944": UnimodInfo(
         id="944",
         name="Label:15N(2)2H(9)",
-        formula="H-915N22H9N-2",
+        formula="H-9[15N2][2H9]N-2",
         monoisotopic_mass=11.050561,
         average_mass=11.0423,
         dict_composition={'H': -9, 'N': -2, '2H': 9, '15N': 2},
@@ -4996,7 +4996,7 @@ try:
     "985": UnimodInfo(
         id="985",
         name="cysTMT6plex",
-        formula="C10H2513C415NN2O2S",
+        formula="C10H25[13C4][15N]N2O2S",
         monoisotopic_mass=304.177202,
         average_mass=304.3962,
         dict_composition={'H': 25, 'C': 10, 'N': 2, 'O': 2, 'S': 1, '13C': 4, '15N': 1},
@@ -5004,7 +5004,7 @@ try:
     "986": UnimodInfo(
         id="986",
         name="Label:13C(6)+Dimethyl",
-        formula="C-4H413C6",
+        formula="C-4H4[13C6]",
         monoisotopic_mass=34.051429,
         average_mass=34.0091,
         dict_composition={'H': 4, 'C': -4, '13C': 6},
@@ -5012,7 +5012,7 @@ try:
     "987": UnimodInfo(
         id="987",
         name="Label:13C(6)15N(2)+Dimethyl",
-        formula="C-4H413C615N2N-2",
+        formula="C-4H4[13C6][15N2]N-2",
         monoisotopic_mass=36.045499,
         average_mass=35.9959,
         dict_composition={'H': 4, 'C': -4, 'N': -2, '13C': 6, '15N': 2},
@@ -5044,7 +5044,7 @@ try:
     "994": UnimodInfo(
         id="994",
         name="Label:15N(1)",
-        formula="15NN-1",
+        formula="[15N]N-1",
         monoisotopic_mass=0.997035,
         average_mass=0.9934,
         dict_composition={'N': -1, '15N': 1},
@@ -5052,7 +5052,7 @@ try:
     "995": UnimodInfo(
         id="995",
         name="Label:15N(2)",
-        formula="15N2N-2",
+        formula="[15N2]N-2",
         monoisotopic_mass=1.99407,
         average_mass=1.9868,
         dict_composition={'N': -2, '15N': 2},
@@ -5060,7 +5060,7 @@ try:
     "996": UnimodInfo(
         id="996",
         name="Label:15N(3)",
-        formula="15N3N-3",
+        formula="[15N3]N-3",
         monoisotopic_mass=2.991105,
         average_mass=2.9802,
         dict_composition={'N': -3, '15N': 3},
@@ -5108,7 +5108,7 @@ try:
     "1004": UnimodInfo(
         id="1004",
         name="Label:13C(6)15N(4)+Methyl",
-        formula="C-5H213C615N4N-4",
+        formula="C-5H2[13C6][15N4]N-4",
         monoisotopic_mass=24.023919,
         average_mass=23.9561,
         dict_composition={'H': 2, 'C': -5, 'N': -4, '13C': 6, '15N': 4},
@@ -5116,7 +5116,7 @@ try:
     "1005": UnimodInfo(
         id="1005",
         name="Label:13C(6)15N(4)+Dimethyl",
-        formula="C-4H413C615N4N-4",
+        formula="C-4H4[13C6][15N4]N-4",
         monoisotopic_mass=38.039569,
         average_mass=37.9827,
         dict_composition={'H': 4, 'C': -4, 'N': -4, '13C': 6, '15N': 4},
@@ -5124,7 +5124,7 @@ try:
     "1006": UnimodInfo(
         id="1006",
         name="Label:13C(6)15N(4)+Methyl:2H(3)13C(1)",
-        formula="C-6H-113C715N42H3N-4",
+        formula="C-6H-1[13C7][15N4][2H3]N-4",
         monoisotopic_mass=28.046104,
         average_mass=27.9673,
         dict_composition={'H': -1, 'C': -6, 'N': -4, '2H': 3, '13C': 7, '15N': 4},
@@ -5132,7 +5132,7 @@ try:
     "1007": UnimodInfo(
         id="1007",
         name="Label:13C(6)15N(4)+Dimethyl:2H(6)13C(2)",
-        formula="C-6H-213C815N42H6N-4",
+        formula="C-6H-2[13C8][15N4][2H6]N-4",
         monoisotopic_mass=46.083939,
         average_mass=46.005,
         dict_composition={'H': -2, 'C': -6, 'N': -4, '2H': 6, '13C': 8, '15N': 4},
@@ -5204,7 +5204,7 @@ try:
     "1019": UnimodInfo(
         id="1019",
         name="ICDID:2H(6)",
-        formula="C8H42H6O2",
+        formula="C8H4[2H6]O2",
         monoisotopic_mass=144.10574,
         average_mass=144.2008,
         dict_composition={'H': 4, 'C': 8, 'O': 2, '2H': 6},
@@ -5292,7 +5292,7 @@ try:
     "1034": UnimodInfo(
         id="1034",
         name="Cys->SecNEM:2H(5)",
-        formula="C6H22H5NO2S-1Se",
+        formula="C6H2[2H5]NO2S-1Se",
         monoisotopic_mass=178.023511,
         average_mass=177.0511,
         dict_composition={'H': 2, 'C': 6, 'N': 1, 'O': 2, 'S': -1, 'Se': 1, '2H': 5},
@@ -7108,7 +7108,7 @@ try:
     "1266": UnimodInfo(
         id="1266",
         name="Label:13C(4)",
-        formula="C-413C4",
+        formula="C-4[13C4]",
         monoisotopic_mass=4.013419,
         average_mass=3.9706,
         dict_composition={'C': -4, '13C': 4},
@@ -7116,7 +7116,7 @@ try:
     "1267": UnimodInfo(
         id="1267",
         name="Label:13C(4)+Oxidation",
-        formula="C-413C4O",
+        formula="C-4[13C4]O",
         monoisotopic_mass=20.008334,
         average_mass=19.97,
         dict_composition={'C': -4, 'O': 1, '13C': 4},
@@ -7236,7 +7236,7 @@ try:
     "1291": UnimodInfo(
         id="1291",
         name="Dimethyl:2H(6)",
-        formula="C2H-22H6",
+        formula="C2H-2[2H6]",
         monoisotopic_mass=34.068961,
         average_mass=34.0901,
         dict_composition={'H': -2, 'C': 2, '2H': 6},
@@ -7260,7 +7260,7 @@ try:
     "1296": UnimodInfo(
         id="1296",
         name="Label:13C(3)",
-        formula="C-313C3",
+        formula="C-3[13C3]",
         monoisotopic_mass=3.010064,
         average_mass=2.978,
         dict_composition={'C': -3, '13C': 3},
@@ -7268,7 +7268,7 @@ try:
     "1297": UnimodInfo(
         id="1297",
         name="Label:13C(3)15N(1)",
-        formula="C-313C315NN-1",
+        formula="C-3[13C3][15N]N-1",
         monoisotopic_mass=4.007099,
         average_mass=3.9714,
         dict_composition={'C': -3, 'N': -1, '13C': 3, '15N': 1},
@@ -7276,7 +7276,7 @@ try:
     "1298": UnimodInfo(
         id="1298",
         name="Label:13C(4)15N(1)",
-        formula="C-413C415NN-1",
+        formula="C-4[13C4][15N]N-1",
         monoisotopic_mass=5.010454,
         average_mass=4.964,
         dict_composition={'C': -4, 'N': -1, '13C': 4, '15N': 1},
@@ -7284,7 +7284,7 @@ try:
     "1299": UnimodInfo(
         id="1299",
         name="Label:2H(10)",
-        formula="H-102H10",
+        formula="H-10[2H10]",
         monoisotopic_mass=10.062767,
         average_mass=10.0616,
         dict_composition={'H': -10, '2H': 10},
@@ -7292,7 +7292,7 @@ try:
     "1300": UnimodInfo(
         id="1300",
         name="Label:2H(4)13C(1)",
-        formula="C-1H-413C2H4",
+        formula="C-1H-4[13C][2H4]",
         monoisotopic_mass=5.028462,
         average_mass=5.0173,
         dict_composition={'H': -4, 'C': -1, '2H': 4, '13C': 1},
@@ -7308,7 +7308,7 @@ try:
     "1302": UnimodInfo(
         id="1302",
         name="mTRAQ:13C(6)15N(2)",
-        formula="CH1213C615N2O",
+        formula="CH12[13C6][15N2]O",
         monoisotopic_mass=148.109162,
         average_mass=148.1257,
         dict_composition={'H': 12, 'C': 1, 'O': 1, '13C': 6, '15N': 2},
@@ -7340,7 +7340,7 @@ try:
     "1306": UnimodInfo(
         id="1306",
         name="Propyl:2H(6)",
-        formula="C32H6",
+        formula="C3[2H6]",
         monoisotopic_mass=48.084611,
         average_mass=48.1167,
         dict_composition={'C': 3, '2H': 6},
@@ -7404,7 +7404,7 @@ try:
     "1321": UnimodInfo(
         id="1321",
         name="DiLeu4plex115",
-        formula="C7H1513C15N18O",
+        formula="C7H15[13C][15N][18O]",
         monoisotopic_mass=145.12,
         average_mass=145.1966,
         dict_composition={'H': 15, 'C': 7, '13C': 1, '15N': 1, '18O': 1},
@@ -7412,7 +7412,7 @@ try:
     "1322": UnimodInfo(
         id="1322",
         name="DiLeu4plex",
-        formula="C8H1318O2H2N",
+        formula="C8H13[18O][2H2]N",
         monoisotopic_mass=145.132163,
         average_mass=145.2229,
         dict_composition={'H': 13, 'C': 8, 'N': 1, '2H': 2, '18O': 1},
@@ -7420,7 +7420,7 @@ try:
     "1323": UnimodInfo(
         id="1323",
         name="DiLeu4plex117",
-        formula="C7H1313C15N2H2O",
+        formula="C7H13[13C][15N][2H2]O",
         monoisotopic_mass=145.128307,
         average_mass=145.2092,
         dict_composition={'H': 13, 'C': 7, 'O': 1, '2H': 2, '13C': 1, '15N': 1},
@@ -7428,7 +7428,7 @@ try:
     "1324": UnimodInfo(
         id="1324",
         name="DiLeu4plex118",
-        formula="C8H112H4NO",
+        formula="C8H11[2H4]NO",
         monoisotopic_mass=145.140471,
         average_mass=145.2354,
         dict_composition={'H': 11, 'C': 8, 'N': 1, 'O': 1, '2H': 4},
@@ -7492,7 +7492,7 @@ try:
     "1342": UnimodInfo(
         id="1342",
         name="iodoTMT6plex",
-        formula="C12H2813C415NN3O3",
+        formula="C12H28[13C4][15N]N3O3",
         monoisotopic_mass=329.226595,
         average_mass=329.3825,
         dict_composition={'H': 28, 'C': 12, 'N': 3, 'O': 3, '13C': 4, '15N': 1},
@@ -7556,7 +7556,7 @@ try:
     "1358": UnimodInfo(
         id="1358",
         name="NEM:2H(5)+H2O",
-        formula="C6H42H5NO3",
+        formula="C6H4[2H5]NO3",
         monoisotopic_mass=148.089627,
         average_mass=148.1714,
         dict_composition={'H': 4, 'C': 6, 'N': 1, 'O': 3, '2H': 5},
@@ -7596,7 +7596,7 @@ try:
     "1368": UnimodInfo(
         id="1368",
         name="Methyl:2H(3)+Acetyl:2H(3)",
-        formula="C3H-22H6O",
+        formula="C3H-2[2H6]O",
         monoisotopic_mass=62.063875,
         average_mass=62.1002,
         dict_composition={'H': -2, 'C': 3, 'O': 1, '2H': 6},
@@ -7604,7 +7604,7 @@ try:
     "1370": UnimodInfo(
         id="1370",
         name="Label:2H(3)+Oxidation",
-        formula="H-32H3O",
+        formula="H-3[2H3]O",
         monoisotopic_mass=19.013745,
         average_mass=19.0179,
         dict_composition={'H': -3, 'O': 1, '2H': 3},
@@ -7612,7 +7612,7 @@ try:
     "1371": UnimodInfo(
         id="1371",
         name="Trimethyl:2H(9)",
-        formula="C3H-32H9",
+        formula="C3H-3[2H9]",
         monoisotopic_mass=51.103441,
         average_mass=51.1352,
         dict_composition={'H': -3, 'C': 3, '2H': 9},
@@ -7620,7 +7620,7 @@ try:
     "1372": UnimodInfo(
         id="1372",
         name="Acetyl:13C(2)",
-        formula="H213C2O",
+        formula="H2[13C2]O",
         monoisotopic_mass=44.017274,
         average_mass=44.022,
         dict_composition={'H': 2, 'O': 1, '13C': 2},
@@ -7756,7 +7756,7 @@ try:
     "1392": UnimodInfo(
         id="1392",
         name="DiART6plex",
-        formula="C7H2013C415NNO2",
+        formula="C7H20[13C4][15N]NO2",
         monoisotopic_mass=217.162932,
         average_mass=217.2527,
         dict_composition={'H': 20, 'C': 7, 'N': 1, 'O': 2, '13C': 4, '15N': 1},
@@ -7764,7 +7764,7 @@ try:
     "1393": UnimodInfo(
         id="1393",
         name="DiART6plex115",
-        formula="C8H2013C315N2O2",
+        formula="C8H20[13C3][15N2]O2",
         monoisotopic_mass=217.156612,
         average_mass=217.2535,
         dict_composition={'H': 20, 'C': 8, 'O': 2, '13C': 3, '15N': 2},
@@ -7772,7 +7772,7 @@ try:
     "1394": UnimodInfo(
         id="1394",
         name="DiART6plex116/119",
-        formula="C9H1813C215N2H2NO2",
+        formula="C9H18[13C2][15N][2H2]NO2",
         monoisotopic_mass=217.168776,
         average_mass=217.2797,
         dict_composition={'H': 18, 'C': 9, 'N': 1, 'O': 2, '2H': 2, '13C': 2, '15N': 1},
@@ -7780,7 +7780,7 @@ try:
     "1395": UnimodInfo(
         id="1395",
         name="DiART6plex117",
-        formula="C10H1813C15N22H2O2",
+        formula="C10H18[13C][15N2][2H2]O2",
         monoisotopic_mass=217.162456,
         average_mass=217.2805,
         dict_composition={'H': 18, 'C': 10, 'O': 2, '2H': 2, '13C': 1, '15N': 2},
@@ -7788,7 +7788,7 @@ try:
     "1396": UnimodInfo(
         id="1396",
         name="DiART6plex118",
-        formula="C8H1813C32H2N2O2",
+        formula="C8H18[13C3][2H2]N2O2",
         monoisotopic_mass=217.175096,
         average_mass=217.279,
         dict_composition={'H': 18, 'C': 8, 'N': 2, 'O': 2, '2H': 2, '13C': 3},
@@ -7804,7 +7804,7 @@ try:
     "1398": UnimodInfo(
         id="1398",
         name="Iodoacetanilide:13C(6)",
-        formula="C2H713C6NO",
+        formula="C2H7[13C6]NO",
         monoisotopic_mass=139.072893,
         average_mass=139.1032,
         dict_composition={'H': 7, 'C': 2, 'N': 1, 'O': 1, '13C': 6},
@@ -7828,7 +7828,7 @@ try:
     "1402": UnimodInfo(
         id="1402",
         name="Label:2H(7)15N(4)",
-        formula="H-715N42H7N-4",
+        formula="H-7[15N4][2H7]N-4",
         monoisotopic_mass=11.032077,
         average_mass=11.0168,
         dict_composition={'H': -7, 'N': -4, '2H': 7, '15N': 4},
@@ -7836,7 +7836,7 @@ try:
     "1403": UnimodInfo(
         id="1403",
         name="Label:2H(6)15N(1)",
-        formula="H-615N2H6N-1",
+        formula="H-6[15N][2H6]N-1",
         monoisotopic_mass=7.034695,
         average_mass=7.0304,
         dict_composition={'H': -6, 'N': -1, '2H': 6, '15N': 1},
@@ -7908,7 +7908,7 @@ try:
     "1414": UnimodInfo(
         id="1414",
         name="Trimethyl:13C(3)2H(9)",
-        formula="H-313C32H9",
+        formula="H-3[13C3][2H9]",
         monoisotopic_mass=54.113505,
         average_mass=54.1132,
         dict_composition={'H': -3, '2H': 9, '13C': 3},
@@ -7916,7 +7916,7 @@ try:
     "1419": UnimodInfo(
         id="1419",
         name="15N-oxobutanoic",
-        formula="H-315N-1",
+        formula="H-3[15N-1]",
         monoisotopic_mass=-18.023584,
         average_mass=-18.0239,
         dict_composition={'H': -3, '15N': -1},
@@ -10732,7 +10732,7 @@ try:
     "1787": UnimodInfo(
         id="1787",
         name="Label:13C(2)15N(2)",
-        formula="C-213C215N2N-2",
+        formula="C-2[13C2][15N2]N-2",
         monoisotopic_mass=4.00078,
         average_mass=3.9721,
         dict_composition={'C': -2, 'N': -2, '13C': 2, '15N': 2},
@@ -10796,7 +10796,7 @@ try:
     "1827": UnimodInfo(
         id="1827",
         name="Glu->pyro-Glu+Methyl:2H(2)13C(1)",
-        formula="H-213C2H2O-1",
+        formula="H-2[13C][2H2]O-1",
         monoisotopic_mass=-0.979006,
         average_mass=-0.9837,
         dict_composition={'H': -2, 'O': -1, '2H': 2, '13C': 1},
@@ -11788,7 +11788,7 @@ try:
     "1993": UnimodInfo(
         id="1993",
         name="TMPP-Ac:13C(9)",
-        formula="C20H3313C9O10P",
+        formula="C20H33[13C9]O10P",
         monoisotopic_mass=581.211328,
         average_mass=581.474,
         dict_composition={'H': 33, 'C': 20, 'O': 10, 'P': 1, '13C': 9},
@@ -11844,7 +11844,7 @@ try:
     "2015": UnimodInfo(
         id="2015",
         name="shTMT",
-        formula="C3H2013C915N2O2",
+        formula="C3H20[13C9][15N2]O2",
         monoisotopic_mass=235.176741,
         average_mass=235.2201,
         dict_composition={'H': 20, 'C': 3, 'O': 2, '13C': 9, '15N': 2},
@@ -11852,7 +11852,7 @@ try:
     "2016": UnimodInfo(
         id="2016",
         name="TMTpro",
-        formula="C8H2513C715N2NO3",
+        formula="C8H25[13C7][15N2]NO3",
         monoisotopic_mass=304.207146,
         average_mass=304.3127,
         dict_composition={'H': 25, 'C': 8, 'N': 1, 'O': 3, '13C': 7, '15N': 2},
@@ -11988,7 +11988,7 @@ try:
     "2050": UnimodInfo(
         id="2050",
         name="shTMTpro",
-        formula="H2513C1515N3O3",
+        formula="H25[13C15][15N3]O3",
         monoisotopic_mass=313.231019,
         average_mass=313.2473,
         dict_composition={'H': 25, 'O': 3, '13C': 15, '15N': 3},
@@ -12196,7 +12196,7 @@ try:
     "2088": UnimodInfo(
         id="2088",
         name="Label:13C(2)15N(1)",
-        formula="C-213C215NN-1",
+        formula="C-2[13C2][15N]N-1",
         monoisotopic_mass=3.003745,
         average_mass=2.9787,
         dict_composition={'C': -2, 'N': -1, '13C': 2, '15N': 1},
@@ -12332,7 +12332,7 @@ try:
     "2122": UnimodInfo(
         id="2122",
         name="Label:13C(6)15N(2)+TMT6plex",
-        formula="C2H2013C1015N3N-1O2",
+        formula="C2H20[13C10][15N3]N-1O2",
         monoisotopic_mass=237.177131,
         average_mass=237.2062,
         dict_composition={'H': 20, 'C': 2, 'N': -1, 'O': 2, '13C': 10, '15N': 3},
@@ -12340,7 +12340,7 @@ try:
     "2123": UnimodInfo(
         id="2123",
         name="Label:13C(6)15N(2)+TMTpro",
-        formula="C2H2513C1315N4N-1O3",
+        formula="C2H25[13C13][15N4]N-1O3",
         monoisotopic_mass=312.221344,
         average_mass=312.2554,
         dict_composition={'H': 25, 'C': 2, 'N': -1, 'O': 3, '13C': 13, '15N': 4},
@@ -12436,7 +12436,7 @@ try:
     "2140": UnimodInfo(
         id="2140",
         name="Methyl:13C(1)2H(2)",
-        formula="13C2H2",
+        formula="[13C][2H2]",
         monoisotopic_mass=17.031558,
         average_mass=17.0316,
         dict_composition={'2H': 2, '13C': 1},
@@ -12476,7 +12476,7 @@ try:
     "2146": UnimodInfo(
         id="2146",
         name="Label:2H(8)",
-        formula="H-82H8",
+        formula="H-8[2H8]",
         monoisotopic_mass=8.050214,
         average_mass=8.0493,
         dict_composition={'H': -8, '2H': 8},

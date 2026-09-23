@@ -89,10 +89,10 @@ class OntologyLookup[T: OboEntity]:
         self.__id_to_info = {strip_id(k, self._id_prefix): v for k, v in self._raw_data.items()}
         self.__name_to_info = {info.name.lower(): info for info in self._raw_data.values()}
 
-        if len(self.__id_to_info) != len(self._raw_data) != len(self.__name_to_info):
+        if len(self.__id_to_info) != len(self._raw_data) or len(self.__name_to_info) != len(self._raw_data):
             raise ValueError(
-                f"Duplicate or missing IDs found in {self.ontology_name} data. Number of entries: \
-             {len(self._raw_data)}, IDs: {len(self.__id_to_info)}, names: {len(self.__name_to_info)}"
+                f"Duplicate IDs or names found in {self.ontology_name} data. Number of entries: "
+                f"{len(self._raw_data)}, IDs: {len(self.__id_to_info)}, names: {len(self.__name_to_info)}"
             )
 
     @property

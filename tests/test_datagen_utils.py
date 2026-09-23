@@ -36,6 +36,18 @@ class TestFormatCompositionString:
     def test_count_of_one_omitted(self):
         assert format_composition_string({"C": 1}) == "C"
 
+    def test_isotopes_use_bracket_syntax(self):
+        # Label:13C(6): an unbracketed "13C6" after "C-6" re-parsed as {"C": -613, ...}.
+        assert format_composition_string({"C": -6, "13C": 6}) == "C-6[13C6]"
+
+    def test_isotope_count_of_one_and_negative(self):
+        assert format_composition_string({"13C": 1}) == "[13C]"
+        assert format_composition_string({"15N": -2, "N": 2}) == "[15N-2]N2"
+
+    def test_isotope_formula_round_trips(self):
+        comp = {"C": -6, "H": 4, "13C": 6, "15N": 2, "2H": -1, "O": 1}
+        assert parse_formula_to_dict(format_composition_string(comp)) == comp
+
 
 class TestGetOboMetadata:
     def test_extracts_header_before_first_term(self):
