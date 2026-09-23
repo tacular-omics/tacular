@@ -8,11 +8,12 @@ from .dclass import UniprotPtmInfo
 
 class UniprotPtmLookup(OntologyLookup[UniprotPtmInfo]):
     def __init__(self, data: dict[str, UniprotPtmInfo], version: str) -> None:
-        """Wrap `data` in an `OntologyLookup` bound to the UniProt-PTM ontology (no id prefix to strip)."""
+        """Wrap `data` in an `OntologyLookup` bound to the UniProt-PTM ontology, stripping the "PTM-" accession prefix."""
         super().__init__(
             data=data,
             ontology_name="UniProt-PTM",
             _version=version,
+            _accession_prefix="PTM-",
         )
 
 

@@ -83,7 +83,7 @@ Methods and properties:
 - `lookup[key: str | int] -> T` - tries name first (case-insensitive), then id; raises `KeyError`
 - `key in lookup -> bool`
 - `.get(key, default=None) -> T | None`
-- `.query_id(mod_id: str | int) -> T | None` - id only; strips leading zeros and the RESID `AA` / GNO `G` prefix
+- `.query_id(mod_id: str | int) -> T | None` - id only; strips the accession prefix (`UNIMOD:`, `MOD:`, `XLMOD:`, `RESID:`, `GNO:`, `PTM-`), the RESID `AA` / GNO `G` prefix and leading zeros
 - `.query_name(name: str) -> T | None` - name only, case-insensitive
 - `.query_mass(mass: float, tolerance: float = 0.01, monoisotopic: bool = True) -> list[T]` - all entries within +/- tolerance Da
 - `.choice(require_monoisotopic_mass: bool = True, require_composition: bool = True) -> T` - random entry
@@ -321,10 +321,9 @@ An unreadable cache logs a warning and falls back to bundled data.
 
 ## Gotchas
 
-1. **Accession prefixes are not stripped** for UNIMOD, PSI-MOD, XLMOD and UniProt-PTM:
-   `UNIMOD_LOOKUP["UNIMOD:21"]` and `PSIMOD_LOOKUP["MOD:00046"]` raise `KeyError`.
-   Strip `UNIMOD:` / `MOD:` / `XLMOD:` yourself, or use the number (`21`, `"00046"`).
-   Only RESID (`AA`) and GNOme (`G`) accept their prefix.
+1. **Id queries accept each ontology's own accession prefix** (case-insensitive):
+   `UNIMOD:21`, `MOD:00046`, `XLMOD:01000`, `RESID:AA0002`, `GNO:G00008BG`, `PTM-0476`.
+   Another ontology's prefix is not stripped (`UNIMOD_LOOKUP["MOD:00046"]` raises `KeyError`).
 2. `LOOKUP[key]` tries the **name before the id**, so a name that looks like a number wins.
 3. Ontology entries may have `None` formula/mass/composition. `query_mass` skips them;
    `choice()` excludes them by default.

@@ -219,10 +219,9 @@ and checked). `import tacular as t` is the house style.
 - **Don't trust "this generator's output looks unchanged" from eyeballing a diff.**
   Regenerated `data.py` files are large; verify via the `build()` vs `jsons/*.json`
   id-for-id comparison, not a visual scan.
-- **Accession prefixes are not stripped** for UNIMOD/PSI-MOD/XLMOD/UniProt:
-  `UNIMOD_LOOKUP["UNIMOD:21"]` and `PSIMOD_LOOKUP["MOD:00046"]` raise `KeyError`; use
-  `21`, `"21"`, `"00046"`. Only RESID (`AA`) and GNO (`G`) strip a prefix, despite the
-  `query_id` docstring saying "stripping known prefixes".
+- **Id queries strip only the ontology's own accession prefix** (`_accession_prefix` on each
+  `*Lookup`: `UNIMOD:`, `MOD:`, `XLMOD:`, `RESID:`, `GNO:`, `PTM-`), then RESID `AA` / GNO `G`,
+  then leading zeros. `UNIMOD_LOOKUP["MOD:00046"]` still raises `KeyError`.
 - **Name lookups are case-insensitive** (`"oxidation"` works) and `lookup[key]` tries the
   name before the id.
 - **`NeutralDeltaInfo` masses are signed losses** (`H2O` is -18.0106); fragment-ion

@@ -10,11 +10,12 @@ from .dclass import ResidInfo
 
 class ResidLookup(OntologyLookup[ResidInfo]):
     def __init__(self, data: dict[str, ResidInfo], version: str) -> None:
-        """Wrap `data` in an `OntologyLookup` bound to the RESID ontology, stripping the "AA" id prefix."""
+        """Wrap `data` in an `OntologyLookup` bound to the RESID ontology, stripping the "RESID:" accession and "AA" id prefixes."""
         super().__init__(
             data=data,
             ontology_name="RESID",
             _version=version,
+            _accession_prefix="RESID:",
             _id_prefix="AA",
         )
 
