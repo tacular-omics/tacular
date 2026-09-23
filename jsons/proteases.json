@@ -70,7 +70,7 @@
         {
             "id": "trypsin",
             "name": "Trypsin",
-            "full_name": "Trypsin (no proline rule)",
+            "full_name": "Trypsin with proline restriction",
             "regex": "(?<=[KR])(?=[^P])"
         },
         {
