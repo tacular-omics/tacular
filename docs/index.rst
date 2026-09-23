@@ -8,7 +8,7 @@
 .. raw:: html
 
    <div style="text-align: center; margin-bottom: 5px;">
-      <a href="https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml"><img src="https://github.com/pgarrett-scripps/tacular/actions/workflows/python-package.yml/badge.svg" alt="Python package"></a>
+      <a href="https://github.com/tacular-omics/tacular/actions/workflows/ci.yml"><img src="https://github.com/tacular-omics/tacular/actions/workflows/ci.yml/badge.svg" alt="Python package"></a>
       <a href="https://codecov.io/github/tacular-omics/tacular"><img src="https://codecov.io/github/tacular-omics/tacular/graph/badge.svg?token=1CTVZVFXF7" alt="codecov"></a>
       <a href="https://tacular.readthedocs.io/en/latest/?badge=latest"><img src="https://readthedocs.org/projects/tacular/badge/?version=latest" alt="Documentation Status"></a>
       <a href="https://badge.fury.io/py/tacular"><img src="https://badge.fury.io/py/tacular.svg" alt="PyPI version"></a>
