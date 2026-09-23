@@ -6,15 +6,15 @@ install:
 
 # Run linting checks
 lint:
-    uv run ruff check src --exclude '**/data.py'
+    uv run ruff check src
 
 # Format code
 format:
-    uv run ruff check --select I --fix src tests data_gen --exclude '**/data.py'
-    uv run ruff format src tests --exclude '**/data.py'
+    uv run ruff check --select I --fix src tests data_gen
+    uv run ruff format src tests
 
 ty:
-    uv run ty check src --exclude '**/data.py'
+    uv run ty check src
 
 # Run type checking
 check: format lint ty test
@@ -61,4 +61,18 @@ docs-open:
     python -c "import webbrowser; webbrowser.open('file://{{justfile_directory()}}/docs/_build/html/index.html')"
 
 
-pre-release: format lint check test gen-jsons docs-test
+pre-release: format lint check test gen-jsons docs-test check-version
+
+# --- release (standard tacular-omics recipes; canonical copy in the workspace templates/) ---
+
+# Set the version everywhere and date the [Unreleased] changelog section
+set-version version:
+    python scripts/release_version.py sync --set {{version}}
+
+# Copy __version__ to CITATION.cff / .zenodo.json after editing it by hand
+sync-version:
+    python scripts/release_version.py sync
+
+# Fail if version metadata disagrees
+check-version:
+    python scripts/release_version.py check
