@@ -19,43 +19,50 @@
 
 |
 
-.. raw:: html
-
-   <div style="text-align: center; font-size: 1.0em; margin-bottom: 20px;">
-      Welcome to tacular's documentation! This package provides comprehensive lookups for modifications, amino acids, elements, and other biochemistry data types commonly used in mass spectrometry and proteomics.
-   </div>
-
+tacular is a lookup library for the reference data every mass spectrometry and
+proteomics tool needs: amino acids, elements and isotopes, fragment ion types,
+neutral losses, proteases, mzPAF reference molecules, and six post-translational
+modification ontologies (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme and UniProt-PTM).
+Everything is queried through the same ``LOOKUP[key]`` interface, the data ships
+with the package, and there are no runtime dependencies.
 
 Features
 --------
 
-* **Amino Acids**: Standard and non-standard amino acid lookups with properties
-* **Modifications**: Support for Unimod, PSI-MOD, RESID, XLMOD, and GNOme
-* **Elements**: Chemical element data with isotope information
-* **Fragment Ions**: Common ion types for peptide fragmentation
-* **Neutral Deltas**: Neutral loss calculations
-* **Reference Molecules**: mzPAF reference molecules
-* **Proteases**: Common protease cleavage patterns
+* **Modifications**: UNIMOD, PSI-MOD, RESID, XLMOD, GNOme and UniProt-PTM, queryable by id, name, or approximate mass
+* **Amino acids**: standard and non-standard amino acids with masses and compositions
+* **Elements**: element and isotope masses and abundances
+* **Fragment ions**: peptide fragment ion types and their formulas
+* **Neutral deltas**: common neutral losses and gains
+* **Reference molecules**: mzPAF reference molecules (reporter ions and others)
+* **Proteases**: cleavage rules for common proteases
+* **Refreshable**: the ``tacular update`` CLI pulls the latest ontology releases into a per-user cache (see :doc:`cli`)
 
-Quick Example
+Quick example
 -------------
 
 .. code-block:: python
 
    import tacular as t
 
-   # Query amino acids
-   alanine = t.AA_LOOKUP['A']
-   print(f"Alanine mass: {alanine.monoisotopic_mass}")
+   alanine = t.AA_LOOKUP["A"]
+   print(alanine.monoisotopic_mass)  # 71.0371137851
 
-   # Query elements
-   carbon_13 = t.ELEMENT_LOOKUP['13C']
-   print(f"Carbon-13 mass: {carbon_13.mass}")
+   carbon_13 = t.ELEMENT_LOOKUP["13C"]
+   print(carbon_13.mass)  # 13.00335483507
 
-   # Query modifications
-   acetyl = t.UNIMOD_LOOKUP['Acetyl']
-   print(f"Acetyl mass: {acetyl.monoisotopic_mass}")
+   # Identify a modification from an observed mass shift
+   hits = t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=0.001)
+   print(hits[0].name)  # Phospho
 
+Related packages
+----------------
+
+tacular is the shared data layer of the tacular-omics packages:
+
+* `peptacular <https://peptacular.readthedocs.io/>`_ parses and analyzes ProForma peptide sequences
+  (mass, m/z, fragments, isotopes, digestion).
+* `paftacular <https://paftacular.readthedocs.io/>`_ parses and serializes mzPAF peak annotations.
 
 .. toctree::
    :maxdepth: 2
@@ -63,8 +70,10 @@ Quick Example
 
    installation
    quickstart
+   cli
    api/index
-
+   changelog
+   citation
 
 
 Indices and tables

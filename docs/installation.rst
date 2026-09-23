@@ -5,6 +5,7 @@ Requirements
 ------------
 
 * Python 3.12 or higher
+* No runtime dependencies
 
 Install from PyPI
 -----------------
@@ -12,6 +13,9 @@ Install from PyPI
 .. code-block:: bash
 
    pip install tacular
+
+This also installs the ``tacular`` command-line tool for refreshing the
+ontology data (see :doc:`cli`).
 
 Install from source
 -------------------

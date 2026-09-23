@@ -129,9 +129,10 @@ The return type for element lookups is ``ElementInfo``, which contains the follo
 Modification Lookups
 --------------------
 
-Since modification databases can be large, they are lazily loaded on first access.
-Supported databases include Unimod, PSI-MOD, RESID, XLmod, and GNOme. Currently only valid
-modifications are included (must have at least one valid mass or composition).
+Supported databases are Unimod, PSI-MOD, RESID, XLMOD, GNOme and UniProt-PTM. Their
+search indexes are built on the first query. Only valid modifications are included
+(each has at least one valid mass or composition). The bundled data can be refreshed
+to the latest upstream releases with ``tacular update`` (see :doc:`cli`).
 
 RESID IDs have an ``AA`` prefix (e.g., ``AA0002``), which is optional when querying.
 GNOme IDs have a ``G`` prefix (e.g., ``G00008BG``), which is optional when querying.
@@ -162,6 +163,10 @@ Query modifications from various databases:
    mods2 = t.UNIMOD_LOOKUP.query_mass(42.01, tolerance=0.02, monoisotopic=False)
    print(f"Mods at mass 42.01 (tol=0.02, avg): {len(mods2)}")
 
+   # UniProt-PTM
+   pser = t.UNIPROT_PTM_LOOKUP['Phosphoserine']
+   print(f"UniProt-PTM ID: {pser.id}")
+
    # Other databases
    t.GNO_LOOKUP
    t.RESID_LOOKUP
@@ -175,6 +180,7 @@ Query modifications from various databases:
    Phospho by ID name: phosphorylated residue
    Mods at mass 42.01: ...
    Mods at mass 42.01 (tol=0.02, avg): ...
+   UniProt-PTM ID: 0253
 
 Fragment Ion Lookups
 --------------------

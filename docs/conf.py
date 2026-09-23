@@ -42,3 +42,4 @@ autodoc_default_options = {
 autodoc_typehints = "description"  # Or 'signature' to put types in signature
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
+napoleon_use_ivar = True  # dataclass "Attributes:" sections would otherwise duplicate the field entries
