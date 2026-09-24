@@ -61,6 +61,8 @@ dev = [
     "sphinx-rtd-theme>=2.0",
     "sphinx-autodoc-typehints>=3.13.7",
     "hypothesis>=6.100",
+    "unimodpy>=1.0,<2",  # tests/test_data_agreement.py only; never a runtime dependency
+    "psimodpy>=1.0,<2",
 ]
 
 [tool.ruff]

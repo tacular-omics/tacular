@@ -56,6 +56,10 @@ print(carbon_13.mass)  # 13.00335483507
 hits = t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=0.001)
 print(hits[0].name)  # Phospho
 print([m.name for m in t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=10, unit="ppm")])  # ['Phospho']
+
+# Mass tolerance helpers (units are "da" or "ppm")
+print(round(t.ppm_error(1000.01, 1000.0), 6))  # 10.0
+print(t.within_tolerance(1000.005, 1000.0, 10, unit="ppm"))  # True
 ```
 
 Every lookup has the same interface: `LOOKUP[key]`, `.get(key, default)`, `in`, `len`,
@@ -66,6 +70,8 @@ both a `KeyError` and a `ValueError`. Physical constants such as `PROTON_MASS` a
 ## What else it can do
 
 - Query PSI-MOD, RESID, XLMOD, GNOme, and UniProt-PTM the same way as UNIMOD above.
+- Convert and compare mass errors: `ppm_error`, `da_to_ppm`, `ppm_to_da`,
+  `tolerance_window` and `within_tolerance` (`tacular.tolerance`).
 - Look up fragment ion types, common neutral losses, mzPAF reference molecules,
   and protease cleavage patterns.
 - Refresh any ontology to its latest upstream release without reinstalling:

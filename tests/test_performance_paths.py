@@ -105,11 +105,13 @@ def test_amino_acid_without_composition_is_none():
 
 
 def _query_mass_linear(lookup, mass, tolerance=0.01, monoisotopic=True):
-    """The pre-index implementation, kept as the reference."""
+    """A linear scan over the same ``tolerance_window`` bounds, kept as the reference."""
     matches = []
+    if not math.isfinite(mass):  # documented: a NaN or infinite mass matches nothing
+        return matches
     for info in lookup._data.values():
         mod_mass = info.monoisotopic_mass if monoisotopic else info.average_mass
-        if mod_mass is not None and abs(mod_mass - mass) <= tolerance:
+        if mod_mass is not None and mass - tolerance <= mod_mass <= mass + tolerance:
             matches.append(info)
     return matches
 
@@ -389,6 +391,8 @@ def test_dict_composition_is_read_only_so_the_cache_cannot_go_stale(info):
         del comp[next(iter(comp))]
     with pytest.raises(TypeError):
         comp |= {"C": 1}
+    with pytest.raises(TypeError):
+        comp.__init__({"C": 99})  # re-running the constructor must not refill it
     assert info.composition == before
     assert isinstance(comp, dict) and comp == dict(comp)
     assert json.loads(json.dumps(comp)) == dict(comp)
@@ -415,3 +419,24 @@ def test_query_mass_nan_returns_empty():
     assert t.UNIMOD_LOOKUP.query_mass(math.nan) == []
     assert t.UNIMOD_LOOKUP.query_mass(79.966, tolerance=math.nan) == []
     assert t.UNIMOD_LOOKUP.query_mass(math.inf, tolerance=0, unit="ppm") == []
+
+
+def test_query_mass_infinite_tolerance():
+    everything = len(t.UNIMOD_LOOKUP.query_mass(100.0, tolerance=math.inf))
+    assert everything == len(t.UNIMOD_LOOKUP.query_mass(100.0, tolerance=math.inf, unit="ppm")) > 100
+    # documented: ppm at mass 0 is 0 * inf = NaN, which matches nothing
+    assert t.UNIMOD_LOOKUP.query_mass(0.0, tolerance=math.inf, unit="ppm") == []
+
+
+def test_read_only_dict_refuses_a_second_init_even_when_empty():
+    from tacular._util import _ReadOnlyDict
+
+    empty = _ReadOnlyDict()
+    with pytest.raises(TypeError):
+        empty.__init__({"C": 1})
+    assert empty == {}
+    import copy
+    import pickle
+
+    full = _ReadOnlyDict({"C": 2})
+    assert copy.deepcopy(full) == pickle.loads(pickle.dumps(full)) == {"C": 2}

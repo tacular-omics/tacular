@@ -41,6 +41,7 @@ from .obo_entity import OboEntity
 from .obo_lookup import OntologyLookup
 from .proteases import PROTEASE_DICT, PROTEASE_LOOKUP, Protease, ProteaseInfo, ProteaseLiteral, ProteaseLookup
 from .refmol import REFMOL_LOOKUP, RefMolID, RefMolInfo, RefMolLiteral, RefMolLookup
+from .tolerance import ToleranceUnit, da_to_ppm, ppm_error, ppm_to_da, tolerance_window, within_tolerance
 
 __version__ = "1.2.0"
 
@@ -148,4 +149,10 @@ __all__ = [
     "XlmodLookup",
     "TacularError",
     "TacularKeyError",
+    "ToleranceUnit",
+    "da_to_ppm",
+    "ppm_error",
+    "ppm_to_da",
+    "tolerance_window",
+    "within_tolerance",
 ]

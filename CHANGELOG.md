@@ -7,7 +7,7 @@ in [docs/migration.rst](docs/migration.rst).
 
 ### Performance
 
-No API or output changes; timings are indicative single-core numbers.
+No other API changes; timings are indicative single-core numbers.
 
 - `import tacular` no longer loads the six ontologies (UNIMOD, PSI-MOD, RESID, XLMOD,
   GNOme, UniProt-PTM): each loads on first use of its subpackage or one of its names, e.g.
@@ -25,9 +25,23 @@ No API or output changes; timings are indicative single-core numbers.
 
 ### Added
 
+- `tacular.tolerance`, also exported from `tacular`: `ppm_error(observed, theoretical)`,
+  `da_to_ppm(delta, mz)`, `ppm_to_da(delta_ppm, mz)`,
+  `tolerance_window(mass, tolerance, *, unit="da") -> (lo, hi)` and
+  `within_tolerance(observed, theoretical, tolerance, *, unit="da")`, plus the
+  `ToleranceUnit` alias. ppm is relative to `abs(mass)` (so unlike spxtacular's signed
+  `da_to_ppm`, a negative m/z does not flip the sign). `within_tolerance` is
+  `lo <= observed <= hi` on `tolerance_window`'s bounds. A zero denominator, a NaN or
+  infinite input to the window functions, or a unit other than lowercase `"da"`/`"ppm"`
+  raises `TacularError`. `query_mass(unit=)` uses the same window. These can replace
+  spxtacular's public `da_to_ppm`/`ppm_to_da` and peptacular's inline ppm arithmetic;
+  tdfpy does not depend on tacular and keeps its own.
+- Tests check that every UNIMOD and PSI-MOD entry's monoisotopic mass and composition
+  match what unimodpy and psimodpy parse from the same OBO release. The two are
+  dev-only dependencies; the test skips without them.
 - `OntologyLookup.query_mass(mass, *, tolerance=0.01, unit="da", monoisotopic=True)`:
   `unit="ppm"` reads `tolerance` in parts per million of `mass` (same `unit: Literal["da", "ppm"]`
-  convention as paftacular). NaN `mass` or `tolerance` returns `[]`. An unknown `unit` raises `TacularError`.
+  convention as paftacular). A NaN or infinite `mass`, or a NaN `tolerance`, returns `[]`; bounds are inclusive, exactly `within_tolerance`. An unknown `unit` raises `TacularError`.
 
 - `tacular.TacularError` (a `ValueError`) and `tacular.TacularKeyError` (a
   `TacularError` that is also a `KeyError`), in `tacular.errors`.
@@ -64,8 +78,10 @@ No API or output changes; timings are indicative single-core numbers.
   `MonosaccharideInfo`, `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo`,
   `RefMolInfo`) is a read-only `dict` copy of what was passed in: item assignment,
   `update`, `pop`, `clear`, ... raise `TypeError`. It still pickles, copies, compares and
-  `json.dumps` like a dict. Build a new dict (`dict(info.dict_composition) | {...}`) and
-  `dataclasses.replace` / `update(dict_composition=...)` instead.
+  `json.dumps` like a dict; `dataclasses.asdict(info)["dict_composition"]` is also this
+  read-only dict. Build a new dict (`dict(info.dict_composition) | {...}`) and pass it to
+  `dataclasses.replace`, or to `info.update(dict_composition=...)` on ontology entries
+  (`OboEntity` and subclasses, including `MonosaccharideInfo`).
 
 - Renamed: `Proteases` -> `Protease`, `PROTEASE_LITERALS` -> `ProteaseLiteral`,
   `PROTEASES_DICT` -> `PROTEASE_DICT`, `XlModInfo` -> `XlmodInfo`,
