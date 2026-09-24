@@ -52,14 +52,20 @@ class RefMolLookup:
         """Query all molecules by label type (e.g., 'TMT', 'iTRAQ').
 
         Returns a new list each call; mutating it does not affect the lookup.
+        Returns an empty list if nothing matches, including for a non-string key.
         """
+        if not isinstance(label_type, str):
+            return []
         return list(self._label_type_to_data.get(label_type.lower(), ()))
 
     def query_molecule_type(self, molecule_type: str) -> list[RefMolInfo]:
         """Query all molecules by molecule type (e.g., 'reporter', 'sidechain', 'nucleobase').
 
         Returns a new list each call; mutating it does not affect the lookup.
+        Returns an empty list if nothing matches, including for a non-string key.
         """
+        if not isinstance(molecule_type, str):
+            return []
         return list(self._molecule_type_to_data.get(molecule_type.lower(), ()))
 
     def __getitem__(self, key: str | RefMolID) -> RefMolInfo:

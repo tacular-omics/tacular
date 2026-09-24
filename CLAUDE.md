@@ -135,7 +135,7 @@ and checked). `import tacular as t` is the house style.
   - `UNIPROT_PTM_LOOKUP`, `UniprotPtmInfo`, `UniprotPtmLookup` — UniProt ptmlist; extra
     fields plus `.get_unimod()`, `.get_psimod()`, `.residue`, `.location`
   - `OboEntity` — base dataclass: `id, name, formula, monoisotopic_mass, average_mass,
-    dict_composition`, `.composition`, `.mass()`, `.to_dict()`, `.from_dict()`, `.update()`, `.id_tag`
+    dict_composition`, `.composition`, `.mass()` / `.get_mass()`, `.to_dict()`, `.from_dict()`, `.update()`, `.id_tag`
 - **Amino acids**: `AA_LOOKUP`, `AALookup`, `AminoAcid` (enum A-Z incl. B J O U X Z),
   `AminoAcidInfo`, `AMINO_ACID_INFOS` (dict), `ORDERED_AMINO_ACIDS` (list); `AA_LOOKUP` also
   has `.ordered_amino_acids`, `.ambiguous_amino_acids`, `.mass_amino_acids`, ... tuples
@@ -145,7 +145,7 @@ and checked). `import tacular as t` is the house style.
   `IonType` (enum), `IonTypeLiteral`, `IonTypeProperty` (flag enum)
 - **Neutral deltas**: `NEUTRAL_DELTA_LOOKUP`, `NeutralDeltaLookup`, `NeutralDelta`,
   `NeutralDeltaInfo`, `NeutralDeltaLiteral`, `NEUTRAL_DELTA_DICT`
-- **Proteases**: `PROTEASE_LOOKUP` (a `ProteaseLookup`, class not exported), `Proteases`
+- **Proteases**: `PROTEASE_LOOKUP`, `ProteaseLookup`, `Proteases`
   (enum), `ProteaseInfo` (`.regex`, compiled `.pattern`), `PROTEASES_DICT`, `PROTEASE_LITERALS`
 - **Monosaccharides**: `MONOSACCHARIDE_LOOKUP`, `MonosaccharideLookup`, `Monosaccharide`,
   `MonosaccharideInfo`

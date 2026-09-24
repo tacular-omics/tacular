@@ -12,7 +12,7 @@ working *on* tacular, read CLAUDE.md in the repository instead.
 - Repository: https://github.com/tacular-omics/tacular
 - Docs: https://tacular.readthedocs.io/en/latest/
 - PyPI: https://pypi.org/project/tacular/
-- Version described: 1.1.x
+- Version described: 1.2.x
 
 ## Install
 
@@ -26,7 +26,21 @@ Requires Python >= 3.12. No runtime dependencies. Ships `py.typed`.
 
 Every data type has one module-level singleton named `*_LOOKUP`. You index it
 (`LOOKUP[key]`), test membership (`key in LOOKUP`), `.get(key)` it, and iterate it.
-Entries are frozen dataclasses (`*Info`). Masses are in daltons.
+Entries are frozen, hashable dataclasses (`*Info`). Masses are in daltons.
+
+Every lookup has the same mapping-style surface: `LOOKUP[key]`, `key in LOOKUP`,
+`.get(key, default=None)`, `len(LOOKUP)`, `.keys() -> list`, `.values() -> list` and
+iteration (over the `*Info` entries, like `.values()`).
+
+Error policy: `LOOKUP[key]` raises `KeyError` when nothing matches, including for a
+key of the wrong type (`None`, a `bool`, a float), and `ValueError` for a malformed
+key (only `ELEMENT_LOOKUP`, e.g. `"c"` or `"13"`). `.get()` returns its default and
+`in` returns `False` in all of these cases; `query_*` methods return `None` (or an
+empty list for the list-returning ones). They never raise `AttributeError`/`TypeError`.
+
+Hashability: every `*Info` is hashable, so entries can be set members and dict keys.
+Ontology entries (`OboEntity` subclasses) hash on `(id, name)`. `dict_composition` is
+shared by every caller: treat it as read-only (`to_dict()` returns a copy).
 
 ```python
 import tacular as t
@@ -44,7 +58,7 @@ t.UNIMOD_LOOKUP["Phospho"].formula             # 'HO3P'
 | `RESID_LOOKUP` | `ResidLookup` | ~535 | name, id `"AA0002"` / `"0002"` / `2` |
 | `XLMOD_LOOKUP` | `XlModLookup` | ~189 | name, id `"01000"` / `1000` |
 | `GNO_LOOKUP` | `GnoLookup` | ~3534 | name, id `"G00008BG"` / `"00008BG"` |
-| `UNIPROT_PTM_LOOKUP` | `UniprotPtmLookup` | ~438 | name, id `"0253"` / `253` |
+| `UNIPROT_PTM_LOOKUP` | `UniprotPtmLookup` | ~440 | name, id `"0253"` / `253` |
 | `AA_LOOKUP` | `AALookup` | 26 | one-letter, three-letter, name |
 | `ELEMENT_LOOKUP` | `ElementLookup` | 472 (118 elements) | `"C"`, `"13C"`, `("C", 13)`, `Element.C` |
 | `FRAGMENT_ION_LOOKUP` | `FragmentIonLookup` | 38 | id `"y"`, name `"y-ion"`, `IonType.Y` |
@@ -73,18 +87,21 @@ Methods and properties:
 
 - `.composition -> dict[ElementInfo, int] | None` - `dict_composition` with keys resolved to `ElementInfo`
 - `.mass(monoisotopic: bool = True) -> float | None` - monoisotopic or average mass
+- `.get_mass(monoisotopic: bool = True) -> float | None` - same as `.mass()`; the name the other `*Info` classes use
 - `.id_tag -> str` - id with prefix and leading zeros stripped (`"00046"` -> `"46"`)
-- `.to_dict(float_precision: int | None = 6) -> dict[str, object]` - JSON-ready dict
+- `.to_dict(float_precision: int | None = 6) -> dict[str, object]` - JSON-ready dict; `"composition"` is a copy of `dict_composition`
 - `OboEntity.from_dict(data) -> Self` - inverse of `to_dict`
 - `.update(**kwargs) -> Self` - copy with fields replaced (entries are frozen)
 
 ### OntologyLookup methods (all six ontology lookups)
 
+`OntologyLookup` is exported from `tacular` (the base class of `UnimodLookup` etc.).
+
 - `lookup[key: str | int] -> T` - tries name first (case-insensitive), then id; raises `KeyError`
 - `key in lookup -> bool`
 - `.get(key, default=None) -> T | None`
-- `.query_id(mod_id: str | int) -> T | None` - id only; strips the accession prefix (`UNIMOD:`, `MOD:`, `XLMOD:`, `RESID:`, `GNO:`, `PTM-`), the RESID `AA` / GNO `G` prefix and leading zeros
-- `.query_name(name: str) -> T | None` - name only, case-insensitive
+- `.query_id(mod_id: str | int) -> T | None` - id only; strips the accession prefix (`UNIMOD:`, `MOD:`, `XLMOD:`, `RESID:`, `GNO:`, `PTM-`), the RESID `AA` / GNO `G` prefix, leading zeros and surrounding whitespace. A numeric id must be plain ASCII digits (`"+21"`, `"2_1"`, `"٢١"` do not match); a `bool` never matches
+- `.query_name(name: str) -> T | None` - name only, case-insensitive; `None` for a non-`str`
 - `.query_mass(mass: float, tolerance: float = 0.01, monoisotopic: bool = True) -> list[T]` - all entries within +/- tolerance Da
 - `.choice(require_monoisotopic_mass: bool = True, require_composition: bool = True) -> T` - random entry
 - `.values() -> list[T]`, `.keys() -> list[str]` (lower-cased names), `iter(lookup)`, `len(lookup)`
@@ -124,6 +141,10 @@ print(t.UNIMOD_LOOKUP.version, len(t.UNIMOD_LOOKUP))
 - `.has_unimod`, `.has_psimod -> bool`
 - `.get_unimod() -> UnimodInfo | None`, `.get_psimod() -> PsimodInfo | None` - follow the cross-reference
 
+`ModLocation` (exported from `tacular`) is a `StrEnum` of UniProt `position_polypeptide`
+values: `ANYWHERE` (`"Anywhere."`), `NTERM` (`"N-terminal."`), `CTERM` (`"C-terminal."`),
+`PROTEIN_CORE` (`"Protein core."`).
+
 ```python
 import tacular as t
 
@@ -140,7 +161,8 @@ print(ps.residue, ps.get_unimod().name, ps.get_psimod().name)    # S Phospho O-p
 - `AMINO_ACID_INFOS: dict[AminoAcid, AminoAcidInfo]`, `ORDERED_AMINO_ACIDS: list[AminoAcid]`
 
 `AALookup` methods: `lookup[key]` (one-letter, then three-letter, then name; all
-case-insensitive), `in`, `.get(key, default=None)`, iteration (A-Z order),
+case-insensitive), `in`, `.get(key, default=None)`, `len`, `.keys()` (one-letter codes),
+`.values()`, iteration (A-Z order),
 `.one_letter(code)`, `.three_letter(code)`, `.name(name)`,
 `.mass(key, monoisotopic=True) -> float`, `.composition(key) -> dict[ElementInfo, int]`,
 `.is_ambiguous(key)`, `.is_unambiguous(key)`, `.is_mass_ambiguous(key)`,
@@ -170,7 +192,8 @@ print(t.AA_LOOKUP["X"].monoisotopic_mass)                        # 0.0
 - `parse_composition(comp_dict: Mapping[str, int]) -> dict[ElementInfo, int]`
 
 `ElementLookup` methods: `lookup[key]` with key `"C"`, `"13C"`, `("C", 13)`,
-`("C", None)` or `Element.C`; `in`, `.get`, `len`, iteration, `.keys()`, `.values()`,
+`("C", None)` or `Element.C`; `in`, `.get(key, default=None)`, `len`, iteration,
+`.keys()` (`(Element, mass_number)` tuples), `.values()`,
 `.mass(key, monoisotopic=True) -> float`, `.get_monoisotopic(symbol)`,
 `.get_isotope(symbol, mass_number)`, `.get_all_isotopes(symbol)`,
 `.get_elements() -> list[str]`, `.get_masses_and_abundances(key) -> list[(mass, abundance)]`,
@@ -199,8 +222,8 @@ print(sum(e.mass * n for e, n in comp.items()))                          # 28.03
 - `FragmentIonInfo(id, name, formula, monoisotopic_mass, average_mass, dict_composition, properties)`
   - `.ion_type -> IonType`, `.is_forward`, `.is_backward`, `.is_internal`, `.is_intact`,
     `.is_aa_specific_forward`, `.is_aa_specific_backward`, `.get_mass(monoisotopic=True)`
-- Lookup: `lookup[key]` by id, name or `IonType`; `.get`, `in`, iteration,
-  `.query_id(ion_id)`, `.query_name(name)`, `.query_ion_type(ion_type)`
+- Lookup: `lookup[key]` by id, name or `IonType`; `.get(key, default=None)`, `in`, `len`,
+  iteration, `.keys()` (ids), `.values()`, `.query_id(ion_id)`, `.query_name(name)`, `.query_ion_type(ion_type)`
 
 Masses are neutral offsets added to the summed residue masses: `b` = 0.0,
 `a` = -27.9949 (-CO), `c` = +17.0265 (+NH3), `y` = +18.0106 (+H2O), `p` = +18.0106.
@@ -223,8 +246,8 @@ print(t.FRAGMENT_ION_LOOKUP["by"].is_internal)                  # True
   - masses are **signed** (a loss is negative: water = -18.0106)
   - `.calculate_loss_sites(sequence) -> int` - count of residues in `sequence` that can lose it
   - `.get_mass(monoisotopic=True)`, `.to_dict()`
-- Lookup: `lookup[key]` by formula, name (case-insensitive) or enum; `in`, `len`, iteration,
-  `.query_formula(formula)`, `.query_name(name)`, `.query_delta(delta)`
+- Lookup: `lookup[key]` by formula, name (case-insensitive) or enum; `.get(key, default=None)`,
+  `in`, `len`, iteration, `.keys()` (formulas), `.values()`, `.query_formula(formula)`, `.query_name(name)`, `.query_delta(delta)`
 
 ```python
 import tacular as t
@@ -238,14 +261,15 @@ print(t.NEUTRAL_DELTA_LOOKUP["ammonia"].formula)                 # NH3
 
 ## Proteases
 
-- `PROTEASE_LOOKUP` (a `ProteaseLookup`; the class itself is not exported)
+- `PROTEASE_LOOKUP: ProteaseLookup`
 - `Proteases` - enum of ids: `arg_c asp_n chymotrypsin chymotrypsin_low chymotrypsin_promega_high
   chymotrypsin_promega_low glu_c lys_c lys_n proteinase_k trypsin trypsin_full proalanase
   proalanase_low elastase pepsin thermolysin unspecific no_enzyme`
 - `PROTEASE_LITERALS` - `Literal[...]` of those ids; `PROTEASES_DICT: dict[Proteases, ProteaseInfo]`
 - `ProteaseInfo(id, name, full_name, regex)` - `.regex` is a zero-width cleavage-site regex;
   `.pattern` is the compiled `re.Pattern`; `.to_dict()`
-- Lookup: `lookup[key]` by id or name; `.get`, `in`, `len`, iteration, `.query_id`, `.query_name`
+- Lookup: `lookup[key]` by id or name; `.get(key, default=None)`, `in`, `len`, iteration,
+  `.keys()` (ids), `.values()`, `.query_id`, `.query_name`
 
 ```python
 import re
@@ -265,8 +289,9 @@ Cleavage is regex-based; digestion (missed cleavages, length filters) lives in
 - `MONOSACCHARIDE_LOOKUP: MonosaccharideLookup`
 - `Monosaccharide` - enum of ProForma glycan names (`Hex`, `HexNAc`, `dHex`, `Fuc`, `NeuAc`,
   `NeuGc`, `HexN`, `aHex`, `Pen`, `Sulfate`, `Phosphate`, ...)
-- `MonosaccharideInfo(OboEntity)` - residue formula and masses
-- Lookup: `lookup[key]` by ProForma name (case-insensitive) or enum; `.get`, `in`, iteration, `.proforma(name)`
+- `MonosaccharideInfo(OboEntity)` - residue formula and masses; `.mass()` / `.get_mass()`
+- Lookup: `lookup[key]` by ProForma name (case-insensitive) or enum; `.get(key, default=None)`, `in`,
+  `len`, iteration, `.keys()` (ProForma names), `.values()`, `.proforma(name)`
 
 ```python
 import tacular as t
@@ -283,7 +308,8 @@ print(t.MONOSACCHARIDE_LOOKUP["hexnac"].name)                    # HexNAc
 - `RefMolInfo(name, label_type, molecule_type, chemical_formula, monoisotopic_mass, average_mass, dict_composition)`
   - `molecule_type` is one of `reporter`, `reporter+balance`, `sidechain`, `nucleobase`
   - `.get_mass(monoisotopic=True)`, `.to_dict()`
-- Lookup: `lookup[key]` by name or enum; `.get`, `in`, iteration, `.query_name(name)`,
+- Lookup: `lookup[key]` by name or enum; `.get(key, default=None)`, `in`, `len`, iteration,
+  `.keys()` (names), `.values()`, `.query_name(name)`,
   `.query_id(RefMolID)`, `.query_label_type(label_type) -> list`, `.query_molecule_type(t) -> list`
 
 ```python

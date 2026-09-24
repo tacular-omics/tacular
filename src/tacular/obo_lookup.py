@@ -125,33 +125,39 @@ class OntologyLookup[T: OboEntity]:
         return self._version
 
     def query_id(self, mod_id: str | int) -> T | None:
-        """Query by ID, stripping this ontology's accession namespace (e.g. ``"UNIMOD:"``,
-        ``"MOD:"``), its id prefix (e.g. RESID's ``"AA"``) and leading zeros.
+        """Query by ID, stripping surrounding whitespace, this ontology's accession
+        namespace (e.g. ``"UNIMOD:"``, ``"MOD:"``), its id prefix (e.g. RESID's ``"AA"``)
+        and leading zeros.
 
         E.g. ``UNIMOD_LOOKUP.query_id("UNIMOD:21")``, ``query_id("21")`` and ``query_id(21)``
-        all return the same entry. Returns ``None`` if nothing matches.
+        all return the same entry. A numeric id must be plain ASCII digits: ``"+21"``,
+        ``"2_1"`` and non-ASCII digits do not match. Returns ``None`` if nothing matches,
+        including for a ``bool`` or a key that is not a ``str`` or ``int``.
         """
+        if isinstance(mod_id, bool):
+            return None
         if isinstance(mod_id, int):
             return self._num_to_info.get(mod_id)
+        if not isinstance(mod_id, str):
+            return None
 
-        mod_id = strip_id(mod_id, self._id_prefix, self._accession_prefix)
+        mod_id = strip_id(mod_id.strip(), self._id_prefix, self._accession_prefix)
         info = self._id_to_info.get(mod_id)
         if info is not None:
             return info
 
-        # try to convert to int
-        try:
-            ki = int(mod_id)
-        except ValueError:
-            ki = None
-
-        if ki is not None:
-            return self._num_to_info.get(ki)
+        # Only plain ASCII digits count as a numeric id: int() would also accept
+        # "+21", "2_1" and non-ASCII digits such as "٢١".
+        if mod_id.isascii() and mod_id.isdigit():
+            return self._num_to_info.get(int(mod_id))
 
         return None
 
     def query_name(self, name: str) -> T | None:
-        """Query by name (case-insensitive). Returns ``None`` if nothing matches."""
+        """Query by name (case-insensitive). Returns ``None`` if nothing matches,
+        including for a key that is not a ``str``."""
+        if not isinstance(name, str):
+            return None
         return self._name_to_info.get(name.lower())
 
     def query_mass(self, mass: float, tolerance: float = 0.01, monoisotopic: bool = True) -> list[T]:

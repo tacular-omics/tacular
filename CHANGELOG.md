@@ -10,8 +10,20 @@
   amino acid, fragment ion, monosaccharide and reference-molecule lookups; `keys()` /
   `values()` on those plus the neutral delta and protease lookups.
 - `ProteaseLookup`, `OntologyLookup` and `ModLocation` are exported from `tacular`.
+- `get_mass(monoisotopic=True)` on ontology entries (`OboEntity`, so UNIMOD, PSI-MOD,
+  RESID, XLMOD, GNOme, UniProt-PTM) and `MonosaccharideInfo`, the name the amino acid,
+  fragment ion and reference-molecule entries already use. `mass()` still works.
 - Docs: the quick start states the error policy (`KeyError` = not found, `ValueError`
   = bad input; `get`/`in` never raise). Every lookup class has a class docstring.
+
+### Changed
+
+- PyPI classifier is `Development Status :: 5 - Production/Stable` (was 4 - Beta).
+- `scripts/release_version.py sync --set X.Y.Z` also sets `date-released` in
+  `CITATION.cff` to today (adding the field if missing).
+- Docs: `llms-full.txt` describes 1.2 (every lookup's `len`/`keys`/`values`/`get(default)`,
+  the error policy and hashability, `ProteaseLookup`, `OntologyLookup` and `ModLocation`
+  exports); the `tacular status` example shows the bundled UniProt 2026_03 (440 entries).
 
 ### Fixed
 
@@ -21,13 +33,17 @@
   Ontology entries hash on `(id, name)` as `OboEntity` documents.
 - `MonosaccharideInfo` is a `@dataclass(frozen=True, slots=True)` like the other
   ontology entries.
-- The non-ontology lookups (amino acids, proteases, fragment ions, monosaccharides,
-  neutral deltas, reference molecules) return "not found" for non-string keys
-  (`get(None)` returns the default, `None in` is `False`, `[None]` raises `KeyError`)
-  instead of raising `AttributeError`. `ELEMENT_LOOKUP.get` returns the default for a
-  malformed key such as `"c"` or a wrong-type key such as `None` instead of raising
-  `ValueError`/`TypeError`; `ELEMENT_LOOKUP[None]` raises an error that is both a
-  `KeyError` and (as before) a `TypeError`.
+- Every lookup returns "not found" for keys of the wrong type (`get(None)` returns the
+  default, `None in` is `False`, `[None]` raises `KeyError`) instead of raising
+  `AttributeError` or `TypeError`: the ontology lookups for keys that are not `str` or
+  `int`, the others (amino acids, proteases, fragment ions, monosaccharides, neutral
+  deltas, reference molecules) for non-string keys. The public `query_id(None)`,
+  `query_name(None)` of the ontology lookups return `None`, and
+  `REFMOL_LOOKUP.query_label_type(None)` / `query_molecule_type(None)` return `[]`.
+  `ELEMENT_LOOKUP.get` returns the default for a malformed key such as `"c"` or a
+  wrong-type key such as `None` instead of raising `ValueError`/`TypeError`;
+  `ELEMENT_LOOKUP[None]` raises an error that is both a `KeyError` and (as before) a
+  `TypeError`.
 - `composition` on amino acid, fragment ion, neutral delta and reference-molecule
   entries (and `AA_LOOKUP.composition()`) returns a fresh `Counter` each time. It was
   a cached object, so mutating the result changed the entry for every later caller.
@@ -39,7 +55,6 @@
 - `ElementLookup` docs no longer promise auto-generated isotopes or the nonexistent
   `auto_generate` / `include_generated` parameters; `keys()` is annotated with
   `Element` keys.
-
 - Isotope-labelled formulas are written in ProForma bracket syntax, so they parse back
   to their own composition: UNIMOD `Label:13C(6)` was `C-613C6` (read as `C-613`) and is
   now `C-6[13C6]`. 132 UNIMOD and 4 XLMOD `formula` strings (and `jsons/`) changed;
@@ -55,9 +70,13 @@
   PeptideCutter; it previously cleaved C-terminal to them.
 - UniProt ptmlist refreshed to 2026_03: 29 glycan entries (e.g. PTM-0745) had their
   monoisotopic and average masses swapped; PTM-0775 and PTM-0776 are new.
-- Ontology lookups return "not found" for keys that are not `str` or `int` (`None in
-  UNIMOD_LOOKUP` is `False`, `get(None)` returns the default, `[None]` raises `KeyError`)
-  instead of raising `AttributeError` or `TypeError`.
+- Ontology id queries accept only plain ASCII-digit numeric ids (after stripping the
+  prefixes, leading zeros and surrounding whitespace). `"+21"`, `"2_1"` and non-ASCII
+  digits such as `"٢١"` resolved to UNIMOD 21 because they went through `int()`; they
+  are now not found. A `bool` is no longer an id (`UNIMOD_LOOKUP[True]` was entry 1).
+- `to_dict()["composition"]` is a copy on every entry type (ontology entries, amino
+  acids, fragment ions, reference molecules). It returned the entry's own
+  `dict_composition`, so editing the dict changed the entry in the global lookup.
 
 ## [1.1.3] (2026-09-23)
 

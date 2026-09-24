@@ -86,3 +86,42 @@ def test_filter_infos():
 
 if __name__ == "__main__":
     pytest.main([__file__])
+
+
+def test_to_dict_composition_is_a_copy():
+    """Mutating to_dict()["composition"] must not change the entry itself."""
+    import tacular as t
+
+    phospho = t.UNIMOD_LOOKUP["Phospho"]
+    before = dict(phospho.dict_composition)
+    d = phospho.to_dict()
+    d["composition"]["P"] = 99
+    d["composition"]["Xx"] = 1
+    assert dict(t.UNIMOD_LOOKUP["Phospho"].dict_composition) == before
+    assert d["composition"] is not phospho.dict_composition
+    assert isinstance(d["composition"], dict)
+
+
+def test_to_dict_composition_none_stays_none():
+    entity = OboEntity("E", "e", None, None, None, None)
+    assert entity.to_dict()["composition"] is None
+
+
+@pytest.mark.parametrize("attr", ["AA_LOOKUP", "FRAGMENT_ION_LOOKUP", "REFMOL_LOOKUP", "MONOSACCHARIDE_LOOKUP"])
+def test_other_infos_to_dict_composition_is_a_copy(attr):
+    import tacular as t
+
+    info = next(i for i in getattr(t, attr) if i.dict_composition)
+    before = dict(info.dict_composition)
+    d = info.to_dict()
+    d["composition"]["Xx"] = 1
+    assert dict(info.dict_composition) == before
+
+
+def test_get_mass_matches_mass():
+    import tacular as t
+
+    for info in (t.UNIMOD_LOOKUP["Phospho"], t.MONOSACCHARIDE_LOOKUP["Hex"]):
+        assert info.get_mass() == info.mass() == info.monoisotopic_mass
+        assert info.get_mass(monoisotopic=False) == info.mass(False) == info.average_mass
+        assert info.get_mass(False) == info.average_mass

@@ -42,5 +42,5 @@ class RefMolInfo:
             "chemical_formula": self.chemical_formula,
             "monoisotopic_mass": round(self.monoisotopic_mass, float_precision),
             "average_mass": round(self.average_mass, float_precision),
-            "composition": self.dict_composition,
+            "composition": dict(self.dict_composition),
         }
