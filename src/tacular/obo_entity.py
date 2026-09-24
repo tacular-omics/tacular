@@ -41,7 +41,10 @@ class OboEntity:
     dict_composition: Mapping[str, int] | None = field(hash=False)
     """Elemental composition as ``{symbol: count}`` (isotope keys like ``"13C"`` are
     supported), or ``None`` if not available. Use :attr:`composition` for a version
-    keyed by :class:`~tacular.ElementInfo` instead of plain strings."""
+    keyed by :class:`~tacular.ElementInfo` instead of plain strings.
+
+    Treat it as read-only: the dict is shared by every caller of the lookup, so
+    mutating it changes the entry for everyone. :meth:`to_dict` returns a copy."""
 
     def __str__(self) -> str:
         """Return ``"{name} ({formula})"``, e.g. ``"Acetyl (C2H2O)"``."""
@@ -91,11 +94,24 @@ class OboEntity:
         )
 
     def mass(self, monoisotopic: bool = True) -> float | None:
-        """Get the mass of the entity"""
+        """Get the mass of the entity (monoisotopic by default, else average);
+        ``None`` if not available. Same as :meth:`get_mass`."""
+        return self.monoisotopic_mass if monoisotopic else self.average_mass
+
+    def get_mass(self, monoisotopic: bool = True) -> float | None:
+        """Get the mass of the entity (monoisotopic by default, else average);
+        ``None`` if not available.
+
+        Same as :meth:`mass`; ``get_mass`` is the name the amino acid, fragment ion
+        and reference-molecule entries use.
+        """
         return self.monoisotopic_mass if monoisotopic else self.average_mass
 
     def to_dict(self, float_precision: int | None = 6) -> dict[str, object]:
         """Convert the OboEntity to a dictionary.
+
+        ``"composition"`` is a copy of :attr:`dict_composition` (a plain ``dict``, or
+        ``None``), so changing it does not change this entry.
 
         ``float_precision`` rounds the masses (default 6, as used for the bundled
         ``jsons/*.json``). Pass ``None`` to preserve full float precision, e.g. when
@@ -114,7 +130,8 @@ class OboEntity:
             "formula": self.formula,
             "monoisotopic_mass": _round(self.monoisotopic_mass),
             "average_mass": _round(self.average_mass),
-            "composition": self.dict_composition,
+            # A copy: dict_composition is shared with the lookup and must stay read-only.
+            "composition": dict(self.dict_composition) if self.dict_composition is not None else None,
         }
 
     def __hash__(self) -> int:

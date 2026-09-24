@@ -22,12 +22,14 @@ the info objects, and ``keys()`` / ``values()`` (new lists on each call). The er
 policy is the same everywhere:
 
 - ``KeyError`` means *not found*: ``lookup[key]`` raises it for an unknown key and for
-  a key of the wrong type (e.g. ``None``).
+  a key of the wrong type (e.g. ``None`` or a ``bool``). Numeric ids are plain ASCII
+  digits: ``"+21"`` or ``"2_1"`` is not UNIMOD 21.
 - ``ValueError`` means *bad input*: a malformed key or argument, such as the lowercase
   element symbol ``t.ELEMENT_LOOKUP["c"]``, or a missing mass or composition when you
   ask for one.
 - ``get`` returns its default and ``in`` returns ``False`` for any key ``lookup[key]``
-  would reject, so neither raises.
+  would reject, so neither raises. ``query_*`` methods return ``None`` (or an empty
+  list) for any such key.
 
 .. testcode::
 
@@ -35,8 +37,9 @@ policy is the same everywhere:
    assert "not-a-protease" not in t.PROTEASE_LOOKUP
    assert t.ELEMENT_LOOKUP.get("c", "missing") == "missing"
 
-Returned info objects are immutable and hashable, and their ``composition`` is a fresh
-copy on each access, so changing it cannot affect the lookup.
+Returned info objects are immutable and hashable, and their ``composition`` and
+``to_dict()["composition"]`` are fresh copies, so changing them cannot affect the
+lookup. Treat ``dict_composition`` itself as read-only: it is shared with the lookup.
 
 
 Amino Acid Lookups

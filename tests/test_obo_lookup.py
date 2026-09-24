@@ -317,3 +317,40 @@ def test_duplicate_names_raise_even_with_unique_ids():
     lookup = OntologyLookup({e1.id: e1, e2.id: e2}, "TEST")
     with pytest.raises(ValueError, match="Duplicate"):
         lookup.query_name("Same")
+
+
+@pytest.mark.parametrize("bad", ["+21", "2_1", "-21", "٢١", "２１", "21.0", "0x15", "1e1"])
+def test_query_id_rejects_non_ascii_digit_ids(bad):
+    assert t.UNIMOD_LOOKUP.query_id(bad) is None
+    assert t.UNIMOD_LOOKUP.get(bad) is None
+    assert bad not in t.UNIMOD_LOOKUP
+    with pytest.raises(KeyError):
+        t.UNIMOD_LOOKUP[bad]
+
+
+@pytest.mark.parametrize("good", ["21", "021", " 21", "21 ", "UNIMOD:21", 21])
+def test_query_id_accepts_plain_ids(good):
+    assert t.UNIMOD_LOOKUP.query_id(good) is t.UNIMOD_LOOKUP["Phospho"]
+
+
+@pytest.mark.parametrize("flag", [True, False])
+def test_query_id_rejects_bool(flag):
+    # True == 1 is UNIMOD:1 (Acetyl); a bool is not an id.
+    assert t.UNIMOD_LOOKUP.query_id(flag) is None
+    assert t.UNIMOD_LOOKUP.get(flag) is None
+    assert flag not in t.UNIMOD_LOOKUP
+    with pytest.raises(KeyError):
+        t.UNIMOD_LOOKUP[flag]
+
+
+@pytest.mark.parametrize("bad", [None, 1.0, b"21", ("21",)])
+def test_query_methods_with_wrong_types_return_none(bad):
+    assert t.UNIMOD_LOOKUP.query_id(bad) is None
+    assert t.UNIMOD_LOOKUP.query_name(bad) is None
+
+
+def test_refmol_queries_with_none_do_not_raise():
+    assert t.REFMOL_LOOKUP.query_label_type(None) == []
+    assert t.REFMOL_LOOKUP.query_molecule_type(None) == []
+    assert t.REFMOL_LOOKUP.query_name(None) is None
+    assert t.REFMOL_LOOKUP.query_id(None) is None

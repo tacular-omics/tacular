@@ -108,9 +108,9 @@ whether a cached copy exists, the version currently in use, and its entry count:
    psimod       no       1.032.4                  1558
    resid        no       1.032.4                  535
    gno          no       2025-10-10               3534
-   uniprot_ptm  no       2026_01 of 28-Jan-2026   438
+   uniprot_ptm  no       2026_03 of 02-Sep-2026   440
 
-The versions and counts above are the data bundled with tacular 1.1.2.
+The versions and counts above are the data bundled with tacular 1.2.0.
 
 ``tacular clear``
 -----------------

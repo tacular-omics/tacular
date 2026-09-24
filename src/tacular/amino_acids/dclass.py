@@ -56,5 +56,5 @@ class AminoAcidInfo:
             if self.monoisotopic_mass is not None
             else None,
             "average_mass": round(self.average_mass, float_precision) if self.average_mass is not None else None,
-            "composition": self.dict_composition,
+            "composition": dict(self.dict_composition) if self.dict_composition is not None else None,
         }
