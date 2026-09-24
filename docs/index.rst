@@ -54,11 +54,11 @@ Quick example
    # Identify a modification from an observed mass shift
    hits = t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=0.001)
    print(hits[0].name)  # Phospho
-   print([m.name for m in t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=10, unit="ppm")])  # ['Phospho']
+   print([m.name for m in t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=10, tolerance_unit="ppm")])  # ['Phospho']
 
    # Mass tolerance helpers (units are "da" or "ppm")
    print(round(t.ppm_error(1000.01, 1000.0), 6))                # 10.0
-   print(t.within_tolerance(1000.005, 1000.0, 10, unit="ppm"))  # True
+   print(t.within_tolerance(1000.005, 1000.0, 10, tolerance_unit="ppm"))  # True
 
 Related packages
 ----------------

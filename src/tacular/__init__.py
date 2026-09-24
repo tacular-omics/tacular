@@ -51,6 +51,7 @@ from .obo_lookup import OntologyLookup
 from .proteases import PROTEASE_DICT, PROTEASE_LOOKUP, Protease, ProteaseInfo, ProteaseLiteral, ProteaseLookup
 from .refmol import REFMOL_LOOKUP, RefMolID, RefMolInfo, RefMolLiteral, RefMolLookup
 from .tolerance import ToleranceUnit, da_to_ppm, ppm_error, ppm_to_da, tolerance_window, within_tolerance
+from .types import Polarity
 
 __version__ = "1.2.0"
 
@@ -165,6 +166,7 @@ __all__ = [
     "SILAC_LOOKUP",
     "SilacLabelInfo",
     "SilacLabelLookup",
+    "Polarity",
     "ToleranceUnit",
     "da_to_ppm",
     "ppm_error",

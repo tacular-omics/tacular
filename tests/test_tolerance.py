@@ -2,6 +2,7 @@
 
 import doctest
 import math
+import typing
 
 import pytest
 from hypothesis import given
@@ -53,9 +54,9 @@ def test_conversions():
 
 def test_window_values():
     assert tolerance_window(100.0, 0.5) == (99.5, 100.5)
-    assert tolerance_window(100.0, 0.5, unit="da") == (99.5, 100.5)
-    assert tolerance_window(1000.0, 10, unit="ppm") == pytest.approx((999.99, 1000.01))
-    assert tolerance_window(-1000.0, 10, unit="ppm") == pytest.approx((-1000.01, -999.99))
+    assert tolerance_window(100.0, 0.5, tolerance_unit="da") == (99.5, 100.5)
+    assert tolerance_window(1000.0, 10, tolerance_unit="ppm") == pytest.approx((999.99, 1000.01))
+    assert tolerance_window(-1000.0, 10, tolerance_unit="ppm") == pytest.approx((-1000.01, -999.99))
     lo, hi = tolerance_window(100.0, -1.0)
     assert lo > hi  # negative tolerance: empty window
 
@@ -63,17 +64,17 @@ def test_window_values():
 def test_within_tolerance_values():
     assert within_tolerance(100.4, 100.0, 0.5)
     assert not within_tolerance(100.6, 100.0, 0.5)
-    assert within_tolerance(1000.005, 1000.0, 10, unit="ppm")
-    assert not within_tolerance(1000.02, 1000.0, 10, unit="ppm")
-    assert within_tolerance(-1000.005, -1000.0, 10, unit="ppm")
+    assert within_tolerance(1000.005, 1000.0, 10, tolerance_unit="ppm")
+    assert not within_tolerance(1000.02, 1000.0, 10, tolerance_unit="ppm")
+    assert within_tolerance(-1000.005, -1000.0, 10, tolerance_unit="ppm")
 
 
 @pytest.mark.parametrize("unit", ["Da", "PPM", "Ppm", "mda", "", None, "th"])
 def test_bad_unit_raises(unit):
     with pytest.raises(TacularError):
-        tolerance_window(100.0, 1.0, unit=unit)
+        tolerance_window(100.0, 1.0, tolerance_unit=unit)
     with pytest.raises(TacularError):
-        within_tolerance(100.0, 100.0, 1.0, unit=unit)
+        within_tolerance(100.0, 100.0, 1.0, tolerance_unit=unit)
 
 
 def test_options_are_keyword_only():
@@ -97,7 +98,7 @@ def test_da_ppm_round_trip(delta, mz):
 
 @given(masses, tolerances, units)
 def test_window_is_symmetric_and_ordered(mass, tol, unit):
-    lo, hi = tolerance_window(mass, tol, unit=unit)
+    lo, hi = tolerance_window(mass, tol, tolerance_unit=unit)
     assert lo <= mass <= hi
     assert mass - lo == pytest.approx(hi - mass, rel=1e-9, abs=1e-9)
     expected = tol if unit == "da" else abs(mass) * tol / 1e6
@@ -106,16 +107,16 @@ def test_window_is_symmetric_and_ordered(mass, tol, unit):
 
 @given(masses, tolerances, units)
 def test_negative_mass_window_mirrors_positive(mass, tol, unit):
-    lo, hi = tolerance_window(mass, tol, unit=unit)
-    nlo, nhi = tolerance_window(-mass, tol, unit=unit)
+    lo, hi = tolerance_window(mass, tol, tolerance_unit=unit)
+    nlo, nhi = tolerance_window(-mass, tol, tolerance_unit=unit)
     assert (nlo, nhi) == (-hi, -lo)
 
 
 @given(masses, masses, tolerances, units)
 def test_within_tolerance_is_the_window(observed, theoretical, tol, unit):
-    lo, hi = tolerance_window(theoretical, tol, unit=unit)
-    assert within_tolerance(observed, theoretical, tol, unit=unit) == (lo <= observed <= hi)
-    assert within_tolerance(theoretical, theoretical, tol, unit=unit)
+    lo, hi = tolerance_window(theoretical, tol, tolerance_unit=unit)
+    assert within_tolerance(observed, theoretical, tol, tolerance_unit=unit) == (lo <= observed <= hi)
+    assert within_tolerance(theoretical, theoretical, tol, tolerance_unit=unit)
 
 
 def _edge_cases():
@@ -125,33 +126,33 @@ def _edge_cases():
 
 @pytest.mark.parametrize(("theoretical", "tol", "unit"), _edge_cases())
 def test_within_tolerance_edges(theoretical, tol, unit):
-    lo, hi = tolerance_window(theoretical, tol, unit=unit)
-    assert within_tolerance(lo, theoretical, tol, unit=unit)
-    assert within_tolerance(hi, theoretical, tol, unit=unit)
-    assert within_tolerance(math.nextafter(lo, math.inf), theoretical, tol, unit=unit)
-    assert within_tolerance(math.nextafter(hi, -math.inf), theoretical, tol, unit=unit)
-    assert not within_tolerance(math.nextafter(lo, -math.inf), theoretical, tol, unit=unit)
-    assert not within_tolerance(math.nextafter(hi, math.inf), theoretical, tol, unit=unit)
+    lo, hi = tolerance_window(theoretical, tol, tolerance_unit=unit)
+    assert within_tolerance(lo, theoretical, tol, tolerance_unit=unit)
+    assert within_tolerance(hi, theoretical, tol, tolerance_unit=unit)
+    assert within_tolerance(math.nextafter(lo, math.inf), theoretical, tol, tolerance_unit=unit)
+    assert within_tolerance(math.nextafter(hi, -math.inf), theoretical, tol, tolerance_unit=unit)
+    assert not within_tolerance(math.nextafter(lo, -math.inf), theoretical, tol, tolerance_unit=unit)
+    assert not within_tolerance(math.nextafter(hi, math.inf), theoretical, tol, tolerance_unit=unit)
 
 
 @given(masses, tolerances, units)
 def test_within_tolerance_edges_property(theoretical, tol, unit):
-    lo, hi = tolerance_window(theoretical, tol, unit=unit)
-    assert within_tolerance(lo, theoretical, tol, unit=unit)
-    assert within_tolerance(hi, theoretical, tol, unit=unit)
-    assert not within_tolerance(math.nextafter(lo, -math.inf), theoretical, tol, unit=unit)
-    assert not within_tolerance(math.nextafter(hi, math.inf), theoretical, tol, unit=unit)
+    lo, hi = tolerance_window(theoretical, tol, tolerance_unit=unit)
+    assert within_tolerance(lo, theoretical, tol, tolerance_unit=unit)
+    assert within_tolerance(hi, theoretical, tol, tolerance_unit=unit)
+    assert not within_tolerance(math.nextafter(lo, -math.inf), theoretical, tol, tolerance_unit=unit)
+    assert not within_tolerance(math.nextafter(hi, math.inf), theoretical, tol, tolerance_unit=unit)
 
 
 @pytest.mark.parametrize("bad", [math.nan, math.inf, -math.inf])
 def test_non_finite_input_raises(bad):
     with pytest.raises(TacularError):
-        tolerance_window(bad, 1.0, unit="ppm")
+        tolerance_window(bad, 1.0, tolerance_unit="ppm")
     with pytest.raises(TacularError):
         tolerance_window(100.0, bad)
     for args in ((bad, 100.0, 1.0), (100.0, bad, 1.0), (100.0, 100.0, bad)):
         with pytest.raises(TacularError):
-            within_tolerance(*args, unit="ppm")
+            within_tolerance(*args, tolerance_unit="ppm")
 
 
 def test_negative_tolerance_matches_nothing():
@@ -161,5 +162,13 @@ def test_negative_tolerance_matches_nothing():
 @given(masses, st.floats(min_value=0, max_value=1e3, allow_nan=False))
 def test_within_ppm_matches_ppm_error(theoretical, tol):
     observed = theoretical + ppm_to_da(tol / 2, theoretical)
-    assert within_tolerance(observed, theoretical, tol, unit="ppm")
+    assert within_tolerance(observed, theoretical, tol, tolerance_unit="ppm")
     assert abs(ppm_error(observed, theoretical)) <= tol * (1 + 1e-6) + 1e-6
+
+
+def test_shared_types_exported() -> None:
+    from tacular.types import Polarity, ToleranceUnit
+
+    assert tacular.Polarity is Polarity and tacular.ToleranceUnit is ToleranceUnit
+    assert typing.get_args(Polarity) == ("positive", "negative")
+    assert typing.get_args(ToleranceUnit) == ("da", "ppm")
