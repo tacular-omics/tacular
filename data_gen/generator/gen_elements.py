@@ -370,7 +370,6 @@ def gen_elements(output_file: str = "src/tacular/elements/data.py") -> None:
 from enum import StrEnum
 
 from .dclass import ElementInfo
-import warnings
 
 
 class Element(StrEnum):
@@ -389,12 +388,7 @@ try:
     }}
 
 except Exception as e:
-    warnings.warn(
-        f"Exception in element_data: {{e}}. Using empty dictionaries.",
-        UserWarning,
-        stacklevel=2
-    )
-    ISOTOPES: dict[tuple[Element, int | None], ElementInfo] = {{}}
+    raise ImportError(f"tacular: the bundled element data failed to load: {{e}}") from e
 '''
 
     with open(output_file, "w") as f:

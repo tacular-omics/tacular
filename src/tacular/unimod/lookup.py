@@ -7,6 +7,12 @@ from .dclass import UnimodInfo
 
 
 class UnimodLookup(OntologyLookup[UnimodInfo]):
+    """UNIMOD lookup (singleton ``UNIMOD_LOOKUP``): query by ``"Phospho"``, ``"21"``, ``21`` or ``"UNIMOD:21"``.
+
+    See :class:`~tacular.OntologyLookup` for the full query API. ``lookup[key]``
+    raises ``KeyError`` if nothing matches; ``get``/``in`` never raise.
+    """
+
     def __init__(self, data: dict[str, UnimodInfo], version: str) -> None:
         """Wrap `data` in an `OntologyLookup` for UNIMOD, stripping the "UNIMOD:" accession prefix."""
         super().__init__(

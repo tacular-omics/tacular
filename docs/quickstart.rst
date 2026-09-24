@@ -13,6 +13,32 @@ Import tacular and access the various lookup modules:
    import tacular as t
 
 
+Lookup API and errors
+~~~~~~~~~~~~~~~~~~~~~
+
+Every ``*_LOOKUP`` supports the same mapping-style calls: ``lookup[key]``,
+``lookup.get(key, default=None)``, ``key in lookup``, ``len(lookup)``, iteration over
+the info objects, and ``keys()`` / ``values()`` (new lists on each call). The error
+policy is the same everywhere:
+
+- ``KeyError`` means *not found*: ``lookup[key]`` raises it for an unknown key and for
+  a key of the wrong type (e.g. ``None``).
+- ``ValueError`` means *bad input*: a malformed key or argument, such as the lowercase
+  element symbol ``t.ELEMENT_LOOKUP["c"]``, or a missing mass or composition when you
+  ask for one.
+- ``get`` returns its default and ``in`` returns ``False`` for any key ``lookup[key]``
+  would reject, so neither raises.
+
+.. testcode::
+
+   assert t.UNIMOD_LOOKUP.get(None) is None
+   assert "not-a-protease" not in t.PROTEASE_LOOKUP
+   assert t.ELEMENT_LOOKUP.get("c", "missing") == "missing"
+
+Returned info objects are immutable and hashable, and their ``composition`` is a fresh
+copy on each access, so changing it cannot affect the lookup.
+
+
 Amino Acid Lookups
 ------------------
 

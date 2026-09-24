@@ -2,7 +2,43 @@
 
 ## [Unreleased]
 
+### Added
+
+- Every lookup now has the same mapping-style surface: `get(key, default=None)`,
+  `in`, `len()`, `keys()` and `values()`. New: `NEUTRAL_DELTA_LOOKUP.get`; a `default`
+  argument on the monosaccharide, protease and reference-molecule `get`; `len()` on the
+  amino acid, fragment ion, monosaccharide and reference-molecule lookups; `keys()` /
+  `values()` on those plus the neutral delta and protease lookups.
+- `ProteaseLookup`, `OntologyLookup` and `ModLocation` are exported from `tacular`.
+- Docs: the quick start states the error policy (`KeyError` = not found, `ValueError`
+  = bad input; `get`/`in` never raise). Every lookup class has a class docstring.
+
 ### Fixed
+
+- `hash()` works on every info object. `@dataclass(frozen=True)` regenerated `__hash__`
+  over the `dict_composition` dict, so `hash(UNIMOD_LOOKUP["Phospho"])` (and any
+  ontology, amino acid, fragment ion or reference-molecule entry) raised `TypeError`.
+  Ontology entries hash on `(id, name)` as `OboEntity` documents.
+- `MonosaccharideInfo` is a `@dataclass(frozen=True, slots=True)` like the other
+  ontology entries.
+- The non-ontology lookups (amino acids, proteases, fragment ions, monosaccharides,
+  neutral deltas, reference molecules) return "not found" for non-string keys
+  (`get(None)` returns the default, `None in` is `False`, `[None]` raises `KeyError`)
+  instead of raising `AttributeError`. `ELEMENT_LOOKUP.get` returns the default for a
+  malformed key such as `"c"` or a wrong-type key such as `None` instead of raising
+  `ValueError`/`TypeError`; `ELEMENT_LOOKUP[None]` raises an error that is both a
+  `KeyError` and (as before) a `TypeError`.
+- `composition` on amino acid, fragment ion, neutral delta and reference-molecule
+  entries (and `AA_LOOKUP.composition()`) returns a fresh `Counter` each time. It was
+  a cached object, so mutating the result changed the entry for every later caller.
+- `REFMOL_LOOKUP.query_label_type` / `query_molecule_type` return a new list each call
+  instead of the lookup's internal list.
+- A bundled `data.py` that fails to load now raises `ImportError` instead of warning and
+  silently shipping an empty lookup (elements, UNIMOD, PSI-MOD, RESID, XLMOD, GNOme,
+  UniProt-PTM, monosaccharides). Only that block of the generated files changed.
+- `ElementLookup` docs no longer promise auto-generated isotopes or the nonexistent
+  `auto_generate` / `include_generated` parameters; `keys()` is annotated with
+  `Element` keys.
 
 - Isotope-labelled formulas are written in ProForma bracket syntax, so they parse back
   to their own composition: UNIMOD `Label:13C(6)` was `C-613C6` (read as `C-613`) and is

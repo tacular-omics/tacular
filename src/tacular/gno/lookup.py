@@ -7,6 +7,12 @@ from .dclass import GnoInfo
 
 
 class GnoLookup(OntologyLookup[GnoInfo]):
+    """GNOme lookup (singleton ``GNO_LOOKUP``): query by a name, ``"G00008BG"`` or ``"GNO:G00008BG"``.
+
+    See :class:`~tacular.OntologyLookup` for the full query API. ``lookup[key]``
+    raises ``KeyError`` if nothing matches; ``get``/``in`` never raise.
+    """
+
     def __init__(self, data: dict[str, GnoInfo], version: str) -> None:
         """Wrap `data` in an `OntologyLookup` for GNO, stripping the "GNO:" accession and "G" id prefixes."""
         super().__init__(

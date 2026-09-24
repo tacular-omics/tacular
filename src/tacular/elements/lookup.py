@@ -10,6 +10,14 @@ from .data import ISOTOPES, Element
 from .dclass import ElementInfo
 
 
+class _ElementKeyTypeError(KeyError, TypeError):
+    """Raised by ``ELEMENT_LOOKUP[key]`` for a key of an unsupported type.
+
+    A ``KeyError`` (not found, like every other lookup) that is also a
+    ``TypeError``, which is what tacular raised before 1.2.0.
+    """
+
+
 def _handle_key_input(
     key: tuple[str | Element, int | None] | str | Element,
 ) -> tuple[Element, int | None]:
@@ -101,7 +109,9 @@ def _handle_key_input(
         return (key, None)
 
     else:
-        raise TypeError(f"Key must be tuple[str|Element, int|None] or str or Element, got {type(key).__name__}")
+        raise _ElementKeyTypeError(
+            f"Key must be tuple[str|Element, int|None] or str or Element, got {type(key).__name__}"
+        )
 
 
 class ElementLookup:
@@ -117,8 +127,11 @@ class ElementLookup:
     - '2H' -> Deuterium
     - 'T' -> Tritium (3H)
 
-    If a specific isotope is not found, it will be automatically generated
-    by adding/subtracting neutron masses from the monoisotopic isotope.
+    Only isotopes present in the bundled data resolve; missing isotopes are
+    not generated. ``lookup[key]`` raises ``KeyError`` for an unknown element
+    or isotope (or a key of an unsupported type) and ``ValueError`` for a
+    malformed key such as ``"c"`` or ``"13"``. ``get`` returns its default and
+    ``in`` returns ``False`` in all of those cases.
 
     The underlying data structure is a dict with keys: tuple[str, int | None]
     where the second element is the mass number, or None for monoisotopic.
@@ -141,8 +154,6 @@ class ElementLookup:
         """
         Get element info by various key formats.
 
-        If a specific isotope is not found, it will be automatically generated.
-
         Args:
             key: Either:
                 - tuple (symbol, mass_number): e.g., ('C', 12), ('C', None)
@@ -153,8 +164,9 @@ class ElementLookup:
             ElementInfo for the requested isotope
 
         Raises:
-            KeyError: If the element symbol doesn't exist at all
-            ValueError: If the key format is invalid
+            KeyError: If the element or isotope is not in the data, or ``key`` is
+                not a str, Element or tuple (that error is also a ``TypeError``).
+            ValueError: If the key format is invalid (e.g. ``"c"``, ``"13"``, ``""``)
         """
         # Use lazy error handling - try to parse, only validate on exception
         symbol, mass_number = _handle_key_input(key)
@@ -187,9 +199,7 @@ class ElementLookup:
         """
         Check if an element/isotope exists in the lookup.
 
-        Note: This only checks for existing entries, it does NOT trigger
-        automatic isotope generation.
-
+        Never raises: malformed keys and keys of other types return ``False``.
         """
         try:
             symbol, mass_number = _handle_key_input(key)
@@ -231,11 +241,13 @@ class ElementLookup:
         Args:
             symbol: Element symbol (e.g., 'C', 'H')
             mass_number: Mass number (e.g., 13, 2)
-            auto_generate: If True, generate missing isotopes automatically
 
         Returns:
             ElementInfo for the requested isotope
 
+        Raises:
+            KeyError: if the element or isotope is not in the data.
+            ValueError: if ``mass_number`` is ``None``.
         """
         if mass_number is None:
             raise ValueError("Mass number cannot be None for get_isotope()")
@@ -245,7 +257,7 @@ class ElementLookup:
         except ValueError as e:
             raise KeyError(f"Invalid element key: {symbol}-{mass_number}") from e
         if lookup_key not in self.element_data:
-            raise KeyError(f"Isotope {symbol}-{mass_number} not found (auto_generate=False)")
+            raise KeyError(f"Isotope {symbol}-{mass_number} not found")
         return self.element_data[lookup_key]
 
     def get_all_isotopes(self, symbol: str | Element) -> list[ElementInfo]:
@@ -254,7 +266,6 @@ class ElementLookup:
 
         Args:
             symbol: Element symbol (e.g., 'C', 'H')
-            include_generated: If True, include auto-generated isotopes (abundance=0)
 
         Returns:
             List of ElementInfo for all isotopes, sorted by mass number
@@ -354,8 +365,9 @@ class ElementLookup:
         """Get an iterable of all ElementInfo values in the lookup."""
         return list(self.element_data.values())
 
-    def keys(self) -> list[tuple[str, int | None]]:
-        """Get an iterable of all keys in the lookup."""
+    def keys(self) -> list[tuple[Element, int | None]]:
+        """All ``(Element, mass_number)`` keys; ``mass_number`` is ``None`` for
+        the element's default (most abundant) entry."""
         return list(self.element_data.keys())
 
     def __iter__(self) -> Iterator[ElementInfo]:
@@ -373,11 +385,12 @@ class ElementLookup:
             default: Value to return if key is not found
 
         Returns:
-            ElementInfo or default if not found
+            ElementInfo, or ``default`` if the key is not found, malformed
+            (e.g. ``"c"``), or of an unsupported type (e.g. ``None``)
         """
         try:
             return self[key]
-        except KeyError:
+        except (KeyError, ValueError, TypeError):
             return default
 
 

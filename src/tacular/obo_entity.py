@@ -5,7 +5,7 @@ and inherits its fields, serialization, and mass/composition helpers.
 """
 
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Self, TypeVar
 
 from .elements import ElementInfo, parse_composition
@@ -20,6 +20,11 @@ class OboEntity:
     Subclasses (one per ontology/data type) add no fields of their own beyond
     what's declared here; they exist to give each ontology's entries a distinct
     type and, where needed, override :attr:`id_tag` for that ontology's id format.
+
+    Instances hash on ``(id, name)``. The other base fields are declared with
+    ``field(hash=False)`` so that the ``__hash__`` a ``@dataclass(frozen=True)``
+    subclass regenerates also covers only ``(id, name)`` (plus any hashable fields
+    the subclass adds), instead of trying to hash the ``dict_composition`` dict.
     """
 
     id: str
@@ -27,13 +32,13 @@ class OboEntity:
     for UNIMOD, ``"AA0001"`` for RESID). Use :attr:`id_tag` for a normalized form."""
     name: str
     """The entry's human-readable name, as given by the source ontology."""
-    formula: str | None
+    formula: str | None = field(hash=False)
     """Chemical formula string (e.g. ``"C2H2O"``), or ``None`` if not available."""
-    monoisotopic_mass: float | None
+    monoisotopic_mass: float | None = field(hash=False)
     """Monoisotopic mass delta in Da, or ``None`` if not available."""
-    average_mass: float | None
+    average_mass: float | None = field(hash=False)
     """Average (isotope-abundance-weighted) mass delta in Da, or ``None`` if not available."""
-    dict_composition: Mapping[str, int] | None
+    dict_composition: Mapping[str, int] | None = field(hash=False)
     """Elemental composition as ``{symbol: count}`` (isotope keys like ``"13C"`` are
     supported), or ``None`` if not available. Use :attr:`composition` for a version
     keyed by :class:`~tacular.ElementInfo` instead of plain strings."""

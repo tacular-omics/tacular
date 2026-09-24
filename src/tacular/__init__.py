@@ -31,12 +31,13 @@ from .neutral_deltas import (
     NeutralDeltaLookup,
 )
 from .obo_entity import OboEntity
-from .proteases import PROTEASE_LITERALS, PROTEASE_LOOKUP, PROTEASES_DICT, ProteaseInfo, Proteases
+from .obo_lookup import OntologyLookup
+from .proteases import PROTEASE_LITERALS, PROTEASE_LOOKUP, PROTEASES_DICT, ProteaseInfo, ProteaseLookup, Proteases
 from .psimod import PSIMOD_LOOKUP, PsimodInfo, PsimodLookup
 from .refmol import REFMOL_LOOKUP, RefMolID, RefMolInfo, RefMolLiteral, RefMolLookup
 from .resid import RESID_LOOKUP, ResidInfo, ResidLookup
 from .unimod import UNIMOD_LOOKUP, UnimodInfo, UnimodLookup
-from .uniprot_ptm import UNIPROT_PTM_LOOKUP, UniprotPtmInfo, UniprotPtmLookup
+from .uniprot_ptm import UNIPROT_PTM_LOOKUP, ModLocation, UniprotPtmInfo, UniprotPtmLookup
 from .xlmod import XLMOD_LOOKUP, XlModInfo, XlModLookup
 
 __version__ = "1.1.3"
@@ -73,10 +74,12 @@ __all__ = [
     "NeutralDeltaLiteral",
     "NeutralDeltaLookup",
     "OboEntity",
+    "OntologyLookup",
     "PROTEASE_LITERALS",
     "PROTEASE_LOOKUP",
     "PROTEASES_DICT",
     "ProteaseInfo",
+    "ProteaseLookup",
     "Proteases",
     "PSIMOD_LOOKUP",
     "PsimodInfo",
@@ -95,6 +98,7 @@ __all__ = [
     "UNIPROT_PTM_LOOKUP",
     "UniprotPtmInfo",
     "UniprotPtmLookup",
+    "ModLocation",
     "XLMOD_LOOKUP",
     "XlModInfo",
     "XlModLookup",

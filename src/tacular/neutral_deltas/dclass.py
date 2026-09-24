@@ -33,9 +33,14 @@ class NeutralDeltaInfo:
             return self.average_mass
 
     @cached_property
-    def composition(self) -> Counter[ElementInfo]:
-        """Get the composition as a Counter"""
+    def _composition(self) -> Counter[ElementInfo]:
         return Counter(parse_composition(dict(self.dict_composition)))
+
+    @property
+    def composition(self) -> Counter[ElementInfo]:
+        """Get the composition as a Counter (a fresh copy on each access, so
+        mutating it cannot change this delta's cached composition)."""
+        return Counter(self._composition)
 
     def calculate_loss_sites(self, sequence: str) -> int:
         """Calculate the number of possible loss sites in a sequence"""
