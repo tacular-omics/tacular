@@ -353,6 +353,37 @@ print(t.tolerance_window(100.0, 0.5))                        # (99.5, 100.5)
 print(t.within_tolerance(1000.005, 1000.0, 10, unit="ppm"))  # True
 ```
 
+## Quantitative labels (isobaric tags, SILAC)
+
+`tacular.labels`; every name is also exported from `tacular`. Compositions come from
+UNIMOD; masses and reporter m/z are computed from the element table (reporter m/z agree
+with Thermo/SCIEX published values to 1e-5).
+
+- `ISOBARIC_TAG_LOOKUP` (`IsobaricTagLookup`): plexes `TMT0 TMT2 TMT6 TMT10 TMT11 TMT16 TMT18 iTRAQ4 iTRAQ8`;
+  aliases such as `TMT10plex`, `TMTpro16`, `TMTpro18`, `TMTzero`, `iTRAQ8plex` (case-insensitive).
+  `.query_name(name)`, `.query_unimod_id(737 | "UNIMOD:737") -> list` (TMT6/10/11 share TMT6plex).
+- `IsobaricTagInfo`: `name, unimod_id, unimod_name, dict_composition, reporter_ions, aliases,
+  monoisotopic_mass, average_mass`; `.plex`, `.channels`, `.reporter_mzs`, `.reporter(channel)`,
+  `.get_mass(*, monoisotopic=True)`, `.composition`, `.to_dict()`
+- `ReporterIon`: `channel` (`"126"`, `"127N"`, `"134C"`, `"114"`), `dict_composition` (the 1+ ion,
+  e.g. C8H16N for TMT), `mz` (composition mass minus one electron)
+- `SILAC_LOOKUP` (`SilacLabelLookup`): `Lys4` (2H4, UNIMOD:481), `Lys6` (13C6, 188), `Lys8`
+  (13C6 15N2, 259), `Arg6` (13C6, 188), `Arg10` (13C6 15N4, 267); aliases `Lys+8`, `K+8`, `K8`.
+  `.query_residue("K")`, `.query_unimod_id(...)`, `.set_names`, `.query_set(name)` (or `None`),
+  `.get_set(name)` (raises `TacularKeyError`): `light` = `()`, `medium` = Lys4 + Arg6, `heavy` = Lys8 + Arg10
+- `SilacLabelInfo`: `name, residue, unimod_id, unimod_name, dict_composition, aliases,
+  monoisotopic_mass, average_mass`; `.get_mass(*, monoisotopic=True)`, `.composition`, `.to_dict()`
+
+```python
+import tacular as t
+
+tmt = t.ISOBARIC_TAG_LOOKUP["TMTpro18"]
+print(tmt.name, tmt.unimod_id, tmt.plex)            # TMT18 2016 18
+print(round(tmt.reporter("135N").mz, 6))            # 135.1516
+print([s.name for s in t.SILAC_LOOKUP.get_set("heavy")])  # ['Lys8', 'Arg10']
+print(round(t.SILAC_LOOKUP["K+8"].monoisotopic_mass, 6))  # 8.014199
+```
+
 ## Refreshing ontology data (CLI)
 
 Bundled ontology snapshots can be replaced by the latest upstream release without

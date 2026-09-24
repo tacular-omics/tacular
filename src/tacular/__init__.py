@@ -28,6 +28,15 @@ from .amino_acids import AA_LOOKUP, AMINO_ACID_INFOS, ORDERED_AMINO_ACIDS, AALoo
 from .elements import ELEMENT_LOOKUP, Element, ElementInfo, ElementKey, ElementLookup, parse_composition
 from .errors import TacularError, TacularKeyError
 from .ion_types import FRAGMENT_ION_LOOKUP, FragmentIonInfo, FragmentIonLookup, IonType, IonTypeLiteral, IonTypeProperty
+from .labels import (
+    ISOBARIC_TAG_LOOKUP,
+    SILAC_LOOKUP,
+    IsobaricTagInfo,
+    IsobaricTagLookup,
+    ReporterIon,
+    SilacLabelInfo,
+    SilacLabelLookup,
+)
 from .monosaccharides import MONOSACCHARIDE_LOOKUP, Monosaccharide, MonosaccharideInfo, MonosaccharideLookup
 from .neutral_deltas import (
     NEUTRAL_DELTA_DICT,
@@ -149,6 +158,13 @@ __all__ = [
     "XlmodLookup",
     "TacularError",
     "TacularKeyError",
+    "ISOBARIC_TAG_LOOKUP",
+    "IsobaricTagInfo",
+    "IsobaricTagLookup",
+    "ReporterIon",
+    "SILAC_LOOKUP",
+    "SilacLabelInfo",
+    "SilacLabelLookup",
     "ToleranceUnit",
     "da_to_ppm",
     "ppm_error",

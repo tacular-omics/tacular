@@ -36,6 +36,14 @@ No other API changes; timings are indicative single-core numbers.
   raises `TacularError`. `query_mass(unit=)` uses the same window. These can replace
   spxtacular's public `da_to_ppm`/`ppm_to_da` and peptacular's inline ppm arithmetic;
   tdfpy does not depend on tacular and keeps its own.
+- `tacular.labels`, also exported from `tacular`: `ISOBARIC_TAG_LOOKUP` (TMT 0/2/6/10/11,
+  TMTpro 0/16/18, iTRAQ 4/8, each with its UNIMOD tag and reporter ion channels, m/z and
+  composition) and `SILAC_LOOKUP` (Lys4, Lys6, Lys8, Arg6, Arg10 with UNIMOD ids, plus the
+  light/medium/heavy sets). Compositions come from UNIMOD; every mass and m/z is computed
+  from the element table. TMT/TMTpro reporter m/z match Thermo's published tables to 1e-5.
+  iTRAQ reporter m/z are computed (ion composition minus one electron); the legacy
+  iTRAQ tables (114.1112, ...) are about 0.0005 higher, as if the electron were not
+  subtracted. iTRAQ channels carry their own UNIMOD tag (e.g. 4-plex 114 = UNIMOD:532).
 - Tests check that every UNIMOD and PSI-MOD entry's monoisotopic mass and composition
   match what unimodpy and psimodpy parse from the same OBO release. The two are
   dev-only dependencies; the test skips without them.

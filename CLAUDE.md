@@ -57,7 +57,7 @@ src/tacular/
   obo_entity.py       # OboEntity: shared base dataclass for ontology *Info classes
   obo_lookup.py       # OntologyLookup: shared base class for the 6 ontology *Lookup classes;
                       # _normalize_id is the ONE id normaliser for every ontology
-  _lookup.py          # _BaseLookup: [] / get / in / len / iter / keys / values / items for ALL 13 lookups
+  _lookup.py          # _BaseLookup: [] / get / in / len / iter / keys / values / items for ALL 15 lookups
   errors.py           # TacularError(ValueError), TacularKeyError(TacularError, KeyError)
   constants.py        # PROTON_MASS, ELECTRON_MASS, NEUTRON_MASS, HYDROGEN_MASS, C13_C12_MASS_DIFF (cited)
   tolerance.py        # ppm_error, da_to_ppm, ppm_to_da, tolerance_window, within_tolerance
@@ -72,6 +72,7 @@ src/tacular/
     uniprot_ptm.py      # ptmlist.txt flat-file builder (not OBO, same build()/DATA_KEY/JSON_NAME contract)
   update.py           # `tacular update`/`status`/`clear`/`where` CLI (console script)
   __main__.py         # `python -m tacular` entrypoint
+  labels/             # isobaric tags + SILAC labels; _data.py is hand-maintained (not generated)
   <ontology>/         # one package per ontology/data type, e.g. unimod/, elements/
     __init__.py         # re-exports the public names for this ontology
     data.py             # AUTO-GENERATED -- do not hand-edit, see "Regenerating data"
@@ -139,6 +140,9 @@ and checked). `import tacular as t` is the house style.
 - **Mass tolerances** (`tacular.tolerance`): `ppm_error`, `da_to_ppm`, `ppm_to_da`,
   `tolerance_window(mass, tol, *, unit="da"|"ppm")`, `within_tolerance(obs, theo, tol, *, unit=)`,
   `ToleranceUnit`.
+- **Quantitative labels** (`tacular.labels`, hand-maintained `_data.py`): `ISOBARIC_TAG_LOOKUP`,
+  `IsobaricTagLookup`, `IsobaricTagInfo`, `ReporterIon`, `SILAC_LOOKUP`, `SilacLabelLookup`,
+  `SilacLabelInfo`. Masses are computed from `dict_composition`, never typed in.
 - **Every lookup** subclasses `_BaseLookup`: `lookup[key]` (raises `TacularKeyError`),
   `.get(key, default)`, `in`, `len`, iteration over entries, `.keys()`, `.values()`, `.items()`.
 - **Ontology lookups** (`OntologyLookup` subclasses; `lookup[key]` tries name, then id;
