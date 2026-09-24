@@ -4,6 +4,7 @@ Units are the lowercase strings ``"da"`` and ``"ppm"``. Anything else raises
 :class:`~tacular.errors.TacularError`. A ppm tolerance is relative to ``abs(mass)``, so
 windows around negative masses (for example, loss deltas) are well formed and symmetric.
 
+>>> from tacular import ppm_error, tolerance_window, within_tolerance
 >>> ppm_error(1000.01, 1000.0)
 9.999999999990905
 >>> tolerance_window(1000.0, 10, unit="ppm")
