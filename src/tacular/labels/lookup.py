@@ -37,7 +37,7 @@ def _unimod_number(unimod_id: object) -> int | None:
 
 class IsobaricTagLookup(_BaseLookup[str, str, IsobaricTagInfo]):
     """Isobaric tag lookup (singleton ``ISOBARIC_TAG_LOOKUP``): TMT 0/2/6/10/11,
-    TMTpro 16/18 and iTRAQ 4/8, keyed by name or alias (case-insensitive), e.g.
+    TMTpro 0/16/18 and iTRAQ 4/8, keyed by name or alias (case-insensitive), e.g.
     ``"TMT10"``, ``"TMT10plex"``, ``"TMTpro18"``, ``"iTRAQ4"``.
 
     ``lookup[key]`` raises :class:`~tacular.TacularKeyError` if nothing matches;

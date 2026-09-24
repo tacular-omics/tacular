@@ -338,7 +338,7 @@ come from UNIMOD; masses and reporter m/z are computed from the element table:
 
    tmt = t.ISOBARIC_TAG_LOOKUP['TMT10plex']
    print(tmt.name, tmt.unimod_name, tmt.plex)
-   print(round(tmt.reporter('127N').mz, 6))
+   print(round(tmt.query_reporter('127N').mz, 6))
 
    heavy = t.SILAC_LOOKUP.get_set('heavy')
    print([(label.name, round(label.monoisotopic_mass, 6)) for label in heavy])

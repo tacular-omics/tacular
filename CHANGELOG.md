@@ -40,10 +40,15 @@ No other API changes; timings are indicative single-core numbers.
   TMTpro 0/16/18, iTRAQ 4/8, each with its UNIMOD tag and reporter ion channels, m/z and
   composition) and `SILAC_LOOKUP` (Lys4, Lys6, Lys8, Arg6, Arg10 with UNIMOD ids, plus the
   light/medium/heavy sets). Compositions come from UNIMOD; every mass and m/z is computed
-  from the element table. TMT/TMTpro reporter m/z match Thermo's published tables to 1e-5.
-  iTRAQ reporter m/z are computed (ion composition minus one electron); the legacy
-  iTRAQ tables (114.1112, ...) are about 0.0005 higher, as if the electron were not
-  subtracted. iTRAQ channels carry their own UNIMOD tag (e.g. 4-plex 114 = UNIMOD:532).
+  from the element table. TMT/TMTpro reporter m/z match Thermo's TMTpro user guide
+  (MAN0018773, Table 2) to 1e-5. iTRAQ reporter m/z are computed (ion composition minus
+  one electron); legacy iTRAQ tables (114.1112, ...) are about 0.0005 higher, as if the
+  electron were not subtracted. Each `ReporterIon` carries its channel's UNIMOD tag
+  (`tag_unimod_id`, `tag_unimod_name`, `tag_dict_composition`, `tag_monoisotopic_mass`):
+  iTRAQ 4-plex 114/115 are UNIMOD:532/533 and iTRAQ 8-plex 115/118/119/121 are
+  UNIMOD:731, while the plex's `unimod_id` stays the tag search engines use (214, 730).
+  `average_mass` uses the bundled element table and differs from UNIMOD's by up to
+  6e-4 Da. `IsobaricTagInfo.query_reporter(channel)` returns one channel or `None`.
 - Tests check that every UNIMOD and PSI-MOD entry's monoisotopic mass and composition
   match what unimodpy and psimodpy parse from the same OBO release. The two are
   dev-only dependencies; the test skips without them.

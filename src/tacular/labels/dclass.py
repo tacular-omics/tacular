@@ -8,7 +8,7 @@ from collections import Counter
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 
-from .._util import _round
+from .._util import _ReadOnlyDict, _round
 from ..constants import ELECTRON_MASS
 from ..elements import ELEMENT_LOOKUP, ElementInfo
 from ..elements.lookup import _CompositionCache
@@ -22,20 +22,36 @@ def _composition_mass(dict_composition: Mapping[str, int], *, monoisotopic: bool
 
 @dataclass(frozen=True, slots=True)
 class ReporterIon(_CompositionCache):
-    """One reporter ion channel of an isobaric tag: a singly charged cation."""
+    """One reporter ion channel of an isobaric tag: a singly charged cation, plus the
+    UNIMOD tag modification that this channel's reagent adds to a peptide."""
 
     channel: str
     """Channel name, e.g. ``"126"``, ``"127N"``, ``"134C"``, ``"114"``."""
     dict_composition: Mapping[str, int] = field(hash=False)
     """Isotopic composition of the ion, e.g. ``{"C": 7, "13C": 1, "H": 16, "N": 1}`` for
     TMT ``127C`` (C8H16N+). Read-only."""
+    tag_unimod_id: int
+    """UNIMOD accession of this channel's tag. For iTRAQ it differs by channel (4-plex:
+    114 is ``532``, 115 is ``533``, 116/117 are ``214``; 8-plex: 115/118/119/121 are
+    ``731``, the rest ``730``). For TMT/TMTpro every channel uses the plex's entry,
+    as UNIMOD has one entry per plex."""
+    tag_unimod_name: str
+    """UNIMOD name of this channel's tag, e.g. ``"iTRAQ4plex114"``."""
+    tag_dict_composition: Mapping[str, int] = field(hash=False)
+    """Composition of this channel's tag mass delta, as in UNIMOD. Read-only."""
     mz: float = field(init=False)
-    """Exact m/z of the 1+ ion: composition mass minus one electron mass."""
+    """m/z of the 1+ ion, computed: composition mass minus one electron mass."""
+    tag_monoisotopic_mass: float = field(init=False)
+    """Monoisotopic mass delta of this channel's tag in Da, from ``tag_dict_composition``."""
 
     def __post_init__(self) -> None:
-        """Freeze ``dict_composition`` and compute ``mz``."""
+        """Freeze both compositions and compute ``mz`` and ``tag_monoisotopic_mass``."""
         _CompositionCache.__post_init__(self)
+        if type(self.tag_dict_composition) is not _ReadOnlyDict:
+            object.__setattr__(self, "tag_dict_composition", _ReadOnlyDict(self.tag_dict_composition))
         object.__setattr__(self, "mz", _composition_mass(self.dict_composition, monoisotopic=True) - ELECTRON_MASS)
+        tag_mass = _composition_mass(self.tag_dict_composition, monoisotopic=True)
+        object.__setattr__(self, "tag_monoisotopic_mass", tag_mass)
 
     @property
     def composition(self) -> Counter[ElementInfo]:
@@ -43,9 +59,18 @@ class ReporterIon(_CompositionCache):
         return self._composition_copy(self.dict_composition)
 
     def to_dict(self, *, float_precision: int | None = 6) -> dict[str, object]:
-        """Plain, JSON-serializable dict: ``channel``, ``mz``, ``composition``."""
-        mz = _round(self.mz, float_precision)
-        return {"channel": self.channel, "mz": mz, "composition": dict(self.dict_composition)}
+        """Plain, JSON-serializable dict: ``channel``, ``mz``, ``composition`` and the
+        channel's tag (``tag_unimod_id``, ``tag_unimod_name``, ``tag_composition``,
+        ``tag_monoisotopic_mass``)."""
+        return {
+            "channel": self.channel,
+            "mz": _round(self.mz, float_precision),
+            "composition": dict(self.dict_composition),
+            "tag_unimod_id": self.tag_unimod_id,
+            "tag_unimod_name": self.tag_unimod_name,
+            "tag_composition": dict(self.tag_dict_composition),
+            "tag_monoisotopic_mass": _round(self.tag_monoisotopic_mass, float_precision),
+        }
 
 
 @dataclass(frozen=True, slots=True)
@@ -55,7 +80,9 @@ class IsobaricTagInfo(_CompositionCache):
     name: str
     """Lookup name, e.g. ``"TMT10"``, ``"TMT18"``, ``"iTRAQ8"``."""
     unimod_id: int
-    """UNIMOD accession number of the tag modification, e.g. ``737``."""
+    """UNIMOD accession number of the tag modification, e.g. ``737``. This is the
+    plex-level entry that search engines set as the tag (for iTRAQ, ``214`` or ``730``);
+    per-channel iTRAQ entries are on each :class:`ReporterIon`."""
     unimod_name: str
     """UNIMOD name of the tag modification, e.g. ``"TMT6plex"``."""
     dict_composition: Mapping[str, int] = field(hash=False)
@@ -67,7 +94,8 @@ class IsobaricTagInfo(_CompositionCache):
     monoisotopic_mass: float = field(init=False)
     """Monoisotopic mass delta in Da, from ``dict_composition``."""
     average_mass: float = field(init=False)
-    """Average mass delta in Da, from ``dict_composition``."""
+    """Average mass delta in Da, from ``dict_composition`` and the bundled element table.
+    UNIMOD's average masses use other standard atomic weights and differ by up to 6e-4 Da."""
 
     def __post_init__(self) -> None:
         """Freeze ``dict_composition`` and compute the masses."""
@@ -90,7 +118,7 @@ class IsobaricTagInfo(_CompositionCache):
         """Reporter ion m/z values, in channel order."""
         return tuple(ion.mz for ion in self.reporter_ions)
 
-    def reporter(self, channel: str) -> ReporterIon | None:
+    def query_reporter(self, channel: str) -> ReporterIon | None:
         """The reporter ion for ``channel`` (e.g. ``"127N"``; case-insensitive), or ``None``."""
         if not isinstance(channel, str):
             return None
@@ -140,7 +168,8 @@ class SilacLabelInfo(_CompositionCache):
     monoisotopic_mass: float = field(init=False)
     """Monoisotopic mass delta in Da, from ``dict_composition``."""
     average_mass: float = field(init=False)
-    """Average mass delta in Da, from ``dict_composition``."""
+    """Average mass delta in Da, from ``dict_composition`` and the bundled element table
+    (may differ from UNIMOD's average by up to 6e-4 Da)."""
 
     def __post_init__(self) -> None:
         """Freeze ``dict_composition`` and compute the masses."""

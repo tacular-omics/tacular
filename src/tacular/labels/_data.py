@@ -2,9 +2,13 @@
 
 Tag and label compositions are copied from UNIMOD (tests check them against the bundled
 UNIMOD data). Reporter ions are a fixed backbone with some carbons and nitrogens swapped
-for 13C / 15N; each channel is listed as its ``(13C count, 15N count)``, which is the only
-isotope assignment that gives the channel's published m/z. All masses are computed from
-the element table in :mod:`tacular.labels.dclass`.
+for 13C / 15N; each channel is listed as its ``(13C count, 15N count)``. All masses are
+computed from the element table in :mod:`tacular.labels.dclass`, never typed in.
+
+TMT/TMTpro reporter m/z agree with Thermo's TMTpro user guide (MAN0018773, Table 2) to
+1e-6. iTRAQ reporter m/z are computed the same way (composition minus one electron);
+the 4-decimal values in legacy SCIEX/MSnbase tables (114.1112, 115.1083, ...) are about
+0.0005 higher, consistent with no electron subtraction.
 """
 
 from .dclass import IsobaricTagInfo, ReporterIon, SilacLabelInfo
@@ -53,8 +57,35 @@ def _labelled(base: dict[str, int], c13: int, n15: int) -> dict[str, int]:
     return {symbol: n for symbol, n in composition.items() if n}
 
 
-def _reporters(base: dict[str, int], table: dict[str, tuple[int, int]], channels: str) -> tuple[ReporterIon, ...]:
-    return tuple(ReporterIon(channel=c, dict_composition=_labelled(base, *table[c])) for c in channels.split())
+# UNIMOD tag entry per channel, where it differs from the plex-level tag: (id, name, composition)
+_UnimodTag = tuple[int, str, dict[str, int]]
+_ITRAQ4 = (214, "iTRAQ4plex", {"H": 12, "C": 4, "13C": 3, "N": 1, "15N": 1, "O": 1})
+_ITRAQ4_114 = (532, "iTRAQ4plex114", {"H": 12, "C": 5, "13C": 2, "N": 2, "18O": 1})
+_ITRAQ4_115 = (533, "iTRAQ4plex115", {"H": 12, "C": 6, "13C": 1, "N": 1, "15N": 1, "18O": 1})
+_ITRAQ8 = (730, "iTRAQ8plex", {"H": 24, "C": 7, "13C": 7, "N": 3, "15N": 1, "O": 3})
+_ITRAQ8_ALT = (731, "iTRAQ8plex:13C(6)15N(2)", {"H": 24, "C": 8, "13C": 6, "N": 2, "15N": 2, "O": 3})
+
+
+def _reporters(
+    base: dict[str, int],
+    table: dict[str, tuple[int, int]],
+    channels: str,
+    tag: _UnimodTag,
+    channel_tags: dict[str, _UnimodTag] | None = None,
+) -> tuple[ReporterIon, ...]:
+    ions = []
+    for channel in channels.split():
+        tag_id, tag_name, tag_composition = (channel_tags or {}).get(channel, tag)
+        ions.append(
+            ReporterIon(
+                channel=channel,
+                dict_composition=_labelled(base, *table[channel]),
+                tag_unimod_id=tag_id,
+                tag_unimod_name=tag_name,
+                tag_dict_composition=tag_composition,
+            )
+        )
+    return tuple(ions)
 
 
 _TMT6_COMPOSITION = {"H": 20, "C": 8, "13C": 4, "N": 1, "15N": 1, "O": 2}
@@ -69,18 +100,19 @@ def _tmt(name: str, unimod_id: int, unimod_name: str, composition: dict[str, int
         unimod_id=unimod_id,
         unimod_name=unimod_name,
         dict_composition=composition,
-        reporter_ions=_reporters(_TMT_REPORTER, _TMT_CHANNELS, channels),
+        reporter_ions=_reporters(_TMT_REPORTER, _TMT_CHANNELS, channels, (unimod_id, unimod_name, composition)),
         aliases=aliases,
     )
 
 
-def _itraq(name: str, unimod_id: int, unimod_name: str, composition: dict[str, int], channels: str, *aliases: str):
+def _itraq(tag: _UnimodTag, name: str, channels: str, channel_tags: dict[str, _UnimodTag], *aliases: str):
+    unimod_id, unimod_name, composition = tag
     return IsobaricTagInfo(
         name=name,
         unimod_id=unimod_id,
         unimod_name=unimod_name,
         dict_composition=composition,
-        reporter_ions=_reporters(_ITRAQ_REPORTER, _ITRAQ_CHANNELS, channels),
+        reporter_ions=_reporters(_ITRAQ_REPORTER, _ITRAQ_CHANNELS, channels, tag, channel_tags),
         aliases=aliases,
     )
 
@@ -93,6 +125,7 @@ ISOBARIC_TAGS: dict[str, IsobaricTagInfo] = {
         _tmt("TMT6", 737, "TMT6plex", _TMT6_COMPOSITION, "126 127N 128C 129N 130C 131N", "TMT6plex"),
         _tmt("TMT10", 737, "TMT6plex", _TMT6_COMPOSITION, _TMT10_CHANNELS, "TMT10plex"),
         _tmt("TMT11", 737, "TMT6plex", _TMT6_COMPOSITION, _TMT10_CHANNELS + " 131C", "TMT11plex"),
+        _tmt("TMTpro0", 2017, "TMTpro_zero", {"H": 25, "C": 15, "N": 3, "O": 3}, "126", "TMTpro_zero", "TMTproZero"),
         _tmt("TMT16", 2016, "TMTpro", _TMTPRO_COMPOSITION, _TMT16_CHANNELS, "TMTpro16", "TMTpro16plex", "TMT16plex"),
         _tmt(
             "TMT18",
@@ -104,20 +137,12 @@ ISOBARIC_TAGS: dict[str, IsobaricTagInfo] = {
             "TMTpro18plex",
             "TMT18plex",
         ),
+        _itraq(_ITRAQ4, "iTRAQ4", "114 115 116 117", {"114": _ITRAQ4_114, "115": _ITRAQ4_115}, "iTRAQ4plex"),
         _itraq(
-            "iTRAQ4",
-            214,
-            "iTRAQ4plex",
-            {"H": 12, "C": 4, "13C": 3, "N": 1, "15N": 1, "O": 1},
-            "114 115 116 117",
-            "iTRAQ4plex",
-        ),
-        _itraq(
+            _ITRAQ8,
             "iTRAQ8",
-            730,
-            "iTRAQ8plex",
-            {"H": 24, "C": 7, "13C": 7, "N": 3, "15N": 1, "O": 3},
             "113 114 115 116 117 118 119 121",
+            dict.fromkeys(("115", "118", "119", "121"), _ITRAQ8_ALT),
             "iTRAQ8plex",
         ),
     )
