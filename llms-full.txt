@@ -108,7 +108,7 @@ Methods and properties:
 - `.get(key, default=None) -> T | None`
 - `.query_id(mod_id: str | int) -> T | None` - id only; strips the accession prefix (`UNIMOD:`/`U:`, `MOD:`/`M:`, `XLMOD:`/`X:`, `RESID:`/`R:`, `GNO:`/`G:`, `PTM-`), the RESID `AA` / GNO `G` prefix, leading zeros and surrounding whitespace. A numeric id must be plain ASCII digits (`"+21"`, `"2_1"`, `"٢١"` do not match); a `bool` never matches
 - `.query_name(name: str) -> T | None` - name only, case-insensitive, optional accession prefix (`"U:Phospho"`); `None` for a non-`str`
-- `.query_mass(mass: float, *, tolerance: float = 0.01, unit: Literal["da", "ppm"] = "da", monoisotopic: bool = True) -> list[T]` - all entries within +/- tolerance (Da, or ppm of `mass` with `tolerance_unit="ppm"`), in data order
+- `.query_mass(mass: float, *, tolerance: float = 0.01, tolerance_unit: Literal["da", "ppm"] = "da", monoisotopic: bool = True) -> list[T]` - all entries within +/- tolerance (Da, or ppm of `mass` with `tolerance_unit="ppm"`), in data order
 - `.choice(*, require_monoisotopic_mass: bool = True, require_composition: bool = True) -> T` - random entry; `TacularError` if none qualifies
 - `.values() -> list[T]`, `.keys() -> list[str]` (raw ids, e.g. `"21"`), `.items()`, `iter(lookup)`, `len(lookup)`
 - `.version -> str` - ontology release of the active data (bundled or refreshed cache)
@@ -343,7 +343,7 @@ relative to `abs(mass)`, so windows around negative masses are symmetric.
 - `within_tolerance(observed, theoretical, tolerance, *, tolerance_unit="da") -> bool` - `lo <= observed <= hi` on `tolerance_window(theoretical, ...)` (bounds included, so the two always agree); ppm of `theoretical`
 - `tolerance_window` and `within_tolerance` raise `TacularError` for NaN or infinite input; `da_to_ppm`/`ppm_to_da` use `abs(mz)` (spxtacular's `da_to_ppm` uses the signed m/z)
 
-`OntologyLookup.query_mass(..., unit=)` uses the same window.
+`OntologyLookup.query_mass(..., tolerance_unit=)` uses the same window.
 
 ```python
 import tacular as t
@@ -351,6 +351,16 @@ import tacular as t
 print(round(t.ppm_error(1000.01, 1000.0), 6))                # 10.0
 print(t.tolerance_window(100.0, 0.5))                        # (99.5, 100.5)
 print(t.within_tolerance(1000.005, 1000.0, 10, tolerance_unit="ppm"))  # True
+```
+
+## Shared types
+
+`tacular.types`, for the other tacular-omics packages to import instead of defining their
+own: `ToleranceUnit = Literal["da", "ppm"]` (same object as `tacular.tolerance.ToleranceUnit`)
+and `Polarity = Literal["positive", "negative"]`. Both are also exported from `tacular`.
+
+```python
+from tacular.types import Polarity, ToleranceUnit
 ```
 
 ## Quantitative labels (isobaric tags, SILAC)

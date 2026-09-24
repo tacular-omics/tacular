@@ -12,7 +12,7 @@ mass: `import tacular as t; t.UNIMOD_LOOKUP["Phospho"].monoisotopic_mass`;
 `t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=10, tolerance_unit="ppm")` (or `tolerance=0.001` in Da).
 Tolerance helpers: `t.ppm_error(observed, theoretical)`, `t.da_to_ppm(delta, mz)`,
 `t.ppm_to_da(delta_ppm, mz)`, `t.tolerance_window(mass, tol, *, tolerance_unit="da"|"ppm") -> (lo, hi)`,
-`t.within_tolerance(observed, theoretical, tol, *, unit=...)`.
+`t.within_tolerance(observed, theoretical, tol, *, tolerance_unit=...)`.
 Quantitative labels: `t.ISOBARIC_TAG_LOOKUP["TMT18"]` (TMT 0/2/6/10/11, TMTpro 0/16/18,
 iTRAQ 4/8: `.channels`, `.reporter_mzs`, `.query_reporter("127N").mz`, `.unimod_id`) and
 `t.SILAC_LOOKUP["Lys8"]` (Lys4/6/8, Arg6/10; `.get_set("light"|"medium"|"heavy")`).

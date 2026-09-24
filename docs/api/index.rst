@@ -16,4 +16,5 @@ This section contains the API documentation for tacular.
    labels
    monosaccharides
    tolerance
+   types
    base_classes

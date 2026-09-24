@@ -125,3 +125,8 @@ New
   bundled isotope table).
 - ``items()`` on every lookup; ``query_name`` on ``MONOSACCHARIDE_LOOKUP``.
 - ``tacular.ElementKey``: the type of every key ``ELEMENT_LOOKUP`` accepts.
+- :mod:`tacular.tolerance`: ``ppm_error``, ``da_to_ppm``, ``ppm_to_da``,
+  ``tolerance_window`` and ``within_tolerance``; ``query_mass`` takes
+  ``tolerance_unit="da"|"ppm"`` (the keyword every tacular-omics package uses).
+- :mod:`tacular.types`: ``ToleranceUnit`` and ``Polarity``, the shared vocabulary the
+  other packages import instead of defining their own.

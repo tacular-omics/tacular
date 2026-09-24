@@ -138,15 +138,17 @@ and checked). `import tacular as t` is the house style.
 - **Errors and constants**: `TacularError`, `TacularKeyError`, `tacular.constants`
   (module, not in `__all__`).
 - **Mass tolerances** (`tacular.tolerance`): `ppm_error`, `da_to_ppm`, `ppm_to_da`,
-  `tolerance_window(mass, tol, *, unit="da"|"ppm")`, `within_tolerance(obs, theo, tol, *, unit=)`,
+  `tolerance_window(mass, tol, *, tolerance_unit="da"|"ppm")`, `within_tolerance(obs, theo, tol, *, tolerance_unit=)`,
   `ToleranceUnit`.
+- **Shared types** (`tacular.types`): `ToleranceUnit`, `Polarity = Literal["positive", "negative"]`,
+  both also exported from `tacular`; sibling packages import these instead of their own copies.
 - **Quantitative labels** (`tacular.labels`, hand-maintained `_data.py`): `ISOBARIC_TAG_LOOKUP`,
   `IsobaricTagLookup`, `IsobaricTagInfo`, `ReporterIonInfo`, `SILAC_LOOKUP`, `SilacLabelLookup`,
   `SilacLabelInfo`. Masses are computed from `dict_composition`, never typed in.
 - **Every lookup** subclasses `_BaseLookup`: `lookup[key]` (raises `TacularKeyError`),
   `.get(key, default)`, `in`, `len`, iteration over entries, `.keys()`, `.values()`, `.items()`.
 - **Ontology lookups** (`OntologyLookup` subclasses; `lookup[key]` tries name, then id;
-  `.query_id`, `.query_name`, `.query_mass(mass, *, tolerance=0.01, unit="da"|"ppm", monoisotopic=True)`,
+  `.query_id`, `.query_name`, `.query_mass(mass, *, tolerance=0.01, tolerance_unit="da"|"ppm", monoisotopic=True)`,
   `.choice(*, ...)`, `.version`; `.keys()` are raw ids):
   - `UNIMOD_LOOKUP`, `UnimodInfo`, `UnimodLookup` — UNIMOD
   - `PSIMOD_LOOKUP`, `PsimodInfo`, `PsimodLookup` — PSI-MOD
