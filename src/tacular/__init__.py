@@ -33,7 +33,7 @@ from .labels import (
     SILAC_LOOKUP,
     IsobaricTagInfo,
     IsobaricTagLookup,
-    ReporterIon,
+    ReporterIonInfo,
     SilacLabelInfo,
     SilacLabelLookup,
 )
@@ -161,7 +161,7 @@ __all__ = [
     "ISOBARIC_TAG_LOOKUP",
     "IsobaricTagInfo",
     "IsobaricTagLookup",
-    "ReporterIon",
+    "ReporterIonInfo",
     "SILAC_LOOKUP",
     "SilacLabelInfo",
     "SilacLabelLookup",

@@ -32,7 +32,7 @@ def _unimod_number(unimod_id: object) -> int | None:
         if text.lower().startswith(prefix):
             text = text[len(prefix) :]
             break
-    return int(text) if text.isdigit() else None
+    return int(text) if text.isascii() and text.isdigit() else None
 
 
 class IsobaricTagLookup(_BaseLookup[str, str, IsobaricTagInfo]):

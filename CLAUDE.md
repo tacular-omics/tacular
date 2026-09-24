@@ -141,7 +141,7 @@ and checked). `import tacular as t` is the house style.
   `tolerance_window(mass, tol, *, unit="da"|"ppm")`, `within_tolerance(obs, theo, tol, *, unit=)`,
   `ToleranceUnit`.
 - **Quantitative labels** (`tacular.labels`, hand-maintained `_data.py`): `ISOBARIC_TAG_LOOKUP`,
-  `IsobaricTagLookup`, `IsobaricTagInfo`, `ReporterIon`, `SILAC_LOOKUP`, `SilacLabelLookup`,
+  `IsobaricTagLookup`, `IsobaricTagInfo`, `ReporterIonInfo`, `SILAC_LOOKUP`, `SilacLabelLookup`,
   `SilacLabelInfo`. Masses are computed from `dict_composition`, never typed in.
 - **Every lookup** subclasses `_BaseLookup`: `lookup[key]` (raises `TacularKeyError`),
   `.get(key, default)`, `in`, `len`, iteration over entries, `.keys()`, `.values()`, `.items()`.

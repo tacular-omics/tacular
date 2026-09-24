@@ -6,12 +6,12 @@ for 13C / 15N; each channel is listed as its ``(13C count, 15N count)``. All mas
 computed from the element table in :mod:`tacular.labels.dclass`, never typed in.
 
 TMT/TMTpro reporter m/z agree with Thermo's TMTpro user guide (MAN0018773, Table 2) to
-1e-6. iTRAQ reporter m/z are computed the same way (composition minus one electron);
+2e-6 (up to 1.5e-6 at 135N). iTRAQ reporter m/z are computed the same way (composition minus one electron);
 the 4-decimal values in legacy SCIEX/MSnbase tables (114.1112, 115.1083, ...) are about
 0.0005 higher, consistent with no electron subtraction.
 """
 
-from .dclass import IsobaricTagInfo, ReporterIon, SilacLabelInfo
+from .dclass import IsobaricTagInfo, ReporterIonInfo, SilacLabelInfo
 
 __all__ = ["ISOBARIC_TAGS", "SILAC_LABELS", "SILAC_SETS"]
 
@@ -72,12 +72,12 @@ def _reporters(
     channels: str,
     tag: _UnimodTag,
     channel_tags: dict[str, _UnimodTag] | None = None,
-) -> tuple[ReporterIon, ...]:
+) -> tuple[ReporterIonInfo, ...]:
     ions = []
     for channel in channels.split():
         tag_id, tag_name, tag_composition = (channel_tags or {}).get(channel, tag)
         ions.append(
-            ReporterIon(
+            ReporterIonInfo(
                 channel=channel,
                 dict_composition=_labelled(base, *table[channel]),
                 tag_unimod_id=tag_id,

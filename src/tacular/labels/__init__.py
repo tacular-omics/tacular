@@ -2,14 +2,14 @@
 their reporter ions, and SILAC labels (``SILAC_LOOKUP``) with the light/medium/heavy sets.
 """
 
-from .dclass import IsobaricTagInfo, ReporterIon, SilacLabelInfo
+from .dclass import IsobaricTagInfo, ReporterIonInfo, SilacLabelInfo
 from .lookup import ISOBARIC_TAG_LOOKUP, SILAC_LOOKUP, IsobaricTagLookup, SilacLabelLookup
 
 __all__ = [
     "ISOBARIC_TAG_LOOKUP",
     "IsobaricTagInfo",
     "IsobaricTagLookup",
-    "ReporterIon",
+    "ReporterIonInfo",
     "SILAC_LOOKUP",
     "SilacLabelInfo",
     "SilacLabelLookup",

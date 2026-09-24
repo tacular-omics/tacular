@@ -7,11 +7,11 @@ light/medium/heavy sets. Tag and label compositions come from UNIMOD; every mass
 reporter m/z is computed from the bundled element table.
 
 - TMT/TMTpro reporter m/z agree with Thermo's TMTpro user guide (MAN0018773, Table 2)
-  to 1e-5.
+  to 2e-6 (the gap grows with the heavy-isotope count, up to 1.5e-6 at 135N).
 - iTRAQ reporter m/z are computed the same way (ion composition minus one electron).
   Legacy SCIEX/MSnbase tables (114.1112, 115.1083, 116.1116, 117.1150, ...) are about
   0.0005 higher, consistent with no electron subtraction.
-- Each :class:`~tacular.labels.ReporterIon` carries its channel's UNIMOD tag. iTRAQ
+- Each :class:`~tacular.labels.ReporterIonInfo` carries its channel's UNIMOD tag. iTRAQ
   channels differ: 4-plex 114 is UNIMOD:532, 115 is UNIMOD:533, 116/117 are UNIMOD:214;
   8-plex 115/118/119/121 are UNIMOD:731, the rest UNIMOD:730. The plex-level
   ``unimod_id`` is the tag search engines set.

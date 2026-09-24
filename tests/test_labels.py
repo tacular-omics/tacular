@@ -79,7 +79,7 @@ ITRAQ_TAGS = [tag for tag in ALL_TAGS if tag.name.startswith("iTRAQ")]
 @pytest.mark.parametrize("tag", TMT_TAGS, ids=lambda tag: tag.name)
 def test_tmt_reporter_mz_matches_thermo_table(tag):
     for ion in tag.reporter_ions:
-        assert ion.mz == pytest.approx(THERMO_TMTPRO_MZ[ion.channel], abs=1e-5), ion.channel
+        assert ion.mz == pytest.approx(THERMO_TMTPRO_MZ[ion.channel], abs=2e-6), ion.channel
     assert list(tag.reporter_mzs) == sorted(tag.reporter_mzs)
 
 
@@ -174,7 +174,7 @@ def test_query_unimod_id():
     assert shared == ["TMT6", "TMT10", "TMT11"]
     assert ISOBARIC_TAG_LOOKUP.query_unimod_id("UNIMOD:2016") == ISOBARIC_TAG_LOOKUP.query_unimod_id("U:2016")
     assert [s.name for s in SILAC_LOOKUP.query_unimod_id("188")] == ["Lys6", "Arg6"]
-    for bad in (None, True, "x", "UNIMOD:", 1.5):
+    for bad in (None, True, "x", "UNIMOD:", 1.5, "\u0667\u0663\u0667"):  # last: Arabic-Indic "737"
         assert ISOBARIC_TAG_LOOKUP.query_unimod_id(bad) == []  # type: ignore[arg-type]
 
 
@@ -182,6 +182,7 @@ def test_query_reporter():
     tag = ISOBARIC_TAG_LOOKUP["TMT18"]
     assert tag.query_reporter("134c") is tag.reporter_ions[16]
     assert tag.query_reporter("999") is None
+    assert tag.query_reporter(" 127n ") is tag.reporter_ions[1]
     assert tag.query_reporter(None) is None  # type: ignore[arg-type]
     assert ISOBARIC_TAG_LOOKUP["TMT6"].query_reporter("127C") is None
     assert not hasattr(tag, "reporter")
@@ -217,7 +218,7 @@ def test_frozen_read_only_and_serializable(info):
         info.dict_composition = {}  # type: ignore[misc]
     with pytest.raises(TypeError):
         info.dict_composition["C"] = 1  # type: ignore[index]
-    if isinstance(info, t.ReporterIon):
+    if isinstance(info, t.ReporterIonInfo):
         with pytest.raises(TypeError):
             info.tag_dict_composition["C"] = 1  # type: ignore[index]
     assert pickle.loads(pickle.dumps(info)) == info

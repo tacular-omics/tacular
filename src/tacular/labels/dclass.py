@@ -13,7 +13,7 @@ from ..constants import ELECTRON_MASS
 from ..elements import ELEMENT_LOOKUP, ElementInfo
 from ..elements.lookup import _CompositionCache
 
-__all__ = ["IsobaricTagInfo", "ReporterIon", "SilacLabelInfo"]
+__all__ = ["IsobaricTagInfo", "ReporterIonInfo", "SilacLabelInfo"]
 
 
 def _composition_mass(dict_composition: Mapping[str, int], *, monoisotopic: bool) -> float:
@@ -21,7 +21,7 @@ def _composition_mass(dict_composition: Mapping[str, int], *, monoisotopic: bool
 
 
 @dataclass(frozen=True, slots=True)
-class ReporterIon(_CompositionCache):
+class ReporterIonInfo(_CompositionCache):
     """One reporter ion channel of an isobaric tag: a singly charged cation, plus the
     UNIMOD tag modification that this channel's reagent adds to a peptide."""
 
@@ -82,12 +82,12 @@ class IsobaricTagInfo(_CompositionCache):
     unimod_id: int
     """UNIMOD accession number of the tag modification, e.g. ``737``. This is the
     plex-level entry that search engines set as the tag (for iTRAQ, ``214`` or ``730``);
-    per-channel iTRAQ entries are on each :class:`ReporterIon`."""
+    per-channel iTRAQ entries are on each :class:`ReporterIonInfo`."""
     unimod_name: str
     """UNIMOD name of the tag modification, e.g. ``"TMT6plex"``."""
     dict_composition: Mapping[str, int] = field(hash=False)
     """Composition of the tag's mass delta, as in UNIMOD. Read-only."""
-    reporter_ions: tuple[ReporterIon, ...]
+    reporter_ions: tuple[ReporterIonInfo, ...]
     """Reporter ion channels, in increasing m/z order."""
     aliases: tuple[str, ...] = ()
     """Other accepted lookup names, e.g. ``("TMTpro16",)``."""
@@ -95,7 +95,8 @@ class IsobaricTagInfo(_CompositionCache):
     """Monoisotopic mass delta in Da, from ``dict_composition``."""
     average_mass: float = field(init=False)
     """Average mass delta in Da, from ``dict_composition`` and the bundled element table.
-    UNIMOD's average masses use other standard atomic weights and differ by up to 6e-4 Da."""
+    UNIMOD uses the same standard atomic weights rounded to 4 decimals (C 12.0107), so its
+    average masses differ by up to 6e-4 Da."""
 
     def __post_init__(self) -> None:
         """Freeze ``dict_composition`` and compute the masses."""
@@ -118,11 +119,12 @@ class IsobaricTagInfo(_CompositionCache):
         """Reporter ion m/z values, in channel order."""
         return tuple(ion.mz for ion in self.reporter_ions)
 
-    def query_reporter(self, channel: str) -> ReporterIon | None:
-        """The reporter ion for ``channel`` (e.g. ``"127N"``; case-insensitive), or ``None``."""
+    def query_reporter(self, channel: str) -> ReporterIonInfo | None:
+        """The reporter ion for ``channel`` (e.g. ``"127N"``; case-insensitive, surrounding
+        whitespace ignored), or ``None``."""
         if not isinstance(channel, str):
             return None
-        channel = channel.upper()
+        channel = channel.strip().upper()
         return next((ion for ion in self.reporter_ions if ion.channel == channel), None)
 
     def get_mass(self, *, monoisotopic: bool = True) -> float:
@@ -169,7 +171,7 @@ class SilacLabelInfo(_CompositionCache):
     """Monoisotopic mass delta in Da, from ``dict_composition``."""
     average_mass: float = field(init=False)
     """Average mass delta in Da, from ``dict_composition`` and the bundled element table
-    (may differ from UNIMOD's average by up to 6e-4 Da)."""
+    (UNIMOD rounds the same atomic weights to 4 decimals, so its average may differ by up to 6e-4 Da)."""
 
     def __post_init__(self) -> None:
         """Freeze ``dict_composition`` and compute the masses."""
