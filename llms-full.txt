@@ -54,8 +54,8 @@ t.UNIMOD_LOOKUP["Phospho"].formula             # 'HO3P'
 | singleton | class | entries | keys accepted by `LOOKUP[key]` |
 |---|---|---|---|
 | `UNIMOD_LOOKUP` | `UnimodLookup` | ~1560 | name (case-insensitive), id `21` / `"21"` / `"021"` |
-| `PSIMOD_LOOKUP` | `PsimodLookup` | ~1558 | name, id `46` / `"00046"` |
-| `RESID_LOOKUP` | `ResidLookup` | ~535 | name, id `"AA0002"` / `"0002"` / `2` |
+| `PSIMOD_LOOKUP` | `PsimodLookup` | ~1607 | name, id `46` / `"00046"` |
+| `RESID_LOOKUP` | `ResidLookup` | ~534 | name, id `"AA0002"` / `"0002"` / `2` |
 | `XLMOD_LOOKUP` | `XlModLookup` | ~189 | name, id `"01000"` / `1000` |
 | `GNO_LOOKUP` | `GnoLookup` | ~3534 | name, id `"G00008BG"` / `"00008BG"` |
 | `UNIPROT_PTM_LOOKUP` | `UniprotPtmLookup` | ~440 | name, id `"0253"` / `253` |

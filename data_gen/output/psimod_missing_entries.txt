@@ -28,7 +28,6 @@
 00203	D-asparagine
 00204	D-leucine
 00205	D-tryptophan
-00306	residues isobaric at 113.084064 Da
 00705	D-valine
 00863	D-allo-threonine
 01187	L-pyrrolysine residue

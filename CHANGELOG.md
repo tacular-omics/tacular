@@ -24,6 +24,17 @@
 - Docs: `llms-full.txt` describes 1.2 (every lookup's `len`/`keys`/`values`/`get(default)`,
   the error policy and hashability, `ProteaseLookup`, `OntologyLookup` and `ModLocation`
   exports); the `tacular status` example shows the bundled UniProt 2026_03 (440 entries).
+- PSI-MOD data refreshed from 1.032.4 to 1.039.0 (18:09:2026), the release psimodpy ships:
+  PSI-MOD 1558 -> 1607 entries (50 new, e.g. `MOD:00862`; `MOD:00306` is now obsolete),
+  RESID 534 (was 535; `AA0301` went with `MOD:00306`). 214 PSI-MOD monoisotopic masses
+  changed: 63 charged entries now state the neutral formula mass instead of the ion mass
+  (e.g. `MOD:00049` 143.11789 -> 143.118438, a shift of one electron mass per charge),
+  `MOD:00623` gains H2 (+2.01565 Da) and the rest move by under 5e-5 Da of rounding.
+  417 average masses changed (upstream precision). Deuterated entries' compositions use
+  `H` instead of `1H` (same mass), `MOD:02105` composition is now O2 matching its mass,
+  and 278 formula strings are reordered (`C34FeH32N4O4` -> `C34H32N4O4Fe`) with the same
+  composition. The composition check in `tests/test_reference_data.py` no longer allows an
+  electron-mass offset for PSI-MOD/RESID.
 
 ### Fixed
 
