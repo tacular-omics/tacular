@@ -9,6 +9,13 @@ from .dclass import FragmentIonInfo
 
 
 class FragmentIonLookup:
+    """Fragment ion type lookup (singleton ``FRAGMENT_ION_LOOKUP``), keyed by
+    :class:`IonType`, id (e.g. ``"b"``, ``"y"``) or name, case-insensitively.
+
+    ``lookup[key]`` raises ``KeyError`` if nothing matches (including keys that
+    are not strings); ``get``/``in`` never raise.
+    """
+
     def __init__(self, fragment_ion_data: dict[IonType, FragmentIonInfo]) -> None:
         """Build ion-type/id/name lookup dicts from `fragment_ion_data`."""
         self._fragment_ion_data = fragment_ion_data
@@ -29,10 +36,14 @@ class FragmentIonLookup:
 
     def query_id(self, ion_id: str) -> FragmentIonInfo | None:
         """Query by fragment ion ID (e.g., 'a', 'b', 'y', 'z')"""
+        if not isinstance(ion_id, str):
+            return None
         return self._id_to_data.get(ion_id.lower())
 
     def query_name(self, name: str) -> FragmentIonInfo | None:
         """Query by fragment ion name (e.g., 'A-Ion', 'Y-Ion')"""
+        if not isinstance(name, str):
+            return None
         return self._name_to_data.get(name.lower())
 
     def __getitem__(self, key: str | IonType) -> FragmentIonInfo:
@@ -42,6 +53,9 @@ class FragmentIonLookup:
             if info is not None:
                 return info
             raise KeyError(f"Fragment ion type '{key}' not found.")
+
+        if not isinstance(key, str):
+            raise KeyError(f"Fragment ion {key!r} not found: keys are str or IonType.")
 
         # Try ID first
         info = self.query_id(key)
@@ -64,7 +78,7 @@ class FragmentIonLookup:
             return False
 
     def get(self, key: str | IonType, default: FragmentIonInfo | None = None) -> FragmentIonInfo | None:
-        """Get fragment ion or None if not found"""
+        """Like `lookup[key]`, but return `default` instead of raising `KeyError`."""
         try:
             return self[key]
         except KeyError:
@@ -73,6 +87,18 @@ class FragmentIonLookup:
     def __iter__(self) -> Iterator[FragmentIonInfo]:
         """Iterator over all FragmentIonInfo entries in the lookup."""
         return iter(self._fragment_ion_data.values())
+
+    def __len__(self) -> int:
+        """Number of fragment ion types in the lookup."""
+        return len(self._fragment_ion_data)
+
+    def keys(self) -> list[str]:
+        """Ids of all ion types (plain strings, e.g. ``"b"``), in data order."""
+        return [str(k) for k in self._fragment_ion_data]
+
+    def values(self) -> list[FragmentIonInfo]:
+        """All fragment ion infos, in data order (the same order as iteration)."""
+        return list(self._fragment_ion_data.values())
 
 
 FRAGMENT_ION_LOOKUP = FragmentIonLookup(ION_TYPE_DICT)

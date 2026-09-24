@@ -9,6 +9,14 @@ from .dclass import AminoAcidInfo
 
 
 class AALookup:
+    """Amino acid lookup (singleton ``AA_LOOKUP``), keyed by one-letter code,
+    three-letter code, or name (all case-insensitive).
+
+    ``lookup[key]`` raises ``KeyError`` if nothing matches (including keys that
+    are not strings); ``get``/``in`` never raise. Iteration, :meth:`values` and
+    :meth:`keys` follow one-letter-code order A-Z.
+    """
+
     def __init__(self, data: dict[AminoAcid, AminoAcidInfo]):
         """Build one-letter, three-letter, and name lookup dicts from `data`."""
         # Convert all keys to their string representation for one-letter codes
@@ -17,12 +25,18 @@ class AALookup:
         self.name_to_info = {info.name.lower(): info for info in data.values()}
 
     def _query_one_letter(self, code: str) -> AminoAcidInfo | None:
+        if not isinstance(code, str):
+            return None
         return self.one_letter_to_info.get(code.upper())
 
     def _query_three_letter(self, code: str) -> AminoAcidInfo | None:
+        if not isinstance(code, str):
+            return None
         return self.three_letter_to_info.get(code.lower())
 
     def _query_name(self, name: str) -> AminoAcidInfo | None:
+        if not isinstance(name, str):
+            return None
         return self.name_to_info.get(name.lower())
 
     @cache
@@ -61,13 +75,18 @@ class AALookup:
             return val
         raise KeyError(f"Amino acid with name '{name}' not found.")
 
-    @cache
     def __getitem__(self, key: str) -> AminoAcidInfo:
         """`lookup[key]`: query by one-letter code, then three-letter code, then name.
 
         Raises:
-            KeyError: if `key` matches none of the three.
+            KeyError: if `key` matches none of the three, or is not a string.
         """
+        if not isinstance(key, str):
+            raise KeyError(f"Amino acid {key!r} not found: keys are str.")
+        return self._getitem(key)
+
+    @cache
+    def _getitem(self, key: str) -> AminoAcidInfo:
         info = self._query_one_letter(key)
         if info is not None:
             return info
@@ -165,11 +184,23 @@ class AALookup:
         yield from self.ordered_amino_acids
 
     def get(self, key: str, default: AminoAcidInfo | None = None) -> AminoAcidInfo | None:
-        """Get amino acid info or None if not found"""
+        """Like `lookup[key]`, but return `default` instead of raising `KeyError`."""
         try:
             return self[key]
         except KeyError:
             return default
+
+    def __len__(self) -> int:
+        """Number of amino acids in the lookup."""
+        return len(self.one_letter_to_info)
+
+    def keys(self) -> list[str]:
+        """One-letter codes of all amino acids, A-Z."""
+        return [str(aa.id) for aa in self.ordered_amino_acids]
+
+    def values(self) -> list[AminoAcidInfo]:
+        """All amino acids, in one-letter-code order A-Z."""
+        return list(self.ordered_amino_acids)
 
 
 AA_LOOKUP = AALookup(AMINO_ACID_INFOS)

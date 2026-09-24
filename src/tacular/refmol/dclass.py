@@ -1,7 +1,7 @@
 """Reference molecule information dataclass"""
 
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property
 
 from ..elements import ElementInfo, parse_composition
@@ -17,16 +17,21 @@ class RefMolInfo:
     chemical_formula: str
     monoisotopic_mass: float  # calculated from formula
     average_mass: float  # calculated from formula
-    dict_composition: dict[str, int]
+    dict_composition: dict[str, int] = field(hash=False)
 
     def get_mass(self, monoisotopic: bool = True) -> float:
         """Get the mass of the molecule"""
         return self.monoisotopic_mass if monoisotopic else self.average_mass
 
     @cached_property
-    def composition(self) -> Counter[ElementInfo]:
-        """Get the composition as a Counter"""
+    def _composition(self) -> Counter[ElementInfo]:
         return Counter(parse_composition(dict(self.dict_composition)))
+
+    @property
+    def composition(self) -> Counter[ElementInfo]:
+        """Get the composition as a Counter (a fresh copy on each access, so
+        mutating it cannot change this molecule's cached composition)."""
+        return Counter(self._composition)
 
     def to_dict(self, float_precision: int = 6) -> dict[str, object]:
         """Convert the RefMolInfo to a dictionary"""

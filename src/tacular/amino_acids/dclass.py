@@ -1,7 +1,7 @@
 """The ``AminoAcidInfo`` dataclass: a single amino acid's identity, mass, and elemental composition."""
 
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property
 
 from ..elements import ElementInfo
@@ -18,14 +18,20 @@ class AminoAcidInfo:
     formula: str | None
     monoisotopic_mass: float | None
     average_mass: float | None
-    dict_composition: dict[str, int] | None
+    dict_composition: dict[str, int] | None = field(hash=False)
     is_mass_ambiguous: bool = False  # L / I are ambiguous but not mass ambiguous
     is_ambiguous: bool = False
 
     @cached_property
-    def composition(self) -> Counter[ElementInfo] | None:
-        """Get the composition as a Counter"""
+    def _composition(self) -> Counter[ElementInfo] | None:
         return Counter(parse_composition(dict(self.dict_composition))) if self.dict_composition is not None else None
+
+    @property
+    def composition(self) -> Counter[ElementInfo] | None:
+        """Get the composition as a Counter (a fresh copy on each access, so
+        mutating it cannot change this amino acid's cached composition)."""
+        comp = self._composition
+        return Counter(comp) if comp is not None else None
 
     @property
     def one_letter_code(self) -> str:

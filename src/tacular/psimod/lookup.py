@@ -7,6 +7,12 @@ from .dclass import PsimodInfo
 
 
 class PsimodLookup(OntologyLookup[PsimodInfo]):
+    """PSI-MOD lookup (singleton ``PSIMOD_LOOKUP``): query by a name, ``"00046"``, ``46`` or ``"MOD:00046"``.
+
+    See :class:`~tacular.OntologyLookup` for the full query API. ``lookup[key]``
+    raises ``KeyError`` if nothing matches; ``get``/``in`` never raise.
+    """
+
     def __init__(self, data: dict[str, PsimodInfo], version: str) -> None:
         """Wrap `data` in an `OntologyLookup` for PSI-MOD, stripping the "MOD:" accession prefix."""
         super().__init__(

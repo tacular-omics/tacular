@@ -52,7 +52,6 @@ def gen_xl(output_file: str = OutputFile.XLMOD):
 
 VERSION = "{version}"
 
-import warnings
 
 from .dclass import XlModInfo
 
@@ -66,13 +65,7 @@ try:
         for mod in XLMOD_MODIFICATIONS.values()
     }}
 except Exception as e:
-    warnings.warn(
-        f"Exception in xlmod_data: {{e}}. Using empty dictionaries.",
-        UserWarning,
-        stacklevel=2
-    )
-    XLMOD_MODIFICATIONS: dict[str, XlModInfo] = {{}}
-    XLMOD_NAME_TO_ID: dict[str, str] = {{}}
+    raise ImportError(f"tacular: the bundled XLMOD data failed to load: {{e}}") from e
 '''
 
     with open(output_file, "w") as f:

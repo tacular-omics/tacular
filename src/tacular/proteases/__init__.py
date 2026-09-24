@@ -2,7 +2,7 @@
 
 from .data import PROTEASE_LITERALS, PROTEASES_DICT, Proteases
 from .dclass import ProteaseInfo
-from .lookup import PROTEASE_LOOKUP
+from .lookup import PROTEASE_LOOKUP, ProteaseLookup
 
 __all__ = [
     "Proteases",
@@ -10,4 +10,5 @@ __all__ = [
     "ProteaseInfo",
     "PROTEASES_DICT",
     "PROTEASE_LOOKUP",
+    "ProteaseLookup",
 ]

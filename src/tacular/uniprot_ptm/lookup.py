@@ -7,6 +7,12 @@ from .dclass import UniprotPtmInfo
 
 
 class UniprotPtmLookup(OntologyLookup[UniprotPtmInfo]):
+    """UniProt-PTM lookup (singleton ``UNIPROT_PTM_LOOKUP``): query by a name, ``"0476"`` or ``"PTM-0476"``.
+
+    See :class:`~tacular.OntologyLookup` for the full query API. ``lookup[key]``
+    raises ``KeyError`` if nothing matches; ``get``/``in`` never raise.
+    """
+
     def __init__(self, data: dict[str, UniprotPtmInfo], version: str) -> None:
         """Wrap `data` in an `OntologyLookup` for UniProt-PTM, stripping the "PTM-" prefix."""
         super().__init__(

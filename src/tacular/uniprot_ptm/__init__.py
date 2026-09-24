@@ -4,10 +4,12 @@ posttranslational modifications (ptmlist.txt).
 """
 
 from .data import UniprotPtmInfo
+from .dclass import ModLocation
 from .lookup import UNIPROT_PTM_LOOKUP, UniprotPtmLookup
 
 __all__ = [
     "UniprotPtmLookup",
     "UNIPROT_PTM_LOOKUP",
     "UniprotPtmInfo",
+    "ModLocation",
 ]

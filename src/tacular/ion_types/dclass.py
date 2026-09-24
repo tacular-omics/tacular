@@ -5,7 +5,7 @@ z, ...), plus the ``IonTypeProperty`` flag enum used to classify them.
 import typing
 from collections import Counter
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Flag, auto
 from functools import cached_property
 
@@ -37,7 +37,7 @@ class FragmentIonInfo:
     formula: str | None
     monoisotopic_mass: float | None
     average_mass: float | None
-    dict_composition: Mapping[str, int] | None
+    dict_composition: Mapping[str, int] | None = field(hash=False)
     properties: IonTypeProperty = IonTypeProperty.NONE
 
     @property
@@ -92,13 +92,22 @@ class FragmentIonInfo:
             return self.average_mass
 
     @cached_property
-    def composition(self) -> Counter[ElementInfo]:
-        """Get the composition as a Counter"""
+    def _composition(self) -> Counter[ElementInfo]:
         if self.dict_composition is None:
             raise ValueError("Composition is not available for this ion type")
 
         comp: dict[ElementInfo, int] = parse_composition(dict(self.dict_composition))
         return Counter(comp)
+
+    @property
+    def composition(self) -> Counter[ElementInfo]:
+        """Get the composition as a Counter (a fresh copy on each access, so
+        mutating it cannot change this ion type's cached composition).
+
+        Raises:
+            ValueError: if this ion type has no composition.
+        """
+        return Counter(self._composition)
 
     def to_dict(self, float_precision: int = 6) -> dict[str, object]:
         """Convert the FragmentIonInfo to a dictionary"""

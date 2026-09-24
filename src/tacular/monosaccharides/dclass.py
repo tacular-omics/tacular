@@ -2,8 +2,11 @@
 numeric ``id_tag``, no ontology-specific override).
 """
 
+from dataclasses import dataclass
+
 from ..obo_entity import OboEntity
 
 
+@dataclass(frozen=True, slots=True)
 class MonosaccharideInfo(OboEntity):
     """Class to store information about a monosaccharide"""
