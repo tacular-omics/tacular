@@ -9,7 +9,8 @@ from dataclasses import dataclass, field
 from enum import Flag, auto
 
 from .._util import _round
-from ..elements import ElementInfo, parse_composition
+from ..elements import ElementInfo
+from ..elements.lookup import _composition_copy
 from ..errors import TacularError
 
 # type checking
@@ -49,11 +50,6 @@ class FragmentIonInfo:
     """Offset composition as ``{symbol: count}``, or ``None``. Read-only."""
     properties: IonTypeProperty = IonTypeProperty.NONE
     """Classification flags (forward, backward, internal, ...)."""
-    _composition: Counter[ElementInfo] | None = field(init=False, repr=False, compare=False, hash=False)
-
-    def __post_init__(self) -> None:
-        comp = Counter(parse_composition(self.dict_composition)) if self.dict_composition is not None else None
-        object.__setattr__(self, "_composition", comp)
 
     @property
     def ion_type(self) -> "IonType":
@@ -114,9 +110,9 @@ class FragmentIonInfo:
         Raises:
             TacularError: if this ion type has no composition.
         """
-        if self._composition is None:
+        if self.dict_composition is None:
             raise TacularError(f"Composition is not available for ion type {str(self.id)!r}.")
-        return Counter(self._composition)
+        return _composition_copy(self.dict_composition)
 
     def to_dict(self, *, float_precision: int | None = 6) -> dict[str, object]:
         """Convert to a plain, JSON-serializable dictionary.

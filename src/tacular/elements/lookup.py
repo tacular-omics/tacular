@@ -6,7 +6,9 @@ and most abundant isotope's mass), an isotope string (``"13C"``, ``"D"``), an
 :class:`Element`, or a ``(symbol, mass_number)`` tuple.
 """
 
+from collections import Counter
 from collections.abc import Mapping
+from functools import cache
 
 from .._lookup import _BaseLookup
 from ..errors import TacularKeyError
@@ -51,6 +53,8 @@ def _parse_key(key: object) -> tuple[Element, int | None]:
         symbol = key[digits:]
         if not symbol:
             raise TacularKeyError(f"Element key {key!r} has no element symbol.")
+        if key.startswith("0"):
+            raise TacularKeyError(f"Element key {key!r} has a leading zero in its mass number.")
         mass_number = int(key[:digits]) if digits else None
     else:
         raise TacularKeyError(f"Element key {key!r} must be a str, Element or (symbol, mass_number) tuple.")
@@ -179,3 +183,15 @@ def parse_composition(comp_dict: Mapping[str, int]) -> dict[ElementInfo, int]:
         TacularKeyError: if a key is not an element or isotope in the data.
     """
     return {ELEMENT_LOOKUP[elem_key]: count for elem_key, count in comp_dict.items()}
+
+
+@cache
+def _cached_composition(items: tuple[tuple[str, int], ...]) -> Counter[ElementInfo]:
+    """Resolved composition for ``items`` (sorted ``(symbol, count)`` pairs), cached
+    module-wide so frozen ``*Info`` dataclasses need no cache field. Callers must copy."""
+    return Counter(parse_composition(dict(items)))
+
+
+def _composition_copy(dict_composition: Mapping[str, int]) -> Counter[ElementInfo]:
+    """A fresh ``Counter`` of the resolved ``dict_composition`` (cached underneath)."""
+    return Counter(_cached_composition(tuple(sorted(dict_composition.items()))))

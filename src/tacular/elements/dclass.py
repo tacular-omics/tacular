@@ -18,7 +18,8 @@ class ElementInfo:
         mass_number: Atomic mass number (protons + neutrons), None for non-specific element
         symbol: Element symbol (e.g., 'C', 'H', 'O')
         mass: Isotopic mass in Daltons
-        abundance: Natural abundance as fraction (0.0-1.0), None for synthetic isotopes
+        abundance: Natural abundance as fraction (0.0-1.0); 0.0 for synthetic isotopes,
+            None for the whole-element entry (``mass_number`` None)
         average_mass: Average atomic mass for the element
         is_monoisotopic: True if most abundant isotope, False if not, None if element is non-specific
     """

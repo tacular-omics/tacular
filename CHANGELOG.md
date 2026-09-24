@@ -53,17 +53,36 @@ in [docs/migration.rst](docs/migration.rst).
   `ontology_name`.
 - Every lookup shares one base, so `get(key, default)`, `[]`, `in`, `len`, iteration,
   `keys()`, `values()` and `items()` behave the same everywhere.
+- `OntologyLookup.keys()` (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM) returns
+  the raw accession ids (`"21"`, `"00046"`), the keys `items()` pairs with each entry.
+  1.2.0 returned the lowercased names; use `[info.name for info in lookup.values()]`
+  for those.
+- `update(**changes)` on ontology entries (`OboEntity` and every subclass) is
+  `dataclasses.replace`: an unknown keyword raises `TypeError` (1.2.0 ignored it), and
+  subclass fields are kept. The `UniprotPtmInfo.update` override, which rebuilt the
+  entry from a fixed field list, is gone.
 - `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo`, `ProteaseInfo` and
   `RefMolInfo` are frozen, slotted dataclasses (no instance `__dict__`).
 - `NeutralDeltaInfo.to_dict()["amino_acids"]` is sorted, so
   `jsons/neutral_losses.json` is deterministic.
-- `ElementLookup.get_neutron_offsets_and_abundances` / `get_masses_and_abundances`
-  report `0.0` (not `None`) for isotopes with no natural abundance.
+- `ElementLookup.get_neutron_offsets_and_abundances` / `get_masses_and_abundances` are
+  typed `float` for the abundance without a `type: ignore`. Values are unchanged: only
+  whole-element entries have `abundance=None`, and these helpers return isotopes only.
 - Fixed: `FragmentIonInfo.ion_type` resolves a string id (`"y"`) to its `IonType`
   (it looked the id up as an enum member name and raised `KeyError`).
-- Every public module has an explicit `__all__`.
+- Every public module has an explicit `__all__`, including the 13 generated
+  `tacular.*.data` modules (emitted by the `data_gen` generators).
+- `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo` and `RefMolInfo` no longer
+  carry a hidden composition cache field, so `dataclasses.asdict`, `pickle` and
+  `dataclasses.replace` work on them (`asdict` raised `TypeError`). `composition` is
+  cached per distinct `dict_composition` at module level.
+- `ELEMENT_LOOKUP` rejects an isotope mass number with a leading zero (`"013C"`).
 - `tacular update` always downloads the current release (it reused a cached download
   forever); `tacular clear` also removes the downloaded sources in `obo/`.
+- `tacular.update.update()` raises `TacularError` (chained from the parser's error) for
+  a source file it cannot parse. Downloads time out after 60 s without data and remove
+  their `.part` file on failure; the CLI then suggests
+  `tacular update --offline $(tacular where)/obo`.
 
 ## [1.2.0] (2026-09-23)
 

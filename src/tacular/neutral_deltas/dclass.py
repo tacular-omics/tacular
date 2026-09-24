@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 
 from .._util import _round
 from ..elements.dclass import ElementInfo
-from ..elements.lookup import parse_composition
+from ..elements.lookup import _composition_copy
 
 __all__ = ["NeutralDeltaInfo"]
 
@@ -31,10 +31,6 @@ class NeutralDeltaInfo:
     """Signed average mass delta in Da."""
     dict_composition: Mapping[str, int] = field(hash=False)
     """Signed composition as ``{symbol: count}``. Read-only."""
-    _composition: Counter[ElementInfo] = field(init=False, repr=False, compare=False, hash=False)
-
-    def __post_init__(self) -> None:
-        object.__setattr__(self, "_composition", Counter(parse_composition(self.dict_composition)))
 
     def __hash__(self) -> int:
         """Hash on ``name`` only (``dict_composition`` is a plain ``dict``)."""
@@ -47,7 +43,7 @@ class NeutralDeltaInfo:
     @property
     def composition(self) -> Counter[ElementInfo]:
         """The signed composition keyed by :class:`~tacular.ElementInfo` (a fresh copy on each access)."""
-        return Counter(self._composition)
+        return _composition_copy(self.dict_composition)
 
     def calculate_loss_sites(self, sequence: str) -> int:
         """Number of residues in ``sequence`` this delta can occur at."""

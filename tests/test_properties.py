@@ -13,6 +13,7 @@ from tacular import (
     UNIPROT_PTM_LOOKUP,
     XLMOD_LOOKUP,
     Element,
+    TacularKeyError,
 )
 from tacular._datagen._utils import calculate_mass, format_composition_string, parse_formula_to_dict
 
@@ -65,12 +66,21 @@ def test_isotope_formula_examples(formula, expected):
 # --- element keys -----------------------------------------------------------------------
 
 
-@given(st.sampled_from(ISOTOPES), st.integers(0, 2))
-def test_isotope_string_key_matches_tuple_key(isotope, zeros):
+@given(st.sampled_from(ISOTOPES))
+def test_isotope_string_key_matches_tuple_key(isotope):
     symbol, mass_number = isotope
-    key = f"{'0' * zeros}{mass_number}{symbol}"
+    key = f"{mass_number}{symbol}"
     assert ELEMENT_LOOKUP[key] is ELEMENT_LOOKUP[(symbol, mass_number)]
     assert key in ELEMENT_LOOKUP
+
+
+@given(st.sampled_from(ISOTOPES), st.integers(1, 2))
+def test_isotope_string_key_rejects_leading_zeros(isotope, zeros):
+    symbol, mass_number = isotope
+    key = f"{'0' * zeros}{mass_number}{symbol}"
+    assert key not in ELEMENT_LOOKUP
+    with pytest.raises(TacularKeyError, match="leading zero"):
+        ELEMENT_LOOKUP[key]
 
 
 def test_deuterium_and_tritium_aliases():

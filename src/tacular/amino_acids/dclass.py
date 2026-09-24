@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 
 from .._util import _round
 from ..elements import ElementInfo
-from ..elements.lookup import parse_composition
+from ..elements.lookup import _composition_copy
 
 __all__ = ["AminoAcidInfo"]
 
@@ -33,18 +33,12 @@ class AminoAcidInfo:
     """True if the code stands for residues of different masses (``B``, ``Z``, ``X``)."""
     is_ambiguous: bool = False
     """True for an ambiguity code (``B``, ``J``, ``X``, ``Z``); ``J`` (L/I) is not mass-ambiguous."""
-    _composition: Counter[ElementInfo] | None = field(init=False, repr=False, compare=False, hash=False)
-
-    def __post_init__(self) -> None:
-        comp = Counter(parse_composition(self.dict_composition)) if self.dict_composition is not None else None
-        object.__setattr__(self, "_composition", comp)
 
     @property
     def composition(self) -> Counter[ElementInfo] | None:
         """The composition keyed by :class:`~tacular.ElementInfo` (a fresh copy on each
         access), or ``None`` if undefined."""
-        comp = self._composition
-        return Counter(comp) if comp is not None else None
+        return _composition_copy(self.dict_composition) if self.dict_composition is not None else None
 
     @property
     def one_letter_code(self) -> str:

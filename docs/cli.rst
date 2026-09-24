@@ -85,6 +85,14 @@ line. Add ``-vv`` to see the full traceback:
    $ tacular update bogus
    error: TacularError: unknown ontologies ['bogus']; choose from ['unimod', 'xlmod', 'psimod', 'resid', 'gno', 'uniprot_ptm']
 
+An unparseable source file is reported as ``TacularError: could not parse ...``.
+A download gives up after 60 seconds without data, leaves no partial file behind,
+and prints a hint to rebuild from the sources already downloaded:
+
+.. code-block:: console
+
+   $ tacular update --offline $(tacular where)/obo
+
 If an ontology release contains entries whose stated mass disagrees with their
 composition, ``update`` prints a note with the count and one example. Those
 entries are cached as published upstream.

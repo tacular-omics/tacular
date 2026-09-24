@@ -300,3 +300,159 @@ def test_new_exports():
     assert not hasattr(t.ElementLookup, "mass")
     assert not hasattr(t.AALookup, "one_letter")
     assert not hasattr(t.MonosaccharideLookup, "proforma")
+
+
+# --- review fixes: plain-dataclass behaviour, ontology keys, element keys -----------------
+
+SLOTTED_INFOS = [
+    t.AA_LOOKUP["A"],
+    t.ELEMENT_LOOKUP["13C"],
+    t.FRAGMENT_ION_LOOKUP["y"],
+    t.NEUTRAL_DELTA_LOOKUP["H2O"],
+    t.REFMOL_LOOKUP["TMT126"],
+    t.PROTEASE_LOOKUP["trypsin"],
+    t.MONOSACCHARIDE_LOOKUP["Hex"],
+    t.UNIMOD_LOOKUP["Phospho"],
+    t.UNIPROT_PTM_LOOKUP.values()[0],
+]
+
+
+@pytest.mark.parametrize("info", SLOTTED_INFOS, ids=lambda i: type(i).__name__)
+def test_info_supports_asdict_pickle_and_replace(info):
+    import pickle
+
+    as_dict = dataclasses.asdict(info)
+    assert set(as_dict) == {f.name for f in dataclasses.fields(info)}
+    assert not any(name.startswith("_") for name in as_dict)
+
+    restored = pickle.loads(pickle.dumps(info))
+    assert restored == info
+    assert hash(restored) == hash(info)
+
+    copy = dataclasses.replace(info)
+    assert copy == info
+    assert copy is not info
+
+
+@pytest.mark.parametrize(
+    "info", [t.AA_LOOKUP["A"], t.FRAGMENT_ION_LOOKUP["y"], t.NEUTRAL_DELTA_LOOKUP["H2O"], t.REFMOL_LOOKUP["TMT126"]]
+)
+def test_composition_is_a_fresh_counter_from_the_shared_cache(info):
+    first = info.composition
+    assert first == info.composition
+    first.clear()  # callers may mutate their copy without corrupting the cache
+    assert info.composition
+    assert sum(info.composition.values()) == sum(info.dict_composition.values())
+    changed = dataclasses.replace(info, dict_composition={"C": 2})
+    assert changed.composition == {t.ELEMENT_LOOKUP["C"]: 2}
+
+
+ONTOLOGY_LOOKUPS = [
+    t.UNIMOD_LOOKUP,
+    t.PSIMOD_LOOKUP,
+    t.RESID_LOOKUP,
+    t.XLMOD_LOOKUP,
+    t.GNO_LOOKUP,
+    t.UNIPROT_PTM_LOOKUP,
+]
+
+
+@pytest.mark.parametrize("lookup", ONTOLOGY_LOOKUPS, ids=lambda lk: lk.ontology_name)
+def test_ontology_keys_are_raw_ids(lookup):
+    assert lookup.keys() == [info.id for info in lookup.values()]
+    assert all(lookup[key].id == key for key in lookup.keys()[:50])
+
+
+def test_unimod_keys_are_ids_not_lowercased_names():
+    keys = t.UNIMOD_LOOKUP.keys()
+    assert "21" in keys
+    assert "phospho" not in keys
+    assert "Phospho" not in keys
+
+
+def test_obo_entity_update_is_replace():
+    phospho = t.UNIMOD_LOOKUP["Phospho"]
+    renamed = phospho.update(name="Phospho2")
+    assert (renamed.id, renamed.name) == (phospho.id, "Phospho2")
+    with pytest.raises(TypeError):
+        phospho.update(not_a_field=1)
+
+
+def test_uniprot_ptm_update_keeps_subclass_fields():
+    info = next(i for i in t.UNIPROT_PTM_LOOKUP.values() if i.keywords)
+    changed = info.update(name="renamed")
+    assert changed.name == "renamed"
+    assert changed.keywords == info.keywords
+    assert changed.feature_key == info.feature_key
+    assert changed.cross_references == info.cross_references
+    with pytest.raises(TypeError):
+        info.update(not_a_field=1)
+
+
+@pytest.mark.parametrize(
+    "key,count,expected",
+    [("C", 1, "C"), ("C", 3, "C3"), ("13C", 1, "[13C]"), ("13C", 2, "[13C2]"), ("D", 2, "[2H2]")],
+)
+def test_element_info_serialize(key, count, expected):
+    assert t.ELEMENT_LOOKUP[key].serialize(count) == expected
+
+
+def test_element_info_serialize_zero_count_raises():
+    with pytest.raises(TacularError, match="zero"):
+        t.ELEMENT_LOOKUP["13C"].serialize(0)
+
+
+def test_element_enum_key_is_the_whole_element():
+    from tacular.elements.data import Element
+
+    assert t.ELEMENT_LOOKUP[Element.C] is t.ELEMENT_LOOKUP["C"]
+    assert t.ELEMENT_LOOKUP[Element.C].mass_number is None
+
+
+def test_element_missing_isotope_raises_with_message():
+    with pytest.raises(TacularKeyError, match="Isotope '99C' is not in the element data"):
+        t.ELEMENT_LOOKUP["99C"]
+    assert t.ELEMENT_LOOKUP.get("99C") is None
+    assert "99C" not in t.ELEMENT_LOOKUP
+
+
+@pytest.mark.parametrize("key", ["013C", "0C", "00H"])
+def test_element_key_rejects_leading_zero(key):
+    with pytest.raises(TacularKeyError, match="leading zero"):
+        t.ELEMENT_LOOKUP[key]
+    assert t.ELEMENT_LOOKUP.get(key) is None
+
+
+DATA_MODULES = [
+    "amino_acids",
+    "elements",
+    "gno",
+    "ion_types",
+    "monosaccharides",
+    "neutral_deltas",
+    "proteases",
+    "psimod",
+    "refmol",
+    "resid",
+    "unimod",
+    "uniprot_ptm",
+    "xlmod",
+]
+
+
+@pytest.mark.parametrize("name", DATA_MODULES)
+def test_generated_data_modules_declare_all(name):
+    import importlib
+
+    module = importlib.import_module(f"tacular.{name}.data")
+    assert module.__all__
+    for export in module.__all__:
+        assert hasattr(module, export), export
+    public = {
+        n
+        for n, v in vars(module).items()
+        if not n.startswith("_")
+        and getattr(v, "__module__", module.__name__) == module.__name__
+        and not inspect.ismodule(v)
+    }
+    assert public <= set(module.__all__) | {"annotations"}

@@ -5,7 +5,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 
 from .._util import _round
-from ..elements import ElementInfo, parse_composition
+from ..elements import ElementInfo
+from ..elements.lookup import _composition_copy
 
 __all__ = ["RefMolInfo"]
 
@@ -28,10 +29,6 @@ class RefMolInfo:
     """Average mass in Da, calculated from the formula."""
     dict_composition: Mapping[str, int] = field(hash=False)
     """Composition as ``{symbol: count}``. Read-only."""
-    _composition: Counter[ElementInfo] = field(init=False, repr=False, compare=False, hash=False)
-
-    def __post_init__(self) -> None:
-        object.__setattr__(self, "_composition", Counter(parse_composition(self.dict_composition)))
 
     def get_mass(self, *, monoisotopic: bool = True) -> float:
         """The monoisotopic (default) or average mass in Da."""
@@ -40,7 +37,7 @@ class RefMolInfo:
     @property
     def composition(self) -> Counter[ElementInfo]:
         """The composition keyed by :class:`~tacular.ElementInfo` (a fresh copy on each access)."""
-        return Counter(self._composition)
+        return _composition_copy(self.dict_composition)
 
     def to_dict(self, *, float_precision: int | None = 6) -> dict[str, object]:
         """Convert to a plain, JSON-serializable dictionary.

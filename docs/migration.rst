@@ -100,6 +100,18 @@ Changed behaviour
        (``U:Phospho``)
    * - ``ElementInfo.neutron_count`` on an element entry, ``serialize(0)``
      - raise ``TacularError`` (a ``ValueError``, as before)
+   * - ``UNIMOD_LOOKUP.keys()`` (every ontology lookup) returned lowercased names
+       (``"phospho"``)
+     - returns the raw accession ids (``"21"``), the same keys ``items()`` uses; for
+       names use ``[info.name for info in lookup.values()]``
+   * - ``info.update(**changes)`` on ontology entries ignored unknown keywords and
+       rebuilt the entry from a fixed field list
+     - ``dataclasses.replace``: an unknown keyword raises ``TypeError`` and subclass
+       fields are kept
+   * - ``ELEMENT_LOOKUP["013C"]`` parsed as carbon-13
+     - raises :class:`~tacular.TacularKeyError` (no leading zeros)
+   * - ``tacular.update.update()`` let parser ``ValueError`` s escape
+     - raises :class:`~tacular.TacularError` chained from the parser's error
    * - ``tacular update`` reused a cached download forever
      - always downloads the current release; ``tacular clear`` also removes ``obo/``
 

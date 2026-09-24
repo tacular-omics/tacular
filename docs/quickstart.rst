@@ -156,7 +156,8 @@ The return type for element lookups is ``ElementInfo``, which contains the follo
 - ``mass_number`` is the atomic number + neutron number
 - ``symbol`` is the element symbol
 - ``mass`` is the isotopic mass
-- ``abundance`` is the natural abundance (``None`` for synthetic isotopes)
+- ``abundance`` is the natural abundance (``0.0`` for synthetic isotopes, ``None``
+  for the whole-element entry)
 - ``average_mass`` is the average atomic mass for the element
 - ``is_monoisotopic`` can be ``False``, ``True``, or ``None``
 

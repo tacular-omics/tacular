@@ -67,13 +67,25 @@ _ONTOLOGIES: dict[str, tuple[str, str]] = {
 _LARGE = {"gno"}
 
 
+_DOWNLOAD_TIMEOUT = 60
+"""Seconds ``urlopen`` waits on a stalled connection before giving up."""
+
+
 def _download(url: str, dest: Path) -> None:
+    """Download ``url`` to ``dest`` via a ``.part`` file, removed again if the download fails."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     print(f"  downloading {url}")
     req = urllib.request.Request(url, headers={"User-Agent": "tacular-update"})
     tmp = dest.with_suffix(dest.suffix + ".part")
-    with urllib.request.urlopen(req) as resp, open(tmp, "wb") as out:  # noqa: S310 - fixed https ontology hosts
-        shutil.copyfileobj(resp, out)
+    try:
+        with (
+            urllib.request.urlopen(req, timeout=_DOWNLOAD_TIMEOUT) as resp,  # noqa: S310 - fixed https ontology hosts
+            open(tmp, "wb") as out,
+        ):
+            shutil.copyfileobj(resp, out)
+    except BaseException:
+        tmp.unlink(missing_ok=True)
+        raise
     tmp.replace(dest)
     print(f"  saved {dest} ({dest.stat().st_size / 1_048_576:.1f} MB)")
 
@@ -114,9 +126,10 @@ def update(names: list[str] | None = None, *, offline: str | Path | None = None)
         The ontologies refreshed, in order.
 
     Raises:
-        TacularError: if a name is not one of the six ontologies.
+        TacularError: if a name is not one of the six ontologies, or a source file
+            cannot be parsed (the parser's error is chained as ``__cause__``).
         FileNotFoundError: in offline mode, if a source file is missing.
-        OSError: if a download fails.
+        OSError: if a download fails or times out (60 s without data).
     """
     names = list(_ONTOLOGIES) if not names else names
     unknown = [n for n in names if n not in _ONTOLOGIES]
@@ -144,7 +157,12 @@ def update(names: list[str] | None = None, *, offline: str | Path | None = None)
         module_path, src = _ONTOLOGIES[name]
         builder = importlib.import_module(module_path)
         print(f"regenerating {name} ...")
-        version, infos = builder.build(obo_paths[src])
+        try:
+            version, infos = builder.build(obo_paths[src])
+        except TacularError:
+            raise
+        except ValueError as e:
+            raise TacularError(f"could not parse {name} source {obo_paths[src]}: {e}") from e
         mismatches = _mass_mismatches(infos)
         if mismatches:
             eid, ename, delta = mismatches[0]
@@ -239,11 +257,17 @@ def main(argv: list[str] | None = None) -> int:
             print(f"note: refreshing all ontologies including {sorted(_LARGE)} (large download)\n")
         try:
             refreshed = update(names, offline=args.offline)
-        except (ValueError, OSError) as exc:  # TacularError, and parse errors from _datagen
+        except (ValueError, OSError) as exc:  # TacularError (bad name, unparsable source) or I/O
             # Log the full traceback at DEBUG (visible with -vv) before the concise
             # one-line message every user sees, so the root cause is never lost.
             logger.debug("`tacular update` failed", exc_info=True)
             print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
+            if args.offline is None and isinstance(exc, OSError):
+                print(
+                    "hint: to rebuild from sources already downloaded, run "
+                    "`tacular update --offline $(tacular where)/obo`",
+                    file=sys.stderr,
+                )
             return 1
         print(f"\ndone: refreshed {refreshed}. Changes take effect on next `import tacular`.")
         return 0

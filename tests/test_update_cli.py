@@ -144,12 +144,33 @@ def test_cli_update_offline_missing_obo_errors(tmp_path, capsys):
 
 
 def test_cli_update_malformed_source_is_a_one_line_error(tmp_path, capsys):
-    # A term with no id makes the builder raise a plain ValueError: the CLI must
-    # still exit 1 with one line, not a traceback.
+    # A term with no id makes the builder raise a ValueError, which update() wraps in
+    # TacularError: the CLI must still exit 1 with one line, not a traceback.
     (tmp_path / "UNIMOD.obo").write_text("format-version: 1.2\n\n[Term]\nname: no id here\n")
     rc = update_mod.main(["update", "unimod", "--offline", str(tmp_path)])
     assert rc == 1
-    assert capsys.readouterr().err.startswith("error: ValueError:")
+    err = capsys.readouterr().err
+    assert err.startswith("error: TacularError: could not parse unimod source")
+    assert "hint:" not in err  # the offline hint is only for failed downloads
+
+
+def test_update_wraps_parse_errors_in_tacular_error(tmp_path):
+    (tmp_path / "UNIMOD.obo").write_text("format-version: 1.2\n\n[Term]\nname: no id here\n")
+    with pytest.raises(TacularError, match="could not parse unimod") as info:
+        update_mod.update(["unimod"], offline=tmp_path)
+    assert type(info.value.__cause__) is ValueError
+
+
+def test_cli_update_download_failure_hints_offline_mode(monkeypatch, capsys):
+    def failing_download(url, dest):
+        raise OSError("connection timed out")
+
+    monkeypatch.setattr(update_mod, "_download", failing_download)
+    rc = update_mod.main(["update", "unimod"])
+    assert rc == 1
+    err = capsys.readouterr().err
+    assert err.startswith("error: OSError: connection timed out")
+    assert "tacular update --offline $(tacular where)/obo" in err
 
 
 def test_cli_update_offline_success(capsys):
@@ -223,13 +244,40 @@ def test_download_writes_file_atomically(tmp_path, monkeypatch):
         def __exit__(self, *exc):
             return False
 
-    monkeypatch.setattr(update_mod.urllib.request, "urlopen", lambda req: _FakeResponse(b"fake obo contents"))
+    timeouts = []
+
+    def fake_urlopen(req, timeout):
+        timeouts.append(timeout)
+        return _FakeResponse(b"fake obo contents")
+
+    monkeypatch.setattr(update_mod.urllib.request, "urlopen", fake_urlopen)
 
     dest = tmp_path / "Fake.obo"
     update_mod._download("https://example.invalid/fake.obo", dest)
 
     assert dest.is_file()
     assert dest.read_bytes() == b"fake obo contents"
+    assert not dest.with_suffix(dest.suffix + ".part").exists()
+    assert timeouts == [60]
+
+
+def test_download_failure_removes_part_file(tmp_path, monkeypatch):
+    class _BrokenResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def read(self, *args):
+            raise TimeoutError("read timed out")
+
+    monkeypatch.setattr(update_mod.urllib.request, "urlopen", lambda req, timeout: _BrokenResponse())
+
+    dest = tmp_path / "Fake.obo"
+    with pytest.raises(TimeoutError):
+        update_mod._download("https://example.invalid/fake.obo", dest)
+    assert not dest.exists()
     assert not dest.with_suffix(dest.suffix + ".part").exists()
 
 
