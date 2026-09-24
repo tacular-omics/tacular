@@ -302,12 +302,12 @@ def test_query_mass_ppm_is_a_relative_window():
     mass = phospho.monoisotopic_mass
     assert mass is not None
     near = mass * (1 + 5e-6)  # 5 ppm away
-    assert phospho in t.UNIMOD_LOOKUP.query_mass(near, tolerance=10, unit="ppm")
-    assert phospho not in t.UNIMOD_LOOKUP.query_mass(near, tolerance=2, unit="ppm")
-    assert t.UNIMOD_LOOKUP.query_mass(near, tolerance=10, unit="ppm") == t.UNIMOD_LOOKUP.query_mass(
+    assert phospho in t.UNIMOD_LOOKUP.query_mass(near, tolerance=10, tolerance_unit="ppm")
+    assert phospho not in t.UNIMOD_LOOKUP.query_mass(near, tolerance=2, tolerance_unit="ppm")
+    assert t.UNIMOD_LOOKUP.query_mass(near, tolerance=10, tolerance_unit="ppm") == t.UNIMOD_LOOKUP.query_mass(
         near, tolerance=abs(near) * 10 / 1e6
     )
-    assert t.UNIMOD_LOOKUP.query_mass(mass, unit="da") == t.UNIMOD_LOOKUP.query_mass(mass)
+    assert t.UNIMOD_LOOKUP.query_mass(mass, tolerance_unit="da") == t.UNIMOD_LOOKUP.query_mass(mass)
 
 
 @settings(max_examples=200, deadline=None)
@@ -318,13 +318,13 @@ def test_query_mass_ppm_is_a_relative_window():
     monoisotopic=st.booleans(),
 )
 def test_query_mass_ppm_matches_linear_scan(lookup, mass, ppm, monoisotopic):
-    got = lookup.query_mass(mass, tolerance=ppm, unit="ppm", monoisotopic=monoisotopic)
+    got = lookup.query_mass(mass, tolerance=ppm, tolerance_unit="ppm", monoisotopic=monoisotopic)
     assert got == _query_mass_linear(lookup, mass, abs(mass) * ppm / 1e6, monoisotopic)
 
 
 def test_query_mass_rejects_unknown_unit_and_positional_options():
     with pytest.raises(t.TacularError, match="unit"):
-        t.UNIMOD_LOOKUP.query_mass(79.966, unit="mda")  # type: ignore[arg-type]
+        t.UNIMOD_LOOKUP.query_mass(79.966, tolerance_unit="mda")  # type: ignore[arg-type]
     with pytest.raises(TypeError):
         t.UNIMOD_LOOKUP.query_mass(79.966, 0.01)  # type: ignore[misc]
 
@@ -418,14 +418,14 @@ def test_dict_composition_input_is_copied():
 def test_query_mass_nan_returns_empty():
     assert t.UNIMOD_LOOKUP.query_mass(math.nan) == []
     assert t.UNIMOD_LOOKUP.query_mass(79.966, tolerance=math.nan) == []
-    assert t.UNIMOD_LOOKUP.query_mass(math.inf, tolerance=0, unit="ppm") == []
+    assert t.UNIMOD_LOOKUP.query_mass(math.inf, tolerance=0, tolerance_unit="ppm") == []
 
 
 def test_query_mass_infinite_tolerance():
     everything = len(t.UNIMOD_LOOKUP.query_mass(100.0, tolerance=math.inf))
-    assert everything == len(t.UNIMOD_LOOKUP.query_mass(100.0, tolerance=math.inf, unit="ppm")) > 100
+    assert everything == len(t.UNIMOD_LOOKUP.query_mass(100.0, tolerance=math.inf, tolerance_unit="ppm")) > 100
     # documented: ppm at mass 0 is 0 * inf = NaN, which matches nothing
-    assert t.UNIMOD_LOOKUP.query_mass(0.0, tolerance=math.inf, unit="ppm") == []
+    assert t.UNIMOD_LOOKUP.query_mass(0.0, tolerance=math.inf, tolerance_unit="ppm") == []
 
 
 def test_read_only_dict_refuses_a_second_init_even_when_empty():

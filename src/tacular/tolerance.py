@@ -7,9 +7,9 @@ windows around negative masses (for example, loss deltas) are well formed and sy
 >>> from tacular import ppm_error, tolerance_window, within_tolerance
 >>> ppm_error(1000.01, 1000.0)
 9.999999999990905
->>> tolerance_window(1000.0, 10, unit="ppm")
+>>> tolerance_window(1000.0, 10, tolerance_unit="ppm")
 (999.99, 1000.01)
->>> within_tolerance(1000.005, 1000.0, 10, unit="ppm")
+>>> within_tolerance(1000.005, 1000.0, 10, tolerance_unit="ppm")
 True
 """
 
@@ -37,7 +37,7 @@ def _half_width(mass: float, tolerance: float, unit: str) -> float:
         return tolerance
     if unit == "ppm":
         return abs(mass) * tolerance / 1e6
-    raise TacularError(f"unit must be 'da' or 'ppm', got {unit!r}.")
+    raise TacularError(f"tolerance_unit must be 'da' or 'ppm', got {unit!r}.")
 
 
 def ppm_error(observed: float, theoretical: float) -> float:
@@ -80,33 +80,35 @@ def _require_finite(**values: float) -> None:
             raise TacularError(f"{name} must be finite, got {value!r}.")
 
 
-def tolerance_window(mass: float, tolerance: float, *, unit: ToleranceUnit = "da") -> tuple[float, float]:
+def tolerance_window(mass: float, tolerance: float, *, tolerance_unit: ToleranceUnit = "da") -> tuple[float, float]:
     """The ``(lo, hi)`` bounds of a ``tolerance`` window centred on ``mass``.
 
-    ``unit="da"`` reads ``tolerance`` in Da; ``unit="ppm"`` in ppm of ``abs(mass)``. A
+    ``tolerance_unit="da"`` reads ``tolerance`` in Da; ``tolerance_unit="ppm"`` in ppm of ``abs(mass)``. A
     negative tolerance gives an empty window (``lo > hi``).
 
     Raises:
-        TacularError: if ``unit`` is not ``"da"`` or ``"ppm"``, or ``mass`` or
+        TacularError: if ``tolerance_unit`` is not ``"da"`` or ``"ppm"``, or ``mass`` or
             ``tolerance`` is NaN or infinite.
     """
     _require_finite(mass=mass, tolerance=tolerance)
-    width = _half_width(mass, tolerance, unit)
+    width = _half_width(mass, tolerance, tolerance_unit)
     return mass - width, mass + width
 
 
-def within_tolerance(observed: float, theoretical: float, tolerance: float, *, unit: ToleranceUnit = "da") -> bool:
-    """Whether ``observed`` lies in ``tolerance_window(theoretical, tolerance, unit=unit)``,
+def within_tolerance(
+    observed: float, theoretical: float, tolerance: float, *, tolerance_unit: ToleranceUnit = "da"
+) -> bool:
+    """Whether ``observed`` lies in ``tolerance_window(theoretical, tolerance, tolerance_unit=tolerance_unit)``,
     bounds included: ``lo <= observed <= hi``.
 
-    ``unit="ppm"`` reads ``tolerance`` in ppm of ``abs(theoretical)``. Testing against the
+    ``tolerance_unit="ppm"`` reads ``tolerance`` in ppm of ``abs(theoretical)``. Testing against the
     window's bounds (not ``abs(observed - theoretical) <= width``) keeps the two functions
     consistent under float rounding: a value exactly at ``lo`` or ``hi`` is within.
 
     Raises:
-        TacularError: if ``unit`` is not ``"da"`` or ``"ppm"``, or any number is NaN or
+        TacularError: if ``tolerance_unit`` is not ``"da"`` or ``"ppm"``, or any number is NaN or
             infinite.
     """
     _require_finite(observed=observed)
-    lo, hi = tolerance_window(theoretical, tolerance, unit=unit)
+    lo, hi = tolerance_window(theoretical, tolerance, tolerance_unit=tolerance_unit)
     return lo <= observed <= hi

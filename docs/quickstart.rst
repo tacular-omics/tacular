@@ -211,13 +211,13 @@ Query modifications from various databases:
    print(f"Mods at mass 42.01 (tol=0.02, avg): {len(mods2)}")
 
    # Or in ppm of the queried mass
-   mods3 = t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=10, unit="ppm")
+   mods3 = t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=10, tolerance_unit="ppm")
    print(f"Mods within 10 ppm of 79.9663: {len(mods3)}")
 
    # The same tolerance maths as standalone helpers (tacular.tolerance)
    assert round(t.ppm_error(1000.01, 1000.0), 6) == 10.0
    assert t.tolerance_window(100.0, 0.5) == (99.5, 100.5)
-   assert t.within_tolerance(1000.005, 1000.0, 10, unit="ppm")
+   assert t.within_tolerance(1000.005, 1000.0, 10, tolerance_unit="ppm")
 
    # UniProt-PTM
    pser = t.UNIPROT_PTM_LOOKUP['Phosphoserine']

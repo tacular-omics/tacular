@@ -25,15 +25,18 @@ No other API changes; timings are indicative single-core numbers.
 
 ### Added
 
+- `tacular.types`: `Polarity = Literal["positive", "negative"]` (also exported from
+  `tacular`) and a re-export of `ToleranceUnit`, the shared vocabulary the other
+  packages import instead of defining their own.
 - `tacular.tolerance`, also exported from `tacular`: `ppm_error(observed, theoretical)`,
   `da_to_ppm(delta, mz)`, `ppm_to_da(delta_ppm, mz)`,
-  `tolerance_window(mass, tolerance, *, unit="da") -> (lo, hi)` and
-  `within_tolerance(observed, theoretical, tolerance, *, unit="da")`, plus the
+  `tolerance_window(mass, tolerance, *, tolerance_unit="da") -> (lo, hi)` and
+  `within_tolerance(observed, theoretical, tolerance, *, tolerance_unit="da")`, plus the
   `ToleranceUnit` alias. ppm is relative to `abs(mass)` (so unlike spxtacular's signed
   `da_to_ppm`, a negative m/z does not flip the sign). `within_tolerance` is
   `lo <= observed <= hi` on `tolerance_window`'s bounds. A zero denominator, a NaN or
   infinite input to the window functions, or a unit other than lowercase `"da"`/`"ppm"`
-  raises `TacularError`. `query_mass(unit=)` uses the same window. These can replace
+  raises `TacularError`. `query_mass(tolerance_unit=)` uses the same window. These can replace
   spxtacular's public `da_to_ppm`/`ppm_to_da` and peptacular's inline ppm arithmetic;
   tdfpy does not depend on tacular and keeps its own.
 - `tacular.labels`, also exported from `tacular`: `ISOBARIC_TAG_LOOKUP` (TMT 0/2/6/10/11,
@@ -52,9 +55,9 @@ No other API changes; timings are indicative single-core numbers.
 - Tests check that every UNIMOD and PSI-MOD entry's monoisotopic mass and composition
   match what unimodpy and psimodpy parse from the same OBO release. The two are
   dev-only dependencies; the test skips without them.
-- `OntologyLookup.query_mass(mass, *, tolerance=0.01, unit="da", monoisotopic=True)`:
-  `unit="ppm"` reads `tolerance` in parts per million of `mass` (same `unit: Literal["da", "ppm"]`
-  convention as paftacular). A NaN or infinite `mass`, or a NaN `tolerance`, returns `[]`; bounds are inclusive, exactly `within_tolerance`. An unknown `unit` raises `TacularError`.
+- `OntologyLookup.query_mass(mass, *, tolerance=0.01, tolerance_unit="da", monoisotopic=True)`:
+  `tolerance_unit="ppm"` reads `tolerance` in parts per million of `mass` (same `tolerance_unit: Literal["da", "ppm"]`
+  convention as paftacular). A NaN or infinite `mass`, or a NaN `tolerance`, returns `[]`; bounds are inclusive, exactly `within_tolerance`. An unknown `tolerance_unit` raises `TacularError`.
 
 - `tacular.TacularError` (a `ValueError`) and `tacular.TacularKeyError` (a
   `TacularError` that is also a `KeyError`), in `tacular.errors`.

@@ -227,17 +227,17 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
         mass: float,
         *,
         tolerance: float = 0.01,
-        unit: ToleranceUnit = "da",
+        tolerance_unit: ToleranceUnit = "da",
         monoisotopic: bool = True,
     ) -> list[T]:
         """Entries whose mass is within ``tolerance`` of ``mass`` (monoisotopic by
         default, else average), in data order.
 
-        ``unit="da"`` (default) reads ``tolerance`` in Da; ``unit="ppm"`` in parts per
+        ``tolerance_unit="da"`` (default) reads ``tolerance`` in Da; ``tolerance_unit="ppm"`` in parts per
         million of ``mass``, i.e. a window of ``abs(mass) * tolerance / 1e6`` Da.
 
         Raises:
-            TacularError: if ``unit`` is not ``"da"`` or ``"ppm"``.
+            TacularError: if ``tolerance_unit`` is not ``"da"`` or ``"ppm"``.
 
         Bisects a mass-sorted index (built on the first call) for the entries inside
         :func:`~tacular.tolerance_window` ``(lo, hi)``, bounds included, so a hit here is
@@ -246,7 +246,7 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
         an infinite ppm ``tolerance`` does too, except at ``mass == 0`` (``0 * inf`` is NaN),
         where it matches nothing.
         """
-        tolerance = _half_width(mass, tolerance, unit)  # validates unit; Da from here on
+        tolerance = _half_width(mass, tolerance, tolerance_unit)  # validates unit; Da from here on
         if not math.isfinite(mass) or tolerance != tolerance:
             return []
         index = self._mass_index(monoisotopic)
