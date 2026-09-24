@@ -56,24 +56,25 @@ class TestMonosaccharideLookupQueryMethods:
     """Test monosaccharide query methods"""
 
     def test_proforma_method(self):
-        """Test proforma() method"""
+        """Test query_name() method"""
         if len(list(db)) > 0:
             first_entry = next(iter(db))
-            result = db.proforma(first_entry.name)
+            result = db.query_name(first_entry.name)
             assert result is not None
             assert result.name.lower() == first_entry.name.lower()
 
     def test_proforma_not_found(self):
-        """Test proforma() with non-existent name raises KeyError"""
+        """query_name returns None for a non-existent name; [] raises KeyError"""
+        assert db.query_name("NonExistentMonosaccharide") is None
         with pytest.raises(KeyError):
-            db.proforma("NonExistentMonosaccharide")
+            db["NonExistentMonosaccharide"]
 
     def test_proforma_case_insensitive(self):
-        """Test proforma() is case insensitive"""
+        """Test query_name() is case insensitive"""
         if len(list(db)) > 0:
             first_entry = next(iter(db))
-            lower = db.proforma(first_entry.name.lower())
-            upper = db.proforma(first_entry.name.upper())
+            lower = db.query_name(first_entry.name.lower())
+            upper = db.query_name(first_entry.name.upper())
             assert lower is upper
 
 

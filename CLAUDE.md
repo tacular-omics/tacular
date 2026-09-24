@@ -54,7 +54,12 @@ lowest-direct resolution, and the built wheel.
 src/tacular/
   __init__.py         # re-exports every public name; holds __version__
   obo_entity.py       # OboEntity: shared base dataclass for ontology *Info classes
-  obo_lookup.py       # OntologyLookup: shared base class for the 6 ontology *Lookup classes
+  obo_lookup.py       # OntologyLookup: shared base class for the 6 ontology *Lookup classes;
+                      # _normalize_id is the ONE id normaliser for every ontology
+  _lookup.py          # _BaseLookup: [] / get / in / len / iter / keys / values / items for ALL 13 lookups
+  errors.py           # TacularError(ValueError), TacularKeyError(TacularError, KeyError)
+  constants.py        # PROTON_MASS, ELECTRON_MASS, NEUTRON_MASS, HYDROGEN_MASS, C13_C12_MASS_DIFF (cited)
+  _util.py            # _round (to_dict float rounding)
   _cache.py           # per-user cache resolution: lookups prefer a refreshed
                       # cache over the bundled data.py, if one exists
   _datagen/           # OBO/formula parsing logic -- the single source of truth,
@@ -116,41 +121,56 @@ on first query.
 `tacular update [names...]` downloads the sources and writes JSON to the cache;
 names are `unimod xlmod psimod resid gno uniprot_ptm`. With no names it refreshes
 **all six, including GNOme** (a ~129 MB download; it only prints a note).
-`tacular status` shows bundled vs cached versions, `tacular clear` reverts to bundled
-data, `tacular where` prints the cache dir. Refreshes take effect on the next import.
+`tacular status` shows bundled vs cached versions, `tacular clear` deletes cached data
+and downloaded sources (`obo/`), reverting to bundled data, `tacular where` prints the cache dir. Refreshes take effect on the next import.
 
 ## Public API
 
 Everything below is importable from `tacular` (all names in `__all__` were imported
 and checked). `import tacular as t` is the house style.
 
+- **Errors and constants**: `TacularError`, `TacularKeyError`, `tacular.constants`
+  (module, not in `__all__`).
+- **Every lookup** subclasses `_BaseLookup`: `lookup[key]` (raises `TacularKeyError`),
+  `.get(key, default)`, `in`, `len`, iteration over entries, `.keys()`, `.values()`, `.items()`.
 - **Ontology lookups** (`OntologyLookup` subclasses; `lookup[key]` tries name, then id;
-  `.query_id`, `.query_name`, `.query_mass(mass, tolerance=0.01, monoisotopic=True)`,
-  `.get`, `.choice`, `.values`, `.keys`, `.version`, `len`, `in`, iteration):
+  `.query_id`, `.query_name`, `.query_mass(mass, *, tolerance=0.01, monoisotopic=True)`,
+  `.choice(*, ...)`, `.version`; `.keys()` are raw ids):
   - `UNIMOD_LOOKUP`, `UnimodInfo`, `UnimodLookup` — UNIMOD
   - `PSIMOD_LOOKUP`, `PsimodInfo`, `PsimodLookup` — PSI-MOD
   - `RESID_LOOKUP`, `ResidInfo`, `ResidLookup` — RESID (derived from PSI-MOD; ids `AA0002`, prefix optional)
-  - `XLMOD_LOOKUP`, `XlModInfo`, `XlModLookup` — XLMOD cross-linkers
+  - `XLMOD_LOOKUP`, `XlmodInfo`, `XlmodLookup` — XLMOD cross-linkers
   - `GNO_LOOKUP`, `GnoInfo`, `GnoLookup` — GNOme glycans (ids `G00008BG`, prefix optional)
   - `UNIPROT_PTM_LOOKUP`, `UniprotPtmInfo`, `UniprotPtmLookup` — UniProt ptmlist; extra
     fields plus `.get_unimod()`, `.get_psimod()`, `.residue`, `.location`
   - `OboEntity` — base dataclass: `id, name, formula, monoisotopic_mass, average_mass,
-    dict_composition`, `.composition`, `.mass()` / `.get_mass()`, `.to_dict()`, `.from_dict()`, `.update()`, `.id_tag`
+    dict_composition`, `.composition`, `.get_mass(*, monoisotopic)`, `.to_dict(*, float_precision)`,
+    `.from_dict()`, `.update()`, `.id_tag`
 - **Amino acids**: `AA_LOOKUP`, `AALookup`, `AminoAcid` (enum A-Z incl. B J O U X Z),
   `AminoAcidInfo`, `AMINO_ACID_INFOS` (dict), `ORDERED_AMINO_ACIDS` (list); `AA_LOOKUP` also
-  has `.ordered_amino_acids`, `.ambiguous_amino_acids`, `.mass_amino_acids`, ... tuples
-- **Elements**: `ELEMENT_LOOKUP`, `ElementLookup`, `Element` (enum), `ElementInfo`,
+  has `.query_one_letter` / `.query_three_letter` / `.query_name` (return `None`),
+  `.get_mass(key, *, monoisotopic)`, `.composition(key)`, and `.ordered_amino_acids`,
+  `.ambiguous_amino_acids`, `.mass_amino_acids`, ... tuples
+- **Elements**: `ELEMENT_LOOKUP` (`.get_mass(key, *, monoisotopic)`), `ElementLookup`,
+  `ElementKey` (type alias), `Element` (enum), `ElementInfo`,
   `parse_composition` (`{"C": 2}` -> `{ElementInfo: 2}`)
 - **Fragment ions**: `FRAGMENT_ION_LOOKUP`, `FragmentIonLookup`, `FragmentIonInfo`,
   `IonType` (enum), `IonTypeLiteral`, `IonTypeProperty` (flag enum)
 - **Neutral deltas**: `NEUTRAL_DELTA_LOOKUP`, `NeutralDeltaLookup`, `NeutralDelta`,
   `NeutralDeltaInfo`, `NeutralDeltaLiteral`, `NEUTRAL_DELTA_DICT`
-- **Proteases**: `PROTEASE_LOOKUP`, `ProteaseLookup`, `Proteases`
-  (enum), `ProteaseInfo` (`.regex`, compiled `.pattern`), `PROTEASES_DICT`, `PROTEASE_LITERALS`
+- **Proteases**: `PROTEASE_LOOKUP`, `ProteaseLookup`, `Protease`
+  (enum), `ProteaseInfo` (`.regex`, compiled `.pattern` property), `PROTEASE_DICT`, `ProteaseLiteral`
 - **Monosaccharides**: `MONOSACCHARIDE_LOOKUP`, `MonosaccharideLookup`, `Monosaccharide`,
   `MonosaccharideInfo`
-- **mzPAF reference molecules**: `REFMOL_LOOKUP`, `RefMolLookup`, `RefMolID`, `RefMolInfo`,
-  `RefMolLiteral`
+- **mzPAF reference molecules**: `REFMOL_LOOKUP`, `RefMolLookup`, `RefMolID`, `RefMolInfo`
+  (`.formula`), `RefMolLiteral`
+
+Removed in 2.0 (see `docs/migration.rst`): no aliases are kept for renamed names. Every
+public module has an explicit `__all__`; generated `data.py` modules are internal and have
+none. `*Info` dataclasses are `frozen=True, slots=True`; cached derived values live in
+`field(init=False, repr=False, compare=False)` fields set in `__post_init__` with
+`object.__setattr__` (zero-arg `super()` breaks under `slots=True`, and `cached_property`
+needs `__dict__`).
 
 ## Conventions
 
@@ -161,8 +181,13 @@ and checked). `import tacular as t` is the house style.
 - **Typing**: fully typed, `py.typed` shipped, Python >= 3.12 (PEP 695 generics like
   `OntologyLookup[T: OboEntity]`). Ruff line length 120; `**/data.py` is excluded from
   ruff.
-- **Errors**: `lookup[key]` raises `KeyError` naming the ontology and key; `.get()` and
-  `.query_*()` return `None`.
+- **Errors**: raise `TacularError` (from `tacular.errors`) for bad input and
+  `TacularKeyError` for a lookup miss, never a bare `ValueError`/`KeyError`/`TypeError`.
+  `.get()`, `in` and `.query_*()` never raise; they return `None`/`False`.
+- **Options are keyword-only**: `get_mass(*, monoisotopic=True)`,
+  `to_dict(*, float_precision=6)` (`None` = no rounding). New physical constants go in
+  `constants.py` with a cited source; never hard-code a proton/neutron mass elsewhere
+  (`data_gen/generator/constants.py` re-exports `tacular.constants.PROTON_MASS`).
 - **Logging**:
   - The `_datagen/*.py` builders log a `logger.warning(..., exc_info=True)` when an
     individual entry can't be parsed (bad formula, unknown symbol, etc.) — the
@@ -212,15 +237,17 @@ and checked). `import tacular as t` is the house style.
   (e.g. `13C`) from `composition`/`formula` while still summing them into
   `monoisotopic_mass`. This produced no test failures for months. When editing a
   parser, check that
-  `sum(ELEMENT_LOOKUP.mass(sym, monoisotopic=True) * n for sym, n in info.dict_composition.items())`
+  `sum(ELEMENT_LOOKUP.get_mass(sym) * n for sym, n in info.dict_composition.items())`
   equals `info.monoisotopic_mass` within ~0.01 Da (isotope keys like `"13C"` resolve
   directly in `ELEMENT_LOOKUP`).
 - **Don't trust "this generator's output looks unchanged" from eyeballing a diff.**
   Regenerated `data.py` files are large; verify via the `build()` vs `jsons/*.json`
   id-for-id comparison, not a visual scan.
-- **Id queries strip only the ontology's own accession prefix** (`_accession_prefix` on each
-  `*Lookup`: `UNIMOD:`, `MOD:`, `XLMOD:`, `RESID:`, `GNO:`, `PTM-`), then RESID `AA` / GNO `G`,
-  then leading zeros. `UNIMOD_LOOKUP["MOD:00046"]` still raises `KeyError`.
+- **Id queries strip only the ontology's own accession prefixes** (`accession_prefixes=` on
+  each `*Lookup`: `UNIMOD:`/`U:`, `MOD:`/`M:`, `XLMOD:`/`X:`, `RESID:`/`R:`, `GNO:`/`G:`,
+  `PTM-`), then RESID `AA` / GNO `G` (`id_prefix=`), then leading zeros, all in
+  `obo_lookup._normalize_id`. Names accept the same prefixes (`U:Phospho`).
+  `UNIMOD_LOOKUP["MOD:00046"]` still raises `TacularKeyError`.
 - **Name lookups are case-insensitive** (`"oxidation"` works) and `lookup[key]` tries the
   name before the id.
 - **`NeutralDeltaInfo` masses are signed losses** (`H2O` is -18.0106); fragment-ion

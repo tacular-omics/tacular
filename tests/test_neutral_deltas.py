@@ -184,7 +184,8 @@ class TestNeutralDeltaMethods:
         assert "amino_acids" in d
         assert "monoisotopic_mass" in d
         assert "average_mass" in d
-        assert "dict_composition" in d
+        assert "composition" in d
+        assert "dict_composition" not in d
 
     def test_hash(self):
         """Test __hash__ for use in sets/dicts"""

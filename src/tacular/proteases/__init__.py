@@ -1,14 +1,14 @@
 """Protease lookups (``PROTEASE_LOOKUP``): query digestion enzymes by id or name."""
 
-from .data import PROTEASE_LITERALS, PROTEASES_DICT, Proteases
+from .data import PROTEASE_DICT, Protease, ProteaseLiteral
 from .dclass import ProteaseInfo
 from .lookup import PROTEASE_LOOKUP, ProteaseLookup
 
 __all__ = [
-    "Proteases",
-    "PROTEASE_LITERALS",
+    "Protease",
+    "ProteaseLiteral",
     "ProteaseInfo",
-    "PROTEASES_DICT",
+    "PROTEASE_DICT",
     "PROTEASE_LOOKUP",
     "ProteaseLookup",
 ]

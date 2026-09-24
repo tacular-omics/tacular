@@ -6,6 +6,8 @@ from dataclasses import dataclass
 
 from ..obo_entity import OboEntity
 
+__all__ = ["MonosaccharideInfo"]
+
 
 @dataclass(frozen=True, slots=True)
 class MonosaccharideInfo(OboEntity):

@@ -1,412 +1,197 @@
-"""``ELEMENT_LOOKUP``: the periodic-table + isotope lookup every other ontology's
-mass/composition math is built on. Accepts flexible keys -- a bare symbol (``"C"``,
-most abundant isotope), an isotope string (``"13C"``), or a ``(symbol, mass_number)``
-tuple -- see :func:`_handle_key_input` and :meth:`ElementLookup.__getitem__`.
+"""``ELEMENT_LOOKUP``: the periodic-table + isotope lookup every other data type's
+mass/composition math is built on.
+
+Accepts flexible keys: a bare symbol (``"C"``, the element with its average mass
+and most abundant isotope's mass), an isotope string (``"13C"``, ``"D"``), an
+:class:`Element`, or a ``(symbol, mass_number)`` tuple.
 """
 
-from collections.abc import Iterator, Mapping
+from collections import Counter
+from collections.abc import Mapping
+from functools import cache
 
+from .._lookup import _BaseLookup
+from ..errors import TacularKeyError
 from .data import ISOTOPES, Element
 from .dclass import ElementInfo
 
+__all__ = ["ELEMENT_LOOKUP", "ElementKey", "ElementLookup", "parse_composition"]
 
-class _ElementKeyTypeError(KeyError, TypeError):
-    """Raised by ``ELEMENT_LOOKUP[key]`` for a key of an unsupported type.
+type ElementKey = tuple[str | Element, int | None] | str | Element
+"""Any key :class:`ElementLookup` accepts."""
 
-    A ``KeyError`` (not found, like every other lookup) that is also a
-    ``TypeError``, which is what tacular raised before 1.2.0.
+_HYDROGEN_ALIASES = {"D": 2, "T": 3}
+
+
+def _to_element(symbol: str) -> Element:
+    try:
+        return Element(symbol)
+    except ValueError:
+        raise TacularKeyError(f"{symbol!r} is not an element symbol.") from None
+
+
+def _parse_key(key: object) -> tuple[Element, int | None]:
+    """Parse any accepted key into ``(Element, mass_number)``; ``mass_number`` is
+    ``None`` for the element as a whole.
+
+    Raises:
+        TacularKeyError: for a malformed key, an unknown symbol, or an unsupported type.
     """
+    if isinstance(key, Element):
+        return key, None
 
-
-def _handle_key_input(
-    key: tuple[str | Element, int | None] | str | Element,
-) -> tuple[Element, int | None]:
-    """Helper to parse various key formats into (symbol, mass_number)"""
     if isinstance(key, tuple):
         if len(key) != 2:
-            raise ValueError(f"Tuple key must have exactly 2 elements, got {len(key)}")
+            raise TacularKeyError(f"Element key tuple must be (symbol, mass_number), got {key!r}.")
         symbol, mass_number = key
-
-        if not isinstance(symbol, (str, Element)):
-            raise TypeError(f"Symbol must be str or Element, got {type(symbol).__name__}")
+        if not isinstance(symbol, str) or isinstance(mass_number, bool):
+            raise TacularKeyError(f"Element key tuple must be (str, int | None), got {key!r}.")
         if mass_number is not None and not isinstance(mass_number, int):
-            raise TypeError(f"Mass number must be int or None, got {type(mass_number).__name__}")
-
-        if symbol == "D":
-            symbol = "H"
-            if mass_number is None:
-                mass_number = 2
-            if mass_number != 2:
-                raise ValueError("Deuterium 'D' must have mass number 2")
-        elif symbol == "T":
-            symbol = "H"
-            if mass_number is None:
-                mass_number = 3
-            if mass_number != 3:
-                raise ValueError("Tritium 'T' must have mass number 3")
-
-        if isinstance(symbol, str):
-            try:
-                symbol = Element(symbol)
-            except ValueError as e:
-                raise KeyError(f"Symbol '{symbol}' is not a valid Element") from e
-
-        return (symbol, mass_number)
+            raise TacularKeyError(f"Element key tuple must be (str, int | None), got {key!r}.")
     elif isinstance(key, str):
-        if not key:
-            raise ValueError("Element key cannot be empty string")
-
-        # Get digits prefix if present
-        if key[0].isdigit():
-            mass_number_str = ""
-            i = 0
-            while i < len(key) and key[i].isdigit():
-                mass_number_str += key[i]
-                i += 1
-            if i >= len(key):
-                raise ValueError(f"Invalid isotope notation: '{key}' - no element symbol found")
-            mass_number = int(mass_number_str)
-            symbol_str = key[i:]
-            if not symbol_str[0].isupper():
-                raise ValueError(f"Invalid element symbol in '{key}' - must start with uppercase")
-
-            if symbol_str == "D":
-                symbol_str = "H"
-                if mass_number != 2:
-                    raise ValueError("Deuterium 'D' must have mass number 2")
-            elif symbol_str == "T":
-                symbol_str = "H"
-                if mass_number != 3:
-                    raise ValueError("Tritium 'T' must have mass number 3")
-
-            try:
-                symbol = Element(symbol_str)
-            except ValueError as e:
-                raise KeyError(f"Symbol '{symbol_str}' is not a valid Element") from e
-
-            return (symbol, mass_number)
-        else:
-            # No digit prefix - just element symbol
-            if not key[0].isupper():
-                raise ValueError(f"Element symbol must start with uppercase: '{key}'")
-            mass_number = None
-            symbol_str = key
-            if symbol_str == "D":
-                symbol_str = "H"
-                mass_number = 2
-            elif symbol_str == "T":
-                symbol_str = "H"
-                mass_number = 3
-
-            try:
-                symbol = Element(symbol_str)
-            except ValueError as e:
-                raise KeyError(f"Symbol '{symbol_str}' is not a valid Element") from e
-
-            return (symbol, mass_number)
-
-    elif isinstance(key, Element):
-        return (key, None)
-
+        digits = len(key) - len(key.lstrip("0123456789"))
+        symbol = key[digits:]
+        if not symbol:
+            raise TacularKeyError(f"Element key {key!r} has no element symbol.")
+        if key.startswith("0"):
+            raise TacularKeyError(f"Element key {key!r} has a leading zero in its mass number.")
+        mass_number = int(key[:digits]) if digits else None
     else:
-        raise _ElementKeyTypeError(
-            f"Key must be tuple[str|Element, int|None] or str or Element, got {type(key).__name__}"
-        )
+        raise TacularKeyError(f"Element key {key!r} must be a str, Element or (symbol, mass_number) tuple.")
+
+    if symbol in _HYDROGEN_ALIASES:
+        implied = _HYDROGEN_ALIASES[symbol]
+        if mass_number is not None and mass_number != implied:
+            raise TacularKeyError(f"{symbol!r} is hydrogen-{implied}; got mass number {mass_number}.")
+        return Element.H, implied
+    return _to_element(symbol), mass_number
 
 
-class ElementLookup:
+class ElementLookup(_BaseLookup[ElementKey, tuple[Element, int | None], ElementInfo]):
+    """Element and isotope lookup (singleton ``ELEMENT_LOOKUP``).
+
+    Key formats:
+
+    - ``"C"``, ``Element.C`` or ``("C", None)``: carbon as an element (``mass`` is
+      the most abundant isotope's, ``average_mass`` the natural average)
+    - ``"13C"`` or ``("C", 13)``: carbon-13
+    - ``"D"`` / ``"2H"`` and ``"T"`` / ``"3H"``: deuterium and tritium
+
+    Symbols are case-sensitive (``"c"`` does not match). Only isotopes in the bundled
+    data resolve. ``lookup[key]`` raises :class:`~tacular.TacularKeyError` for an
+    unknown, malformed or wrongly typed key; ``get`` and ``in`` never raise.
+    :meth:`keys` are ``(Element, mass_number)`` tuples, ``mass_number`` ``None`` for
+    the element entry.
     """
-    Lookup class for element isotope data.
 
-    Supports multiple lookup formats:
-    - ('C', 12) -> Carbon-12
-    - ('C', None) -> Most abundant carbon isotope (monoisotopic)
-    - 'C' -> Most abundant carbon isotope
-    - '13C' -> Carbon-13
-    - 'D' -> Deuterium (2H)
-    - '2H' -> Deuterium
-    - 'T' -> Tritium (3H)
+    _kind = "Element"
 
-    Only isotopes present in the bundled data resolve; missing isotopes are
-    not generated. ``lookup[key]`` raises ``KeyError`` for an unknown element
-    or isotope (or a key of an unsupported type) and ``ValueError`` for a
-    malformed key such as ``"c"`` or ``"13"``. ``get`` returns its default and
-    ``in`` returns ``False`` in all of those cases.
+    def __init__(self, element_data: Mapping[tuple[Element, int | None], ElementInfo]) -> None:
+        """Wrap ``element_data``, keyed by ``(Element, mass_number)`` (``None`` for the element)."""
+        self._data: dict[tuple[Element, int | None], ElementInfo] = dict(element_data)
 
-    The underlying data structure is a dict with keys: tuple[str, int | None]
-    where the second element is the mass number, or None for monoisotopic.
-    """
+    def _entries(self) -> Mapping[tuple[Element, int | None], ElementInfo]:
+        return self._data
 
-    # Neutron mass in Daltons
-    NEUTRON_MASS = 1.00866491595
+    def _resolve(self, key: object) -> ElementInfo | None:
+        return self._data.get(_parse_key(key))
 
-    def __init__(self, element_data: dict[tuple[Element, int | None], ElementInfo]) -> None:
-        """
-        Initialize the element lookup.
-
-        Args:
-            element_data: Dictionary with keys (symbol, mass_number) where mass_number
-                         can be None to indicate the monoisotopic (most abundant) isotope.
-        """
-        self.element_data: dict[tuple[Element, int | None], ElementInfo] = element_data
-
-    def __getitem__(self, key: tuple[str | Element, int | None] | str | Element) -> ElementInfo:
-        """
-        Get element info by various key formats.
-
-        Args:
-            key: Either:
-                - tuple (symbol, mass_number): e.g., ('C', 12), ('C', None)
-                - str with mass prefix: e.g., '13C', '2H'
-                - str symbol only: e.g., 'C', 'D', 'T' (returns monoisotopic)
-
-        Returns:
-            ElementInfo for the requested isotope
-
-        Raises:
-            KeyError: If the element or isotope is not in the data, or ``key`` is
-                not a str, Element or tuple (that error is also a ``TypeError``).
-            ValueError: If the key format is invalid (e.g. ``"c"``, ``"13"``, ``""``)
-        """
-        # Use lazy error handling - try to parse, only validate on exception
-        symbol, mass_number = _handle_key_input(key)
-
-        lookup_key = (symbol, mass_number)
-
-        # Check if it exists
-        if lookup_key in self.element_data:
-            return self.element_data[lookup_key]
-
-        raise KeyError(f"Isotope {symbol}-{mass_number} not found in ElementLookup")
-
-    def _get_available_for_symbol(self, symbol: str | Element) -> list[int | None]:
-        """Helper to get available mass numbers for an element symbol."""
-        if isinstance(symbol, str):
-            symbol = Element(symbol)
-
-        available = [mass for (sym, mass) in self.element_data.keys() if sym == symbol]
-        if not available:
-            return []
-        return sorted(
-            available,
-            key=lambda x: (
-                x is None,
-                x if x is not None else 0,
-            ),  # None comes first, then sorted by mass
-        )
-
-    def __contains__(self, key: tuple[str | Element, int | None] | str | Element) -> bool:
-        """
-        Check if an element/isotope exists in the lookup.
-
-        Never raises: malformed keys and keys of other types return ``False``.
-        """
-        try:
-            symbol, mass_number = _handle_key_input(key)
-            lookup_key = (symbol, mass_number)
-            return lookup_key in self.element_data
-        except (ValueError, TypeError, IndexError, KeyError):
-            return False
-
-    def __len__(self) -> int:
-        """Return number of entries in the lookup."""
-        return len(self.element_data)
+    def _miss_message(self, key: object) -> str:
+        return f"Isotope {key!r} is not in the element data."
 
     def __repr__(self) -> str:
-        """String representation of the lookup."""
-        n_elements = len({sym for sym, _ in self.element_data.keys()})
-        return f"ElementLookup({len(self.element_data)} entries, {n_elements} elements)"
+        """E.g. ``"<ElementLookup: 406 entries, 118 elements>"``."""
+        return f"<ElementLookup: {len(self._data)} entries, {len(self.get_elements())} elements>"
 
     def get_monoisotopic(self, symbol: str | Element) -> ElementInfo:
+        """The most abundant isotope of ``symbol`` (e.g. ``"C"`` -> 12C).
+
+        Raises:
+            TacularKeyError: if ``symbol`` is not an element with a most abundant isotope.
         """
-        Get the most abundant (monoisotopic) isotope for an element.
-
-        Args:
-            symbol: Element symbol (e.g., 'C', 'H', 'N')
-
-        Returns:
-            ElementInfo for the most abundant isotope
-        """
-
         for info in self.get_all_isotopes(symbol):
             if info.is_monoisotopic:
                 return info
-
-        raise KeyError(f"Monoisotopic isotope for '{symbol}' not found")
+        raise TacularKeyError(f"No most abundant isotope for {symbol!r}.")
 
     def get_isotope(self, symbol: str | Element, mass_number: int) -> ElementInfo:
-        """
-        Get a specific isotope by symbol and mass number.
-
-        Args:
-            symbol: Element symbol (e.g., 'C', 'H')
-            mass_number: Mass number (e.g., 13, 2)
-
-        Returns:
-            ElementInfo for the requested isotope
+        """The isotope ``symbol``-``mass_number`` (e.g. ``("C", 13)``).
 
         Raises:
-            KeyError: if the element or isotope is not in the data.
-            ValueError: if ``mass_number`` is ``None``.
+            TacularKeyError: if the element or isotope is not in the data.
         """
-        if mass_number is None:
-            raise ValueError("Mass number cannot be None for get_isotope()")
-        try:
-            element_symbol = Element(symbol) if isinstance(symbol, str) else symbol
-            lookup_key: tuple[Element, int] = (element_symbol, mass_number)
-        except ValueError as e:
-            raise KeyError(f"Invalid element key: {symbol}-{mass_number}") from e
-        if lookup_key not in self.element_data:
-            raise KeyError(f"Isotope {symbol}-{mass_number} not found")
-        return self.element_data[lookup_key]
+        if not isinstance(mass_number, int) or isinstance(mass_number, bool):
+            raise TacularKeyError(f"mass_number must be an int, got {mass_number!r}.")
+        return self[(symbol, mass_number)]
 
     def get_all_isotopes(self, symbol: str | Element) -> list[ElementInfo]:
+        """All isotopes of ``symbol`` (not the element entry), sorted by mass number.
+
+        Raises:
+            TacularKeyError: if ``symbol`` is not an element symbol or has no isotopes.
         """
-        Get all isotopes for an element symbol (excluding the None entry).
-
-        Args:
-            symbol: Element symbol (e.g., 'C', 'H')
-
-        Returns:
-            List of ElementInfo for all isotopes, sorted by mass number
-
-        """
-        if isinstance(symbol, str):
-            try:
-                symbol = Element(symbol)
-            except ValueError as e:
-                raise KeyError(f"Invalid element symbol '{symbol}'") from e
-
-        isotopes: list[ElementInfo] = [
-            elem for (sym, mass_number), elem in self.element_data.items() if sym == symbol and mass_number is not None
-        ]
-
+        element = symbol if isinstance(symbol, Element) else _to_element(symbol)
+        isotopes = [info for (sym, mn), info in self._data.items() if sym == element and mn is not None]
         if not isotopes:
-            raise KeyError(f"No isotopes found for element '{symbol}'")
-
-        return sorted(isotopes, key=lambda x: x.mass_number)
+            raise TacularKeyError(f"No isotopes for element {symbol!r}.")
+        return sorted(isotopes, key=lambda info: info.mass_number or 0)
 
     def get_elements(self) -> list[str]:
+        """Sorted unique element symbols in the lookup."""
+        return sorted({str(sym) for sym, _ in self._data})
+
+    def get_mass(self, key: ElementKey, *, monoisotopic: bool = True) -> float:
+        """Mass of an element or isotope in Da.
+
+        A specific isotope (``"13C"``, ``("C", 13)``) always returns its exact mass;
+        ``monoisotopic`` only applies to an element key (``"C"``): the most abundant
+        isotope's mass (default) or the natural average mass.
+
+        Raises:
+            TacularKeyError: if ``key`` does not resolve.
         """
-        Get list of all element symbols in the lookup.
-
-        Returns:
-            Sorted list of unique element symbols
-
-        """
-        return sorted({sym for sym, _ in self.element_data.keys()})
-
-    def mass(
-        self,
-        key: tuple[str | Element, int | None] | str | Element,
-        monoisotopic: bool = True,
-    ) -> float:
-        """
-        Get the mass for an element/isotope.
-
-        IMPORTANT: If a specific isotope is provided (e.g., '13C', ('C', 13)),
-        always returns the exact isotope mass regardless of monoisotopic parameter.
-        The monoisotopic parameter only applies when requesting by symbol alone (e.g., 'C').
-
-        Args:
-            key: Element key (same formats as __getitem__)
-            monoisotopic: Only applies when key is a symbol without mass number.
-                         If True, return monoisotopic mass.
-                         If False, return average mass.
-
-        Returns:
-            Mass in Daltons
-        """
-        # Parse the key to determine if specific isotope was requested
-        _, mass_number = _handle_key_input(key)
-        elem = self[key]
-
-        # If a specific isotope was requested (mass_number is not None),
-        # ALWAYS return the exact isotope mass
-        if mass_number is not None:
-            return elem.mass
-
-        # Only symbol was provided - respect the monoisotopic parameter
-        if monoisotopic:
-            return elem.mass
-        else:
-            return elem.average_mass
+        info = self[key]
+        if info.mass_number is not None:
+            return info.mass
+        return info.get_mass(monoisotopic=monoisotopic)
 
     def get_neutron_offsets_and_abundances(self, key: str | Element | ElementInfo) -> list[tuple[int, float]]:
         """All isotopes of the element ``key``, as ``(neutron_offset, abundance)`` pairs.
 
-        ``neutron_offset`` is relative to the monoisotopic (most abundant) isotope,
-        e.g. ``0`` for ``12C``, ``1`` for ``13C``. Useful for isotope envelope
-        calculations that need offsets rather than absolute mass numbers.
+        ``neutron_offset`` is relative to the most abundant isotope, e.g. ``0`` for
+        12C and ``1`` for 13C. Isotopes with no natural abundance report ``0.0``.
         """
-        if isinstance(key, ElementInfo):
-            key = key.symbol
-
-        isotopes = self.get_all_isotopes(key)
-        mono_isotope = self.get_monoisotopic(key)
-        result: list[tuple[int, float]] = []
-        for iso in isotopes:
-            neutron_offset = iso.neutron_count - mono_isotope.neutron_count
-            result.append((neutron_offset, iso.abundance))  # type: ignore
-        return result
+        symbol = key.symbol if isinstance(key, ElementInfo) else key
+        mono = self.get_monoisotopic(symbol)
+        return [(iso.neutron_count - mono.neutron_count, iso.abundance or 0.0) for iso in self.get_all_isotopes(symbol)]
 
     def get_masses_and_abundances(self, key: str | Element | ElementInfo) -> list[tuple[float, float]]:
-        """All isotopes of the element ``key``, as ``(mass, abundance)`` pairs."""
-        if isinstance(key, ElementInfo):
-            key = key.symbol
-
-        isotopes = self.get_all_isotopes(key)
-        result: list[tuple[float, float]] = []
-        for iso in isotopes:
-            result.append((iso.mass, iso.abundance))  # type: ignore
-        return result
-
-    def values(self) -> list[ElementInfo]:
-        """Get an iterable of all ElementInfo values in the lookup."""
-        return list(self.element_data.values())
-
-    def keys(self) -> list[tuple[Element, int | None]]:
-        """All ``(Element, mass_number)`` keys; ``mass_number`` is ``None`` for
-        the element's default (most abundant) entry."""
-        return list(self.element_data.keys())
-
-    def __iter__(self) -> Iterator[ElementInfo]:
-        """Iterator over all ElementInfo entries in the lookup."""
-        return iter(self.element_data.values())
-
-    def get(
-        self, key: tuple[str | Element, int | None] | str | Element, default: ElementInfo | None = None
-    ) -> ElementInfo | None:
-        """
-        Get element info by key, or return default if not found.
-
-        Args:
-            key: Key in various formats (see __getitem__)
-            default: Value to return if key is not found
-
-        Returns:
-            ElementInfo, or ``default`` if the key is not found, malformed
-            (e.g. ``"c"``), or of an unsupported type (e.g. ``None``)
-        """
-        try:
-            return self[key]
-        except (KeyError, ValueError, TypeError):
-            return default
+        """All isotopes of the element ``key``, as ``(mass, abundance)`` pairs
+        (``0.0`` abundance for isotopes with no natural abundance)."""
+        symbol = key.symbol if isinstance(key, ElementInfo) else key
+        return [(iso.mass, iso.abundance or 0.0) for iso in self.get_all_isotopes(symbol)]
 
 
-# Create the global lookup instance
 ELEMENT_LOOKUP = ElementLookup(ISOTOPES)
 
 
-# {'C13': 10, 'H2': 5, 'O18': 8} -> {ElementInfo(...), 10, ElementInfo(...), 5, ElementInfo(...), 8}
 def parse_composition(comp_dict: Mapping[str, int]) -> dict[ElementInfo, int]:
-    """
-    Parse a composition dictionary with string keys into ElementInfo keys.
-    """
-    parsed_comp: dict[ElementInfo, int] = {}
+    """Resolve a composition keyed by strings (``{"C": 2, "13C": 1}``) to one keyed by
+    :class:`ElementInfo`.
 
-    for elem_key, count in comp_dict.items():
-        elem_info = ELEMENT_LOOKUP[elem_key]
-        parsed_comp[elem_info] = count
+    Raises:
+        TacularKeyError: if a key is not an element or isotope in the data.
+    """
+    return {ELEMENT_LOOKUP[elem_key]: count for elem_key, count in comp_dict.items()}
 
-    return parsed_comp
+
+@cache
+def _cached_composition(items: tuple[tuple[str, int], ...]) -> Counter[ElementInfo]:
+    """Resolved composition for ``items`` (sorted ``(symbol, count)`` pairs), cached
+    module-wide so frozen ``*Info`` dataclasses need no cache field. Callers must copy."""
+    return Counter(parse_composition(dict(items)))
+
+
+def _composition_copy(dict_composition: Mapping[str, int]) -> Counter[ElementInfo]:
+    """A fresh ``Counter`` of the resolved ``dict_composition`` (cached underneath)."""
+    return Counter(_cached_composition(tuple(sorted(dict_composition.items()))))

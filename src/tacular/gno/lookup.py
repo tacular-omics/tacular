@@ -1,26 +1,30 @@
-"""``GnoLookup`` (singleton ``GNO_LOOKUP``): id/name/mass lookup over the GNO ontology."""
+"""``GnoLookup`` (singleton ``GNO_LOOKUP``): id/name/mass lookup over the GNOme glycan ontology."""
 
 from .._cache import resolve
 from ..obo_lookup import OntologyLookup
 from .data import GNO_GLYCANS, VERSION
 from .dclass import GnoInfo
 
+__all__ = ["GNO_LOOKUP", "GnoLookup"]
+
 
 class GnoLookup(OntologyLookup[GnoInfo]):
-    """GNOme lookup (singleton ``GNO_LOOKUP``): query by a name, ``"G00008BG"`` or ``"GNO:G00008BG"``.
+    """GNO lookup (singleton ``GNO_LOOKUP``).
+
+    Query by a name, ``"G00008BG"``, ``"GNO:G00008BG"`` or ``"G:G00008BG"``.
 
     See :class:`~tacular.OntologyLookup` for the full query API. ``lookup[key]``
-    raises ``KeyError`` if nothing matches; ``get``/``in`` never raise.
+    raises :class:`~tacular.TacularKeyError` if nothing matches; ``get``/``in`` never raise.
     """
 
     def __init__(self, data: dict[str, GnoInfo], version: str) -> None:
-        """Wrap `data` in an `OntologyLookup` for GNO, stripping the "GNO:" accession and "G" id prefixes."""
+        """Wrap ``data`` (entries keyed by raw id) in an :class:`~tacular.OntologyLookup` for GNO."""
         super().__init__(
-            data=data,
-            ontology_name="GNO",
-            _version=version,
-            _accession_prefix="GNO:",
-            _id_prefix="G",
+            data,
+            "GNO",
+            version=version,
+            accession_prefixes=("GNO:", "G:"),
+            id_prefix="G",
         )
 
 

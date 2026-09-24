@@ -2,6 +2,88 @@
 
 ## [Unreleased]
 
+Breaking API cleanup for 2.0.0. The bundled data is unchanged. Every old -> new name is
+in [docs/migration.rst](docs/migration.rst).
+
+### Added
+
+- `tacular.TacularError` (a `ValueError`) and `tacular.TacularKeyError` (a
+  `TacularError` that is also a `KeyError`), in `tacular.errors`.
+- `tacular.constants`: `PROTON_MASS`, `ELECTRON_MASS`, `NEUTRON_MASS` (CODATA 2018),
+  `HYDROGEN_MASS` and `C13_C12_MASS_DIFF` (AME2016 via NIST, the bundled isotope table).
+  The data generators use them too.
+- `items()` on every lookup; `MONOSACCHARIDE_LOOKUP.query_name`;
+  `AA_LOOKUP.query_one_letter` / `query_three_letter` / `query_name` are public.
+- Short accession prefixes on every ontology (`U:21`, `M:00046`, `R:AA0002`,
+  `X:01000`, `G:G00008BG`), also in front of names (`U:Phospho`). All six ontologies use
+  one id normaliser.
+- `tacular.ElementKey`, the type of every key `ELEMENT_LOOKUP` accepts.
+- `ElementInfo.to_dict()` includes `is_monoisotopic`; `AminoAcidInfo.to_dict()`
+  includes `is_mass_ambiguous` and `is_ambiguous`.
+- Docs: `docs/migration.rst` (old -> new table); errors and constants in the API reference.
+
+### Removed
+
+- `OboEntity.mass()` and `MonosaccharideInfo.mass()`: use `get_mass(monoisotopic=...)`.
+- `ELEMENT_LOOKUP.mass()` and `AA_LOOKUP.mass()`: use `get_mass(key, monoisotopic=...)`.
+- `AA_LOOKUP.one_letter()`, `three_letter()`, `name()`: use `AA_LOOKUP[key]` or the
+  `query_*` methods.
+- `MONOSACCHARIDE_LOOKUP.proforma()`: use `MONOSACCHARIDE_LOOKUP[name]`.
+- Public index dicts: `AA_LOOKUP.one_letter_to_info` / `three_letter_to_info` /
+  `name_to_info`, `PROTEASE_LOOKUP.name_to_info` / `id_to_info`,
+  `MONOSACCHARIDE_LOOKUP.proforma_to_monosaccharide`, `ELEMENT_LOOKUP.element_data`.
+- `ElementLookup.NEUTRON_MASS`: use `tacular.constants.NEUTRON_MASS`.
+- `OntologyLookup.strip_id()`, `convert_key()` and `__str__`; `obo_entity.filter_infos()`.
+- `tacular.update.OBO_SOURCES` and `ONTOLOGIES` (now private).
+
+### Changed
+
+- Renamed: `Proteases` -> `Protease`, `PROTEASE_LITERALS` -> `ProteaseLiteral`,
+  `PROTEASES_DICT` -> `PROTEASE_DICT`, `XlModInfo` -> `XlmodInfo`,
+  `XlModLookup` -> `XlmodLookup`, `RefMolInfo.chemical_formula` -> `formula` (field and
+  `to_dict` key), `NeutralDeltaInfo.to_dict()["dict_composition"]` -> `"composition"`.
+- Errors: `lookup[key]` raises `TacularKeyError` for every miss, malformed key or wrong
+  key type (an `ELEMENT_LOOKUP` tuple key such as `("C", "x")` raised `TypeError`).
+  Missing masses/compositions, `choice()` with no match, duplicate ids/names and an
+  unknown ontology in `update` raise `TacularError`. Both are `ValueError`s, so
+  existing `except KeyError` / `except ValueError` handlers still catch them.
+- Keyword-only options: `get_mass(*, monoisotopic)`, `to_dict(*, float_precision)`,
+  `OntologyLookup.query_mass(mass, *, tolerance, monoisotopic)`,
+  `OntologyLookup.choice(*, ...)` and the `OntologyLookup` constructor after
+  `ontology_name`.
+- Every lookup shares one base, so `get(key, default)`, `[]`, `in`, `len`, iteration,
+  `keys()`, `values()` and `items()` behave the same everywhere.
+- `OntologyLookup.keys()` (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM) returns
+  the raw accession ids (`"21"`, `"00046"`), the keys `items()` pairs with each entry.
+  1.2.0 returned the lowercased names; use `[info.name for info in lookup.values()]`
+  for those.
+- `update(**changes)` on ontology entries (`OboEntity` and every subclass) is
+  `dataclasses.replace`: an unknown keyword raises `TypeError` (1.2.0 ignored it), and
+  subclass fields are kept. The `UniprotPtmInfo.update` override, which rebuilt the
+  entry from a fixed field list, is gone.
+- `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo`, `ProteaseInfo` and
+  `RefMolInfo` are frozen, slotted dataclasses (no instance `__dict__`).
+- `NeutralDeltaInfo.to_dict()["amino_acids"]` is sorted, so
+  `jsons/neutral_losses.json` is deterministic.
+- `ElementLookup.get_neutron_offsets_and_abundances` / `get_masses_and_abundances` are
+  typed `float` for the abundance without a `type: ignore`. Values are unchanged: only
+  whole-element entries have `abundance=None`, and these helpers return isotopes only.
+- Fixed: `FragmentIonInfo.ion_type` resolves a string id (`"y"`) to its `IonType`
+  (it looked the id up as an enum member name and raised `KeyError`).
+- Every public module has an explicit `__all__`, including the 13 generated
+  `tacular.*.data` modules (emitted by the `data_gen` generators).
+- `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo` and `RefMolInfo` no longer
+  carry a hidden composition cache field, so `dataclasses.asdict`, `pickle` and
+  `dataclasses.replace` work on them (`asdict` raised `TypeError`). `composition` is
+  cached per distinct `dict_composition` at module level.
+- `ELEMENT_LOOKUP` rejects an isotope mass number with a leading zero (`"013C"`).
+- `tacular update` always downloads the current release (it reused a cached download
+  forever); `tacular clear` also removes the downloaded sources in `obo/`.
+- `tacular.update.update()` raises `TacularError` (chained from the parser's error) for
+  a source file it cannot parse. Downloads time out after 60 s without data and remove
+  their `.part` file on failure; the CLI then suggests
+  `tacular update --offline $(tacular where)/obo`.
+
 ## [1.2.0] (2026-09-23)
 
 ### Added

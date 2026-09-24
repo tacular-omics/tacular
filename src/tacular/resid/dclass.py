@@ -4,6 +4,8 @@ from dataclasses import dataclass
 
 from ..obo_entity import OboEntity
 
+__all__ = ["ResidInfo"]
+
 
 @dataclass(frozen=True, slots=True)
 class ResidInfo(OboEntity):

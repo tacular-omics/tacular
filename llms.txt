@@ -10,7 +10,10 @@ module-level `*_LOOKUP` singleton (e.g. `tacular.UNIMOD_LOOKUP`,
 `tacular.ELEMENT_LOOKUP`), queryable by id, name, or (for ontologies) approximate
 mass: `import tacular as t; t.UNIMOD_LOOKUP["Phospho"].monoisotopic_mass`.
 Ontology data ships baked into the package and can be refreshed to the latest
-upstream release without reinstalling via the `tacular update` CLI.
+upstream release without reinstalling via the `tacular update` CLI. Every error is a
+`tacular.TacularError` (a `ValueError`); a lookup miss is `TacularKeyError` (also a
+`KeyError`). Masses: `info.get_mass(monoisotopic=True)`; constants such as
+`PROTON_MASS` are in `tacular.constants`.
 
 tacular is the shared data layer for `peptacular` (ProForma peptides) and
 `paftacular` (mzPAF fragment annotations). It does not depend on them, and they
@@ -23,6 +26,7 @@ are not authoritative for tacular's own mass data.
 - [Quick start](https://tacular.readthedocs.io/en/latest/quickstart.html): tested examples for every lookup
 - [Installation](https://tacular.readthedocs.io/en/latest/installation.html): install options
 - [CHANGELOG](https://github.com/tacular-omics/tacular/blob/main/CHANGELOG.md): release notes
+- [Migrating to 2.0](https://tacular.readthedocs.io/en/latest/migration.html): every renamed/removed 1.x name and its replacement
 
 ## API
 
@@ -30,7 +34,7 @@ are not authoritative for tacular's own mass data.
 - [Modifications](https://tacular.readthedocs.io/en/latest/api/modifications.html): UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM lookups
 - [Elements](https://tacular.readthedocs.io/en/latest/api/elements.html): elements and isotopes, `parse_composition`
 - [Amino acids](https://tacular.readthedocs.io/en/latest/api/amino_acids.html): `AA_LOOKUP`, `AminoAcid`
-- [Base classes](https://tacular.readthedocs.io/en/latest/api/base_classes.html): `OboEntity`, `OntologyLookup`
+- [Base classes](https://tacular.readthedocs.io/en/latest/api/base_classes.html): `OboEntity`, `OntologyLookup`, `TacularError` / `TacularKeyError`, `tacular.constants`
 
 ## Optional
 

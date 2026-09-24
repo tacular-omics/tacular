@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generated_date": "2026-09-23T21:10:47.629636",
+        "generated_date": "2026-09-23T22:30:35.097114",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
         "tacular_version": "1.2.0",
@@ -13,7 +13,8 @@
             "mass_number": null,
             "mass": 12.0,
             "abundance": null,
-            "average_mass": 12.010736
+            "average_mass": 12.010736,
+            "is_monoisotopic": null
         },
         {
             "number": 6,
@@ -21,7 +22,8 @@
             "mass_number": 12,
             "mass": 12.0,
             "abundance": 0.9893,
-            "average_mass": 12.0
+            "average_mass": 12.0,
+            "is_monoisotopic": true
         },
         {
             "number": 6,
@@ -29,7 +31,8 @@
             "mass_number": 13,
             "mass": 13.003355,
             "abundance": 0.0107,
-            "average_mass": 13.003355
+            "average_mass": 13.003355,
+            "is_monoisotopic": false
         },
         {
             "number": 6,
@@ -37,7 +40,8 @@
             "mass_number": 14,
             "mass": 14.003242,
             "abundance": 0.0,
-            "average_mass": 14.003242
+            "average_mass": 14.003242,
+            "is_monoisotopic": false
         },
         {
             "number": 1,
@@ -45,7 +49,8 @@
             "mass_number": null,
             "mass": 1.007825,
             "abundance": null,
-            "average_mass": 1.007941
+            "average_mass": 1.007941,
+            "is_monoisotopic": null
         },
         {
             "number": 1,
@@ -53,7 +58,8 @@
             "mass_number": 1,
             "mass": 1.007825,
             "abundance": 0.999885,
-            "average_mass": 1.007825
+            "average_mass": 1.007825,
+            "is_monoisotopic": true
         },
         {
             "number": 1,
@@ -61,7 +67,8 @@
             "mass_number": 2,
             "mass": 2.014102,
             "abundance": 0.000115,
-            "average_mass": 2.014102
+            "average_mass": 2.014102,
+            "is_monoisotopic": false
         },
         {
             "number": 1,
@@ -69,7 +76,8 @@
             "mass_number": 3,
             "mass": 3.016049,
             "abundance": 0.0,
-            "average_mass": 3.016049
+            "average_mass": 3.016049,
+            "is_monoisotopic": false
         },
         {
             "number": 89,
@@ -77,7 +85,8 @@
             "mass_number": null,
             "mass": 227.027752,
             "abundance": null,
-            "average_mass": 227.027752
+            "average_mass": 227.027752,
+            "is_monoisotopic": null
         },
         {
             "number": 89,
@@ -85,7 +94,8 @@
             "mass_number": 227,
             "mass": 227.027752,
             "abundance": 0.0,
-            "average_mass": 227.027752
+            "average_mass": 227.027752,
+            "is_monoisotopic": true
         },
         {
             "number": 47,
@@ -93,7 +103,8 @@
             "mass_number": null,
             "mass": 106.905092,
             "abundance": null,
-            "average_mass": 107.86815
+            "average_mass": 107.86815,
+            "is_monoisotopic": null
         },
         {
             "number": 47,
@@ -101,7 +112,8 @@
             "mass_number": 107,
             "mass": 106.905092,
             "abundance": 0.51839,
-            "average_mass": 106.905092
+            "average_mass": 106.905092,
+            "is_monoisotopic": true
         },
         {
             "number": 47,
@@ -109,7 +121,8 @@
             "mass_number": 109,
             "mass": 108.904755,
             "abundance": 0.48161,
-            "average_mass": 108.904755
+            "average_mass": 108.904755,
+            "is_monoisotopic": false
         },
         {
             "number": 13,
@@ -117,7 +130,8 @@
             "mass_number": null,
             "mass": 26.981539,
             "abundance": null,
-            "average_mass": 26.981539
+            "average_mass": 26.981539,
+            "is_monoisotopic": null
         },
         {
             "number": 13,
@@ -125,7 +139,8 @@
             "mass_number": 27,
             "mass": 26.981539,
             "abundance": 1.0,
-            "average_mass": 26.981539
+            "average_mass": 26.981539,
+            "is_monoisotopic": true
         },
         {
             "number": 95,
@@ -133,7 +148,8 @@
             "mass_number": null,
             "mass": 241.056829,
             "abundance": null,
-            "average_mass": 241.056829
+            "average_mass": 241.056829,
+            "is_monoisotopic": null
         },
         {
             "number": 95,
@@ -141,7 +157,8 @@
             "mass_number": 241,
             "mass": 241.056829,
             "abundance": 0.0,
-            "average_mass": 241.056829
+            "average_mass": 241.056829,
+            "is_monoisotopic": true
         },
         {
             "number": 95,
@@ -149,7 +166,8 @@
             "mass_number": 243,
             "mass": 243.061381,
             "abundance": 0.0,
-            "average_mass": 243.061381
+            "average_mass": 243.061381,
+            "is_monoisotopic": false
         },
         {
             "number": 18,
@@ -157,7 +175,8 @@
             "mass_number": null,
             "mass": 39.962383,
             "abundance": null,
-            "average_mass": 39.947799
+            "average_mass": 39.947799,
+            "is_monoisotopic": null
         },
         {
             "number": 18,
@@ -165,7 +184,8 @@
             "mass_number": 36,
             "mass": 35.967545,
             "abundance": 0.003336,
-            "average_mass": 35.967545
+            "average_mass": 35.967545,
+            "is_monoisotopic": false
         },
         {
             "number": 18,
@@ -173,7 +193,8 @@
             "mass_number": 38,
             "mass": 37.962732,
             "abundance": 0.000629,
-            "average_mass": 37.962732
+            "average_mass": 37.962732,
+            "is_monoisotopic": false
         },
         {
             "number": 18,
@@ -181,7 +202,8 @@
             "mass_number": 40,
             "mass": 39.962383,
             "abundance": 0.996035,
-            "average_mass": 39.962383
+            "average_mass": 39.962383,
+            "is_monoisotopic": true
         },
         {
             "number": 33,
@@ -189,7 +211,8 @@
             "mass_number": null,
             "mass": 74.921595,
             "abundance": null,
-            "average_mass": 74.921595
+            "average_mass": 74.921595,
+            "is_monoisotopic": null
         },
         {
             "number": 33,
@@ -197,7 +220,8 @@
             "mass_number": 75,
             "mass": 74.921595,
             "abundance": 1.0,
-            "average_mass": 74.921595
+            "average_mass": 74.921595,
+            "is_monoisotopic": true
         },
         {
             "number": 85,
@@ -205,7 +229,8 @@
             "mass_number": null,
             "mass": 209.987148,
             "abundance": null,
-            "average_mass": 209.987148
+            "average_mass": 209.987148,
+            "is_monoisotopic": null
         },
         {
             "number": 85,
@@ -213,7 +238,8 @@
             "mass_number": 210,
             "mass": 209.987148,
             "abundance": 0.0,
-            "average_mass": 209.987148
+            "average_mass": 209.987148,
+            "is_monoisotopic": true
         },
         {
             "number": 85,
@@ -221,7 +247,8 @@
             "mass_number": 211,
             "mass": 210.987497,
             "abundance": 0.0,
-            "average_mass": 210.987497
+            "average_mass": 210.987497,
+            "is_monoisotopic": false
         },
         {
             "number": 79,
@@ -229,7 +256,8 @@
             "mass_number": null,
             "mass": 196.966569,
             "abundance": null,
-            "average_mass": 196.966569
+            "average_mass": 196.966569,
+            "is_monoisotopic": null
         },
         {
             "number": 79,
@@ -237,7 +265,8 @@
             "mass_number": 197,
             "mass": 196.966569,
             "abundance": 1.0,
-            "average_mass": 196.966569
+            "average_mass": 196.966569,
+            "is_monoisotopic": true
         },
         {
             "number": 5,
@@ -245,7 +274,8 @@
             "mass_number": null,
             "mass": 11.009305,
             "abundance": null,
-            "average_mass": 10.811028
+            "average_mass": 10.811028,
+            "is_monoisotopic": null
         },
         {
             "number": 5,
@@ -253,7 +283,8 @@
             "mass_number": 10,
             "mass": 10.012937,
             "abundance": 0.199,
-            "average_mass": 10.012937
+            "average_mass": 10.012937,
+            "is_monoisotopic": false
         },
         {
             "number": 5,
@@ -261,7 +292,8 @@
             "mass_number": 11,
             "mass": 11.009305,
             "abundance": 0.801,
-            "average_mass": 11.009305
+            "average_mass": 11.009305,
+            "is_monoisotopic": true
         },
         {
             "number": 56,
@@ -269,7 +301,8 @@
             "mass_number": null,
             "mass": 137.905247,
             "abundance": null,
-            "average_mass": 137.326892
+            "average_mass": 137.326892,
+            "is_monoisotopic": null
         },
         {
             "number": 56,
@@ -277,7 +310,8 @@
             "mass_number": 130,
             "mass": 129.906321,
             "abundance": 0.00106,
-            "average_mass": 129.906321
+            "average_mass": 129.906321,
+            "is_monoisotopic": false
         },
         {
             "number": 56,
@@ -285,7 +319,8 @@
             "mass_number": 132,
             "mass": 131.905061,
             "abundance": 0.00101,
-            "average_mass": 131.905061
+            "average_mass": 131.905061,
+            "is_monoisotopic": false
         },
         {
             "number": 56,
@@ -293,7 +328,8 @@
             "mass_number": 134,
             "mass": 133.904508,
             "abundance": 0.02417,
-            "average_mass": 133.904508
+            "average_mass": 133.904508,
+            "is_monoisotopic": false
         },
         {
             "number": 56,
@@ -301,7 +337,8 @@
             "mass_number": 135,
             "mass": 134.905688,
             "abundance": 0.06592,
-            "average_mass": 134.905688
+            "average_mass": 134.905688,
+            "is_monoisotopic": false
         },
         {
             "number": 56,
@@ -309,7 +346,8 @@
             "mass_number": 136,
             "mass": 135.904576,
             "abundance": 0.07854,
-            "average_mass": 135.904576
+            "average_mass": 135.904576,
+            "is_monoisotopic": false
         },
         {
             "number": 56,
@@ -317,7 +355,8 @@
             "mass_number": 137,
             "mass": 136.905827,
             "abundance": 0.11232,
-            "average_mass": 136.905827
+            "average_mass": 136.905827,
+            "is_monoisotopic": false
         },
         {
             "number": 56,
@@ -325,7 +364,8 @@
             "mass_number": 138,
             "mass": 137.905247,
             "abundance": 0.71698,
-            "average_mass": 137.905247
+            "average_mass": 137.905247,
+            "is_monoisotopic": true
         },
         {
             "number": 4,
@@ -333,7 +373,8 @@
             "mass_number": null,
             "mass": 9.012183,
             "abundance": null,
-            "average_mass": 9.012183
+            "average_mass": 9.012183,
+            "is_monoisotopic": null
         },
         {
             "number": 4,
@@ -341,7 +382,8 @@
             "mass_number": 9,
             "mass": 9.012183,
             "abundance": 1.0,
-            "average_mass": 9.012183
+            "average_mass": 9.012183,
+            "is_monoisotopic": true
         },
         {
             "number": 107,
@@ -349,7 +391,8 @@
             "mass_number": null,
             "mass": 272.13826,
             "abundance": null,
-            "average_mass": 272.13826
+            "average_mass": 272.13826,
+            "is_monoisotopic": null
         },
         {
             "number": 107,
@@ -357,7 +400,8 @@
             "mass_number": 272,
             "mass": 272.13826,
             "abundance": 0.0,
-            "average_mass": 272.13826
+            "average_mass": 272.13826,
+            "is_monoisotopic": true
         },
         {
             "number": 83,
@@ -365,7 +409,8 @@
             "mass_number": null,
             "mass": 208.980399,
             "abundance": null,
-            "average_mass": 208.980399
+            "average_mass": 208.980399,
+            "is_monoisotopic": null
         },
         {
             "number": 83,
@@ -373,7 +418,8 @@
             "mass_number": 209,
             "mass": 208.980399,
             "abundance": 1.0,
-            "average_mass": 208.980399
+            "average_mass": 208.980399,
+            "is_monoisotopic": true
         },
         {
             "number": 97,
@@ -381,7 +427,8 @@
             "mass_number": null,
             "mass": 247.070307,
             "abundance": null,
-            "average_mass": 247.070307
+            "average_mass": 247.070307,
+            "is_monoisotopic": null
         },
         {
             "number": 97,
@@ -389,7 +436,8 @@
             "mass_number": 247,
             "mass": 247.070307,
             "abundance": 0.0,
-            "average_mass": 247.070307
+            "average_mass": 247.070307,
+            "is_monoisotopic": true
         },
         {
             "number": 97,
@@ -397,7 +445,8 @@
             "mass_number": 249,
             "mass": 249.074988,
             "abundance": 0.0,
-            "average_mass": 249.074988
+            "average_mass": 249.074988,
+            "is_monoisotopic": false
         },
         {
             "number": 35,
@@ -405,7 +454,8 @@
             "mass_number": null,
             "mass": 78.918338,
             "abundance": null,
-            "average_mass": 79.903528
+            "average_mass": 79.903528,
+            "is_monoisotopic": null
         },
         {
             "number": 35,
@@ -413,7 +463,8 @@
             "mass_number": 79,
             "mass": 78.918338,
             "abundance": 0.5069,
-            "average_mass": 78.918338
+            "average_mass": 78.918338,
+            "is_monoisotopic": true
         },
         {
             "number": 35,
@@ -421,7 +472,8 @@
             "mass_number": 81,
             "mass": 80.91629,
             "abundance": 0.4931,
-            "average_mass": 80.91629
+            "average_mass": 80.91629,
+            "is_monoisotopic": false
         },
         {
             "number": 20,
@@ -429,7 +481,8 @@
             "mass_number": null,
             "mass": 39.962591,
             "abundance": null,
-            "average_mass": 40.078023
+            "average_mass": 40.078023,
+            "is_monoisotopic": null
         },
         {
             "number": 20,
@@ -437,7 +490,8 @@
             "mass_number": 40,
             "mass": 39.962591,
             "abundance": 0.96941,
-            "average_mass": 39.962591
+            "average_mass": 39.962591,
+            "is_monoisotopic": true
         },
         {
             "number": 20,
@@ -445,7 +499,8 @@
             "mass_number": 42,
             "mass": 41.958618,
             "abundance": 0.00647,
-            "average_mass": 41.958618
+            "average_mass": 41.958618,
+            "is_monoisotopic": false
         },
         {
             "number": 20,
@@ -453,7 +508,8 @@
             "mass_number": 43,
             "mass": 42.958766,
             "abundance": 0.00135,
-            "average_mass": 42.958766
+            "average_mass": 42.958766,
+            "is_monoisotopic": false
         },
         {
             "number": 20,
@@ -461,7 +517,8 @@
             "mass_number": 44,
             "mass": 43.955482,
             "abundance": 0.02086,
-            "average_mass": 43.955482
+            "average_mass": 43.955482,
+            "is_monoisotopic": false
         },
         {
             "number": 20,
@@ -469,7 +526,8 @@
             "mass_number": 46,
             "mass": 45.953689,
             "abundance": 4e-05,
-            "average_mass": 45.953689
+            "average_mass": 45.953689,
+            "is_monoisotopic": false
         },
         {
             "number": 20,
@@ -477,7 +535,8 @@
             "mass_number": 48,
             "mass": 47.952523,
             "abundance": 0.00187,
-            "average_mass": 47.952523
+            "average_mass": 47.952523,
+            "is_monoisotopic": false
         },
         {
             "number": 48,
@@ -485,7 +544,8 @@
             "mass_number": null,
             "mass": 113.903365,
             "abundance": null,
-            "average_mass": 112.411558
+            "average_mass": 112.411558,
+            "is_monoisotopic": null
         },
         {
             "number": 48,
@@ -493,7 +553,8 @@
             "mass_number": 106,
             "mass": 105.90646,
             "abundance": 0.0125,
-            "average_mass": 105.90646
+            "average_mass": 105.90646,
+            "is_monoisotopic": false
         },
         {
             "number": 48,
@@ -501,7 +562,8 @@
             "mass_number": 108,
             "mass": 107.904183,
             "abundance": 0.0089,
-            "average_mass": 107.904183
+            "average_mass": 107.904183,
+            "is_monoisotopic": false
         },
         {
             "number": 48,
@@ -509,7 +571,8 @@
             "mass_number": 110,
             "mass": 109.903007,
             "abundance": 0.1249,
-            "average_mass": 109.903007
+            "average_mass": 109.903007,
+            "is_monoisotopic": false
         },
         {
             "number": 48,
@@ -517,7 +580,8 @@
             "mass_number": 111,
             "mass": 110.904183,
             "abundance": 0.128,
-            "average_mass": 110.904183
+            "average_mass": 110.904183,
+            "is_monoisotopic": false
         },
         {
             "number": 48,
@@ -525,7 +589,8 @@
             "mass_number": 112,
             "mass": 111.902763,
             "abundance": 0.2413,
-            "average_mass": 111.902763
+            "average_mass": 111.902763,
+            "is_monoisotopic": false
         },
         {
             "number": 48,
@@ -533,7 +598,8 @@
             "mass_number": 113,
             "mass": 112.904408,
             "abundance": 0.1222,
-            "average_mass": 112.904408
+            "average_mass": 112.904408,
+            "is_monoisotopic": false
         },
         {
             "number": 48,
@@ -541,7 +607,8 @@
             "mass_number": 114,
             "mass": 113.903365,
             "abundance": 0.2873,
-            "average_mass": 113.903365
+            "average_mass": 113.903365,
+            "is_monoisotopic": true
         },
         {
             "number": 48,
@@ -549,7 +616,8 @@
             "mass_number": 116,
             "mass": 115.904763,
             "abundance": 0.0749,
-            "average_mass": 115.904763
+            "average_mass": 115.904763,
+            "is_monoisotopic": false
         },
         {
             "number": 58,
@@ -557,7 +625,8 @@
             "mass_number": null,
             "mass": 139.905443,
             "abundance": null,
-            "average_mass": 140.115731
+            "average_mass": 140.115731,
+            "is_monoisotopic": null
         },
         {
             "number": 58,
@@ -565,7 +634,8 @@
             "mass_number": 136,
             "mass": 135.907129,
             "abundance": 0.00185,
-            "average_mass": 135.907129
+            "average_mass": 135.907129,
+            "is_monoisotopic": false
         },
         {
             "number": 58,
@@ -573,7 +643,8 @@
             "mass_number": 138,
             "mass": 137.905991,
             "abundance": 0.00251,
-            "average_mass": 137.905991
+            "average_mass": 137.905991,
+            "is_monoisotopic": false
         },
         {
             "number": 58,
@@ -581,7 +652,8 @@
             "mass_number": 140,
             "mass": 139.905443,
             "abundance": 0.8845,
-            "average_mass": 139.905443
+            "average_mass": 139.905443,
+            "is_monoisotopic": true
         },
         {
             "number": 58,
@@ -589,7 +661,8 @@
             "mass_number": 142,
             "mass": 141.90925,
             "abundance": 0.11114,
-            "average_mass": 141.90925
+            "average_mass": 141.90925,
+            "is_monoisotopic": false
         },
         {
             "number": 98,
@@ -597,7 +670,8 @@
             "mass_number": null,
             "mass": 249.074854,
             "abundance": null,
-            "average_mass": 249.074854
+            "average_mass": 249.074854,
+            "is_monoisotopic": null
         },
         {
             "number": 98,
@@ -605,7 +679,8 @@
             "mass_number": 249,
             "mass": 249.074854,
             "abundance": 0.0,
-            "average_mass": 249.074854
+            "average_mass": 249.074854,
+            "is_monoisotopic": true
         },
         {
             "number": 98,
@@ -613,7 +688,8 @@
             "mass_number": 250,
             "mass": 250.076406,
             "abundance": 0.0,
-            "average_mass": 250.076406
+            "average_mass": 250.076406,
+            "is_monoisotopic": false
         },
         {
             "number": 98,
@@ -621,7 +697,8 @@
             "mass_number": 251,
             "mass": 251.079589,
             "abundance": 0.0,
-            "average_mass": 251.079589
+            "average_mass": 251.079589,
+            "is_monoisotopic": false
         },
         {
             "number": 98,
@@ -629,7 +706,8 @@
             "mass_number": 252,
             "mass": 252.081627,
             "abundance": 0.0,
-            "average_mass": 252.081627
+            "average_mass": 252.081627,
+            "is_monoisotopic": false
         },
         {
             "number": 17,
@@ -637,7 +715,8 @@
             "mass_number": null,
             "mass": 34.968853,
             "abundance": null,
-            "average_mass": 35.452938
+            "average_mass": 35.452938,
+            "is_monoisotopic": null
         },
         {
             "number": 17,
@@ -645,7 +724,8 @@
             "mass_number": 35,
             "mass": 34.968853,
             "abundance": 0.7576,
-            "average_mass": 34.968853
+            "average_mass": 34.968853,
+            "is_monoisotopic": true
         },
         {
             "number": 17,
@@ -653,7 +733,8 @@
             "mass_number": 37,
             "mass": 36.965903,
             "abundance": 0.2424,
-            "average_mass": 36.965903
+            "average_mass": 36.965903,
+            "is_monoisotopic": false
         },
         {
             "number": 96,
@@ -661,7 +742,8 @@
             "mass_number": null,
             "mass": 243.061389,
             "abundance": null,
-            "average_mass": 243.061389
+            "average_mass": 243.061389,
+            "is_monoisotopic": null
         },
         {
             "number": 96,
@@ -669,7 +751,8 @@
             "mass_number": 243,
             "mass": 243.061389,
             "abundance": 0.0,
-            "average_mass": 243.061389
+            "average_mass": 243.061389,
+            "is_monoisotopic": true
         },
         {
             "number": 96,
@@ -677,7 +760,8 @@
             "mass_number": 244,
             "mass": 244.062753,
             "abundance": 0.0,
-            "average_mass": 244.062753
+            "average_mass": 244.062753,
+            "is_monoisotopic": false
         },
         {
             "number": 96,
@@ -685,7 +769,8 @@
             "mass_number": 245,
             "mass": 245.065492,
             "abundance": 0.0,
-            "average_mass": 245.065492
+            "average_mass": 245.065492,
+            "is_monoisotopic": false
         },
         {
             "number": 96,
@@ -693,7 +778,8 @@
             "mass_number": 246,
             "mass": 246.067224,
             "abundance": 0.0,
-            "average_mass": 246.067224
+            "average_mass": 246.067224,
+            "is_monoisotopic": false
         },
         {
             "number": 96,
@@ -701,7 +787,8 @@
             "mass_number": 247,
             "mass": 247.070354,
             "abundance": 0.0,
-            "average_mass": 247.070354
+            "average_mass": 247.070354,
+            "is_monoisotopic": false
         },
         {
             "number": 96,
@@ -709,7 +796,8 @@
             "mass_number": 248,
             "mass": 248.07235,
             "abundance": 0.0,
-            "average_mass": 248.07235
+            "average_mass": 248.07235,
+            "is_monoisotopic": false
         },
         {
             "number": 112,
@@ -717,7 +805,8 @@
             "mass_number": null,
             "mass": 285.17712,
             "abundance": null,
-            "average_mass": 285.17712
+            "average_mass": 285.17712,
+            "is_monoisotopic": null
         },
         {
             "number": 112,
@@ -725,7 +814,8 @@
             "mass_number": 285,
             "mass": 285.17712,
             "abundance": 0.0,
-            "average_mass": 285.17712
+            "average_mass": 285.17712,
+            "is_monoisotopic": true
         },
         {
             "number": 27,
@@ -733,7 +823,8 @@
             "mass_number": null,
             "mass": 58.933194,
             "abundance": null,
-            "average_mass": 58.933194
+            "average_mass": 58.933194,
+            "is_monoisotopic": null
         },
         {
             "number": 27,
@@ -741,7 +832,8 @@
             "mass_number": 59,
             "mass": 58.933194,
             "abundance": 1.0,
-            "average_mass": 58.933194
+            "average_mass": 58.933194,
+            "is_monoisotopic": true
         },
         {
             "number": 24,
@@ -749,7 +841,8 @@
             "mass_number": null,
             "mass": 51.940506,
             "abundance": null,
-            "average_mass": 51.996132
+            "average_mass": 51.996132,
+            "is_monoisotopic": null
         },
         {
             "number": 24,
@@ -757,7 +850,8 @@
             "mass_number": 50,
             "mass": 49.946042,
             "abundance": 0.04345,
-            "average_mass": 49.946042
+            "average_mass": 49.946042,
+            "is_monoisotopic": false
         },
         {
             "number": 24,
@@ -765,7 +859,8 @@
             "mass_number": 52,
             "mass": 51.940506,
             "abundance": 0.83789,
-            "average_mass": 51.940506
+            "average_mass": 51.940506,
+            "is_monoisotopic": true
         },
         {
             "number": 24,
@@ -773,7 +868,8 @@
             "mass_number": 53,
             "mass": 52.940648,
             "abundance": 0.09501,
-            "average_mass": 52.940648
+            "average_mass": 52.940648,
+            "is_monoisotopic": false
         },
         {
             "number": 24,
@@ -781,7 +877,8 @@
             "mass_number": 54,
             "mass": 53.938879,
             "abundance": 0.02365,
-            "average_mass": 53.938879
+            "average_mass": 53.938879,
+            "is_monoisotopic": false
         },
         {
             "number": 55,
@@ -789,7 +886,8 @@
             "mass_number": null,
             "mass": 132.905452,
             "abundance": null,
-            "average_mass": 132.905452
+            "average_mass": 132.905452,
+            "is_monoisotopic": null
         },
         {
             "number": 55,
@@ -797,7 +895,8 @@
             "mass_number": 133,
             "mass": 132.905452,
             "abundance": 1.0,
-            "average_mass": 132.905452
+            "average_mass": 132.905452,
+            "is_monoisotopic": true
         },
         {
             "number": 29,
@@ -805,7 +904,8 @@
             "mass_number": null,
             "mass": 62.929598,
             "abundance": null,
-            "average_mass": 63.54604
+            "average_mass": 63.54604,
+            "is_monoisotopic": null
         },
         {
             "number": 29,
@@ -813,7 +913,8 @@
             "mass_number": 63,
             "mass": 62.929598,
             "abundance": 0.6915,
-            "average_mass": 62.929598
+            "average_mass": 62.929598,
+            "is_monoisotopic": true
         },
         {
             "number": 29,
@@ -821,7 +922,8 @@
             "mass_number": 65,
             "mass": 64.92779,
             "abundance": 0.3085,
-            "average_mass": 64.92779
+            "average_mass": 64.92779,
+            "is_monoisotopic": false
         },
         {
             "number": 105,
@@ -829,7 +931,8 @@
             "mass_number": null,
             "mass": 268.12567,
             "abundance": null,
-            "average_mass": 268.12567
+            "average_mass": 268.12567,
+            "is_monoisotopic": null
         },
         {
             "number": 105,
@@ -837,7 +940,8 @@
             "mass_number": 268,
             "mass": 268.12567,
             "abundance": 0.0,
-            "average_mass": 268.12567
+            "average_mass": 268.12567,
+            "is_monoisotopic": true
         },
         {
             "number": 110,
@@ -845,7 +949,8 @@
             "mass_number": null,
             "mass": 281.16451,
             "abundance": null,
-            "average_mass": 281.16451
+            "average_mass": 281.16451,
+            "is_monoisotopic": null
         },
         {
             "number": 110,
@@ -853,7 +958,8 @@
             "mass_number": 281,
             "mass": 281.16451,
             "abundance": 0.0,
-            "average_mass": 281.16451
+            "average_mass": 281.16451,
+            "is_monoisotopic": true
         },
         {
             "number": 66,
@@ -861,7 +967,8 @@
             "mass_number": null,
             "mass": 163.929182,
             "abundance": null,
-            "average_mass": 162.499473
+            "average_mass": 162.499473,
+            "is_monoisotopic": null
         },
         {
             "number": 66,
@@ -869,7 +976,8 @@
             "mass_number": 156,
             "mass": 155.924285,
             "abundance": 0.00056,
-            "average_mass": 155.924285
+            "average_mass": 155.924285,
+            "is_monoisotopic": false
         },
         {
             "number": 66,
@@ -877,7 +985,8 @@
             "mass_number": 158,
             "mass": 157.924416,
             "abundance": 0.00095,
-            "average_mass": 157.924416
+            "average_mass": 157.924416,
+            "is_monoisotopic": false
         },
         {
             "number": 66,
@@ -885,7 +994,8 @@
             "mass_number": 160,
             "mass": 159.925205,
             "abundance": 0.02329,
-            "average_mass": 159.925205
+            "average_mass": 159.925205,
+            "is_monoisotopic": false
         },
         {
             "number": 66,
@@ -893,7 +1003,8 @@
             "mass_number": 161,
             "mass": 160.926941,
             "abundance": 0.18889,
-            "average_mass": 160.926941
+            "average_mass": 160.926941,
+            "is_monoisotopic": false
         },
         {
             "number": 66,
@@ -901,7 +1012,8 @@
             "mass_number": 162,
             "mass": 161.926806,
             "abundance": 0.25475,
-            "average_mass": 161.926806
+            "average_mass": 161.926806,
+            "is_monoisotopic": false
         },
         {
             "number": 66,
@@ -909,7 +1021,8 @@
             "mass_number": 163,
             "mass": 162.928738,
             "abundance": 0.24896,
-            "average_mass": 162.928738
+            "average_mass": 162.928738,
+            "is_monoisotopic": false
         },
         {
             "number": 66,
@@ -917,7 +1030,8 @@
             "mass_number": 164,
             "mass": 163.929182,
             "abundance": 0.2826,
-            "average_mass": 163.929182
+            "average_mass": 163.929182,
+            "is_monoisotopic": true
         },
         {
             "number": 68,
@@ -925,7 +1039,8 @@
             "mass_number": null,
             "mass": 165.930299,
             "abundance": null,
-            "average_mass": 167.259083
+            "average_mass": 167.259083,
+            "is_monoisotopic": null
         },
         {
             "number": 68,
@@ -933,7 +1048,8 @@
             "mass_number": 162,
             "mass": 161.928788,
             "abundance": 0.00139,
-            "average_mass": 161.928788
+            "average_mass": 161.928788,
+            "is_monoisotopic": false
         },
         {
             "number": 68,
@@ -941,7 +1057,8 @@
             "mass_number": 164,
             "mass": 163.929209,
             "abundance": 0.01601,
-            "average_mass": 163.929209
+            "average_mass": 163.929209,
+            "is_monoisotopic": false
         },
         {
             "number": 68,
@@ -949,7 +1066,8 @@
             "mass_number": 166,
             "mass": 165.930299,
             "abundance": 0.33503,
-            "average_mass": 165.930299
+            "average_mass": 165.930299,
+            "is_monoisotopic": true
         },
         {
             "number": 68,
@@ -957,7 +1075,8 @@
             "mass_number": 167,
             "mass": 166.932055,
             "abundance": 0.22869,
-            "average_mass": 166.932055
+            "average_mass": 166.932055,
+            "is_monoisotopic": false
         },
         {
             "number": 68,
@@ -965,7 +1084,8 @@
             "mass_number": 168,
             "mass": 167.932377,
             "abundance": 0.26978,
-            "average_mass": 167.932377
+            "average_mass": 167.932377,
+            "is_monoisotopic": false
         },
         {
             "number": 68,
@@ -973,7 +1093,8 @@
             "mass_number": 170,
             "mass": 169.93547,
             "abundance": 0.1491,
-            "average_mass": 169.93547
+            "average_mass": 169.93547,
+            "is_monoisotopic": false
         },
         {
             "number": 99,
@@ -981,7 +1102,8 @@
             "mass_number": null,
             "mass": 252.08298,
             "abundance": null,
-            "average_mass": 252.08298
+            "average_mass": 252.08298,
+            "is_monoisotopic": null
         },
         {
             "number": 99,
@@ -989,7 +1111,8 @@
             "mass_number": 252,
             "mass": 252.08298,
             "abundance": 0.0,
-            "average_mass": 252.08298
+            "average_mass": 252.08298,
+            "is_monoisotopic": true
         },
         {
             "number": 63,
@@ -997,7 +1120,8 @@
             "mass_number": null,
             "mass": 152.921238,
             "abundance": null,
-            "average_mass": 151.964378
+            "average_mass": 151.964378,
+            "is_monoisotopic": null
         },
         {
             "number": 63,
@@ -1005,7 +1129,8 @@
             "mass_number": 151,
             "mass": 150.919858,
             "abundance": 0.4781,
-            "average_mass": 150.919858
+            "average_mass": 150.919858,
+            "is_monoisotopic": false
         },
         {
             "number": 63,
@@ -1013,7 +1138,8 @@
             "mass_number": 153,
             "mass": 152.921238,
             "abundance": 0.5219,
-            "average_mass": 152.921238
+            "average_mass": 152.921238,
+            "is_monoisotopic": true
         },
         {
             "number": 9,
@@ -1021,7 +1147,8 @@
             "mass_number": null,
             "mass": 18.998403,
             "abundance": null,
-            "average_mass": 18.998403
+            "average_mass": 18.998403,
+            "is_monoisotopic": null
         },
         {
             "number": 9,
@@ -1029,7 +1156,8 @@
             "mass_number": 19,
             "mass": 18.998403,
             "abundance": 1.0,
-            "average_mass": 18.998403
+            "average_mass": 18.998403,
+            "is_monoisotopic": true
         },
         {
             "number": 26,
@@ -1037,7 +1165,8 @@
             "mass_number": null,
             "mass": 55.934936,
             "abundance": null,
-            "average_mass": 55.845144
+            "average_mass": 55.845144,
+            "is_monoisotopic": null
         },
         {
             "number": 26,
@@ -1045,7 +1174,8 @@
             "mass_number": 54,
             "mass": 53.939609,
             "abundance": 0.05845,
-            "average_mass": 53.939609
+            "average_mass": 53.939609,
+            "is_monoisotopic": false
         },
         {
             "number": 26,
@@ -1053,7 +1183,8 @@
             "mass_number": 56,
             "mass": 55.934936,
             "abundance": 0.91754,
-            "average_mass": 55.934936
+            "average_mass": 55.934936,
+            "is_monoisotopic": true
         },
         {
             "number": 26,
@@ -1061,7 +1192,8 @@
             "mass_number": 57,
             "mass": 56.935393,
             "abundance": 0.02119,
-            "average_mass": 56.935393
+            "average_mass": 56.935393,
+            "is_monoisotopic": false
         },
         {
             "number": 26,
@@ -1069,7 +1201,8 @@
             "mass_number": 58,
             "mass": 57.933274,
             "abundance": 0.00282,
-            "average_mass": 57.933274
+            "average_mass": 57.933274,
+            "is_monoisotopic": false
         },
         {
             "number": 114,
@@ -1077,7 +1210,8 @@
             "mass_number": null,
             "mass": 289.19042,
             "abundance": null,
-            "average_mass": 289.19042
+            "average_mass": 289.19042,
+            "is_monoisotopic": null
         },
         {
             "number": 114,
@@ -1085,7 +1219,8 @@
             "mass_number": 289,
             "mass": 289.19042,
             "abundance": 0.0,
-            "average_mass": 289.19042
+            "average_mass": 289.19042,
+            "is_monoisotopic": true
         },
         {
             "number": 100,
@@ -1093,7 +1228,8 @@
             "mass_number": null,
             "mass": 257.095106,
             "abundance": null,
-            "average_mass": 257.095106
+            "average_mass": 257.095106,
+            "is_monoisotopic": null
         },
         {
             "number": 100,
@@ -1101,7 +1237,8 @@
             "mass_number": 257,
             "mass": 257.095106,
             "abundance": 0.0,
-            "average_mass": 257.095106
+            "average_mass": 257.095106,
+            "is_monoisotopic": true
         },
         {
             "number": 87,
@@ -1109,7 +1246,8 @@
             "mass_number": null,
             "mass": 223.019736,
             "abundance": null,
-            "average_mass": 223.019736
+            "average_mass": 223.019736,
+            "is_monoisotopic": null
         },
         {
             "number": 87,
@@ -1117,7 +1255,8 @@
             "mass_number": 223,
             "mass": 223.019736,
             "abundance": 0.0,
-            "average_mass": 223.019736
+            "average_mass": 223.019736,
+            "is_monoisotopic": true
         },
         {
             "number": 31,
@@ -1125,7 +1264,8 @@
             "mass_number": null,
             "mass": 68.925573,
             "abundance": null,
-            "average_mass": 69.723066
+            "average_mass": 69.723066,
+            "is_monoisotopic": null
         },
         {
             "number": 31,
@@ -1133,7 +1273,8 @@
             "mass_number": 69,
             "mass": 68.925573,
             "abundance": 0.60108,
-            "average_mass": 68.925573
+            "average_mass": 68.925573,
+            "is_monoisotopic": true
         },
         {
             "number": 31,
@@ -1141,7 +1282,8 @@
             "mass_number": 71,
             "mass": 70.924703,
             "abundance": 0.39892,
-            "average_mass": 70.924703
+            "average_mass": 70.924703,
+            "is_monoisotopic": false
         },
         {
             "number": 64,
@@ -1149,7 +1291,8 @@
             "mass_number": null,
             "mass": 157.924112,
             "abundance": null,
-            "average_mass": 157.252131
+            "average_mass": 157.252131,
+            "is_monoisotopic": null
         },
         {
             "number": 64,
@@ -1157,7 +1300,8 @@
             "mass_number": 152,
             "mass": 151.9198,
             "abundance": 0.002,
-            "average_mass": 151.9198
+            "average_mass": 151.9198,
+            "is_monoisotopic": false
         },
         {
             "number": 64,
@@ -1165,7 +1309,8 @@
             "mass_number": 154,
             "mass": 153.920874,
             "abundance": 0.0218,
-            "average_mass": 153.920874
+            "average_mass": 153.920874,
+            "is_monoisotopic": false
         },
         {
             "number": 64,
@@ -1173,7 +1318,8 @@
             "mass_number": 155,
             "mass": 154.92263,
             "abundance": 0.148,
-            "average_mass": 154.92263
+            "average_mass": 154.92263,
+            "is_monoisotopic": false
         },
         {
             "number": 64,
@@ -1181,7 +1327,8 @@
             "mass_number": 156,
             "mass": 155.922131,
             "abundance": 0.2047,
-            "average_mass": 155.922131
+            "average_mass": 155.922131,
+            "is_monoisotopic": false
         },
         {
             "number": 64,
@@ -1189,7 +1336,8 @@
             "mass_number": 157,
             "mass": 156.923969,
             "abundance": 0.1565,
-            "average_mass": 156.923969
+            "average_mass": 156.923969,
+            "is_monoisotopic": false
         },
         {
             "number": 64,
@@ -1197,7 +1345,8 @@
             "mass_number": 158,
             "mass": 157.924112,
             "abundance": 0.2484,
-            "average_mass": 157.924112
+            "average_mass": 157.924112,
+            "is_monoisotopic": true
         },
         {
             "number": 64,
@@ -1205,7 +1354,8 @@
             "mass_number": 160,
             "mass": 159.927062,
             "abundance": 0.2186,
-            "average_mass": 159.927062
+            "average_mass": 159.927062,
+            "is_monoisotopic": false
         },
         {
             "number": 32,
@@ -1213,7 +1363,8 @@
             "mass_number": null,
             "mass": 73.921178,
             "abundance": null,
-            "average_mass": 72.62755
+            "average_mass": 72.62755,
+            "is_monoisotopic": null
         },
         {
             "number": 32,
@@ -1221,7 +1372,8 @@
             "mass_number": 70,
             "mass": 69.924249,
             "abundance": 0.2057,
-            "average_mass": 69.924249
+            "average_mass": 69.924249,
+            "is_monoisotopic": false
         },
         {
             "number": 32,
@@ -1229,7 +1381,8 @@
             "mass_number": 72,
             "mass": 71.922076,
             "abundance": 0.2745,
-            "average_mass": 71.922076
+            "average_mass": 71.922076,
+            "is_monoisotopic": false
         },
         {
             "number": 32,
@@ -1237,7 +1390,8 @@
             "mass_number": 73,
             "mass": 72.923459,
             "abundance": 0.0775,
-            "average_mass": 72.923459
+            "average_mass": 72.923459,
+            "is_monoisotopic": false
         },
         {
             "number": 32,
@@ -1245,7 +1399,8 @@
             "mass_number": 74,
             "mass": 73.921178,
             "abundance": 0.365,
-            "average_mass": 73.921178
+            "average_mass": 73.921178,
+            "is_monoisotopic": true
         },
         {
             "number": 32,
@@ -1253,7 +1408,8 @@
             "mass_number": 76,
             "mass": 75.921403,
             "abundance": 0.0773,
-            "average_mass": 75.921403
+            "average_mass": 75.921403,
+            "is_monoisotopic": false
         },
         {
             "number": 2,
@@ -1261,7 +1417,8 @@
             "mass_number": null,
             "mass": 4.002603,
             "abundance": null,
-            "average_mass": 4.002602
+            "average_mass": 4.002602,
+            "is_monoisotopic": null
         },
         {
             "number": 2,
@@ -1269,7 +1426,8 @@
             "mass_number": 3,
             "mass": 3.016029,
             "abundance": 1.34e-06,
-            "average_mass": 3.016029
+            "average_mass": 3.016029,
+            "is_monoisotopic": false
         },
         {
             "number": 2,
@@ -1277,7 +1435,8 @@
             "mass_number": 4,
             "mass": 4.002603,
             "abundance": 0.99999866,
-            "average_mass": 4.002603
+            "average_mass": 4.002603,
+            "is_monoisotopic": true
         },
         {
             "number": 72,
@@ -1285,7 +1444,8 @@
             "mass_number": null,
             "mass": 179.946557,
             "abundance": null,
-            "average_mass": 178.484979
+            "average_mass": 178.484979,
+            "is_monoisotopic": null
         },
         {
             "number": 72,
@@ -1293,7 +1453,8 @@
             "mass_number": 174,
             "mass": 173.940046,
             "abundance": 0.0016,
-            "average_mass": 173.940046
+            "average_mass": 173.940046,
+            "is_monoisotopic": false
         },
         {
             "number": 72,
@@ -1301,7 +1462,8 @@
             "mass_number": 176,
             "mass": 175.941408,
             "abundance": 0.0526,
-            "average_mass": 175.941408
+            "average_mass": 175.941408,
+            "is_monoisotopic": false
         },
         {
             "number": 72,
@@ -1309,7 +1471,8 @@
             "mass_number": 177,
             "mass": 176.943228,
             "abundance": 0.186,
-            "average_mass": 176.943228
+            "average_mass": 176.943228,
+            "is_monoisotopic": false
         },
         {
             "number": 72,
@@ -1317,7 +1480,8 @@
             "mass_number": 178,
             "mass": 177.943706,
             "abundance": 0.2728,
-            "average_mass": 177.943706
+            "average_mass": 177.943706,
+            "is_monoisotopic": false
         },
         {
             "number": 72,
@@ -1325,7 +1489,8 @@
             "mass_number": 179,
             "mass": 178.945823,
             "abundance": 0.1362,
-            "average_mass": 178.945823
+            "average_mass": 178.945823,
+            "is_monoisotopic": false
         },
         {
             "number": 72,
@@ -1333,7 +1498,8 @@
             "mass_number": 180,
             "mass": 179.946557,
             "abundance": 0.3508,
-            "average_mass": 179.946557
+            "average_mass": 179.946557,
+            "is_monoisotopic": true
         },
         {
             "number": 80,
@@ -1341,7 +1507,8 @@
             "mass_number": null,
             "mass": 201.970643,
             "abundance": null,
-            "average_mass": 200.599167
+            "average_mass": 200.599167,
+            "is_monoisotopic": null
         },
         {
             "number": 80,
@@ -1349,7 +1516,8 @@
             "mass_number": 196,
             "mass": 195.965833,
             "abundance": 0.0015,
-            "average_mass": 195.965833
+            "average_mass": 195.965833,
+            "is_monoisotopic": false
         },
         {
             "number": 80,
@@ -1357,7 +1525,8 @@
             "mass_number": 198,
             "mass": 197.966769,
             "abundance": 0.0997,
-            "average_mass": 197.966769
+            "average_mass": 197.966769,
+            "is_monoisotopic": false
         },
         {
             "number": 80,
@@ -1365,7 +1534,8 @@
             "mass_number": 199,
             "mass": 198.968281,
             "abundance": 0.1687,
-            "average_mass": 198.968281
+            "average_mass": 198.968281,
+            "is_monoisotopic": false
         },
         {
             "number": 80,
@@ -1373,7 +1543,8 @@
             "mass_number": 200,
             "mass": 199.968327,
             "abundance": 0.231,
-            "average_mass": 199.968327
+            "average_mass": 199.968327,
+            "is_monoisotopic": false
         },
         {
             "number": 80,
@@ -1381,7 +1552,8 @@
             "mass_number": 201,
             "mass": 200.970303,
             "abundance": 0.1318,
-            "average_mass": 200.970303
+            "average_mass": 200.970303,
+            "is_monoisotopic": false
         },
         {
             "number": 80,
@@ -1389,7 +1561,8 @@
             "mass_number": 202,
             "mass": 201.970643,
             "abundance": 0.2986,
-            "average_mass": 201.970643
+            "average_mass": 201.970643,
+            "is_monoisotopic": true
         },
         {
             "number": 80,
@@ -1397,7 +1570,8 @@
             "mass_number": 204,
             "mass": 203.973494,
             "abundance": 0.0687,
-            "average_mass": 203.973494
+            "average_mass": 203.973494,
+            "is_monoisotopic": false
         },
         {
             "number": 67,
@@ -1405,7 +1579,8 @@
             "mass_number": null,
             "mass": 164.930329,
             "abundance": null,
-            "average_mass": 164.930329
+            "average_mass": 164.930329,
+            "is_monoisotopic": null
         },
         {
             "number": 67,
@@ -1413,7 +1588,8 @@
             "mass_number": 165,
             "mass": 164.930329,
             "abundance": 1.0,
-            "average_mass": 164.930329
+            "average_mass": 164.930329,
+            "is_monoisotopic": true
         },
         {
             "number": 108,
@@ -1421,7 +1597,8 @@
             "mass_number": null,
             "mass": 270.13429,
             "abundance": null,
-            "average_mass": 270.13429
+            "average_mass": 270.13429,
+            "is_monoisotopic": null
         },
         {
             "number": 108,
@@ -1429,7 +1606,8 @@
             "mass_number": 270,
             "mass": 270.13429,
             "abundance": 0.0,
-            "average_mass": 270.13429
+            "average_mass": 270.13429,
+            "is_monoisotopic": true
         },
         {
             "number": 53,
@@ -1437,7 +1615,8 @@
             "mass_number": null,
             "mass": 126.904472,
             "abundance": null,
-            "average_mass": 126.904472
+            "average_mass": 126.904472,
+            "is_monoisotopic": null
         },
         {
             "number": 53,
@@ -1445,7 +1624,8 @@
             "mass_number": 127,
             "mass": 126.904472,
             "abundance": 1.0,
-            "average_mass": 126.904472
+            "average_mass": 126.904472,
+            "is_monoisotopic": true
         },
         {
             "number": 49,
@@ -1453,7 +1633,8 @@
             "mass_number": null,
             "mass": 114.903879,
             "abundance": null,
-            "average_mass": 114.818087
+            "average_mass": 114.818087,
+            "is_monoisotopic": null
         },
         {
             "number": 49,
@@ -1461,7 +1642,8 @@
             "mass_number": 113,
             "mass": 112.904062,
             "abundance": 0.0429,
-            "average_mass": 112.904062
+            "average_mass": 112.904062,
+            "is_monoisotopic": false
         },
         {
             "number": 49,
@@ -1469,7 +1651,8 @@
             "mass_number": 115,
             "mass": 114.903879,
             "abundance": 0.9571,
-            "average_mass": 114.903879
+            "average_mass": 114.903879,
+            "is_monoisotopic": true
         },
         {
             "number": 77,
@@ -1477,7 +1660,8 @@
             "mass_number": null,
             "mass": 192.962922,
             "abundance": null,
-            "average_mass": 192.216052
+            "average_mass": 192.216052,
+            "is_monoisotopic": null
         },
         {
             "number": 77,
@@ -1485,7 +1669,8 @@
             "mass_number": 191,
             "mass": 190.960589,
             "abundance": 0.373,
-            "average_mass": 190.960589
+            "average_mass": 190.960589,
+            "is_monoisotopic": false
         },
         {
             "number": 77,
@@ -1493,7 +1678,8 @@
             "mass_number": 193,
             "mass": 192.962922,
             "abundance": 0.627,
-            "average_mass": 192.962922
+            "average_mass": 192.962922,
+            "is_monoisotopic": true
         },
         {
             "number": 19,
@@ -1501,7 +1687,8 @@
             "mass_number": null,
             "mass": 38.963706,
             "abundance": null,
-            "average_mass": 39.098301
+            "average_mass": 39.098301,
+            "is_monoisotopic": null
         },
         {
             "number": 19,
@@ -1509,7 +1696,8 @@
             "mass_number": 39,
             "mass": 38.963706,
             "abundance": 0.932581,
-            "average_mass": 38.963706
+            "average_mass": 38.963706,
+            "is_monoisotopic": true
         },
         {
             "number": 19,
@@ -1517,7 +1705,8 @@
             "mass_number": 40,
             "mass": 39.963998,
             "abundance": 0.000117,
-            "average_mass": 39.963998
+            "average_mass": 39.963998,
+            "is_monoisotopic": false
         },
         {
             "number": 19,
@@ -1525,7 +1714,8 @@
             "mass_number": 41,
             "mass": 40.961825,
             "abundance": 0.067302,
-            "average_mass": 40.961825
+            "average_mass": 40.961825,
+            "is_monoisotopic": false
         },
         {
             "number": 36,
@@ -1533,7 +1723,8 @@
             "mass_number": null,
             "mass": 83.911498,
             "abundance": null,
-            "average_mass": 83.798
+            "average_mass": 83.798,
+            "is_monoisotopic": null
         },
         {
             "number": 36,
@@ -1541,7 +1732,8 @@
             "mass_number": 78,
             "mass": 77.920365,
             "abundance": 0.00355,
-            "average_mass": 77.920365
+            "average_mass": 77.920365,
+            "is_monoisotopic": false
         },
         {
             "number": 36,
@@ -1549,7 +1741,8 @@
             "mass_number": 80,
             "mass": 79.916378,
             "abundance": 0.02286,
-            "average_mass": 79.916378
+            "average_mass": 79.916378,
+            "is_monoisotopic": false
         },
         {
             "number": 36,
@@ -1557,7 +1750,8 @@
             "mass_number": 82,
             "mass": 81.913483,
             "abundance": 0.11593,
-            "average_mass": 81.913483
+            "average_mass": 81.913483,
+            "is_monoisotopic": false
         },
         {
             "number": 36,
@@ -1565,7 +1759,8 @@
             "mass_number": 83,
             "mass": 82.914127,
             "abundance": 0.115,
-            "average_mass": 82.914127
+            "average_mass": 82.914127,
+            "is_monoisotopic": false
         },
         {
             "number": 36,
@@ -1573,7 +1768,8 @@
             "mass_number": 84,
             "mass": 83.911498,
             "abundance": 0.56987,
-            "average_mass": 83.911498
+            "average_mass": 83.911498,
+            "is_monoisotopic": true
         },
         {
             "number": 36,
@@ -1581,7 +1777,8 @@
             "mass_number": 86,
             "mass": 85.910611,
             "abundance": 0.17279,
-            "average_mass": 85.910611
+            "average_mass": 85.910611,
+            "is_monoisotopic": false
         },
         {
             "number": 57,
@@ -1589,7 +1786,8 @@
             "mass_number": null,
             "mass": 138.906356,
             "abundance": null,
-            "average_mass": 138.905469
+            "average_mass": 138.905469,
+            "is_monoisotopic": null
         },
         {
             "number": 57,
@@ -1597,7 +1795,8 @@
             "mass_number": 138,
             "mass": 137.907115,
             "abundance": 0.0008881,
-            "average_mass": 137.907115
+            "average_mass": 137.907115,
+            "is_monoisotopic": false
         },
         {
             "number": 57,
@@ -1605,7 +1804,8 @@
             "mass_number": 139,
             "mass": 138.906356,
             "abundance": 0.9991119,
-            "average_mass": 138.906356
+            "average_mass": 138.906356,
+            "is_monoisotopic": true
         },
         {
             "number": 3,
@@ -1613,7 +1813,8 @@
             "mass_number": null,
             "mass": 7.016003,
             "abundance": null,
-            "average_mass": 6.940037
+            "average_mass": 6.940037,
+            "is_monoisotopic": null
         },
         {
             "number": 3,
@@ -1621,7 +1822,8 @@
             "mass_number": 6,
             "mass": 6.015123,
             "abundance": 0.0759,
-            "average_mass": 6.015123
+            "average_mass": 6.015123,
+            "is_monoisotopic": false
         },
         {
             "number": 3,
@@ -1629,7 +1831,8 @@
             "mass_number": 7,
             "mass": 7.016003,
             "abundance": 0.9241,
-            "average_mass": 7.016003
+            "average_mass": 7.016003,
+            "is_monoisotopic": true
         },
         {
             "number": 103,
@@ -1637,7 +1840,8 @@
             "mass_number": null,
             "mass": 262.10961,
             "abundance": null,
-            "average_mass": 262.10961
+            "average_mass": 262.10961,
+            "is_monoisotopic": null
         },
         {
             "number": 103,
@@ -1645,7 +1849,8 @@
             "mass_number": 262,
             "mass": 262.10961,
             "abundance": 0.0,
-            "average_mass": 262.10961
+            "average_mass": 262.10961,
+            "is_monoisotopic": true
         },
         {
             "number": 71,
@@ -1653,7 +1858,8 @@
             "mass_number": null,
             "mass": 174.940775,
             "abundance": null,
-            "average_mass": 174.966815
+            "average_mass": 174.966815,
+            "is_monoisotopic": null
         },
         {
             "number": 71,
@@ -1661,7 +1867,8 @@
             "mass_number": 175,
             "mass": 174.940775,
             "abundance": 0.97401,
-            "average_mass": 174.940775
+            "average_mass": 174.940775,
+            "is_monoisotopic": true
         },
         {
             "number": 71,
@@ -1669,7 +1876,8 @@
             "mass_number": 176,
             "mass": 175.94269,
             "abundance": 0.02599,
-            "average_mass": 175.94269
+            "average_mass": 175.94269,
+            "is_monoisotopic": false
         },
         {
             "number": 116,
@@ -1677,7 +1885,8 @@
             "mass_number": null,
             "mass": 293.20449,
             "abundance": null,
-            "average_mass": 293.20449
+            "average_mass": 293.20449,
+            "is_monoisotopic": null
         },
         {
             "number": 116,
@@ -1685,7 +1894,8 @@
             "mass_number": 293,
             "mass": 293.20449,
             "abundance": 0.0,
-            "average_mass": 293.20449
+            "average_mass": 293.20449,
+            "is_monoisotopic": true
         },
         {
             "number": 115,
@@ -1693,7 +1903,8 @@
             "mass_number": null,
             "mass": 288.19274,
             "abundance": null,
-            "average_mass": 288.19274
+            "average_mass": 288.19274,
+            "is_monoisotopic": null
         },
         {
             "number": 115,
@@ -1701,7 +1912,8 @@
             "mass_number": 288,
             "mass": 288.19274,
             "abundance": 0.0,
-            "average_mass": 288.19274
+            "average_mass": 288.19274,
+            "is_monoisotopic": true
         },
         {
             "number": 101,
@@ -1709,7 +1921,8 @@
             "mass_number": null,
             "mass": 258.098432,
             "abundance": null,
-            "average_mass": 258.098432
+            "average_mass": 258.098432,
+            "is_monoisotopic": null
         },
         {
             "number": 101,
@@ -1717,7 +1930,8 @@
             "mass_number": 258,
             "mass": 258.098432,
             "abundance": 0.0,
-            "average_mass": 258.098432
+            "average_mass": 258.098432,
+            "is_monoisotopic": true
         },
         {
             "number": 101,
@@ -1725,7 +1939,8 @@
             "mass_number": 260,
             "mass": 260.10365,
             "abundance": 0.0,
-            "average_mass": 260.10365
+            "average_mass": 260.10365,
+            "is_monoisotopic": false
         },
         {
             "number": 12,
@@ -1733,7 +1948,8 @@
             "mass_number": null,
             "mass": 23.985042,
             "abundance": null,
-            "average_mass": 24.305052
+            "average_mass": 24.305052,
+            "is_monoisotopic": null
         },
         {
             "number": 12,
@@ -1741,7 +1957,8 @@
             "mass_number": 24,
             "mass": 23.985042,
             "abundance": 0.7899,
-            "average_mass": 23.985042
+            "average_mass": 23.985042,
+            "is_monoisotopic": true
         },
         {
             "number": 12,
@@ -1749,7 +1966,8 @@
             "mass_number": 25,
             "mass": 24.985837,
             "abundance": 0.1,
-            "average_mass": 24.985837
+            "average_mass": 24.985837,
+            "is_monoisotopic": false
         },
         {
             "number": 12,
@@ -1757,7 +1975,8 @@
             "mass_number": 26,
             "mass": 25.982593,
             "abundance": 0.1101,
-            "average_mass": 25.982593
+            "average_mass": 25.982593,
+            "is_monoisotopic": false
         },
         {
             "number": 25,
@@ -1765,7 +1984,8 @@
             "mass_number": null,
             "mass": 54.938044,
             "abundance": null,
-            "average_mass": 54.938044
+            "average_mass": 54.938044,
+            "is_monoisotopic": null
         },
         {
             "number": 25,
@@ -1773,7 +1993,8 @@
             "mass_number": 55,
             "mass": 54.938044,
             "abundance": 1.0,
-            "average_mass": 54.938044
+            "average_mass": 54.938044,
+            "is_monoisotopic": true
         },
         {
             "number": 42,
@@ -1781,7 +2002,8 @@
             "mass_number": null,
             "mass": 97.905405,
             "abundance": null,
-            "average_mass": 95.959789
+            "average_mass": 95.959789,
+            "is_monoisotopic": null
         },
         {
             "number": 42,
@@ -1789,7 +2011,8 @@
             "mass_number": 92,
             "mass": 91.906808,
             "abundance": 0.1453,
-            "average_mass": 91.906808
+            "average_mass": 91.906808,
+            "is_monoisotopic": false
         },
         {
             "number": 42,
@@ -1797,7 +2020,8 @@
             "mass_number": 94,
             "mass": 93.905085,
             "abundance": 0.0915,
-            "average_mass": 93.905085
+            "average_mass": 93.905085,
+            "is_monoisotopic": false
         },
         {
             "number": 42,
@@ -1805,7 +2029,8 @@
             "mass_number": 95,
             "mass": 94.905839,
             "abundance": 0.1584,
-            "average_mass": 94.905839
+            "average_mass": 94.905839,
+            "is_monoisotopic": false
         },
         {
             "number": 42,
@@ -1813,7 +2038,8 @@
             "mass_number": 96,
             "mass": 95.904676,
             "abundance": 0.1667,
-            "average_mass": 95.904676
+            "average_mass": 95.904676,
+            "is_monoisotopic": false
         },
         {
             "number": 42,
@@ -1821,7 +2047,8 @@
             "mass_number": 97,
             "mass": 96.906018,
             "abundance": 0.096,
-            "average_mass": 96.906018
+            "average_mass": 96.906018,
+            "is_monoisotopic": false
         },
         {
             "number": 42,
@@ -1829,7 +2056,8 @@
             "mass_number": 98,
             "mass": 97.905405,
             "abundance": 0.2439,
-            "average_mass": 97.905405
+            "average_mass": 97.905405,
+            "is_monoisotopic": true
         },
         {
             "number": 42,
@@ -1837,7 +2065,8 @@
             "mass_number": 100,
             "mass": 99.907472,
             "abundance": 0.0982,
-            "average_mass": 99.907472
+            "average_mass": 99.907472,
+            "is_monoisotopic": false
         },
         {
             "number": 109,
@@ -1845,7 +2074,8 @@
             "mass_number": null,
             "mass": 276.15159,
             "abundance": null,
-            "average_mass": 276.15159
+            "average_mass": 276.15159,
+            "is_monoisotopic": null
         },
         {
             "number": 109,
@@ -1853,7 +2083,8 @@
             "mass_number": 276,
             "mass": 276.15159,
             "abundance": 0.0,
-            "average_mass": 276.15159
+            "average_mass": 276.15159,
+            "is_monoisotopic": true
         },
         {
             "number": 7,
@@ -1861,7 +2092,8 @@
             "mass_number": null,
             "mass": 14.003074,
             "abundance": null,
-            "average_mass": 14.006703
+            "average_mass": 14.006703,
+            "is_monoisotopic": null
         },
         {
             "number": 7,
@@ -1869,7 +2101,8 @@
             "mass_number": 14,
             "mass": 14.003074,
             "abundance": 0.99636,
-            "average_mass": 14.003074
+            "average_mass": 14.003074,
+            "is_monoisotopic": true
         },
         {
             "number": 7,
@@ -1877,7 +2110,8 @@
             "mass_number": 15,
             "mass": 15.000109,
             "abundance": 0.00364,
-            "average_mass": 15.000109
+            "average_mass": 15.000109,
+            "is_monoisotopic": false
         },
         {
             "number": 11,
@@ -1885,7 +2119,8 @@
             "mass_number": null,
             "mass": 22.989769,
             "abundance": null,
-            "average_mass": 22.989769
+            "average_mass": 22.989769,
+            "is_monoisotopic": null
         },
         {
             "number": 11,
@@ -1893,7 +2128,8 @@
             "mass_number": 23,
             "mass": 22.989769,
             "abundance": 1.0,
-            "average_mass": 22.989769
+            "average_mass": 22.989769,
+            "is_monoisotopic": true
         },
         {
             "number": 41,
@@ -1901,7 +2137,8 @@
             "mass_number": null,
             "mass": 92.906373,
             "abundance": null,
-            "average_mass": 92.906373
+            "average_mass": 92.906373,
+            "is_monoisotopic": null
         },
         {
             "number": 41,
@@ -1909,7 +2146,8 @@
             "mass_number": 93,
             "mass": 92.906373,
             "abundance": 1.0,
-            "average_mass": 92.906373
+            "average_mass": 92.906373,
+            "is_monoisotopic": true
         },
         {
             "number": 60,
@@ -1917,7 +2155,8 @@
             "mass_number": null,
             "mass": 141.907729,
             "abundance": null,
-            "average_mass": 144.241596
+            "average_mass": 144.241596,
+            "is_monoisotopic": null
         },
         {
             "number": 60,
@@ -1925,7 +2164,8 @@
             "mass_number": 142,
             "mass": 141.907729,
             "abundance": 0.27152,
-            "average_mass": 141.907729
+            "average_mass": 141.907729,
+            "is_monoisotopic": true
         },
         {
             "number": 60,
@@ -1933,7 +2173,8 @@
             "mass_number": 143,
             "mass": 142.90982,
             "abundance": 0.12174,
-            "average_mass": 142.90982
+            "average_mass": 142.90982,
+            "is_monoisotopic": false
         },
         {
             "number": 60,
@@ -1941,7 +2182,8 @@
             "mass_number": 144,
             "mass": 143.910093,
             "abundance": 0.23798,
-            "average_mass": 143.910093
+            "average_mass": 143.910093,
+            "is_monoisotopic": false
         },
         {
             "number": 60,
@@ -1949,7 +2191,8 @@
             "mass_number": 145,
             "mass": 144.912579,
             "abundance": 0.08293,
-            "average_mass": 144.912579
+            "average_mass": 144.912579,
+            "is_monoisotopic": false
         },
         {
             "number": 60,
@@ -1957,7 +2200,8 @@
             "mass_number": 146,
             "mass": 145.913123,
             "abundance": 0.17189,
-            "average_mass": 145.913123
+            "average_mass": 145.913123,
+            "is_monoisotopic": false
         },
         {
             "number": 60,
@@ -1965,7 +2209,8 @@
             "mass_number": 148,
             "mass": 147.916899,
             "abundance": 0.05756,
-            "average_mass": 147.916899
+            "average_mass": 147.916899,
+            "is_monoisotopic": false
         },
         {
             "number": 60,
@@ -1973,7 +2218,8 @@
             "mass_number": 150,
             "mass": 149.920902,
             "abundance": 0.05638,
-            "average_mass": 149.920902
+            "average_mass": 149.920902,
+            "is_monoisotopic": false
         },
         {
             "number": 10,
@@ -1981,7 +2227,8 @@
             "mass_number": null,
             "mass": 19.99244,
             "abundance": null,
-            "average_mass": 20.180046
+            "average_mass": 20.180046,
+            "is_monoisotopic": null
         },
         {
             "number": 10,
@@ -1989,7 +2236,8 @@
             "mass_number": 20,
             "mass": 19.99244,
             "abundance": 0.9048,
-            "average_mass": 19.99244
+            "average_mass": 19.99244,
+            "is_monoisotopic": true
         },
         {
             "number": 10,
@@ -1997,7 +2245,8 @@
             "mass_number": 21,
             "mass": 20.993847,
             "abundance": 0.0027,
-            "average_mass": 20.993847
+            "average_mass": 20.993847,
+            "is_monoisotopic": false
         },
         {
             "number": 10,
@@ -2005,7 +2254,8 @@
             "mass_number": 22,
             "mass": 21.991385,
             "abundance": 0.0925,
-            "average_mass": 21.991385
+            "average_mass": 21.991385,
+            "is_monoisotopic": false
         },
         {
             "number": 113,
@@ -2013,7 +2263,8 @@
             "mass_number": null,
             "mass": 284.17873,
             "abundance": null,
-            "average_mass": 284.17873
+            "average_mass": 284.17873,
+            "is_monoisotopic": null
         },
         {
             "number": 113,
@@ -2021,7 +2272,8 @@
             "mass_number": 284,
             "mass": 284.17873,
             "abundance": 0.0,
-            "average_mass": 284.17873
+            "average_mass": 284.17873,
+            "is_monoisotopic": true
         },
         {
             "number": 28,
@@ -2029,7 +2281,8 @@
             "mass_number": null,
             "mass": 57.935342,
             "abundance": null,
-            "average_mass": 58.693347
+            "average_mass": 58.693347,
+            "is_monoisotopic": null
         },
         {
             "number": 28,
@@ -2037,7 +2290,8 @@
             "mass_number": 58,
             "mass": 57.935342,
             "abundance": 0.68077,
-            "average_mass": 57.935342
+            "average_mass": 57.935342,
+            "is_monoisotopic": true
         },
         {
             "number": 28,
@@ -2045,7 +2299,8 @@
             "mass_number": 60,
             "mass": 59.930786,
             "abundance": 0.26223,
-            "average_mass": 59.930786
+            "average_mass": 59.930786,
+            "is_monoisotopic": false
         },
         {
             "number": 28,
@@ -2053,7 +2308,8 @@
             "mass_number": 61,
             "mass": 60.931056,
             "abundance": 0.011399,
-            "average_mass": 60.931056
+            "average_mass": 60.931056,
+            "is_monoisotopic": false
         },
         {
             "number": 28,
@@ -2061,7 +2317,8 @@
             "mass_number": 62,
             "mass": 61.928345,
             "abundance": 0.036346,
-            "average_mass": 61.928345
+            "average_mass": 61.928345,
+            "is_monoisotopic": false
         },
         {
             "number": 28,
@@ -2069,7 +2326,8 @@
             "mass_number": 64,
             "mass": 63.927967,
             "abundance": 0.009255,
-            "average_mass": 63.927967
+            "average_mass": 63.927967,
+            "is_monoisotopic": false
         },
         {
             "number": 102,
@@ -2077,7 +2335,8 @@
             "mass_number": null,
             "mass": 259.10103,
             "abundance": null,
-            "average_mass": 259.10103
+            "average_mass": 259.10103,
+            "is_monoisotopic": null
         },
         {
             "number": 102,
@@ -2085,7 +2344,8 @@
             "mass_number": 259,
             "mass": 259.10103,
             "abundance": 0.0,
-            "average_mass": 259.10103
+            "average_mass": 259.10103,
+            "is_monoisotopic": true
         },
         {
             "number": 93,
@@ -2093,7 +2353,8 @@
             "mass_number": null,
             "mass": 236.04657,
             "abundance": null,
-            "average_mass": 236.04657
+            "average_mass": 236.04657,
+            "is_monoisotopic": null
         },
         {
             "number": 93,
@@ -2101,7 +2362,8 @@
             "mass_number": 236,
             "mass": 236.04657,
             "abundance": 0.0,
-            "average_mass": 236.04657
+            "average_mass": 236.04657,
+            "is_monoisotopic": true
         },
         {
             "number": 93,
@@ -2109,7 +2371,8 @@
             "mass_number": 237,
             "mass": 237.048174,
             "abundance": 0.0,
-            "average_mass": 237.048174
+            "average_mass": 237.048174,
+            "is_monoisotopic": false
         },
         {
             "number": 8,
@@ -2117,7 +2380,8 @@
             "mass_number": null,
             "mass": 15.994915,
             "abundance": null,
-            "average_mass": 15.999405
+            "average_mass": 15.999405,
+            "is_monoisotopic": null
         },
         {
             "number": 8,
@@ -2125,7 +2389,8 @@
             "mass_number": 16,
             "mass": 15.994915,
             "abundance": 0.99757,
-            "average_mass": 15.994915
+            "average_mass": 15.994915,
+            "is_monoisotopic": true
         },
         {
             "number": 8,
@@ -2133,7 +2398,8 @@
             "mass_number": 17,
             "mass": 16.999132,
             "abundance": 0.00038,
-            "average_mass": 16.999132
+            "average_mass": 16.999132,
+            "is_monoisotopic": false
         },
         {
             "number": 8,
@@ -2141,7 +2407,8 @@
             "mass_number": 18,
             "mass": 17.99916,
             "abundance": 0.00205,
-            "average_mass": 17.99916
+            "average_mass": 17.99916,
+            "is_monoisotopic": false
         },
         {
             "number": 118,
@@ -2149,7 +2416,8 @@
             "mass_number": null,
             "mass": 294.21392,
             "abundance": null,
-            "average_mass": 294.21392
+            "average_mass": 294.21392,
+            "is_monoisotopic": null
         },
         {
             "number": 118,
@@ -2157,7 +2425,8 @@
             "mass_number": 294,
             "mass": 294.21392,
             "abundance": 0.0,
-            "average_mass": 294.21392
+            "average_mass": 294.21392,
+            "is_monoisotopic": true
         },
         {
             "number": 76,
@@ -2165,7 +2434,8 @@
             "mass_number": null,
             "mass": 191.961477,
             "abundance": null,
-            "average_mass": 190.22486
+            "average_mass": 190.22486,
+            "is_monoisotopic": null
         },
         {
             "number": 76,
@@ -2173,7 +2443,8 @@
             "mass_number": 184,
             "mass": 183.952488,
             "abundance": 0.0002,
-            "average_mass": 183.952488
+            "average_mass": 183.952488,
+            "is_monoisotopic": false
         },
         {
             "number": 76,
@@ -2181,7 +2452,8 @@
             "mass_number": 186,
             "mass": 185.953835,
             "abundance": 0.0159,
-            "average_mass": 185.953835
+            "average_mass": 185.953835,
+            "is_monoisotopic": false
         },
         {
             "number": 76,
@@ -2189,7 +2461,8 @@
             "mass_number": 187,
             "mass": 186.955747,
             "abundance": 0.0196,
-            "average_mass": 186.955747
+            "average_mass": 186.955747,
+            "is_monoisotopic": false
         },
         {
             "number": 76,
@@ -2197,7 +2470,8 @@
             "mass_number": 188,
             "mass": 187.955835,
             "abundance": 0.1324,
-            "average_mass": 187.955835
+            "average_mass": 187.955835,
+            "is_monoisotopic": false
         },
         {
             "number": 76,
@@ -2205,7 +2479,8 @@
             "mass_number": 189,
             "mass": 188.958144,
             "abundance": 0.1615,
-            "average_mass": 188.958144
+            "average_mass": 188.958144,
+            "is_monoisotopic": false
         },
         {
             "number": 76,
@@ -2213,7 +2488,8 @@
             "mass_number": 190,
             "mass": 189.958444,
             "abundance": 0.2626,
-            "average_mass": 189.958444
+            "average_mass": 189.958444,
+            "is_monoisotopic": false
         },
         {
             "number": 76,
@@ -2221,7 +2497,8 @@
             "mass_number": 192,
             "mass": 191.961477,
             "abundance": 0.4078,
-            "average_mass": 191.961477
+            "average_mass": 191.961477,
+            "is_monoisotopic": true
         },
         {
             "number": 15,
@@ -2229,7 +2506,8 @@
             "mass_number": null,
             "mass": 30.973762,
             "abundance": null,
-            "average_mass": 30.973762
+            "average_mass": 30.973762,
+            "is_monoisotopic": null
         },
         {
             "number": 15,
@@ -2237,7 +2515,8 @@
             "mass_number": 31,
             "mass": 30.973762,
             "abundance": 1.0,
-            "average_mass": 30.973762
+            "average_mass": 30.973762,
+            "is_monoisotopic": true
         },
         {
             "number": 91,
@@ -2245,7 +2524,8 @@
             "mass_number": null,
             "mass": 231.035884,
             "abundance": null,
-            "average_mass": 231.035884
+            "average_mass": 231.035884,
+            "is_monoisotopic": null
         },
         {
             "number": 91,
@@ -2253,7 +2533,8 @@
             "mass_number": 231,
             "mass": 231.035884,
             "abundance": 1.0,
-            "average_mass": 231.035884
+            "average_mass": 231.035884,
+            "is_monoisotopic": true
         },
         {
             "number": 82,
@@ -2261,7 +2542,8 @@
             "mass_number": null,
             "mass": 207.976653,
             "abundance": null,
-            "average_mass": 207.216908
+            "average_mass": 207.216908,
+            "is_monoisotopic": null
         },
         {
             "number": 82,
@@ -2269,7 +2551,8 @@
             "mass_number": 204,
             "mass": 203.973044,
             "abundance": 0.014,
-            "average_mass": 203.973044
+            "average_mass": 203.973044,
+            "is_monoisotopic": false
         },
         {
             "number": 82,
@@ -2277,7 +2560,8 @@
             "mass_number": 206,
             "mass": 205.974466,
             "abundance": 0.241,
-            "average_mass": 205.974466
+            "average_mass": 205.974466,
+            "is_monoisotopic": false
         },
         {
             "number": 82,
@@ -2285,7 +2569,8 @@
             "mass_number": 207,
             "mass": 206.975897,
             "abundance": 0.221,
-            "average_mass": 206.975897
+            "average_mass": 206.975897,
+            "is_monoisotopic": false
         },
         {
             "number": 82,
@@ -2293,7 +2578,8 @@
             "mass_number": 208,
             "mass": 207.976653,
             "abundance": 0.524,
-            "average_mass": 207.976653
+            "average_mass": 207.976653,
+            "is_monoisotopic": true
         },
         {
             "number": 46,
@@ -2301,7 +2587,8 @@
             "mass_number": null,
             "mass": 105.90348,
             "abundance": null,
-            "average_mass": 106.415328
+            "average_mass": 106.415328,
+            "is_monoisotopic": null
         },
         {
             "number": 46,
@@ -2309,7 +2596,8 @@
             "mass_number": 102,
             "mass": 101.905602,
             "abundance": 0.0102,
-            "average_mass": 101.905602
+            "average_mass": 101.905602,
+            "is_monoisotopic": false
         },
         {
             "number": 46,
@@ -2317,7 +2605,8 @@
             "mass_number": 104,
             "mass": 103.904031,
             "abundance": 0.1114,
-            "average_mass": 103.904031
+            "average_mass": 103.904031,
+            "is_monoisotopic": false
         },
         {
             "number": 46,
@@ -2325,7 +2614,8 @@
             "mass_number": 105,
             "mass": 104.90508,
             "abundance": 0.2233,
-            "average_mass": 104.90508
+            "average_mass": 104.90508,
+            "is_monoisotopic": false
         },
         {
             "number": 46,
@@ -2333,7 +2623,8 @@
             "mass_number": 106,
             "mass": 105.90348,
             "abundance": 0.2733,
-            "average_mass": 105.90348
+            "average_mass": 105.90348,
+            "is_monoisotopic": true
         },
         {
             "number": 46,
@@ -2341,7 +2632,8 @@
             "mass_number": 108,
             "mass": 107.903892,
             "abundance": 0.2646,
-            "average_mass": 107.903892
+            "average_mass": 107.903892,
+            "is_monoisotopic": false
         },
         {
             "number": 46,
@@ -2349,7 +2641,8 @@
             "mass_number": 110,
             "mass": 109.905172,
             "abundance": 0.1172,
-            "average_mass": 109.905172
+            "average_mass": 109.905172,
+            "is_monoisotopic": false
         },
         {
             "number": 61,
@@ -2357,7 +2650,8 @@
             "mass_number": null,
             "mass": 144.912756,
             "abundance": null,
-            "average_mass": 144.912756
+            "average_mass": 144.912756,
+            "is_monoisotopic": null
         },
         {
             "number": 61,
@@ -2365,7 +2659,8 @@
             "mass_number": 145,
             "mass": 144.912756,
             "abundance": 0.0,
-            "average_mass": 144.912756
+            "average_mass": 144.912756,
+            "is_monoisotopic": true
         },
         {
             "number": 61,
@@ -2373,7 +2668,8 @@
             "mass_number": 147,
             "mass": 146.915145,
             "abundance": 0.0,
-            "average_mass": 146.915145
+            "average_mass": 146.915145,
+            "is_monoisotopic": false
         },
         {
             "number": 84,
@@ -2381,7 +2677,8 @@
             "mass_number": null,
             "mass": 208.982431,
             "abundance": null,
-            "average_mass": 208.982431
+            "average_mass": 208.982431,
+            "is_monoisotopic": null
         },
         {
             "number": 84,
@@ -2389,7 +2686,8 @@
             "mass_number": 209,
             "mass": 208.982431,
             "abundance": 0.0,
-            "average_mass": 208.982431
+            "average_mass": 208.982431,
+            "is_monoisotopic": true
         },
         {
             "number": 84,
@@ -2397,7 +2695,8 @@
             "mass_number": 210,
             "mass": 209.982874,
             "abundance": 0.0,
-            "average_mass": 209.982874
+            "average_mass": 209.982874,
+            "is_monoisotopic": false
         },
         {
             "number": 59,
@@ -2405,7 +2704,8 @@
             "mass_number": null,
             "mass": 140.907658,
             "abundance": null,
-            "average_mass": 140.907658
+            "average_mass": 140.907658,
+            "is_monoisotopic": null
         },
         {
             "number": 59,
@@ -2413,7 +2713,8 @@
             "mass_number": 141,
             "mass": 140.907658,
             "abundance": 1.0,
-            "average_mass": 140.907658
+            "average_mass": 140.907658,
+            "is_monoisotopic": true
         },
         {
             "number": 78,
@@ -2421,7 +2722,8 @@
             "mass_number": null,
             "mass": 194.964792,
             "abundance": null,
-            "average_mass": 195.084457
+            "average_mass": 195.084457,
+            "is_monoisotopic": null
         },
         {
             "number": 78,
@@ -2429,7 +2731,8 @@
             "mass_number": 190,
             "mass": 189.95993,
             "abundance": 0.00012,
-            "average_mass": 189.95993
+            "average_mass": 189.95993,
+            "is_monoisotopic": false
         },
         {
             "number": 78,
@@ -2437,7 +2740,8 @@
             "mass_number": 192,
             "mass": 191.961039,
             "abundance": 0.00782,
-            "average_mass": 191.961039
+            "average_mass": 191.961039,
+            "is_monoisotopic": false
         },
         {
             "number": 78,
@@ -2445,7 +2749,8 @@
             "mass_number": 194,
             "mass": 193.962681,
             "abundance": 0.3286,
-            "average_mass": 193.962681
+            "average_mass": 193.962681,
+            "is_monoisotopic": false
         },
         {
             "number": 78,
@@ -2453,7 +2758,8 @@
             "mass_number": 195,
             "mass": 194.964792,
             "abundance": 0.3378,
-            "average_mass": 194.964792
+            "average_mass": 194.964792,
+            "is_monoisotopic": true
         },
         {
             "number": 78,
@@ -2461,7 +2767,8 @@
             "mass_number": 196,
             "mass": 195.964952,
             "abundance": 0.2521,
-            "average_mass": 195.964952
+            "average_mass": 195.964952,
+            "is_monoisotopic": false
         },
         {
             "number": 78,
@@ -2469,7 +2776,8 @@
             "mass_number": 198,
             "mass": 197.967895,
             "abundance": 0.07356,
-            "average_mass": 197.967895
+            "average_mass": 197.967895,
+            "is_monoisotopic": false
         },
         {
             "number": 94,
@@ -2477,7 +2785,8 @@
             "mass_number": null,
             "mass": 238.04956,
             "abundance": null,
-            "average_mass": 238.04956
+            "average_mass": 238.04956,
+            "is_monoisotopic": null
         },
         {
             "number": 94,
@@ -2485,7 +2794,8 @@
             "mass_number": 238,
             "mass": 238.04956,
             "abundance": 0.0,
-            "average_mass": 238.04956
+            "average_mass": 238.04956,
+            "is_monoisotopic": true
         },
         {
             "number": 94,
@@ -2493,7 +2803,8 @@
             "mass_number": 239,
             "mass": 239.052164,
             "abundance": 0.0,
-            "average_mass": 239.052164
+            "average_mass": 239.052164,
+            "is_monoisotopic": false
         },
         {
             "number": 94,
@@ -2501,7 +2812,8 @@
             "mass_number": 240,
             "mass": 240.053814,
             "abundance": 0.0,
-            "average_mass": 240.053814
+            "average_mass": 240.053814,
+            "is_monoisotopic": false
         },
         {
             "number": 94,
@@ -2509,7 +2821,8 @@
             "mass_number": 241,
             "mass": 241.056852,
             "abundance": 0.0,
-            "average_mass": 241.056852
+            "average_mass": 241.056852,
+            "is_monoisotopic": false
         },
         {
             "number": 94,
@@ -2517,7 +2830,8 @@
             "mass_number": 242,
             "mass": 242.058743,
             "abundance": 0.0,
-            "average_mass": 242.058743
+            "average_mass": 242.058743,
+            "is_monoisotopic": false
         },
         {
             "number": 94,
@@ -2525,7 +2839,8 @@
             "mass_number": 244,
             "mass": 244.064205,
             "abundance": 0.0,
-            "average_mass": 244.064205
+            "average_mass": 244.064205,
+            "is_monoisotopic": false
         },
         {
             "number": 88,
@@ -2533,7 +2848,8 @@
             "mass_number": null,
             "mass": 223.018502,
             "abundance": null,
-            "average_mass": 223.018502
+            "average_mass": 223.018502,
+            "is_monoisotopic": null
         },
         {
             "number": 88,
@@ -2541,7 +2857,8 @@
             "mass_number": 223,
             "mass": 223.018502,
             "abundance": 0.0,
-            "average_mass": 223.018502
+            "average_mass": 223.018502,
+            "is_monoisotopic": true
         },
         {
             "number": 88,
@@ -2549,7 +2866,8 @@
             "mass_number": 224,
             "mass": 224.020212,
             "abundance": 0.0,
-            "average_mass": 224.020212
+            "average_mass": 224.020212,
+            "is_monoisotopic": false
         },
         {
             "number": 88,
@@ -2557,7 +2875,8 @@
             "mass_number": 226,
             "mass": 226.02541,
             "abundance": 0.0,
-            "average_mass": 226.02541
+            "average_mass": 226.02541,
+            "is_monoisotopic": false
         },
         {
             "number": 88,
@@ -2565,7 +2884,8 @@
             "mass_number": 228,
             "mass": 228.031071,
             "abundance": 0.0,
-            "average_mass": 228.031071
+            "average_mass": 228.031071,
+            "is_monoisotopic": false
         },
         {
             "number": 37,
@@ -2573,7 +2893,8 @@
             "mass_number": null,
             "mass": 84.91179,
             "abundance": null,
-            "average_mass": 85.467664
+            "average_mass": 85.467664,
+            "is_monoisotopic": null
         },
         {
             "number": 37,
@@ -2581,7 +2902,8 @@
             "mass_number": 85,
             "mass": 84.91179,
             "abundance": 0.7217,
-            "average_mass": 84.91179
+            "average_mass": 84.91179,
+            "is_monoisotopic": true
         },
         {
             "number": 37,
@@ -2589,7 +2911,8 @@
             "mass_number": 87,
             "mass": 86.909181,
             "abundance": 0.2783,
-            "average_mass": 86.909181
+            "average_mass": 86.909181,
+            "is_monoisotopic": false
         },
         {
             "number": 75,
@@ -2597,7 +2920,8 @@
             "mass_number": null,
             "mass": 186.95575,
             "abundance": null,
-            "average_mass": 186.206705
+            "average_mass": 186.206705,
+            "is_monoisotopic": null
         },
         {
             "number": 75,
@@ -2605,7 +2929,8 @@
             "mass_number": 185,
             "mass": 184.952955,
             "abundance": 0.374,
-            "average_mass": 184.952955
+            "average_mass": 184.952955,
+            "is_monoisotopic": false
         },
         {
             "number": 75,
@@ -2613,7 +2938,8 @@
             "mass_number": 187,
             "mass": 186.95575,
             "abundance": 0.626,
-            "average_mass": 186.95575
+            "average_mass": 186.95575,
+            "is_monoisotopic": true
         },
         {
             "number": 104,
@@ -2621,7 +2947,8 @@
             "mass_number": null,
             "mass": 267.12179,
             "abundance": null,
-            "average_mass": 267.12179
+            "average_mass": 267.12179,
+            "is_monoisotopic": null
         },
         {
             "number": 104,
@@ -2629,7 +2956,8 @@
             "mass_number": 267,
             "mass": 267.12179,
             "abundance": 0.0,
-            "average_mass": 267.12179
+            "average_mass": 267.12179,
+            "is_monoisotopic": true
         },
         {
             "number": 111,
@@ -2637,7 +2965,8 @@
             "mass_number": null,
             "mass": 280.16514,
             "abundance": null,
-            "average_mass": 280.16514
+            "average_mass": 280.16514,
+            "is_monoisotopic": null
         },
         {
             "number": 111,
@@ -2645,7 +2974,8 @@
             "mass_number": 280,
             "mass": 280.16514,
             "abundance": 0.0,
-            "average_mass": 280.16514
+            "average_mass": 280.16514,
+            "is_monoisotopic": true
         },
         {
             "number": 45,
@@ -2653,7 +2983,8 @@
             "mass_number": null,
             "mass": 102.905498,
             "abundance": null,
-            "average_mass": 102.905498
+            "average_mass": 102.905498,
+            "is_monoisotopic": null
         },
         {
             "number": 45,
@@ -2661,7 +2992,8 @@
             "mass_number": 103,
             "mass": 102.905498,
             "abundance": 1.0,
-            "average_mass": 102.905498
+            "average_mass": 102.905498,
+            "is_monoisotopic": true
         },
         {
             "number": 86,
@@ -2669,7 +3001,8 @@
             "mass_number": null,
             "mass": 210.990601,
             "abundance": null,
-            "average_mass": 210.990601
+            "average_mass": 210.990601,
+            "is_monoisotopic": null
         },
         {
             "number": 86,
@@ -2677,7 +3010,8 @@
             "mass_number": 211,
             "mass": 210.990601,
             "abundance": 0.0,
-            "average_mass": 210.990601
+            "average_mass": 210.990601,
+            "is_monoisotopic": true
         },
         {
             "number": 86,
@@ -2685,7 +3019,8 @@
             "mass_number": 220,
             "mass": 220.011394,
             "abundance": 0.0,
-            "average_mass": 220.011394
+            "average_mass": 220.011394,
+            "is_monoisotopic": false
         },
         {
             "number": 86,
@@ -2693,7 +3028,8 @@
             "mass_number": 222,
             "mass": 222.017578,
             "abundance": 0.0,
-            "average_mass": 222.017578
+            "average_mass": 222.017578,
+            "is_monoisotopic": false
         },
         {
             "number": 44,
@@ -2701,7 +3037,8 @@
             "mass_number": null,
             "mass": 101.904344,
             "abundance": null,
-            "average_mass": 101.06494
+            "average_mass": 101.06494,
+            "is_monoisotopic": null
         },
         {
             "number": 44,
@@ -2709,7 +3046,8 @@
             "mass_number": 96,
             "mass": 95.90759,
             "abundance": 0.0554,
-            "average_mass": 95.90759
+            "average_mass": 95.90759,
+            "is_monoisotopic": false
         },
         {
             "number": 44,
@@ -2717,7 +3055,8 @@
             "mass_number": 98,
             "mass": 97.905287,
             "abundance": 0.0187,
-            "average_mass": 97.905287
+            "average_mass": 97.905287,
+            "is_monoisotopic": false
         },
         {
             "number": 44,
@@ -2725,7 +3064,8 @@
             "mass_number": 99,
             "mass": 98.905934,
             "abundance": 0.1276,
-            "average_mass": 98.905934
+            "average_mass": 98.905934,
+            "is_monoisotopic": false
         },
         {
             "number": 44,
@@ -2733,7 +3073,8 @@
             "mass_number": 100,
             "mass": 99.904214,
             "abundance": 0.126,
-            "average_mass": 99.904214
+            "average_mass": 99.904214,
+            "is_monoisotopic": false
         },
         {
             "number": 44,
@@ -2741,7 +3082,8 @@
             "mass_number": 101,
             "mass": 100.905577,
             "abundance": 0.1706,
-            "average_mass": 100.905577
+            "average_mass": 100.905577,
+            "is_monoisotopic": false
         },
         {
             "number": 44,
@@ -2749,7 +3091,8 @@
             "mass_number": 102,
             "mass": 101.904344,
             "abundance": 0.3155,
-            "average_mass": 101.904344
+            "average_mass": 101.904344,
+            "is_monoisotopic": true
         },
         {
             "number": 44,
@@ -2757,7 +3100,8 @@
             "mass_number": 104,
             "mass": 103.905428,
             "abundance": 0.1862,
-            "average_mass": 103.905428
+            "average_mass": 103.905428,
+            "is_monoisotopic": false
         },
         {
             "number": 16,
@@ -2765,7 +3109,8 @@
             "mass_number": null,
             "mass": 31.972071,
             "abundance": null,
-            "average_mass": 32.064787
+            "average_mass": 32.064787,
+            "is_monoisotopic": null
         },
         {
             "number": 16,
@@ -2773,7 +3118,8 @@
             "mass_number": 32,
             "mass": 31.972071,
             "abundance": 0.9499,
-            "average_mass": 31.972071
+            "average_mass": 31.972071,
+            "is_monoisotopic": true
         },
         {
             "number": 16,
@@ -2781,7 +3127,8 @@
             "mass_number": 33,
             "mass": 32.971459,
             "abundance": 0.0075,
-            "average_mass": 32.971459
+            "average_mass": 32.971459,
+            "is_monoisotopic": false
         },
         {
             "number": 16,
@@ -2789,7 +3136,8 @@
             "mass_number": 34,
             "mass": 33.967867,
             "abundance": 0.0425,
-            "average_mass": 33.967867
+            "average_mass": 33.967867,
+            "is_monoisotopic": false
         },
         {
             "number": 16,
@@ -2797,7 +3145,8 @@
             "mass_number": 36,
             "mass": 35.967081,
             "abundance": 0.0001,
-            "average_mass": 35.967081
+            "average_mass": 35.967081,
+            "is_monoisotopic": false
         },
         {
             "number": 51,
@@ -2805,7 +3154,8 @@
             "mass_number": null,
             "mass": 120.903812,
             "abundance": null,
-            "average_mass": 121.759784
+            "average_mass": 121.759784,
+            "is_monoisotopic": null
         },
         {
             "number": 51,
@@ -2813,7 +3163,8 @@
             "mass_number": 121,
             "mass": 120.903812,
             "abundance": 0.5721,
-            "average_mass": 120.903812
+            "average_mass": 120.903812,
+            "is_monoisotopic": true
         },
         {
             "number": 51,
@@ -2821,7 +3172,8 @@
             "mass_number": 123,
             "mass": 122.904213,
             "abundance": 0.4279,
-            "average_mass": 122.904213
+            "average_mass": 122.904213,
+            "is_monoisotopic": false
         },
         {
             "number": 21,
@@ -2829,7 +3181,8 @@
             "mass_number": null,
             "mass": 44.955908,
             "abundance": null,
-            "average_mass": 44.955908
+            "average_mass": 44.955908,
+            "is_monoisotopic": null
         },
         {
             "number": 21,
@@ -2837,7 +3190,8 @@
             "mass_number": 45,
             "mass": 44.955908,
             "abundance": 1.0,
-            "average_mass": 44.955908
+            "average_mass": 44.955908,
+            "is_monoisotopic": true
         },
         {
             "number": 34,
@@ -2845,7 +3199,8 @@
             "mass_number": null,
             "mass": 79.916522,
             "abundance": null,
-            "average_mass": 78.959389
+            "average_mass": 78.959389,
+            "is_monoisotopic": null
         },
         {
             "number": 34,
@@ -2853,7 +3208,8 @@
             "mass_number": 74,
             "mass": 73.922476,
             "abundance": 0.0089,
-            "average_mass": 73.922476
+            "average_mass": 73.922476,
+            "is_monoisotopic": false
         },
         {
             "number": 34,
@@ -2861,7 +3217,8 @@
             "mass_number": 76,
             "mass": 75.919214,
             "abundance": 0.0937,
-            "average_mass": 75.919214
+            "average_mass": 75.919214,
+            "is_monoisotopic": false
         },
         {
             "number": 34,
@@ -2869,7 +3226,8 @@
             "mass_number": 77,
             "mass": 76.919914,
             "abundance": 0.0763,
-            "average_mass": 76.919914
+            "average_mass": 76.919914,
+            "is_monoisotopic": false
         },
         {
             "number": 34,
@@ -2877,7 +3235,8 @@
             "mass_number": 78,
             "mass": 77.917309,
             "abundance": 0.2377,
-            "average_mass": 77.917309
+            "average_mass": 77.917309,
+            "is_monoisotopic": false
         },
         {
             "number": 34,
@@ -2885,7 +3244,8 @@
             "mass_number": 80,
             "mass": 79.916522,
             "abundance": 0.4961,
-            "average_mass": 79.916522
+            "average_mass": 79.916522,
+            "is_monoisotopic": true
         },
         {
             "number": 34,
@@ -2893,7 +3253,8 @@
             "mass_number": 82,
             "mass": 81.916699,
             "abundance": 0.0873,
-            "average_mass": 81.916699
+            "average_mass": 81.916699,
+            "is_monoisotopic": false
         },
         {
             "number": 106,
@@ -2901,7 +3262,8 @@
             "mass_number": null,
             "mass": 271.13393,
             "abundance": null,
-            "average_mass": 271.13393
+            "average_mass": 271.13393,
+            "is_monoisotopic": null
         },
         {
             "number": 106,
@@ -2909,7 +3271,8 @@
             "mass_number": 271,
             "mass": 271.13393,
             "abundance": 0.0,
-            "average_mass": 271.13393
+            "average_mass": 271.13393,
+            "is_monoisotopic": true
         },
         {
             "number": 14,
@@ -2917,7 +3280,8 @@
             "mass_number": null,
             "mass": 27.976927,
             "abundance": null,
-            "average_mass": 28.085499
+            "average_mass": 28.085499,
+            "is_monoisotopic": null
         },
         {
             "number": 14,
@@ -2925,7 +3289,8 @@
             "mass_number": 28,
             "mass": 27.976927,
             "abundance": 0.92223,
-            "average_mass": 27.976927
+            "average_mass": 27.976927,
+            "is_monoisotopic": true
         },
         {
             "number": 14,
@@ -2933,7 +3298,8 @@
             "mass_number": 29,
             "mass": 28.976495,
             "abundance": 0.04685,
-            "average_mass": 28.976495
+            "average_mass": 28.976495,
+            "is_monoisotopic": false
         },
         {
             "number": 14,
@@ -2941,7 +3307,8 @@
             "mass_number": 30,
             "mass": 29.97377,
             "abundance": 0.03092,
-            "average_mass": 29.97377
+            "average_mass": 29.97377,
+            "is_monoisotopic": false
         },
         {
             "number": 62,
@@ -2949,7 +3316,8 @@
             "mass_number": null,
             "mass": 151.91974,
             "abundance": null,
-            "average_mass": 150.366356
+            "average_mass": 150.366356,
+            "is_monoisotopic": null
         },
         {
             "number": 62,
@@ -2957,7 +3325,8 @@
             "mass_number": 144,
             "mass": 143.912006,
             "abundance": 0.0307,
-            "average_mass": 143.912006
+            "average_mass": 143.912006,
+            "is_monoisotopic": false
         },
         {
             "number": 62,
@@ -2965,7 +3334,8 @@
             "mass_number": 147,
             "mass": 146.914904,
             "abundance": 0.1499,
-            "average_mass": 146.914904
+            "average_mass": 146.914904,
+            "is_monoisotopic": false
         },
         {
             "number": 62,
@@ -2973,7 +3343,8 @@
             "mass_number": 148,
             "mass": 147.914829,
             "abundance": 0.1124,
-            "average_mass": 147.914829
+            "average_mass": 147.914829,
+            "is_monoisotopic": false
         },
         {
             "number": 62,
@@ -2981,7 +3352,8 @@
             "mass_number": 149,
             "mass": 148.917192,
             "abundance": 0.1382,
-            "average_mass": 148.917192
+            "average_mass": 148.917192,
+            "is_monoisotopic": false
         },
         {
             "number": 62,
@@ -2989,7 +3361,8 @@
             "mass_number": 150,
             "mass": 149.917283,
             "abundance": 0.0738,
-            "average_mass": 149.917283
+            "average_mass": 149.917283,
+            "is_monoisotopic": false
         },
         {
             "number": 62,
@@ -2997,7 +3370,8 @@
             "mass_number": 152,
             "mass": 151.91974,
             "abundance": 0.2675,
-            "average_mass": 151.91974
+            "average_mass": 151.91974,
+            "is_monoisotopic": true
         },
         {
             "number": 62,
@@ -3005,7 +3379,8 @@
             "mass_number": 154,
             "mass": 153.922217,
             "abundance": 0.2275,
-            "average_mass": 153.922217
+            "average_mass": 153.922217,
+            "is_monoisotopic": false
         },
         {
             "number": 50,
@@ -3013,7 +3388,8 @@
             "mass_number": null,
             "mass": 119.902202,
             "abundance": null,
-            "average_mass": 118.710113
+            "average_mass": 118.710113,
+            "is_monoisotopic": null
         },
         {
             "number": 50,
@@ -3021,7 +3397,8 @@
             "mass_number": 112,
             "mass": 111.904824,
             "abundance": 0.0097,
-            "average_mass": 111.904824
+            "average_mass": 111.904824,
+            "is_monoisotopic": false
         },
         {
             "number": 50,
@@ -3029,7 +3406,8 @@
             "mass_number": 114,
             "mass": 113.902783,
             "abundance": 0.0066,
-            "average_mass": 113.902783
+            "average_mass": 113.902783,
+            "is_monoisotopic": false
         },
         {
             "number": 50,
@@ -3037,7 +3415,8 @@
             "mass_number": 115,
             "mass": 114.903345,
             "abundance": 0.0034,
-            "average_mass": 114.903345
+            "average_mass": 114.903345,
+            "is_monoisotopic": false
         },
         {
             "number": 50,
@@ -3045,7 +3424,8 @@
             "mass_number": 116,
             "mass": 115.901743,
             "abundance": 0.1454,
-            "average_mass": 115.901743
+            "average_mass": 115.901743,
+            "is_monoisotopic": false
         },
         {
             "number": 50,
@@ -3053,7 +3433,8 @@
             "mass_number": 117,
             "mass": 116.902954,
             "abundance": 0.0768,
-            "average_mass": 116.902954
+            "average_mass": 116.902954,
+            "is_monoisotopic": false
         },
         {
             "number": 50,
@@ -3061,7 +3442,8 @@
             "mass_number": 118,
             "mass": 117.901607,
             "abundance": 0.2422,
-            "average_mass": 117.901607
+            "average_mass": 117.901607,
+            "is_monoisotopic": false
         },
         {
             "number": 50,
@@ -3069,7 +3451,8 @@
             "mass_number": 119,
             "mass": 118.903311,
             "abundance": 0.0859,
-            "average_mass": 118.903311
+            "average_mass": 118.903311,
+            "is_monoisotopic": false
         },
         {
             "number": 50,
@@ -3077,7 +3460,8 @@
             "mass_number": 120,
             "mass": 119.902202,
             "abundance": 0.3258,
-            "average_mass": 119.902202
+            "average_mass": 119.902202,
+            "is_monoisotopic": true
         },
         {
             "number": 50,
@@ -3085,7 +3469,8 @@
             "mass_number": 122,
             "mass": 121.903444,
             "abundance": 0.0463,
-            "average_mass": 121.903444
+            "average_mass": 121.903444,
+            "is_monoisotopic": false
         },
         {
             "number": 50,
@@ -3093,7 +3478,8 @@
             "mass_number": 124,
             "mass": 123.905277,
             "abundance": 0.0579,
-            "average_mass": 123.905277
+            "average_mass": 123.905277,
+            "is_monoisotopic": false
         },
         {
             "number": 38,
@@ -3101,7 +3487,8 @@
             "mass_number": null,
             "mass": 87.905613,
             "abundance": null,
-            "average_mass": 87.616644
+            "average_mass": 87.616644,
+            "is_monoisotopic": null
         },
         {
             "number": 38,
@@ -3109,7 +3496,8 @@
             "mass_number": 84,
             "mass": 83.913419,
             "abundance": 0.0056,
-            "average_mass": 83.913419
+            "average_mass": 83.913419,
+            "is_monoisotopic": false
         },
         {
             "number": 38,
@@ -3117,7 +3505,8 @@
             "mass_number": 86,
             "mass": 85.909261,
             "abundance": 0.0986,
-            "average_mass": 85.909261
+            "average_mass": 85.909261,
+            "is_monoisotopic": false
         },
         {
             "number": 38,
@@ -3125,7 +3514,8 @@
             "mass_number": 87,
             "mass": 86.908878,
             "abundance": 0.07,
-            "average_mass": 86.908878
+            "average_mass": 86.908878,
+            "is_monoisotopic": false
         },
         {
             "number": 38,
@@ -3133,7 +3523,8 @@
             "mass_number": 88,
             "mass": 87.905613,
             "abundance": 0.8258,
-            "average_mass": 87.905613
+            "average_mass": 87.905613,
+            "is_monoisotopic": true
         },
         {
             "number": 73,
@@ -3141,7 +3532,8 @@
             "mass_number": null,
             "mass": 180.947996,
             "abundance": null,
-            "average_mass": 180.947876
+            "average_mass": 180.947876,
+            "is_monoisotopic": null
         },
         {
             "number": 73,
@@ -3149,7 +3541,8 @@
             "mass_number": 180,
             "mass": 179.947465,
             "abundance": 0.0001201,
-            "average_mass": 179.947465
+            "average_mass": 179.947465,
+            "is_monoisotopic": false
         },
         {
             "number": 73,
@@ -3157,7 +3550,8 @@
             "mass_number": 181,
             "mass": 180.947996,
             "abundance": 0.9998799,
-            "average_mass": 180.947996
+            "average_mass": 180.947996,
+            "is_monoisotopic": true
         },
         {
             "number": 65,
@@ -3165,7 +3559,8 @@
             "mass_number": null,
             "mass": 158.925355,
             "abundance": null,
-            "average_mass": 158.925355
+            "average_mass": 158.925355,
+            "is_monoisotopic": null
         },
         {
             "number": 65,
@@ -3173,7 +3568,8 @@
             "mass_number": 159,
             "mass": 158.925355,
             "abundance": 1.0,
-            "average_mass": 158.925355
+            "average_mass": 158.925355,
+            "is_monoisotopic": true
         },
         {
             "number": 43,
@@ -3181,7 +3577,8 @@
             "mass_number": null,
             "mass": 96.906367,
             "abundance": null,
-            "average_mass": 96.906367
+            "average_mass": 96.906367,
+            "is_monoisotopic": null
         },
         {
             "number": 43,
@@ -3189,7 +3586,8 @@
             "mass_number": 97,
             "mass": 96.906367,
             "abundance": 0.0,
-            "average_mass": 96.906367
+            "average_mass": 96.906367,
+            "is_monoisotopic": true
         },
         {
             "number": 43,
@@ -3197,7 +3595,8 @@
             "mass_number": 98,
             "mass": 97.907212,
             "abundance": 0.0,
-            "average_mass": 97.907212
+            "average_mass": 97.907212,
+            "is_monoisotopic": false
         },
         {
             "number": 43,
@@ -3205,7 +3604,8 @@
             "mass_number": 99,
             "mass": 98.906251,
             "abundance": 0.0,
-            "average_mass": 98.906251
+            "average_mass": 98.906251,
+            "is_monoisotopic": false
         },
         {
             "number": 52,
@@ -3213,7 +3613,8 @@
             "mass_number": null,
             "mass": 129.906223,
             "abundance": null,
-            "average_mass": 127.603126
+            "average_mass": 127.603126,
+            "is_monoisotopic": null
         },
         {
             "number": 52,
@@ -3221,7 +3622,8 @@
             "mass_number": 120,
             "mass": 119.904059,
             "abundance": 0.0009,
-            "average_mass": 119.904059
+            "average_mass": 119.904059,
+            "is_monoisotopic": false
         },
         {
             "number": 52,
@@ -3229,7 +3631,8 @@
             "mass_number": 122,
             "mass": 121.903043,
             "abundance": 0.0255,
-            "average_mass": 121.903043
+            "average_mass": 121.903043,
+            "is_monoisotopic": false
         },
         {
             "number": 52,
@@ -3237,7 +3640,8 @@
             "mass_number": 123,
             "mass": 122.90427,
             "abundance": 0.0089,
-            "average_mass": 122.90427
+            "average_mass": 122.90427,
+            "is_monoisotopic": false
         },
         {
             "number": 52,
@@ -3245,7 +3649,8 @@
             "mass_number": 124,
             "mass": 123.902817,
             "abundance": 0.0474,
-            "average_mass": 123.902817
+            "average_mass": 123.902817,
+            "is_monoisotopic": false
         },
         {
             "number": 52,
@@ -3253,7 +3658,8 @@
             "mass_number": 125,
             "mass": 124.90443,
             "abundance": 0.0707,
-            "average_mass": 124.90443
+            "average_mass": 124.90443,
+            "is_monoisotopic": false
         },
         {
             "number": 52,
@@ -3261,7 +3667,8 @@
             "mass_number": 126,
             "mass": 125.903311,
             "abundance": 0.1884,
-            "average_mass": 125.903311
+            "average_mass": 125.903311,
+            "is_monoisotopic": false
         },
         {
             "number": 52,
@@ -3269,7 +3676,8 @@
             "mass_number": 128,
             "mass": 127.904461,
             "abundance": 0.3174,
-            "average_mass": 127.904461
+            "average_mass": 127.904461,
+            "is_monoisotopic": false
         },
         {
             "number": 52,
@@ -3277,7 +3685,8 @@
             "mass_number": 130,
             "mass": 129.906223,
             "abundance": 0.3408,
-            "average_mass": 129.906223
+            "average_mass": 129.906223,
+            "is_monoisotopic": true
         },
         {
             "number": 90,
@@ -3285,7 +3694,8 @@
             "mass_number": null,
             "mass": 232.038056,
             "abundance": null,
-            "average_mass": 232.038056
+            "average_mass": 232.038056,
+            "is_monoisotopic": null
         },
         {
             "number": 90,
@@ -3293,7 +3703,8 @@
             "mass_number": 230,
             "mass": 230.033134,
             "abundance": 0.0,
-            "average_mass": 230.033134
+            "average_mass": 230.033134,
+            "is_monoisotopic": false
         },
         {
             "number": 90,
@@ -3301,7 +3712,8 @@
             "mass_number": 232,
             "mass": 232.038056,
             "abundance": 1.0,
-            "average_mass": 232.038056
+            "average_mass": 232.038056,
+            "is_monoisotopic": true
         },
         {
             "number": 22,
@@ -3309,7 +3721,8 @@
             "mass_number": null,
             "mass": 47.947942,
             "abundance": null,
-            "average_mass": 47.866745
+            "average_mass": 47.866745,
+            "is_monoisotopic": null
         },
         {
             "number": 22,
@@ -3317,7 +3730,8 @@
             "mass_number": 46,
             "mass": 45.952628,
             "abundance": 0.0825,
-            "average_mass": 45.952628
+            "average_mass": 45.952628,
+            "is_monoisotopic": false
         },
         {
             "number": 22,
@@ -3325,7 +3739,8 @@
             "mass_number": 47,
             "mass": 46.951759,
             "abundance": 0.0744,
-            "average_mass": 46.951759
+            "average_mass": 46.951759,
+            "is_monoisotopic": false
         },
         {
             "number": 22,
@@ -3333,7 +3748,8 @@
             "mass_number": 48,
             "mass": 47.947942,
             "abundance": 0.7372,
-            "average_mass": 47.947942
+            "average_mass": 47.947942,
+            "is_monoisotopic": true
         },
         {
             "number": 22,
@@ -3341,7 +3757,8 @@
             "mass_number": 49,
             "mass": 48.947866,
             "abundance": 0.0541,
-            "average_mass": 48.947866
+            "average_mass": 48.947866,
+            "is_monoisotopic": false
         },
         {
             "number": 22,
@@ -3349,7 +3766,8 @@
             "mass_number": 50,
             "mass": 49.944787,
             "abundance": 0.0518,
-            "average_mass": 49.944787
+            "average_mass": 49.944787,
+            "is_monoisotopic": false
         },
         {
             "number": 81,
@@ -3357,7 +3775,8 @@
             "mass_number": null,
             "mass": 204.974428,
             "abundance": null,
-            "average_mass": 204.383413
+            "average_mass": 204.383413,
+            "is_monoisotopic": null
         },
         {
             "number": 81,
@@ -3365,7 +3784,8 @@
             "mass_number": 203,
             "mass": 202.972345,
             "abundance": 0.2952,
-            "average_mass": 202.972345
+            "average_mass": 202.972345,
+            "is_monoisotopic": false
         },
         {
             "number": 81,
@@ -3373,7 +3793,8 @@
             "mass_number": 205,
             "mass": 204.974428,
             "abundance": 0.7048,
-            "average_mass": 204.974428
+            "average_mass": 204.974428,
+            "is_monoisotopic": true
         },
         {
             "number": 69,
@@ -3381,7 +3802,8 @@
             "mass_number": null,
             "mass": 168.934218,
             "abundance": null,
-            "average_mass": 168.934218
+            "average_mass": 168.934218,
+            "is_monoisotopic": null
         },
         {
             "number": 69,
@@ -3389,7 +3811,8 @@
             "mass_number": 169,
             "mass": 168.934218,
             "abundance": 1.0,
-            "average_mass": 168.934218
+            "average_mass": 168.934218,
+            "is_monoisotopic": true
         },
         {
             "number": 117,
@@ -3397,7 +3820,8 @@
             "mass_number": null,
             "mass": 292.20746,
             "abundance": null,
-            "average_mass": 292.20746
+            "average_mass": 292.20746,
+            "is_monoisotopic": null
         },
         {
             "number": 117,
@@ -3405,7 +3829,8 @@
             "mass_number": 292,
             "mass": 292.20746,
             "abundance": 0.0,
-            "average_mass": 292.20746
+            "average_mass": 292.20746,
+            "is_monoisotopic": true
         },
         {
             "number": 92,
@@ -3413,7 +3838,8 @@
             "mass_number": null,
             "mass": 238.050788,
             "abundance": null,
-            "average_mass": 238.02891
+            "average_mass": 238.02891,
+            "is_monoisotopic": null
         },
         {
             "number": 92,
@@ -3421,7 +3847,8 @@
             "mass_number": 233,
             "mass": 233.039636,
             "abundance": 0.0,
-            "average_mass": 233.039636
+            "average_mass": 233.039636,
+            "is_monoisotopic": false
         },
         {
             "number": 92,
@@ -3429,7 +3856,8 @@
             "mass_number": 234,
             "mass": 234.040952,
             "abundance": 5.4e-05,
-            "average_mass": 234.040952
+            "average_mass": 234.040952,
+            "is_monoisotopic": false
         },
         {
             "number": 92,
@@ -3437,7 +3865,8 @@
             "mass_number": 235,
             "mass": 235.04393,
             "abundance": 0.007204,
-            "average_mass": 235.04393
+            "average_mass": 235.04393,
+            "is_monoisotopic": false
         },
         {
             "number": 92,
@@ -3445,7 +3874,8 @@
             "mass_number": 236,
             "mass": 236.045568,
             "abundance": 0.0,
-            "average_mass": 236.045568
+            "average_mass": 236.045568,
+            "is_monoisotopic": false
         },
         {
             "number": 92,
@@ -3453,7 +3883,8 @@
             "mass_number": 238,
             "mass": 238.050788,
             "abundance": 0.992742,
-            "average_mass": 238.050788
+            "average_mass": 238.050788,
+            "is_monoisotopic": true
         },
         {
             "number": 23,
@@ -3461,7 +3892,8 @@
             "mass_number": null,
             "mass": 50.943957,
             "abundance": null,
-            "average_mass": 50.941465
+            "average_mass": 50.941465,
+            "is_monoisotopic": null
         },
         {
             "number": 23,
@@ -3469,7 +3901,8 @@
             "mass_number": 50,
             "mass": 49.947156,
             "abundance": 0.0025,
-            "average_mass": 49.947156
+            "average_mass": 49.947156,
+            "is_monoisotopic": false
         },
         {
             "number": 23,
@@ -3477,7 +3910,8 @@
             "mass_number": 51,
             "mass": 50.943957,
             "abundance": 0.9975,
-            "average_mass": 50.943957
+            "average_mass": 50.943957,
+            "is_monoisotopic": true
         },
         {
             "number": 74,
@@ -3485,7 +3919,8 @@
             "mass_number": null,
             "mass": 183.950931,
             "abundance": null,
-            "average_mass": 183.841778
+            "average_mass": 183.841778,
+            "is_monoisotopic": null
         },
         {
             "number": 74,
@@ -3493,7 +3928,8 @@
             "mass_number": 180,
             "mass": 179.946711,
             "abundance": 0.0012,
-            "average_mass": 179.946711
+            "average_mass": 179.946711,
+            "is_monoisotopic": false
         },
         {
             "number": 74,
@@ -3501,7 +3937,8 @@
             "mass_number": 182,
             "mass": 181.948204,
             "abundance": 0.265,
-            "average_mass": 181.948204
+            "average_mass": 181.948204,
+            "is_monoisotopic": false
         },
         {
             "number": 74,
@@ -3509,7 +3946,8 @@
             "mass_number": 183,
             "mass": 182.950223,
             "abundance": 0.1431,
-            "average_mass": 182.950223
+            "average_mass": 182.950223,
+            "is_monoisotopic": false
         },
         {
             "number": 74,
@@ -3517,7 +3955,8 @@
             "mass_number": 184,
             "mass": 183.950931,
             "abundance": 0.3064,
-            "average_mass": 183.950931
+            "average_mass": 183.950931,
+            "is_monoisotopic": true
         },
         {
             "number": 74,
@@ -3525,7 +3964,8 @@
             "mass_number": 186,
             "mass": 185.954363,
             "abundance": 0.2843,
-            "average_mass": 185.954363
+            "average_mass": 185.954363,
+            "is_monoisotopic": false
         },
         {
             "number": 54,
@@ -3533,7 +3973,8 @@
             "mass_number": null,
             "mass": 131.904155,
             "abundance": null,
-            "average_mass": 131.292761
+            "average_mass": 131.292761,
+            "is_monoisotopic": null
         },
         {
             "number": 54,
@@ -3541,7 +3982,8 @@
             "mass_number": 124,
             "mass": 123.905892,
             "abundance": 0.000952,
-            "average_mass": 123.905892
+            "average_mass": 123.905892,
+            "is_monoisotopic": false
         },
         {
             "number": 54,
@@ -3549,7 +3991,8 @@
             "mass_number": 126,
             "mass": 125.904298,
             "abundance": 0.00089,
-            "average_mass": 125.904298
+            "average_mass": 125.904298,
+            "is_monoisotopic": false
         },
         {
             "number": 54,
@@ -3557,7 +4000,8 @@
             "mass_number": 128,
             "mass": 127.903531,
             "abundance": 0.019102,
-            "average_mass": 127.903531
+            "average_mass": 127.903531,
+            "is_monoisotopic": false
         },
         {
             "number": 54,
@@ -3565,7 +4009,8 @@
             "mass_number": 129,
             "mass": 128.904781,
             "abundance": 0.264006,
-            "average_mass": 128.904781
+            "average_mass": 128.904781,
+            "is_monoisotopic": false
         },
         {
             "number": 54,
@@ -3573,7 +4018,8 @@
             "mass_number": 130,
             "mass": 129.903509,
             "abundance": 0.04071,
-            "average_mass": 129.903509
+            "average_mass": 129.903509,
+            "is_monoisotopic": false
         },
         {
             "number": 54,
@@ -3581,7 +4027,8 @@
             "mass_number": 131,
             "mass": 130.905084,
             "abundance": 0.212324,
-            "average_mass": 130.905084
+            "average_mass": 130.905084,
+            "is_monoisotopic": false
         },
         {
             "number": 54,
@@ -3589,7 +4036,8 @@
             "mass_number": 132,
             "mass": 131.904155,
             "abundance": 0.269086,
-            "average_mass": 131.904155
+            "average_mass": 131.904155,
+            "is_monoisotopic": true
         },
         {
             "number": 54,
@@ -3597,7 +4045,8 @@
             "mass_number": 134,
             "mass": 133.905395,
             "abundance": 0.104357,
-            "average_mass": 133.905395
+            "average_mass": 133.905395,
+            "is_monoisotopic": false
         },
         {
             "number": 54,
@@ -3605,7 +4054,8 @@
             "mass_number": 136,
             "mass": 135.907214,
             "abundance": 0.088573,
-            "average_mass": 135.907214
+            "average_mass": 135.907214,
+            "is_monoisotopic": false
         },
         {
             "number": 39,
@@ -3613,7 +4063,8 @@
             "mass_number": null,
             "mass": 88.90584,
             "abundance": null,
-            "average_mass": 88.90584
+            "average_mass": 88.90584,
+            "is_monoisotopic": null
         },
         {
             "number": 39,
@@ -3621,7 +4072,8 @@
             "mass_number": 89,
             "mass": 88.90584,
             "abundance": 1.0,
-            "average_mass": 88.90584
+            "average_mass": 88.90584,
+            "is_monoisotopic": true
         },
         {
             "number": 70,
@@ -3629,7 +4081,8 @@
             "mass_number": null,
             "mass": 173.938866,
             "abundance": null,
-            "average_mass": 173.05415
+            "average_mass": 173.05415,
+            "is_monoisotopic": null
         },
         {
             "number": 70,
@@ -3637,7 +4090,8 @@
             "mass_number": 168,
             "mass": 167.93389,
             "abundance": 0.00123,
-            "average_mass": 167.93389
+            "average_mass": 167.93389,
+            "is_monoisotopic": false
         },
         {
             "number": 70,
@@ -3645,7 +4099,8 @@
             "mass_number": 170,
             "mass": 169.934766,
             "abundance": 0.02982,
-            "average_mass": 169.934766
+            "average_mass": 169.934766,
+            "is_monoisotopic": false
         },
         {
             "number": 70,
@@ -3653,7 +4108,8 @@
             "mass_number": 171,
             "mass": 170.93633,
             "abundance": 0.1409,
-            "average_mass": 170.93633
+            "average_mass": 170.93633,
+            "is_monoisotopic": false
         },
         {
             "number": 70,
@@ -3661,7 +4117,8 @@
             "mass_number": 172,
             "mass": 171.936386,
             "abundance": 0.2168,
-            "average_mass": 171.936386
+            "average_mass": 171.936386,
+            "is_monoisotopic": false
         },
         {
             "number": 70,
@@ -3669,7 +4126,8 @@
             "mass_number": 173,
             "mass": 172.938215,
             "abundance": 0.16103,
-            "average_mass": 172.938215
+            "average_mass": 172.938215,
+            "is_monoisotopic": false
         },
         {
             "number": 70,
@@ -3677,7 +4135,8 @@
             "mass_number": 174,
             "mass": 173.938866,
             "abundance": 0.32026,
-            "average_mass": 173.938866
+            "average_mass": 173.938866,
+            "is_monoisotopic": true
         },
         {
             "number": 70,
@@ -3685,7 +4144,8 @@
             "mass_number": 176,
             "mass": 175.942576,
             "abundance": 0.12996,
-            "average_mass": 175.942576
+            "average_mass": 175.942576,
+            "is_monoisotopic": false
         },
         {
             "number": 30,
@@ -3693,7 +4153,8 @@
             "mass_number": null,
             "mass": 63.929142,
             "abundance": null,
-            "average_mass": 65.377783
+            "average_mass": 65.377783,
+            "is_monoisotopic": null
         },
         {
             "number": 30,
@@ -3701,7 +4162,8 @@
             "mass_number": 64,
             "mass": 63.929142,
             "abundance": 0.4917,
-            "average_mass": 63.929142
+            "average_mass": 63.929142,
+            "is_monoisotopic": true
         },
         {
             "number": 30,
@@ -3709,7 +4171,8 @@
             "mass_number": 66,
             "mass": 65.926034,
             "abundance": 0.2773,
-            "average_mass": 65.926034
+            "average_mass": 65.926034,
+            "is_monoisotopic": false
         },
         {
             "number": 30,
@@ -3717,7 +4180,8 @@
             "mass_number": 67,
             "mass": 66.927128,
             "abundance": 0.0404,
-            "average_mass": 66.927128
+            "average_mass": 66.927128,
+            "is_monoisotopic": false
         },
         {
             "number": 30,
@@ -3725,7 +4189,8 @@
             "mass_number": 68,
             "mass": 67.924845,
             "abundance": 0.1845,
-            "average_mass": 67.924845
+            "average_mass": 67.924845,
+            "is_monoisotopic": false
         },
         {
             "number": 30,
@@ -3733,7 +4198,8 @@
             "mass_number": 70,
             "mass": 69.925319,
             "abundance": 0.0061,
-            "average_mass": 69.925319
+            "average_mass": 69.925319,
+            "is_monoisotopic": false
         },
         {
             "number": 40,
@@ -3741,7 +4207,8 @@
             "mass_number": null,
             "mass": 89.904698,
             "abundance": null,
-            "average_mass": 91.223642
+            "average_mass": 91.223642,
+            "is_monoisotopic": null
         },
         {
             "number": 40,
@@ -3749,7 +4216,8 @@
             "mass_number": 90,
             "mass": 89.904698,
             "abundance": 0.5145,
-            "average_mass": 89.904698
+            "average_mass": 89.904698,
+            "is_monoisotopic": true
         },
         {
             "number": 40,
@@ -3757,7 +4225,8 @@
             "mass_number": 91,
             "mass": 90.90564,
             "abundance": 0.1122,
-            "average_mass": 90.90564
+            "average_mass": 90.90564,
+            "is_monoisotopic": false
         },
         {
             "number": 40,
@@ -3765,7 +4234,8 @@
             "mass_number": 92,
             "mass": 91.905035,
             "abundance": 0.1715,
-            "average_mass": 91.905035
+            "average_mass": 91.905035,
+            "is_monoisotopic": false
         },
         {
             "number": 40,
@@ -3773,7 +4243,8 @@
             "mass_number": 94,
             "mass": 93.906311,
             "abundance": 0.1738,
-            "average_mass": 93.906311
+            "average_mass": 93.906311,
+            "is_monoisotopic": false
         },
         {
             "number": 40,
@@ -3781,7 +4252,8 @@
             "mass_number": 96,
             "mass": 95.908271,
             "abundance": 0.028,
-            "average_mass": 95.908271
+            "average_mass": 95.908271,
+            "is_monoisotopic": false
         }
     ]
 }

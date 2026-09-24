@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generated_date": "2026-09-23T21:10:47.628095",
+        "generated_date": "2026-09-23T22:30:35.094114",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
         "tacular_version": "1.2.0",
@@ -19,7 +19,9 @@
                 "H": 5,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "B",
@@ -28,7 +30,9 @@
             "formula": null,
             "monoisotopic_mass": null,
             "average_mass": null,
-            "composition": null
+            "composition": null,
+            "is_mass_ambiguous": true,
+            "is_ambiguous": true
         },
         {
             "id": "C",
@@ -43,7 +47,9 @@
                 "N": 1,
                 "O": 1,
                 "S": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "D",
@@ -57,7 +63,9 @@
                 "H": 5,
                 "N": 1,
                 "O": 3
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "E",
@@ -71,7 +79,9 @@
                 "H": 7,
                 "N": 1,
                 "O": 3
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "F",
@@ -85,7 +95,9 @@
                 "H": 9,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "G",
@@ -99,7 +111,9 @@
                 "H": 3,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "H",
@@ -113,7 +127,9 @@
                 "H": 7,
                 "N": 3,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "I",
@@ -127,7 +143,9 @@
                 "H": 11,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "J",
@@ -141,7 +159,9 @@
                 "H": 11,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": true
         },
         {
             "id": "K",
@@ -155,7 +175,9 @@
                 "H": 12,
                 "N": 2,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "L",
@@ -169,7 +191,9 @@
                 "H": 11,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "M",
@@ -184,7 +208,9 @@
                 "N": 1,
                 "O": 1,
                 "S": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "N",
@@ -198,7 +224,9 @@
                 "H": 6,
                 "N": 2,
                 "O": 2
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "O",
@@ -212,7 +240,9 @@
                 "H": 19,
                 "N": 3,
                 "O": 2
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "P",
@@ -226,7 +256,9 @@
                 "H": 7,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "Q",
@@ -240,7 +272,9 @@
                 "H": 8,
                 "N": 2,
                 "O": 2
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "R",
@@ -254,7 +288,9 @@
                 "H": 12,
                 "N": 4,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "S",
@@ -268,7 +304,9 @@
                 "H": 5,
                 "N": 1,
                 "O": 2
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "T",
@@ -282,7 +320,9 @@
                 "H": 7,
                 "N": 1,
                 "O": 2
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "U",
@@ -297,7 +337,9 @@
                 "N": 1,
                 "O": 1,
                 "Se": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "V",
@@ -311,7 +353,9 @@
                 "H": 9,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "W",
@@ -325,7 +369,9 @@
                 "H": 10,
                 "N": 2,
                 "O": 1
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "X",
@@ -334,7 +380,9 @@
             "formula": "",
             "monoisotopic_mass": 0.0,
             "average_mass": 0.0,
-            "composition": {}
+            "composition": {},
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "Y",
@@ -348,7 +396,9 @@
                 "H": 9,
                 "N": 1,
                 "O": 2
-            }
+            },
+            "is_mass_ambiguous": false,
+            "is_ambiguous": false
         },
         {
             "id": "Z",
@@ -357,7 +407,9 @@
             "formula": null,
             "monoisotopic_mass": null,
             "average_mass": null,
-            "composition": null
+            "composition": null,
+            "is_mass_ambiguous": true,
+            "is_ambiguous": true
         }
     ]
 }

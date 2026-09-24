@@ -1,16 +1,12 @@
-"""``XlModInfo``: an XLMOD ontology entry."""
+"""``XlmodInfo``: an XLMOD ontology entry."""
 
 from dataclasses import dataclass
 
 from ..obo_entity import OboEntity
 
+__all__ = ["XlmodInfo"]
+
 
 @dataclass(frozen=True, slots=True)
-class XlModInfo(OboEntity):
+class XlmodInfo(OboEntity):
     """Class to store information about an XLMOD modification"""
-
-    @property
-    def id_tag(self) -> str:
-        """`id` with leading zeros stripped, e.g. ``"01000"`` -> ``"1000"``. Same
-        behavior as :attr:`OboEntity.id_tag`; XLMOD ids have no extra prefix to strip."""
-        return self.id.lstrip("0")

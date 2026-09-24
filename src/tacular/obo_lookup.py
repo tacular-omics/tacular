@@ -1,273 +1,209 @@
 """Shared lookup base class (:class:`OntologyLookup`) used by every per-ontology
 ``*_LOOKUP`` singleton in this package (``UNIMOD_LOOKUP``, ``PSIMOD_LOOKUP``, ...).
-Handles id/name normalization, query-by-id/name/mass, iteration, and random
-sampling; each ontology's ``*Lookup`` subclass just supplies its data, name, and
-optional id prefix (see e.g. ``unimod/lookup.py``).
+
+Handles id/name normalization, query-by-id/name/mass and random sampling; each
+ontology's ``*Lookup`` subclass just supplies its data, name, and accession/id
+prefixes (see e.g. ``unimod/lookup.py``). Every id query, in every ontology, goes
+through one normalization function, :func:`_normalize_id`.
 """
 
-from collections.abc import Iterator
+from collections.abc import Mapping
+from dataclasses import dataclass
 from functools import cached_property
 from random import choice
 
-from .obo_entity import OboEntity, filter_infos
+from ._lookup import _BaseLookup
+from .errors import TacularError
+from .obo_entity import OboEntity
+
+__all__ = ["OntologyLookup"]
 
 
-def strip_id(key: str, prefix: str | None = None, accession_prefix: str | None = None) -> str:
-    """Lowercase ``key``, strip a leading ``accession_prefix`` and then ``prefix``
-    (each only if present and given in lowercase), then leading zeros.
+def _strip_accession(key: str, accession_prefixes: tuple[str, ...]) -> str | None:
+    """``key`` without the first matching accession prefix (case-insensitive), or
+    ``None`` if it carries none. ``accession_prefixes`` must be lowercase, longest first."""
+    lowered = key.lower()
+    for prefix in accession_prefixes:
+        if lowered.startswith(prefix):
+            return key[len(prefix) :]
+    return None
 
-    E.g. ``strip_id("UNIMOD:00042", accession_prefix="unimod:")`` -> ``"42"`` and
-    ``strip_id("RESID:AA0002", "aa", "resid:")`` -> ``"2"``.
+
+def _normalize_id(key: str, accession_prefixes: tuple[str, ...] = (), id_prefix: str | None = None) -> str:
+    """The one id normalization every ontology lookup uses.
+
+    Strips surrounding whitespace, lowercases, removes one accession prefix (e.g.
+    ``"unimod:"`` or ``"u:"``; lowercase, longest first), then the ontology's id
+    prefix (e.g. RESID's ``"aa"``, GNOme's ``"g"``), then leading zeros.
+
+    >>> _normalize_id(" UNIMOD:00021", ("unimod:", "u:"))
+    '21'
+    >>> _normalize_id("R:AA0002", ("resid:", "r:"), "aa")
+    '2'
+    >>> _normalize_id("GNO:G00008BG", ("gno:", "g:"), "g")
+    '8bg'
     """
-    key = key.lower()
-    if accession_prefix is not None and key.startswith(accession_prefix):
-        key = key[len(accession_prefix) :]
-    if prefix is not None and key.startswith(prefix):
-        key = key[len(prefix) :]
-    key = key.lstrip("0")
-    return key
+    key = key.strip().lower()
+    stripped = _strip_accession(key, accession_prefixes)
+    if stripped is not None:
+        key = stripped
+    if id_prefix is not None and key.startswith(id_prefix):
+        key = key[len(id_prefix) :]
+    return key.lstrip("0")
 
 
-def convert_key(key: str, prefix: str | None = None, accession_prefix: str | None = None) -> int | None:
-    """``strip_id`` then parse as ``int``, or ``None`` if the result isn't numeric
-    (e.g. RESID's ``"AA0001"`` ids, whose non-numeric suffix can't convert)."""
-    try:
-        key = strip_id(key, prefix, accession_prefix)
-        return int(key)
-    except ValueError:
-        return None
+@dataclass(frozen=True, slots=True)
+class _Index[T]:
+    by_id: dict[str, T]
+    by_num: dict[int, T]
+    by_name: dict[str, T]
+    with_mass: tuple[T, ...]
+    with_composition: tuple[T, ...]
+    with_both: tuple[T, ...]
 
 
-class OntologyLookup[T: OboEntity]:
-    """Id/name/mass lookup over a dict of :class:`OboEntity` subclass instances.
+class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
+    """Id/name/mass lookup over one ontology's :class:`~tacular.OboEntity` entries.
 
-    Lookup dictionaries are built lazily on first access (see
-    :meth:`_ensure_initialized`), not in ``__init__``, so constructing a lookup
-    with cache-resolved data (see :mod:`tacular._cache`) is cheap even before
-    any query is made.
+    ``lookup[key]`` tries ``key`` as a name (case-insensitive), then as an id; both
+    accept the ontology's accession prefixes (``"UNIMOD:21"``, ``"U:21"``,
+    ``"U:Phospho"``). :meth:`keys` are the entries' ids as stored (e.g. UNIMOD
+    ``"21"``, PSI-MOD ``"00046"``). Indexes are built on first query, not at import.
     """
 
     def __init__(
         self,
-        data: dict[str, T],
+        data: Mapping[str, T],
         ontology_name: str,
-        _version: str = "",
-        _id_prefix: str | None = None,
-        _accession_prefix: str | None = None,
+        *,
+        version: str = "",
+        accession_prefixes: tuple[str, ...] = (),
+        id_prefix: str | None = None,
     ) -> None:
         """
         Args:
             data: Entries keyed by their raw id (e.g. UNIMOD's ``"1"``, ``"536"``, ...).
             ontology_name: Display name used in error messages (e.g. ``"UNIMOD"``).
-            _version: Data version string, exposed via :attr:`version`.
-            _id_prefix: Prefix to strip from ids/queries before matching (e.g. RESID
-                uses ``"aa"`` so ``"AA0001"`` and ``"0001"`` both resolve to the same entry).
-            _accession_prefix: Accession namespace to strip from queries before ``_id_prefix``
-                (e.g. UNIMOD uses ``"UNIMOD:"`` so ``"UNIMOD:21"`` resolves like ``"21"``).
-                Matched case-insensitively; only this ontology's own namespace is stripped.
+            version: Data version string, exposed via :attr:`version`.
+            accession_prefixes: Namespaces stripped from queries (case-insensitive),
+                e.g. ``("UNIMOD:", "U:")``.
+            id_prefix: Prefix of the ids themselves, stripped from ids and queries so
+                that e.g. RESID's ``"AA0002"`` and ``"2"`` match the same entry.
         """
         self.ontology_name = ontology_name
-        self._version = _version
+        self._kind = f"{ontology_name} entry"
+        self._version = version
+        self._data: dict[str, T] = dict(data)
+        self._accession_prefixes = tuple(sorted((p.lower() for p in accession_prefixes), key=len, reverse=True))
+        self._id_prefix = id_prefix.lower() if id_prefix is not None else None
 
-        # Store raw data, defer processing
-        self._raw_data = data
-        self.__num_to_info: dict[int, T] | None = None
-        self.__id_to_info: dict[str, T] | None = None
-        self.__name_to_info: dict[str, T] | None = None
-        self._id_prefix = _id_prefix.lower() if _id_prefix is not None else None
-        self._accession_prefix = _accession_prefix.lower() if _accession_prefix is not None else None
+    @cached_property
+    def _index(self) -> _Index[T]:
+        by_id: dict[str, T] = {}
+        by_num: dict[int, T] = {}
+        by_name: dict[str, T] = {}
+        for raw_id, info in self._data.items():
+            norm = _normalize_id(raw_id, (), self._id_prefix)
+            if norm in by_id:
+                raise TacularError(f"Duplicate id {raw_id!r} in {self.ontology_name} data.")
+            by_id[norm] = info
+            if norm.isascii() and norm.isdigit():
+                by_num[int(norm)] = info
+            lname = info.name.lower()
+            if lname in by_name:
+                raise TacularError(f"Duplicate name {info.name!r} in {self.ontology_name} data.")
+            by_name[lname] = info
+        infos = tuple(self._data.values())
+        return _Index(
+            by_id=by_id,
+            by_num=by_num,
+            by_name=by_name,
+            with_mass=tuple(i for i in infos if i.monoisotopic_mass is not None),
+            with_composition=tuple(i for i in infos if i.dict_composition is not None),
+            with_both=tuple(i for i in infos if i.monoisotopic_mass is not None and i.dict_composition is not None),
+        )
 
-    def _ensure_initialized(self) -> None:
-        """Lazy initialization of lookup dictionaries."""
-        if self.__num_to_info is not None:
-            return
+    def _entries(self) -> Mapping[str, T]:
+        return self._data
 
-        # Build lowercase lookup dicts
-        self.__num_to_info = {
-            ki: v for k, v in self._raw_data.items() if (ki := convert_key(k, self._id_prefix)) is not None
-        }
-        self.__id_to_info = {strip_id(k, self._id_prefix): v for k, v in self._raw_data.items()}
-        self.__name_to_info = {info.name.lower(): info for info in self._raw_data.values()}
+    def _miss_message(self, key: object) -> str:
+        return f"{self.ontology_name} entry {key!r} not found by name or id."
 
-        if len(self.__id_to_info) != len(self._raw_data) or len(self.__name_to_info) != len(self._raw_data):
-            raise ValueError(
-                f"Duplicate IDs or names found in {self.ontology_name} data. Number of entries: "
-                f"{len(self._raw_data)}, IDs: {len(self.__id_to_info)}, names: {len(self.__name_to_info)}"
-            )
-
-    @property
-    def _num_to_info(self) -> dict[int, T]:
-        """Get the numeric ID to info mapping."""
-        self._ensure_initialized()
-        if self.__num_to_info is None:
-            raise RuntimeError("OntologyLookup not properly initialized.")
-        return self.__num_to_info
-
-    @property
-    def _id_to_info(self) -> dict[str, T]:
-        """Get the ID to info mapping."""
-        self._ensure_initialized()
-        if self.__id_to_info is None:
-            raise RuntimeError("OntologyLookup not properly initialized.")
-        return self.__id_to_info
-
-    @property
-    def _name_to_info(self) -> dict[str, T]:
-        """Get the name to info mapping."""
-        self._ensure_initialized()
-        if self.__name_to_info is None:
-            raise RuntimeError("OntologyLookup not properly initialized.")
-        return self.__name_to_info
-
-    @property
-    def version(self) -> str:
-        """Get the version of the ontology data."""
-        return self._version
-
-    def query_id(self, mod_id: str | int) -> T | None:
-        """Query by ID, stripping surrounding whitespace, this ontology's accession
-        namespace (e.g. ``"UNIMOD:"``, ``"MOD:"``), its id prefix (e.g. RESID's ``"AA"``)
-        and leading zeros.
-
-        E.g. ``UNIMOD_LOOKUP.query_id("UNIMOD:21")``, ``query_id("21")`` and ``query_id(21)``
-        all return the same entry. A numeric id must be plain ASCII digits: ``"+21"``,
-        ``"2_1"`` and non-ASCII digits do not match. Returns ``None`` if nothing matches,
-        including for a ``bool`` or a key that is not a ``str`` or ``int``.
-        """
-        if isinstance(mod_id, bool):
-            return None
-        if isinstance(mod_id, int):
-            return self._num_to_info.get(mod_id)
-        if not isinstance(mod_id, str):
-            return None
-
-        mod_id = strip_id(mod_id.strip(), self._id_prefix, self._accession_prefix)
-        info = self._id_to_info.get(mod_id)
-        if info is not None:
-            return info
-
-        # Only plain ASCII digits count as a numeric id: int() would also accept
-        # "+21", "2_1" and non-ASCII digits such as "٢١".
-        if mod_id.isascii() and mod_id.isdigit():
-            return self._num_to_info.get(int(mod_id))
-
-        return None
-
-    def query_name(self, name: str) -> T | None:
-        """Query by name (case-insensitive). Returns ``None`` if nothing matches,
-        including for a key that is not a ``str``."""
-        if not isinstance(name, str):
-            return None
-        return self._name_to_info.get(name.lower())
-
-    def query_mass(self, mass: float, tolerance: float = 0.01, monoisotopic: bool = True) -> list[T]:
-        """Query by mass within a given tolerance."""
-        matches: list[T] = []
-        for info in self._id_to_info.values():
-            mod_mass = info.monoisotopic_mass if monoisotopic else info.average_mass
-            if mod_mass is not None and abs(mod_mass - mass) <= tolerance:
-                matches.append(info)
-
-        return matches
-
-    def __getitem__(self, key: str | int) -> T:
-        """``lookup[key]``: query by name first, then by id.
-
-        Raises:
-            KeyError: if ``key`` matches no entry by name or id, or is not a
-                ``str`` or ``int``. The message names the ontology and the key.
-        """
-        if not isinstance(key, str | int):
-            raise KeyError(f"{self.ontology_name} modification {key!r} not found: keys are str or int.")
-
+    def _resolve(self, key: object) -> T | None:
         if isinstance(key, str):
             info = self.query_name(key)
             if info is not None:
                 return info
+        if isinstance(key, str | int):
+            return self.query_id(key)
+        return None
 
-        info = self.query_id(key)
+    @property
+    def version(self) -> str:
+        """Version of the ontology data (bundled, or from the ``tacular update`` cache)."""
+        return self._version
+
+    def query_id(self, mod_id: str | int) -> T | None:
+        """Query by id. Returns ``None`` if nothing matches.
+
+        Accepts the id with or without this ontology's accession prefix, id prefix and
+        leading zeros, e.g. ``UNIMOD_LOOKUP.query_id`` resolves ``"UNIMOD:21"``,
+        ``"U:21"``, ``"21"``, ``"0021"`` and ``21`` to the same entry. A numeric id must
+        be plain ASCII digits (``"+21"`` and ``"2_1"`` do not match). A ``bool`` or a key
+        that is not a ``str`` or ``int`` returns ``None``.
+        """
+        if isinstance(mod_id, bool):
+            return None
+        if isinstance(mod_id, int):
+            return self._index.by_num.get(mod_id)
+        if not isinstance(mod_id, str):
+            return None
+        return self._index.by_id.get(_normalize_id(mod_id, self._accession_prefixes, self._id_prefix))
+
+    def query_name(self, name: str) -> T | None:
+        """Query by name (case-insensitive), with or without an accession prefix
+        (``"Phospho"`` or ``"U:Phospho"``). Returns ``None`` if nothing matches,
+        including for a key that is not a ``str``."""
+        if not isinstance(name, str):
+            return None
+        by_name = self._index.by_name
+        info = by_name.get(name.lower())
         if info is not None:
             return info
+        stripped = _strip_accession(name, self._accession_prefixes)
+        if stripped is not None:
+            return by_name.get(stripped.lower())
+        return None
 
-        raise KeyError(f"{self.ontology_name} modification '{key}' not found by name or ID.")
+    def query_mass(self, mass: float, *, tolerance: float = 0.01, monoisotopic: bool = True) -> list[T]:
+        """Entries whose mass is within ``tolerance`` Da of ``mass`` (monoisotopic by
+        default, else average), in data order."""
+        matches: list[T] = []
+        for info in self._data.values():
+            mod_mass = info.monoisotopic_mass if monoisotopic else info.average_mass
+            if mod_mass is not None and abs(mod_mass - mass) <= tolerance:
+                matches.append(info)
+        return matches
 
-    def __contains__(self, key: str | int) -> bool:
-        """``key in lookup``: True if ``key`` resolves by name or id."""
-        try:
-            self[key]
-            return True
-        except KeyError:
-            return False
+    def choice(self, *, require_monoisotopic_mass: bool = True, require_composition: bool = True) -> T:
+        """A random entry, by default one with both a monoisotopic mass and a composition.
 
-    def get(self, key: str | int, default: T | None = None) -> T | None:
-        """Like ``lookup[key]``, but return ``default`` instead of raising ``KeyError``."""
-        try:
-            return self[key]
-        except KeyError:
-            return default
-
-    def __iter__(self) -> Iterator[T]:
-        """Iterator over all entries in the lookup."""
-        return iter(self._name_to_info.values())
-
-    def values(self) -> list[T]:
-        """Get all entries in the lookup."""
-        return list(self._name_to_info.values())
-
-    def keys(self) -> list[str]:
-        """Get all keys (names) in the lookup."""
-        return list(self._name_to_info.keys())
-
-    @cached_property
-    def _all_infos_tuple(self) -> tuple[T, ...]:
-        """Cached tuple of all entries."""
-        return tuple(self._name_to_info.values())
-
-    @cached_property
-    def _infos_with_mass_tuple(self) -> tuple[T, ...]:
-        """Cached tuple of entries with monoisotopic mass."""
-        return tuple(filter_infos(list(self._name_to_info.values()), has_monoisotopic_mass=True))
-
-    @cached_property
-    def _infos_with_composition_tuple(self) -> tuple[T, ...]:
-        """Cached tuple of entries with composition."""
-        return tuple(filter_infos(list(self._name_to_info.values()), has_composition=True))
-
-    @cached_property
-    def _infos_with_mass_and_composition_tuple(self) -> tuple[T, ...]:
-        """Cached tuple of entries with both mass and composition."""
-        return tuple(
-            filter_infos(
-                list(self._name_to_info.values()),
-                has_monoisotopic_mass=True,
-                has_composition=True,
-            )
-        )
-
-    def choice(self, require_monoisotopic_mass: bool = True, require_composition: bool = True) -> T:
-        """Get a random entry from the lookup."""
+        Raises:
+            TacularError: if no entry meets the requirements.
+        """
+        index = self._index
         if require_monoisotopic_mass and require_composition:
-            valid_infos = self._infos_with_mass_and_composition_tuple
+            valid = index.with_both
         elif require_monoisotopic_mass:
-            valid_infos = self._infos_with_mass_tuple
+            valid = index.with_mass
         elif require_composition:
-            valid_infos = self._infos_with_composition_tuple
+            valid = index.with_composition
         else:
-            valid_infos = self._all_infos_tuple
-
-        if not valid_infos:
-            raise ValueError(f"No valid {self.ontology_name} entries found matching the criteria.")
-
-        return choice(valid_infos)
-
-    def __str__(self) -> str:
-        """E.g. ``"<OntologyLookup UNIMOD v1.0 with 1560 entries>"``."""
-        return f"<OntologyLookup {self.ontology_name} v{self._version} with {len(self._raw_data)} entries>"
+            valid = tuple(self._data.values())
+        if not valid:
+            raise TacularError(f"No {self.ontology_name} entries match the criteria.")
+        return choice(valid)
 
     def __repr__(self) -> str:
-        """Same as :meth:`__str__`."""
-        return self.__str__()
-
-    def __len__(self) -> int:
-        """``len(lookup)``: total number of entries."""
-        return len(self._raw_data)
+        """E.g. ``"<UnimodLookup UNIMOD v17:02:2026 11:36: 1560 entries>"``."""
+        return f"<{type(self).__name__} {self.ontology_name} v{self._version}: {len(self._data)} entries>"

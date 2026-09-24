@@ -45,10 +45,9 @@ static and only change with a new tacular release.
 With no arguments every ontology is refreshed, including GNOme, which is a
 large download (the command prints a note first). Name a subset to skip it.
 
-Downloaded source files are kept in the ``obo/`` folder of the cache directory
-and reused on later runs ("using cached ..."). To fetch a newer upstream release,
-delete that file (or the whole ``obo/`` folder) first. ``tacular clear`` does
-not remove it.
+Every run downloads the current upstream release, so ``tacular update`` always
+fetches the newest data. The downloaded source files are saved in the ``obo/``
+folder of the cache directory; ``tacular clear`` removes them.
 
 Sources:
 
@@ -78,13 +77,21 @@ Sources:
 The files must use the names in the table above.
 
 The exit code is ``0`` on success and ``1`` for an unknown ontology name, a
-missing offline file, or a download or file error. The error is printed as one
+missing offline file, an unparseable source file, or a download or file error. The error is printed as one
 line. Add ``-vv`` to see the full traceback:
 
 .. code-block:: console
 
    $ tacular update bogus
-   error: ValueError: unknown ontologies ['bogus']; choose from ['unimod', 'xlmod', 'psimod', 'resid', 'gno', 'uniprot_ptm']
+   error: TacularError: unknown ontologies ['bogus']; choose from ['unimod', 'xlmod', 'psimod', 'resid', 'gno', 'uniprot_ptm']
+
+An unparseable source file is reported as ``TacularError: could not parse ...``.
+A download gives up after 60 seconds without data, leaves no partial file behind,
+and prints a hint to rebuild from the sources already downloaded:
+
+.. code-block:: console
+
+   $ tacular update --offline $(tacular where)/obo
 
 If an ontology release contains entries whose stated mass disagrees with their
 composition, ``update`` prints a note with the count and one example. Those
@@ -115,9 +122,9 @@ The versions and counts above are the data bundled with tacular 1.2.0.
 ``tacular clear``
 -----------------
 
-Deletes the cached ontology data (the ``data/`` folder of the cache directory),
-so every lookup goes back to the bundled copy on the next import. Downloaded
-source files in ``obo/`` are kept.
+Deletes the cached ontology data (the ``data/`` folder of the cache directory)
+and the downloaded source files (the ``obo/`` folder), so every lookup goes back
+to the bundled copy on the next import.
 
 ``tacular where``
 -----------------

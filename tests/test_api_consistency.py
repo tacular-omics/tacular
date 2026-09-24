@@ -28,6 +28,7 @@ from tacular import (
     XLMOD_LOOKUP,
     MonosaccharideInfo,
     OboEntity,
+    TacularKeyError,
 )
 
 ONTOLOGY_LOOKUPS = [UNIMOD_LOOKUP, PSIMOD_LOOKUP, RESID_LOOKUP, XLMOD_LOOKUP, GNO_LOOKUP, UNIPROT_PTM_LOOKUP]
@@ -131,15 +132,14 @@ def test_element_get_returns_default_for_bad_input():
     assert ELEMENT_LOOKUP.get("c", "d") == "d"  # type: ignore[arg-type]
 
 
-def test_element_getitem_keeps_old_exception_types():
-    # bad input stays ValueError (unchanged, documented)
-    with pytest.raises(ValueError):
-        ELEMENT_LOOKUP["c"]
-    # a wrong key type is a KeyError now, and still a TypeError for old callers
-    with pytest.raises(KeyError):
-        ELEMENT_LOOKUP[None]  # type: ignore[index]
-    with pytest.raises(TypeError):
-        ELEMENT_LOOKUP[None]  # type: ignore[index]
+def test_element_getitem_errors_are_tacular_key_errors():
+    # bad input and wrong key types both raise TacularKeyError: a KeyError and a ValueError
+    for bad in ("c", None, ("C", 12, 1), 3.5):
+        with pytest.raises(TacularKeyError) as exc_info:
+            ELEMENT_LOOKUP[bad]  # type: ignore[index]
+        assert isinstance(exc_info.value, KeyError)
+        assert isinstance(exc_info.value, ValueError)
+        assert not isinstance(exc_info.value, TypeError)
 
 
 # --- 4. unified lookup surface --------------------------------------------------

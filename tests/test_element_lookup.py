@@ -5,76 +5,69 @@ Tests for the ElementLookup class.
 import pytest
 
 import tacular as pt
-from tacular.elements.lookup import _handle_key_input, parse_composition
+from tacular import TacularKeyError
+from tacular.elements.lookup import _parse_key, parse_composition
 
 
-class TestHandleKeyInput:
-    """Tests for the _handle_key_input helper function"""
+class TestParseKey:
+    """Tests for the _parse_key helper function"""
 
     def test_tuple_key_valid(self):
         """Test valid tuple key parsing"""
-        result = _handle_key_input(("C", 12))
+        result = _parse_key(("C", 12))
         assert result == ("C", 12)
 
     def test_tuple_key_with_none(self):
         """Test tuple key with None mass number"""
-        result = _handle_key_input(("C", None))
+        result = _parse_key(("C", None))
         assert result == ("C", None)
 
     def test_string_symbol_only(self):
         """Test string with symbol only"""
-        result = _handle_key_input("C")
+        result = _parse_key("C")
         assert result == ("C", None)
 
     def test_string_with_mass_prefix(self):
         """Test string with mass number prefix like '13C'"""
-        result = _handle_key_input("13C")
+        result = _parse_key("13C")
         assert result == ("C", 13)
 
     def test_string_deuterium(self):
         """Test deuterium symbol 'D'"""
-        result = _handle_key_input("D")
+        result = _parse_key("D")
         assert result == ("H", 2)
 
     def test_string_2H(self):
         """Test '2H' notation for deuterium"""
-        result = _handle_key_input("2H")
+        result = _parse_key("2H")
         assert result == ("H", 2)
 
-    def test_invalid_tuple_length(self):
-        """Test tuple with wrong number of elements"""
-        with pytest.raises(ValueError, match="must have exactly 2 elements"):
-            _handle_key_input(("C", 12, "extra"))  # type: ignore
+    @pytest.mark.parametrize(
+        ("key", "match"),
+        [
+            (("C", 12, "extra"), "must be \\(symbol, mass_number\\)"),
+            ((123, 12), "must be \\(str, int \\| None\\)"),
+            (("C", "twelve"), "must be \\(str, int \\| None\\)"),
+            (("C", True), "must be \\(str, int \\| None\\)"),
+            ("", "has no element symbol"),
+            ("123", "has no element symbol"),
+            ("carbon", "not an element symbol"),
+            (123, "must be a str, Element or"),
+            ("3D", "is hydrogen-2; got mass number 3"),
+        ],
+    )
+    def test_malformed_keys_raise_tacular_key_error(self, key, match):
+        """Every malformed key raises TacularKeyError (a KeyError and a ValueError, never TypeError)."""
+        with pytest.raises(TacularKeyError, match=match) as exc_info:
+            _parse_key(key)  # type: ignore[arg-type]
+        assert isinstance(exc_info.value, KeyError)
+        assert isinstance(exc_info.value, ValueError)
+        assert key not in pt.ELEMENT_LOOKUP
+        assert pt.ELEMENT_LOOKUP.get(key) is None  # type: ignore[arg-type]
 
-    def test_invalid_symbol_type(self):
-        """Test tuple with non-string symbol"""
-        with pytest.raises(TypeError, match="Symbol must be str"):
-            _handle_key_input((123, 12))  # type: ignore
-
-    def test_invalid_mass_type(self):
-        """Test tuple with invalid mass number type"""
-        with pytest.raises(TypeError, match="Mass number must be int or None"):
-            _handle_key_input(("C", "twelve"))  # type: ignore
-
-    def test_empty_string(self):
-        """Test empty string raises error"""
-        with pytest.raises(ValueError, match="cannot be empty string"):
-            _handle_key_input("")
-
-    def test_lowercase_symbol(self):
-        """Test symbol not starting with uppercase"""
-        with pytest.raises(ValueError, match="must start with uppercase"):
-            _handle_key_input("carbon")
-
-    def test_invalid_isotope_notation(self):
-        """Test isotope notation with only digits"""
-        with pytest.raises(ValueError, match="no element symbol found"):
-            _handle_key_input("123")
-
-    def test_invalid_key_type(self):
-        """Test completely invalid key type"""
-        with pytest.raises(TypeError, match="Key must be tuple"):
-            _handle_key_input(123)  # type: ignore
+    def test_deuterium_with_matching_mass_number(self):
+        assert _parse_key(("D", 2)) == ("H", 2)
+        assert _parse_key(("T", None)) == ("H", 3)
 
 
 class TestElementLookupBasics:
@@ -213,12 +206,12 @@ class TestElementLookupMethods:
 
     def test_mass_monoisotopic(self):
         """Test mass method with monoisotopic=True"""
-        carbon_mass = pt.ELEMENT_LOOKUP.mass("C", monoisotopic=True)
+        carbon_mass = pt.ELEMENT_LOOKUP.get_mass("C", monoisotopic=True)
         assert carbon_mass == pytest.approx(12.0, abs=0.1)
 
     def test_mass_average(self):
         """Test mass method with monoisotopic=False"""
-        carbon_avg = pt.ELEMENT_LOOKUP.mass("C", monoisotopic=False)
+        carbon_avg = pt.ELEMENT_LOOKUP.get_mass("C", monoisotopic=False)
         # Average mass should be slightly higher than 12 due to C-13
         assert carbon_avg > 12.0
         assert carbon_avg == pytest.approx(12.011, abs=0.001)
@@ -226,8 +219,8 @@ class TestElementLookupMethods:
     def test_mass_specific_isotope_ignores_monoisotopic_flag(self):
         """Test that specific isotope mass ignores monoisotopic parameter"""
         # When requesting specific isotope, should always return exact mass
-        c13_mass_mono = pt.ELEMENT_LOOKUP.mass("13C", monoisotopic=True)
-        c13_mass_avg = pt.ELEMENT_LOOKUP.mass("13C", monoisotopic=False)
+        c13_mass_mono = pt.ELEMENT_LOOKUP.get_mass("13C", monoisotopic=True)
+        c13_mass_avg = pt.ELEMENT_LOOKUP.get_mass("13C", monoisotopic=False)
 
         # Both should return the same exact isotope mass
         assert c13_mass_mono == c13_mass_avg
@@ -235,7 +228,7 @@ class TestElementLookupMethods:
 
     def test_mass_tuple_specific_isotope(self):
         """Test mass method with tuple for specific isotope"""
-        c13_mass = pt.ELEMENT_LOOKUP.mass(("C", 13))
+        c13_mass = pt.ELEMENT_LOOKUP.get_mass(("C", 13))
         assert c13_mass == pytest.approx(13.003, abs=0.01)
 
 
@@ -469,18 +462,18 @@ class TestElementLookupEdgeCases:
     """Tests for edge cases and error handling"""
 
     def test_get_isotope_with_none_raises(self):
-        """Test that get_isotope with None mass number raises ValueError"""
-        with pytest.raises(ValueError, match="cannot be None"):
+        """get_isotope with a None mass number raises TacularKeyError"""
+        with pytest.raises(TacularKeyError, match="mass_number must be an int"):
             pt.ELEMENT_LOOKUP.get_isotope("C", None)  # type: ignore
 
     def test_lookup_empty_string_raises(self):
         """Test that empty string raises appropriate error"""
-        with pytest.raises(ValueError, match="cannot be empty"):
+        with pytest.raises(KeyError, match="has no element symbol"):
             _ = pt.ELEMENT_LOOKUP[""]
 
     def test_lookup_invalid_tuple_length(self):
         """Test that tuple with wrong length raises error"""
-        with pytest.raises(ValueError, match="exactly 2 elements"):
+        with pytest.raises(KeyError, match="must be \\(symbol, mass_number\\)"):
             _ = pt.ELEMENT_LOOKUP[("C", 12, "extra")]  # type: ignore
 
     def test_monoisotopic_flag(self):
@@ -602,7 +595,7 @@ class TestElementLookupComprehensive:
         c = pt.ELEMENT_LOOKUP["C"]
 
         # Via mass method
-        mass_via_method = pt.ELEMENT_LOOKUP.mass("C", monoisotopic=True)
+        mass_via_method = pt.ELEMENT_LOOKUP.get_mass("C", monoisotopic=True)
 
         assert c.mass == mass_via_method
 

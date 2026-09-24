@@ -71,6 +71,7 @@ tacular is the shared data layer of the tacular-omics packages:
    installation
    quickstart
    cli
+   migration
    api/index
    changelog
    citation

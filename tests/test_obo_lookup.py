@@ -58,7 +58,8 @@ def test_iter_and_values_keys():
     names = set([x.name for x in lookup])
     assert names == {"A", "B"}
     assert set(lookup.values()) == set([e1, e2])
-    assert set(lookup.keys()) == {"a", "b"}
+    assert lookup.keys() == ["1", "2"]
+    assert lookup.items() == [("1", e1), ("2", e2)]
 
 
 def test_choice():
@@ -263,7 +264,7 @@ class TestResidLookupComprehensive:
     ids=["unimod", "psimod", "resid", "xlmod", "gno"],
 )
 def test_id_tag_is_a_property_returning_str(lookup):
-    # Regression test: XlModInfo.id_tag was previously defined without @property,
+    # Regression test: XlmodInfo.id_tag was previously defined without @property,
     # so `entity.id_tag` returned a bound method instead of the stripped id string.
     entries = list(lookup)
     assert entries, f"{lookup.ontology_name} lookup has no entries to check"

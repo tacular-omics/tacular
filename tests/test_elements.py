@@ -38,8 +38,8 @@ def test_element_mass():
     # C monoisotopic is 12.0
     # C average is ~12.011
 
-    m_mono = ELEMENT_LOOKUP.mass("C", monoisotopic=True)
-    m_avg = ELEMENT_LOOKUP.mass("C", monoisotopic=False)
+    m_mono = ELEMENT_LOOKUP.get_mass("C", monoisotopic=True)
+    m_avg = ELEMENT_LOOKUP.get_mass("C", monoisotopic=False)
 
     assert m_mono == pytest.approx(12.0, abs=0.001)
     # Average should be different
@@ -47,8 +47,8 @@ def test_element_mass():
     assert m_avg > 12.0
 
     # Specific isotope mass ignores monoisotopic flag
-    m13 = ELEMENT_LOOKUP.mass("13C")
-    m13_false = ELEMENT_LOOKUP.mass("13C", monoisotopic=False)
+    m13 = ELEMENT_LOOKUP.get_mass("13C")
+    m13_false = ELEMENT_LOOKUP.get_mass("13C", monoisotopic=False)
     assert m13 == m13_false
     assert m13 > 13.0
 

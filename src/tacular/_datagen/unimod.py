@@ -112,14 +112,14 @@ def _entries(terms: list[dict[str, Any]]) -> Iterator[UnimodInfo]:
             comp_mass = 0.0
             comp_avg_mass = 0.0
             for (elem_sym, iso), iso_count in isotope_counts.items():
-                comp_mass += ELEMENT_LOOKUP.mass(f"{iso}{elem_sym}") * iso_count
-                comp_avg_mass += ELEMENT_LOOKUP.mass(f"{iso}{elem_sym}") * iso_count
+                comp_mass += ELEMENT_LOOKUP.get_mass(f"{iso}{elem_sym}") * iso_count
+                comp_avg_mass += ELEMENT_LOOKUP.get_mass(f"{iso}{elem_sym}") * iso_count
                 composition[elem_sym] = composition.get(elem_sym, 0) - iso_count
             for elem_sym, total_count in composition.items():
                 if total_count == 0:
                     continue
-                comp_mass += ELEMENT_LOOKUP.mass(elem_sym, monoisotopic=True) * total_count
-                comp_avg_mass += ELEMENT_LOOKUP.mass(elem_sym, monoisotopic=False) * total_count
+                comp_mass += ELEMENT_LOOKUP.get_mass(elem_sym, monoisotopic=True) * total_count
+                comp_avg_mass += ELEMENT_LOOKUP.get_mass(elem_sym, monoisotopic=False) * total_count
 
             # Re-add isotope-specified atoms under their isotope key (e.g. "13C") after the
             # mass loop so composition/formula reflect them without double-counting mass.
