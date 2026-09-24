@@ -1,28 +1,30 @@
-"""``ResidLookup`` (singleton ``RESID_LOOKUP``): id/name/mass lookup over the RESID
-ontology, with ids matched with or without the "AA" prefix.
-"""
+"""``ResidLookup`` (singleton ``RESID_LOOKUP``): id/name/mass lookup over the RESID ontology."""
 
 from .._cache import resolve
 from ..obo_lookup import OntologyLookup
 from .data import RESID_MODIFICATIONS, VERSION
 from .dclass import ResidInfo
 
+__all__ = ["RESID_LOOKUP", "ResidLookup"]
+
 
 class ResidLookup(OntologyLookup[ResidInfo]):
-    """RESID lookup (singleton ``RESID_LOOKUP``): query by a name, ``"AA0002"``, ``"2"`` or ``"RESID:AA0002"``.
+    """RESID lookup (singleton ``RESID_LOOKUP``).
+
+    Query by a name, ``"AA0002"``, ``"2"``, ``2``, ``"RESID:AA0002"`` or ``"R:AA0002"``.
 
     See :class:`~tacular.OntologyLookup` for the full query API. ``lookup[key]``
-    raises ``KeyError`` if nothing matches; ``get``/``in`` never raise.
+    raises :class:`~tacular.TacularKeyError` if nothing matches; ``get``/``in`` never raise.
     """
 
     def __init__(self, data: dict[str, ResidInfo], version: str) -> None:
-        """Wrap `data` in an `OntologyLookup` for RESID, stripping the "RESID:" and "AA" prefixes."""
+        """Wrap ``data`` (entries keyed by raw id) in an :class:`~tacular.OntologyLookup` for RESID."""
         super().__init__(
-            data=data,
-            ontology_name="RESID",
-            _version=version,
-            _accession_prefix="RESID:",
-            _id_prefix="AA",
+            data,
+            "RESID",
+            version=version,
+            accession_prefixes=("RESID:", "R:"),
+            id_prefix="AA",
         )
 
 

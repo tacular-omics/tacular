@@ -2,117 +2,66 @@
 label type, or molecule type.
 """
 
-from collections.abc import Iterator
+from collections.abc import Mapping
 
+from .._lookup import _BaseLookup
 from .data import REFMOL_DICT, RefMolID
 from .dclass import RefMolInfo
 
+__all__ = ["REFMOL_LOOKUP", "RefMolLookup"]
 
-class RefMolLookup:
+
+class RefMolLookup(_BaseLookup[str | RefMolID, str, RefMolInfo]):
     """mzPAF reference molecule lookup (singleton ``REFMOL_LOOKUP``), keyed by
     :class:`RefMolID` or name (case-insensitive), with group queries by label
     type and molecule type.
 
-    ``lookup[key]`` raises ``KeyError`` if nothing matches (including keys that
-    are not strings); ``get``/``in`` never raise.
+    ``lookup[key]`` raises :class:`~tacular.TacularKeyError` if nothing matches
+    (including keys that are not strings); ``get`` / ``in`` / ``query_*`` never
+    raise. :meth:`keys` are the names as plain strings, in data order.
     """
 
-    def __init__(self, refmol_data: dict[RefMolID, RefMolInfo]) -> None:
-        """Build id/name/label-type/molecule-type lookup dicts from `refmol_data`."""
-        self._refmol_data = refmol_data
+    _kind = "Reference molecule"
 
-        self._refmolid_to_data: dict[RefMolID, RefMolInfo] = {}
-        self._name_to_data: dict[str, RefMolInfo] = {}
-        self._label_type_to_data: dict[str, list[RefMolInfo]] = {}
-        self._molecule_type_to_data: dict[str, list[RefMolInfo]] = {}
+    def __init__(self, refmol_data: Mapping[RefMolID, RefMolInfo]) -> None:
+        """Build name, label-type and molecule-type indexes from ``refmol_data``."""
+        self._data: dict[str, RefMolInfo] = {str(k): v for k, v in refmol_data.items()}
+        self._by_name = {info.name.lower(): info for info in self._data.values()}
+        self._by_label_type: dict[str, list[RefMolInfo]] = {}
+        self._by_molecule_type: dict[str, list[RefMolInfo]] = {}
+        for info in self._data.values():
+            if info.label_type:
+                self._by_label_type.setdefault(info.label_type.lower(), []).append(info)
+            if info.molecule_type:
+                self._by_molecule_type.setdefault(info.molecule_type.lower(), []).append(info)
 
-        for refmol_id, refmol_info in refmol_data.items():
-            self._refmolid_to_data[refmol_id] = refmol_info
-            self._name_to_data[refmol_info.name.lower()] = refmol_info
+    def _entries(self) -> Mapping[str, RefMolInfo]:
+        return self._data
 
-            # Group by label type
-            if refmol_info.label_type:
-                self._label_type_to_data.setdefault(refmol_info.label_type.lower(), []).append(refmol_info)
-
-            # Group by molecule type
-            if refmol_info.molecule_type:
-                self._molecule_type_to_data.setdefault(refmol_info.molecule_type.lower(), []).append(refmol_info)
+    def _resolve(self, key: object) -> RefMolInfo | None:
+        return self.query_name(key)  # ty: ignore[invalid-argument-type]
 
     def query_id(self, refmol_id: RefMolID) -> RefMolInfo | None:
-        """Query by RefMolID enum"""
-        return self._refmolid_to_data.get(refmol_id)
+        """By :class:`RefMolID` member (or its string value); ``None`` if nothing matches."""
+        return self._data.get(refmol_id) if isinstance(refmol_id, str) else None
 
     def query_name(self, name: str) -> RefMolInfo | None:
-        """Query by reference molecule name (e.g., 'TMT126', 'sidechain_A')"""
-        if not isinstance(name, str):
-            return None
-        return self._name_to_data.get(name.lower())
+        """By name (e.g. ``"TMT126"``; case-insensitive); ``None`` if nothing matches."""
+        return self._by_name.get(name.lower()) if isinstance(name, str) else None
 
     def query_label_type(self, label_type: str) -> list[RefMolInfo]:
-        """Query all molecules by label type (e.g., 'TMT', 'iTRAQ').
-
-        Returns a new list each call; mutating it does not affect the lookup.
-        Returns an empty list if nothing matches, including for a non-string key.
-        """
+        """All molecules of a label type (e.g. ``"TMT"``; case-insensitive), as a new
+        list; empty if nothing matches, including for a non-string key."""
         if not isinstance(label_type, str):
             return []
-        return list(self._label_type_to_data.get(label_type.lower(), ()))
+        return list(self._by_label_type.get(label_type.lower(), ()))
 
     def query_molecule_type(self, molecule_type: str) -> list[RefMolInfo]:
-        """Query all molecules by molecule type (e.g., 'reporter', 'sidechain', 'nucleobase').
-
-        Returns a new list each call; mutating it does not affect the lookup.
-        Returns an empty list if nothing matches, including for a non-string key.
-        """
+        """All molecules of a molecule type (e.g. ``"reporter"``; case-insensitive), as
+        a new list; empty if nothing matches, including for a non-string key."""
         if not isinstance(molecule_type, str):
             return []
-        return list(self._molecule_type_to_data.get(molecule_type.lower(), ()))
-
-    def __getitem__(self, key: str | RefMolID) -> RefMolInfo:
-        """Get reference molecule by ID or name"""
-        if isinstance(key, RefMolID):
-            info = self.query_id(key)
-            if info is not None:
-                return info
-            raise KeyError(f"Reference molecule ID '{key}' not found.")
-
-        # Try name
-        info = self.query_name(key)
-        if info is not None:
-            return info
-
-        raise KeyError(f"Reference molecule '{key}' not found by name.")
-
-    def __contains__(self, key: str | RefMolID) -> bool:
-        """Check if reference molecule exists"""
-        try:
-            self[key]
-            return True
-        except KeyError:
-            return False
-
-    def get(self, key: str | RefMolID, default: RefMolInfo | None = None) -> RefMolInfo | None:
-        """Like `lookup[key]`, but return `default` instead of raising `KeyError`."""
-        try:
-            return self[key]
-        except KeyError:
-            return default
-
-    def __iter__(self) -> Iterator[RefMolInfo]:
-        """Iterator over all RefMolInfo entries in the lookup."""
-        return iter(self._refmol_data.values())
-
-    def __len__(self) -> int:
-        """Number of reference molecules in the lookup."""
-        return len(self._refmol_data)
-
-    def keys(self) -> list[str]:
-        """Names of all reference molecules (plain strings, e.g. ``"TMT126"``), in data order."""
-        return [str(k) for k in self._refmol_data]
-
-    def values(self) -> list[RefMolInfo]:
-        """All reference molecule infos, in data order (the same order as iteration)."""
-        return list(self._refmol_data.values())
+        return list(self._by_molecule_type.get(molecule_type.lower(), ()))
 
 
 REFMOL_LOOKUP = RefMolLookup(REFMOL_DICT)

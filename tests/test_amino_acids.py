@@ -9,51 +9,51 @@ class TestAALookupBasics:
 
     def test_one_letter_lookup(self):
         """Test one-letter code lookups"""
-        ala = db.one_letter("A")
+        ala = db.query_one_letter("A")
         assert ala.name == "Alanine"
         assert ala.three_letter_code == "Ala"
         assert ala.id == "A"
 
         # Case insensitive
-        assert db.one_letter("a") is ala
+        assert db.query_one_letter("a") is ala
 
         # Multiple amino acids
-        gly = db.one_letter("G")
+        gly = db.query_one_letter("G")
         assert gly.name == "Glycine"
         assert gly.three_letter_code == "Gly"
 
     def test_three_letter_lookup(self):
         """Test three-letter code lookups"""
-        ala = db.one_letter("A")
-        assert db.three_letter("Ala") is ala
-        assert db.three_letter("ALA") is ala
-        assert db.three_letter("ala") is ala
+        ala = db.query_one_letter("A")
+        assert db.query_three_letter("Ala") is ala
+        assert db.query_three_letter("ALA") is ala
+        assert db.query_three_letter("ala") is ala
 
-        val = db.three_letter("Val")
+        val = db.query_three_letter("Val")
         assert val.name == "Valine"
         assert val.id == "V"
 
     def test_name_lookup(self):
         """Test name-based lookups"""
-        ala = db.one_letter("A")
-        assert db.name("Alanine") is ala
-        assert db.name("alanine") is ala
-        assert db.name("ALANINE") is ala
+        ala = db.query_one_letter("A")
+        assert db.query_name("Alanine") is ala
+        assert db.query_name("alanine") is ala
+        assert db.query_name("ALANINE") is ala
 
-        leu = db.name("Leucine")
+        leu = db.query_name("Leucine")
         assert leu.id == "L"
         assert leu.three_letter_code == "Leu"
 
     def test_getitem_all_methods(self):
         """Test __getitem__ tries all lookup methods"""
         # Get by one letter
-        assert db["A"] == db.one_letter("A")
+        assert db["A"] == db.query_one_letter("A")
         # Get by three letter
-        assert db["Ala"] == db.one_letter("A")
-        assert db["ALA"] == db.one_letter("A")
+        assert db["Ala"] == db.query_one_letter("A")
+        assert db["ALA"] == db.query_one_letter("A")
         # Get by name
-        assert db["Alanine"] == db.one_letter("A")
-        assert db["alanine"] == db.one_letter("A")
+        assert db["Alanine"] == db.query_one_letter("A")
+        assert db["alanine"] == db.query_one_letter("A")
 
     def test_contains(self):
         """Test __contains__ operator"""
@@ -78,7 +78,7 @@ class TestAALookupBasics:
 
     def test_enum_access(self):
         """Test access via Enum member"""
-        info = db.one_letter(str(AminoAcid.A))
+        info = db.query_one_letter(str(AminoAcid.A))
         assert info.name == "Alanine"
 
 
@@ -86,29 +86,21 @@ class TestAALookupEdgeCases:
     """Test edge cases and error handling"""
 
     def test_one_letter_not_found(self):
-        """Test KeyError for invalid one-letter codes"""
-        with pytest.raises(KeyError):
-            db.one_letter("1")
-        with pytest.raises(KeyError):
-            db.one_letter("0")
-        with pytest.raises(KeyError):
-            db.one_letter("!")
+        """query_one_letter returns None for invalid codes"""
+        assert db.query_one_letter("1") is None
+        assert db.query_one_letter("0") is None
+        assert db.query_one_letter("!") is None
 
     def test_three_letter_not_found(self):
-        """Test KeyError for invalid three-letter codes"""
-        with pytest.raises(KeyError):
-            db.three_letter("Xyz")
-        with pytest.raises(KeyError):
-            db.three_letter("123")
-        with pytest.raises(KeyError):
-            db.three_letter("AAA")
+        """query_three_letter returns None for invalid codes"""
+        assert db.query_three_letter("Xyz") is None
+        assert db.query_three_letter("123") is None
+        assert db.query_three_letter("AAA") is None
 
     def test_name_not_found(self):
-        """Test KeyError for invalid names"""
-        with pytest.raises(KeyError):
-            db.name("NotAnAminoAcid")
-        with pytest.raises(KeyError):
-            db.name("Unknown")
+        """query_name returns None for invalid names"""
+        assert db.query_name("NotAnAminoAcid") is None
+        assert db.query_name("Unknown") is None
 
     def test_getitem_not_found(self):
         """Test KeyError for __getitem__ with invalid keys"""
@@ -194,13 +186,13 @@ class TestAALookupHelperMethods:
 
     def test_mass_monoisotopic(self):
         """Test mass method with monoisotopic=True"""
-        mass = db.mass("A", monoisotopic=True)
+        mass = db.get_mass("A", monoisotopic=True)
         assert isinstance(mass, float)
         assert mass > 0
 
     def test_mass_average(self):
         """Test mass method with monoisotopic=False"""
-        mass = db.mass("A", monoisotopic=False)
+        mass = db.get_mass("A", monoisotopic=False)
         assert isinstance(mass, float)
         assert mass > 0
 
@@ -209,7 +201,7 @@ class TestAALookupHelperMethods:
         # B doesn't have defined mass
         if "B" in db:
             with pytest.raises(ValueError):
-                db.mass("B", monoisotopic=True)
+                db.get_mass("B", monoisotopic=True)
 
     def test_composition(self):
         """Test composition method"""

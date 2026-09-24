@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from tacular import _cache
+from tacular import TacularError, _cache
 from tacular import update as update_mod
 
 REPO = Path(__file__).resolve().parent.parent
@@ -59,7 +59,7 @@ def test_cli_status_runs_with_no_cache(capsys):
     rc = update_mod.main(["status"])
     assert rc == 0
     out = capsys.readouterr().out
-    for name in update_mod.ONTOLOGIES:
+    for name in update_mod._ONTOLOGIES:
         assert name in out
     assert "cache enabled" in out
 
@@ -102,6 +102,35 @@ def test_cli_clear_removes_cache(tmp_path, capsys):
     assert not path.is_file()
 
 
+def test_cli_clear_removes_downloaded_sources(capsys):
+    obo = _cache.obo_dir()
+    obo.mkdir(parents=True)
+    (obo / "UNIMOD.obo").write_text("stale")
+
+    rc = update_mod.main(["clear"])
+    assert rc == 0
+    assert "removed downloaded sources" in capsys.readouterr().out
+    assert not obo.exists()
+
+
+def test_update_always_redownloads_sources(monkeypatch, capsys):
+    obo = _cache.obo_dir()
+    obo.mkdir(parents=True)
+    stale = obo / "UNIMOD.obo"
+    stale.write_text("stale")
+    fresh = 'date: fresh\n\n[Term]\nid: UNIMOD:1\nname: Fresh\nxref: delta_composition "C(1)"\n'
+    downloads = []
+
+    def fake_download(url, dest):
+        downloads.append(url)
+        dest.write_text(fresh)
+
+    monkeypatch.setattr(update_mod, "_download", fake_download)
+    assert update_mod.update(["unimod"]) == ["unimod"]
+    assert downloads == [update_mod._OBO_SOURCES["unimod"][0]]
+    assert stale.read_text() == fresh
+
+
 def test_cli_update_rejects_unknown_ontology(capsys):
     rc = update_mod.main(["update", "not-a-real-ontology"])
     assert rc == 1
@@ -114,6 +143,15 @@ def test_cli_update_offline_missing_obo_errors(tmp_path, capsys):
     assert "not found" in capsys.readouterr().err
 
 
+def test_cli_update_malformed_source_is_a_one_line_error(tmp_path, capsys):
+    # A term with no id makes the builder raise a plain ValueError: the CLI must
+    # still exit 1 with one line, not a traceback.
+    (tmp_path / "UNIMOD.obo").write_text("format-version: 1.2\n\n[Term]\nname: no id here\n")
+    rc = update_mod.main(["update", "unimod", "--offline", str(tmp_path)])
+    assert rc == 1
+    assert capsys.readouterr().err.startswith("error: ValueError:")
+
+
 def test_cli_update_offline_success(capsys):
     if not (OBO_DIR / "UNIMOD.obo").is_file():
         pytest.skip("developer OBO sources not available")
@@ -124,7 +162,7 @@ def test_cli_update_offline_success(capsys):
 
 
 def test_update_function_rejects_unknown_ontology():
-    with pytest.raises(ValueError, match="unknown ontologies"):
+    with pytest.raises(TacularError, match="unknown ontologies"):
         update_mod.update(["not-a-real-ontology"])
 
 

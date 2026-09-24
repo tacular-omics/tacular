@@ -1,139 +1,90 @@
 """``AALookup`` (singleton ``AA_LOOKUP``): query amino acids by one-letter code, three-letter code, or name."""
 
-from collections.abc import Iterator
-from functools import cache, cached_property
+from collections import Counter
+from collections.abc import Mapping
+from functools import cached_property
 
+from .._lookup import _BaseLookup
 from ..elements import ElementInfo
+from ..errors import TacularError
 from .data import AMINO_ACID_INFOS, AminoAcid
 from .dclass import AminoAcidInfo
 
+__all__ = ["AA_LOOKUP", "ORDERED_AMINO_ACIDS", "AALookup"]
 
-class AALookup:
+
+class AALookup(_BaseLookup[str, str, AminoAcidInfo]):
     """Amino acid lookup (singleton ``AA_LOOKUP``), keyed by one-letter code,
     three-letter code, or name (all case-insensitive).
 
-    ``lookup[key]`` raises ``KeyError`` if nothing matches (including keys that
-    are not strings); ``get``/``in`` never raise. Iteration, :meth:`values` and
-    :meth:`keys` follow one-letter-code order A-Z.
+    ``lookup[key]`` tries the one-letter code, then the three-letter code, then the
+    name, and raises :class:`~tacular.TacularKeyError` if nothing matches (including
+    keys that are not strings); ``get`` / ``in`` / ``query_*`` never raise.
+    Iteration, :meth:`keys`, :meth:`values` and :meth:`items` follow one-letter-code
+    order A-Z.
     """
 
-    def __init__(self, data: dict[AminoAcid, AminoAcidInfo]):
-        """Build one-letter, three-letter, and name lookup dicts from `data`."""
-        # Convert all keys to their string representation for one-letter codes
-        self.one_letter_to_info = {str(aa): info for aa, info in data.items()}
-        self.three_letter_to_info = {info.three_letter_code.lower(): info for info in data.values()}
-        self.name_to_info = {info.name.lower(): info for info in data.values()}
+    _kind = "Amino acid"
 
-    def _query_one_letter(self, code: str) -> AminoAcidInfo | None:
-        if not isinstance(code, str):
-            return None
-        return self.one_letter_to_info.get(code.upper())
+    def __init__(self, data: Mapping[AminoAcid, AminoAcidInfo]) -> None:
+        """Build one-letter, three-letter, and name indexes from ``data``."""
+        ordered = sorted(data.values(), key=lambda info: str(info.id))
+        self._by_one_letter: dict[str, AminoAcidInfo] = {str(info.id): info for info in ordered}
+        self._by_three_letter = {info.three_letter_code.lower(): info for info in ordered}
+        self._by_name = {info.name.lower(): info for info in ordered}
 
-    def _query_three_letter(self, code: str) -> AminoAcidInfo | None:
-        if not isinstance(code, str):
-            return None
-        return self.three_letter_to_info.get(code.lower())
+    def _entries(self) -> Mapping[str, AminoAcidInfo]:
+        return self._by_one_letter
 
-    def _query_name(self, name: str) -> AminoAcidInfo | None:
-        if not isinstance(name, str):
-            return None
-        return self.name_to_info.get(name.lower())
-
-    @cache
-    def one_letter(self, code: str) -> AminoAcidInfo:
-        """Look up by one-letter code (case-insensitive).
-
-        Raises:
-            KeyError: if `code` matches no amino acid.
-        """
-        val = self._query_one_letter(code)
-        if val is not None:
-            return val
-        raise KeyError(f"Amino acid with one-letter code '{code}' not found.")
-
-    @cache
-    def three_letter(self, code: str) -> AminoAcidInfo:
-        """Look up by three-letter code (case-insensitive).
-
-        Raises:
-            KeyError: if `code` matches no amino acid.
-        """
-        val = self._query_three_letter(code)
-        if val is not None:
-            return val
-        raise KeyError(f"Amino acid with three-letter code '{code}' not found.")
-
-    @cache
-    def name(self, name: str) -> AminoAcidInfo:
-        """Look up by name (case-insensitive).
-
-        Raises:
-            KeyError: if `name` matches no amino acid.
-        """
-        val = self._query_name(name)
-        if val is not None:
-            return val
-        raise KeyError(f"Amino acid with name '{name}' not found.")
-
-    def __getitem__(self, key: str) -> AminoAcidInfo:
-        """`lookup[key]`: query by one-letter code, then three-letter code, then name.
-
-        Raises:
-            KeyError: if `key` matches none of the three, or is not a string.
-        """
+    def _resolve(self, key: object) -> AminoAcidInfo | None:
         if not isinstance(key, str):
-            raise KeyError(f"Amino acid {key!r} not found: keys are str.")
-        return self._getitem(key)
+            return None
+        return (
+            self._by_one_letter.get(key.upper())
+            or self._by_three_letter.get(key.lower())
+            or self._by_name.get(key.lower())
+        )
 
-    @cache
-    def _getitem(self, key: str) -> AminoAcidInfo:
-        info = self._query_one_letter(key)
-        if info is not None:
-            return info
+    def _miss_message(self, key: object) -> str:
+        return f"Amino acid {key!r} not found by one-letter code, three-letter code, or name."
 
-        info = self._query_three_letter(key)
-        if info is not None:
-            return info
+    def query_one_letter(self, code: str) -> AminoAcidInfo | None:
+        """By one-letter code (case-insensitive); ``None`` if nothing matches."""
+        return self._by_one_letter.get(code.upper()) if isinstance(code, str) else None
 
-        info = self._query_name(key)
-        if info is not None:
-            return info
+    def query_three_letter(self, code: str) -> AminoAcidInfo | None:
+        """By three-letter code (case-insensitive); ``None`` if nothing matches."""
+        return self._by_three_letter.get(code.lower()) if isinstance(code, str) else None
 
-        raise KeyError(f"Amino acid '{key}' not found by one-letter code, three-letter code, or name.")
-
-    def __contains__(self, key: str) -> bool:
-        """`key in lookup`: True if `key` resolves by one-letter code, three-letter code, or name."""
-        try:
-            _ = self[key]
-            return True
-        except KeyError:
-            return False
+    def query_name(self, name: str) -> AminoAcidInfo | None:
+        """By full name (case-insensitive); ``None`` if nothing matches."""
+        return self._by_name.get(name.lower()) if isinstance(name, str) else None
 
     @cached_property
     def ordered_amino_acids(self) -> tuple[AminoAcidInfo, ...]:
-        """Get amino acids in order of one-letter codes A-Z"""
-        return tuple(self.one_letter_to_info[aa] for aa in sorted(self.one_letter_to_info.keys()))
+        """All amino acids in one-letter-code order A-Z."""
+        return tuple(self._by_one_letter.values())
 
     @cached_property
     def ambiguous_amino_acids(self) -> tuple[AminoAcidInfo, ...]:
-        """Get ambiguous amino acids (B, J, X, Z)"""
+        """Ambiguity codes (B, J, X, Z)."""
         return tuple(aa for aa in self.ordered_amino_acids if aa.is_ambiguous)
 
     @cached_property
     def mass_amino_acids(self) -> tuple[AminoAcidInfo, ...]:
-        """Get amino acids that have defined masses"""
+        """Amino acids with both a monoisotopic and an average mass."""
         return tuple(
             aa for aa in self.ordered_amino_acids if aa.monoisotopic_mass is not None and aa.average_mass is not None
         )
 
     @cached_property
     def unambiguous_amino_acids(self) -> tuple[AminoAcidInfo, ...]:
-        """Get unambiguous amino acids (all except B, J, X, Z)"""
+        """Every amino acid except the ambiguity codes (B, J, X, Z)."""
         return tuple(aa for aa in self.ordered_amino_acids if not aa.is_ambiguous)
 
     @cached_property
     def mass_unambiguous_amino_acids(self) -> tuple[AminoAcidInfo, ...]:
-        """Get unambiguous amino acids that have defined masses"""
+        """Unambiguous amino acids with both masses defined."""
         return tuple(
             aa
             for aa in self.unambiguous_amino_acids
@@ -141,80 +92,56 @@ class AALookup:
         )
 
     def is_ambiguous(self, key: str) -> bool:
-        """Check if the amino acid identified by key is ambiguous"""
-        aa_info = self[key]
-        return aa_info.is_ambiguous
+        """Whether ``key`` is an ambiguity code.
+
+        Raises:
+            TacularKeyError: if ``key`` matches no amino acid.
+        """
+        return self[key].is_ambiguous
 
     def is_mass_ambiguous(self, key: str) -> bool:
-        """Check if the amino acid identified by key has mass ambiguity"""
-        aa_info = self[key]
-        return aa_info.is_mass_ambiguous
+        """Whether ``key`` stands for residues of different masses.
+
+        Raises:
+            TacularKeyError: if ``key`` matches no amino acid.
+        """
+        return self[key].is_mass_ambiguous
 
     def is_unambiguous(self, key: str) -> bool:
-        """Check if the amino acid identified by key is unambiguous"""
-        aa_info = self[key]
-        return not aa_info.is_ambiguous
+        """``not is_ambiguous(key)``."""
+        return not self[key].is_ambiguous
 
     def is_mass_unambiguous(self, key: str) -> bool:
-        """Check if the amino acid identified by key has no mass ambiguity"""
-        aa_info = self[key]
-        return not aa_info.is_mass_ambiguous
+        """``not is_mass_ambiguous(key)``."""
+        return not self[key].is_mass_ambiguous
 
-    def mass(self, key: str, monoisotopic: bool = True) -> float:
-        """Get the mass of the amino acid identified by key"""
-        aa_info = self[key]
-        if monoisotopic:
-            if aa_info.monoisotopic_mass is None:
-                raise ValueError(f"Amino acid '{key}' does not have a defined monoisotopic mass.")
-            return aa_info.monoisotopic_mass
-        else:
-            if aa_info.average_mass is None:
-                raise ValueError(f"Amino acid '{key}' does not have a defined average mass.")
-            return aa_info.average_mass
+    def get_mass(self, key: str, *, monoisotopic: bool = True) -> float:
+        """Monoisotopic (default) or average residue mass of ``key`` in Da.
 
-    def composition(self, key: str) -> dict[ElementInfo, int]:
-        """Get the elemental composition of the amino acid identified by key"""
-        aa_info = self[key]
-        if aa_info.composition is None:
-            raise ValueError(f"Amino acid '{key}' does not have a defined elemental composition.")
-        return aa_info.composition
+        Raises:
+            TacularKeyError: if ``key`` matches no amino acid.
+            TacularError: if the amino acid has no such mass (e.g. ``B``).
+        """
+        mass = self[key].get_mass(monoisotopic=monoisotopic)
+        if mass is None:
+            kind = "monoisotopic" if monoisotopic else "average"
+            raise TacularError(f"Amino acid {key!r} does not have a defined {kind} mass.")
+        return mass
 
-    def __iter__(self) -> Iterator[AminoAcidInfo]:
-        """Iterator over all amino acids in order of one-letter codes A-Z"""
-        yield from self.ordered_amino_acids
+    def composition(self, key: str) -> Counter[ElementInfo]:
+        """Elemental composition of ``key`` (a fresh copy).
 
-    def get(self, key: str, default: AminoAcidInfo | None = None) -> AminoAcidInfo | None:
-        """Like `lookup[key]`, but return `default` instead of raising `KeyError`."""
-        try:
-            return self[key]
-        except KeyError:
-            return default
-
-    def __len__(self) -> int:
-        """Number of amino acids in the lookup."""
-        return len(self.one_letter_to_info)
-
-    def keys(self) -> list[str]:
-        """One-letter codes of all amino acids, A-Z."""
-        return [str(aa.id) for aa in self.ordered_amino_acids]
-
-    def values(self) -> list[AminoAcidInfo]:
-        """All amino acids, in one-letter-code order A-Z."""
-        return list(self.ordered_amino_acids)
+        Raises:
+            TacularKeyError: if ``key`` matches no amino acid.
+            TacularError: if the amino acid has no defined composition (e.g. ``B``).
+        """
+        comp = self[key].composition
+        if comp is None:
+            raise TacularError(f"Amino acid {key!r} does not have a defined elemental composition.")
+        return comp
 
 
 AA_LOOKUP = AALookup(AMINO_ACID_INFOS)
 
-# prime the cache for all amino acids
-for aa in AMINO_ACID_INFOS.keys():
-    AA_LOOKUP[aa]
-
-# load cahced properties
-_ = AA_LOOKUP.ordered_amino_acids
-_ = AA_LOOKUP.ambiguous_amino_acids
-_ = AA_LOOKUP.mass_amino_acids
-_ = AA_LOOKUP.unambiguous_amino_acids
-_ = AA_LOOKUP.mass_unambiguous_amino_acids
-
-
-ORDERED_AMINO_ACIDS = [aa.id for aa in AA_LOOKUP.ordered_amino_acids]
+ORDERED_AMINO_ACIDS: list[str] = [str(aa.id) for aa in AA_LOOKUP.ordered_amino_acids]
+"""One-letter codes A-Z."""

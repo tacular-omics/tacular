@@ -1,35 +1,48 @@
 """The ``AminoAcidInfo`` dataclass: a single amino acid's identity, mass, and elemental composition."""
 
 from collections import Counter
+from collections.abc import Mapping
 from dataclasses import dataclass, field
-from functools import cached_property
 
+from .._util import _round
 from ..elements import ElementInfo
 from ..elements.lookup import parse_composition
 
+__all__ = ["AminoAcidInfo"]
 
-@dataclass(frozen=True)
+
+@dataclass(frozen=True, slots=True)
 class AminoAcidInfo:
-    """Information about an amino acid"""
+    """One amino acid (or ambiguity code such as ``B``, ``J``, ``X``, ``Z``)."""
 
     id: str
+    """One-letter code, e.g. ``"A"``."""
     name: str
+    """Full name, e.g. ``"Alanine"``."""
     three_letter_code: str
+    """Three-letter code, e.g. ``"Ala"``."""
     formula: str | None
+    """Residue formula (the amino acid minus water), or ``None`` for an ambiguity code."""
     monoisotopic_mass: float | None
+    """Monoisotopic residue mass in Da, or ``None`` if undefined."""
     average_mass: float | None
-    dict_composition: dict[str, int] | None = field(hash=False)
-    is_mass_ambiguous: bool = False  # L / I are ambiguous but not mass ambiguous
+    """Average residue mass in Da, or ``None`` if undefined."""
+    dict_composition: Mapping[str, int] | None = field(hash=False)
+    """Residue composition as ``{symbol: count}``, or ``None``. Read-only: shared by every caller."""
+    is_mass_ambiguous: bool = False
+    """True if the code stands for residues of different masses (``B``, ``Z``, ``X``)."""
     is_ambiguous: bool = False
+    """True for an ambiguity code (``B``, ``J``, ``X``, ``Z``); ``J`` (L/I) is not mass-ambiguous."""
+    _composition: Counter[ElementInfo] | None = field(init=False, repr=False, compare=False, hash=False)
 
-    @cached_property
-    def _composition(self) -> Counter[ElementInfo] | None:
-        return Counter(parse_composition(dict(self.dict_composition))) if self.dict_composition is not None else None
+    def __post_init__(self) -> None:
+        comp = Counter(parse_composition(self.dict_composition)) if self.dict_composition is not None else None
+        object.__setattr__(self, "_composition", comp)
 
     @property
     def composition(self) -> Counter[ElementInfo] | None:
-        """Get the composition as a Counter (a fresh copy on each access, so
-        mutating it cannot change this amino acid's cached composition)."""
+        """The composition keyed by :class:`~tacular.ElementInfo` (a fresh copy on each
+        access), or ``None`` if undefined."""
         comp = self._composition
         return Counter(comp) if comp is not None else None
 
@@ -38,23 +51,26 @@ class AminoAcidInfo:
         """Alias for :attr:`id`, the amino acid's one-letter code (e.g. ``"A"``)."""
         return self.id
 
-    def get_mass(self, monoisotopic: bool = True) -> float | None:
-        """Get the mass of the amino acid"""
-        if monoisotopic:
-            return self.monoisotopic_mass
-        else:
-            return self.average_mass
+    def get_mass(self, *, monoisotopic: bool = True) -> float | None:
+        """The monoisotopic mass (default) or average mass; ``None`` if undefined."""
+        return self.monoisotopic_mass if monoisotopic else self.average_mass
 
-    def to_dict(self, float_precision: int = 6) -> dict[str, object]:
-        """Convert the AminoAcidInfo to a dictionary"""
+    def to_dict(self, *, float_precision: int | None = 6) -> dict[str, object]:
+        """Convert to a plain, JSON-serializable dictionary.
+
+        Keys: ``id``, ``name``, ``three_letter_code``, ``formula``,
+        ``monoisotopic_mass``, ``average_mass``, ``composition``, ``is_mass_ambiguous``,
+        ``is_ambiguous``. ``float_precision`` rounds the masses (default 6); ``None``
+        keeps full precision.
+        """
         return {
-            "id": self.id,
+            "id": str(self.id),
             "name": self.name,
             "three_letter_code": self.three_letter_code,
             "formula": self.formula,
-            "monoisotopic_mass": round(self.monoisotopic_mass, float_precision)
-            if self.monoisotopic_mass is not None
-            else None,
-            "average_mass": round(self.average_mass, float_precision) if self.average_mass is not None else None,
+            "monoisotopic_mass": _round(self.monoisotopic_mass, float_precision),
+            "average_mass": _round(self.average_mass, float_precision),
             "composition": dict(self.dict_composition) if self.dict_composition is not None else None,
+            "is_mass_ambiguous": self.is_mass_ambiguous,
+            "is_ambiguous": self.is_ambiguous,
         }

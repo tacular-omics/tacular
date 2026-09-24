@@ -215,7 +215,7 @@ class TestRefMolMethods:
             assert d["name"] == molecule.name
             assert d["label_type"] == molecule.label_type
             assert d["molecule_type"] == molecule.molecule_type
-            assert d["chemical_formula"] == molecule.chemical_formula
+            assert d["formula"] == molecule.formula
             assert "monoisotopic_mass" in d
             assert "average_mass" in d
             assert "composition" in d
@@ -269,8 +269,8 @@ class TestRefMolDataIntegrity:
     def test_all_have_formulas(self):
         """Test all molecules have chemical formulas"""
         for molecule in db:
-            assert molecule.chemical_formula is not None
-            assert len(molecule.chemical_formula) > 0
+            assert molecule.formula is not None
+            assert len(molecule.formula) > 0
 
     def test_masses_are_positive(self):
         """Test all masses are positive"""

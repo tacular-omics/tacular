@@ -4,11 +4,11 @@
 VERSION = "1.5.1"
 
 
-from .dclass import XlModInfo
+from .dclass import XlmodInfo
 
 try:
-    XLMOD_MODIFICATIONS: dict[str, XlModInfo] = {
-        "01000": XlModInfo(
+    XLMOD_MODIFICATIONS: dict[str, XlmodInfo] = {
+        "01000": XlmodInfo(
             id="01000",
             name="hydrolyzed BS3",
             formula="C8H12O3",
@@ -16,7 +16,7 @@ try:
             average_mass=156.17939099550614,
             dict_composition={'C': 8, 'H': 12, 'O': 3},
     ),
-        "01001": XlModInfo(
+        "01001": XlmodInfo(
             id="01001",
             name="ammonium amidated BS3",
             formula="C8H13NO2",
@@ -24,7 +24,7 @@ try:
             average_mass=155.19463003668946,
             dict_composition={'C': 8, 'H': 13, 'O': 2, 'N': 1},
     ),
-        "01002": XlModInfo(
+        "01002": XlmodInfo(
             id="01002",
             name="hydrolyzed DSS",
             formula="C8H12O3",
@@ -32,7 +32,7 @@ try:
             average_mass=156.17939099550614,
             dict_composition={'C': 8, 'H': 12, 'O': 3},
     ),
-        "01003": XlModInfo(
+        "01003": XlmodInfo(
             id="01003",
             name="ammonium amidated DSS",
             formula="C8H13NO2",
@@ -40,7 +40,7 @@ try:
             average_mass=155.19463003668946,
             dict_composition={'C': 8, 'H': 13, 'O': 2, 'N': 1},
     ),
-        "01004": XlModInfo(
+        "01004": XlmodInfo(
             id="01004",
             name="hydrolyzed DSS-d4",
             formula=None,
@@ -48,7 +48,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01005": XlModInfo(
+        "01005": XlmodInfo(
             id="01005",
             name="ammonium amidated DSS-d4",
             formula=None,
@@ -56,7 +56,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01006": XlModInfo(
+        "01006": XlmodInfo(
             id="01006",
             name="hydrolyzed DSS-d12",
             formula=None,
@@ -64,7 +64,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01007": XlModInfo(
+        "01007": XlmodInfo(
             id="01007",
             name="ammonium amidated DSS-d12",
             formula=None,
@@ -72,7 +72,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01008": XlModInfo(
+        "01008": XlmodInfo(
             id="01008",
             name="hydrolyzed BS3-d4",
             formula="C8H8D4O3",
@@ -80,7 +80,7 @@ try:
             average_mass=160.20403509176305,
             dict_composition={'C': 8, 'D': 4, 'H': 8, 'O': 3},
     ),
-        "01009": XlModInfo(
+        "01009": XlmodInfo(
             id="01009",
             name="ammonium amidated BS3-d4",
             formula="C8H9D4NO2",
@@ -88,7 +88,7 @@ try:
             average_mass=159.21927413294634,
             dict_composition={'C': 8, 'D': 4, 'H': 9, 'N': 1, 'O': 2},
     ),
-        "01010": XlModInfo(
+        "01010": XlmodInfo(
             id="01010",
             name="hydrolyzed BS2G",
             formula="C5H6O3",
@@ -96,7 +96,7 @@ try:
             average_mass=114.09953878096573,
             dict_composition={'C': 5, 'H': 6, 'O': 3},
     ),
-        "01011": XlModInfo(
+        "01011": XlmodInfo(
             id="01011",
             name="ammonium amidated BS2G",
             formula="C5H7NO2",
@@ -104,7 +104,7 @@ try:
             average_mass=113.11477782214904,
             dict_composition={'C': 5, 'H': 7, 'N': 1, 'O': 2},
     ),
-        "01012": XlModInfo(
+        "01012": XlmodInfo(
             id="01012",
             name="hydrolyzed DSG",
             formula="C5H6O3",
@@ -112,7 +112,7 @@ try:
             average_mass=114.09953878096573,
             dict_composition={'C': 5, 'H': 6, 'O': 3},
     ),
-        "01013": XlModInfo(
+        "01013": XlmodInfo(
             id="01013",
             name="ammonium amidated DSG",
             formula="C5H7NO2",
@@ -120,7 +120,7 @@ try:
             average_mass=113.11477782214904,
             dict_composition={'C': 5, 'H': 7, 'N': 1, 'O': 2},
     ),
-        "01014": XlModInfo(
+        "01014": XlmodInfo(
             id="01014",
             name="hydrolyzed DSG-d4",
             formula="C5H2D4O3",
@@ -128,7 +128,7 @@ try:
             average_mass=118.12418287722261,
             dict_composition={'C': 5, 'D': 4, 'H': 2, 'O': 3},
     ),
-        "01015": XlModInfo(
+        "01015": XlmodInfo(
             id="01015",
             name="ammonium amidated DSG-d4",
             formula="C5H3D4NO2",
@@ -136,7 +136,7 @@ try:
             average_mass=117.13942191840592,
             dict_composition={'C': 5, 'D': 4, 'H': 3, 'N': 1, 'O': 2},
     ),
-        "01016": XlModInfo(
+        "01016": XlmodInfo(
             id="01016",
             name="hydrolyzed BS2G-d4",
             formula="C5H2D4O3",
@@ -144,7 +144,7 @@ try:
             average_mass=118.12418287722261,
             dict_composition={'C': 5, 'D': 4, 'H': 2, 'O': 3},
     ),
-        "01017": XlModInfo(
+        "01017": XlmodInfo(
             id="01017",
             name="ammonium amidated BS2G-d4",
             formula="C5H3D4NO2",
@@ -152,7 +152,7 @@ try:
             average_mass=117.13942191840592,
             dict_composition={'C': 5, 'D': 4, 'H': 3, 'N': 1, 'O': 2},
     ),
-        "01018": XlModInfo(
+        "01018": XlmodInfo(
             id="01018",
             name="BDP-NHP-stump",
             formula=None,
@@ -160,7 +160,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01019": XlModInfo(
+        "01019": XlmodInfo(
             id="01019",
             name="hydrolyzed DSP",
             formula="C6H8O3S2",
@@ -168,7 +168,7 @@ try:
             average_mass=192.25573099806667,
             dict_composition={'C': 6, 'H': 8, 'O': 3, 'S': 2},
     ),
-        "01020": XlModInfo(
+        "01020": XlmodInfo(
             id="01020",
             name="ammonium amidated DSP",
             formula="C6H9NO2S2",
@@ -176,7 +176,7 @@ try:
             average_mass=191.27097003924996,
             dict_composition={'C': 6, 'H': 9, 'N': 1, 'O': 2, 'S': 2},
     ),
-        "01021": XlModInfo(
+        "01021": XlmodInfo(
             id="01021",
             name="hydrolyzed EGS",
             formula="C10H12O7",
@@ -184,7 +184,7 @@ try:
             average_mass=244.19848248624976,
             dict_composition={'C': 10, 'H': 12, 'O': 7},
     ),
-        "01022": XlModInfo(
+        "01022": XlmodInfo(
             id="01022",
             name="ammonium amidated EGS",
             formula="C10H13NO6",
@@ -192,7 +192,7 @@ try:
             average_mass=243.21372152743305,
             dict_composition={'C': 10, 'H': 13, 'N': 1, 'O': 6},
     ),
-        "01023": XlModInfo(
+        "01023": XlmodInfo(
             id="01023",
             name="hydrolyzed BiPS",
             formula="C16H18N2O5S2",
@@ -200,7 +200,7 @@ try:
             average_mass=382.4547137775051,
             dict_composition={'C': 16, 'H': 18, 'N': 2, 'O': 5, 'S': 2},
     ),
-        "01024": XlModInfo(
+        "01024": XlmodInfo(
             id="01024",
             name="ammonium amidated BiPS",
             formula="C16H18N3O4S2",
@@ -208,7 +208,7 @@ try:
             average_mass=380.4620120646326,
             dict_composition={'C': 16, 'H': 18, 'N': 3, 'O': 4, 'S': 2},
     ),
-        "01025": XlModInfo(
+        "01025": XlmodInfo(
             id="01025",
             name="hydrolyzed CBDPS",
             formula="C19H25N7O5S3",
@@ -216,7 +216,7 @@ try:
             average_mass=527.6408102094573,
             dict_composition={'C': 19, 'H': 25, 'N': 7, 'O': 5, 'S': 3},
     ),
-        "01026": XlModInfo(
+        "01026": XlmodInfo(
             id="01026",
             name="ammonium amidated CBDPS",
             formula="C19H25N8O4S3",
@@ -224,7 +224,7 @@ try:
             average_mass=525.6481084965849,
             dict_composition={'C': 19, 'H': 25, 'N': 8, 'O': 4, 'S': 3},
     ),
-        "01027": XlModInfo(
+        "01027": XlmodInfo(
             id="01027",
             name="hydrolyzed DSA",
             formula="C6H8O3",
@@ -232,7 +232,7 @@ try:
             average_mass=128.12615618581253,
             dict_composition={'C': 6, 'H': 8, 'O': 3},
     ),
-        "01028": XlModInfo(
+        "01028": XlmodInfo(
             id="01028",
             name="ammonium amidated DSA",
             formula="C6H9NO2",
@@ -240,7 +240,7 @@ try:
             average_mass=127.14139522699584,
             dict_composition={'C': 6, 'H': 9, 'N': 1, 'O': 2},
     ),
-        "01029": XlModInfo(
+        "01029": XlmodInfo(
             id="01029",
             name="hydrolyzed DNBDPS",
             formula="C12H10N2O7S2",
@@ -248,7 +248,7 @@ try:
             average_mass=358.34705400675443,
             dict_composition={'C': 12, 'H': 10, 'N': 2, 'O': 7, 'S': 2},
     ),
-        "01030": XlModInfo(
+        "01030": XlmodInfo(
             id="01030",
             name="ammonium amidated DNBDPS",
             formula="C12H10N3O6S2",
@@ -256,7 +256,7 @@ try:
             average_mass=356.35435229388196,
             dict_composition={'C': 12, 'H': 10, 'N': 3, 'O': 6, 'S': 2},
     ),
-        "01031": XlModInfo(
+        "01031": XlmodInfo(
             id="01031",
             name="hydrolyzed TEABS",
             formula="C28H41N5O12S",
@@ -264,7 +264,7 @@ try:
             average_mass=671.7173385800493,
             dict_composition={'C': 28, 'H': 41, 'N': 5, 'O': 12, 'S': 1},
     ),
-        "01032": XlModInfo(
+        "01032": XlmodInfo(
             id="01032",
             name="ammonium amidated TEABS",
             formula="C28H41N6O11S",
@@ -272,7 +272,7 @@ try:
             average_mass=669.7246368671767,
             dict_composition={'C': 28, 'H': 41, 'N': 6, 'O': 11, 'S': 1},
     ),
-        "01033": XlModInfo(
+        "01033": XlmodInfo(
             id="01033",
             name="hydrolyzed DTSSP-d8",
             formula="C6D8O3S2",
@@ -280,7 +280,7 @@ try:
             average_mass=200.30501919058045,
             dict_composition={'C': 6, 'D': 8, 'O': 3, 'S': 2},
     ),
-        "01034": XlModInfo(
+        "01034": XlmodInfo(
             id="01034",
             name="ammonium amidated DTSSP-d8",
             formula="C6HD8NO2S2",
@@ -288,7 +288,7 @@ try:
             average_mass=199.32025823176377,
             dict_composition={'C': 6, 'D': 8, 'H': 1, 'N': 1, 'O': 2, 'S': 2},
     ),
-        "01035": XlModInfo(
+        "01035": XlmodInfo(
             id="01035",
             name="hydrolyzed DSP-d8",
             formula="C6D8O3S2",
@@ -296,7 +296,7 @@ try:
             average_mass=200.30501919058045,
             dict_composition={'C': 6, 'D': 8, 'O': 3, 'S': 2},
     ),
-        "01036": XlModInfo(
+        "01036": XlmodInfo(
             id="01036",
             name="ammonium amidated DSP-d8",
             formula="C6HD8NO2S2",
@@ -304,7 +304,7 @@ try:
             average_mass=199.32025823176377,
             dict_composition={'C': 6, 'D': 8, 'H': 1, 'N': 1, 'O': 2, 'S': 2},
     ),
-        "01037": XlModInfo(
+        "01037": XlmodInfo(
             id="01037",
             name="hydrolyzed Sulfo-EGS",
             formula="C10H12O7",
@@ -312,7 +312,7 @@ try:
             average_mass=244.19848248624976,
             dict_composition={'C': 10, 'H': 12, 'O': 7},
     ),
-        "01038": XlModInfo(
+        "01038": XlmodInfo(
             id="01038",
             name="ammonium amidated Sulfo-EGS",
             formula="C10H12NO6",
@@ -320,7 +320,7 @@ try:
             average_mass=242.20578077337728,
             dict_composition={'C': 10, 'H': 12, 'N': 1, 'O': 6},
     ),
-        "01039": XlModInfo(
+        "01039": XlmodInfo(
             id="01039",
             name="hydrolyzed EGS-d12",
             formula="C10D12O7",
@@ -328,7 +328,7 @@ try:
             average_mass=256.2724147750204,
             dict_composition={'C': 10, 'D': 12, 'O': 7},
     ),
-        "01040": XlModInfo(
+        "01040": XlmodInfo(
             id="01040",
             name="ammonium amidated EGS-d12",
             formula="C10D12NO6",
@@ -336,7 +336,7 @@ try:
             average_mass=254.27971306214795,
             dict_composition={'C': 10, 'D': 12, 'N': 1, 'O': 6},
     ),
-        "01041": XlModInfo(
+        "01041": XlmodInfo(
             id="01041",
             name="hydrolyzed Sulfo-EGS-d12",
             formula="C10D12O7",
@@ -344,7 +344,7 @@ try:
             average_mass=256.2724147750204,
             dict_composition={'C': 10, 'D': 12, 'O': 7},
     ),
-        "01042": XlModInfo(
+        "01042": XlmodInfo(
             id="01042",
             name="ammonium amidated Sulfo-EGS-d12",
             formula="C10D12NO6",
@@ -352,7 +352,7 @@ try:
             average_mass=254.27971306214795,
             dict_composition={'C': 10, 'D': 12, 'N': 1, 'O': 6},
     ),
-        "01043": XlModInfo(
+        "01043": XlmodInfo(
             id="01043",
             name="hydrolyzed DSA-13C6",
             formula="H8[13C6]O3",
@@ -360,7 +360,7 @@ try:
             average_mass=134.08186981582105,
             dict_composition={'H': 8, 'O': 3, '13C': 6},
     ),
-        "01044": XlModInfo(
+        "01044": XlmodInfo(
             id="01044",
             name="ammonium amidated DSA-13C6",
             formula="H9[13C6]NO2",
@@ -368,7 +368,7 @@ try:
             average_mass=133.09710885700434,
             dict_composition={'H': 9, 'N': 1, 'O': 2, '13C': 6},
     ),
-        "01045": XlModInfo(
+        "01045": XlmodInfo(
             id="01045",
             name="hydrolyzed CBDPS-d8",
             formula="C19H17D8N7O5S3",
@@ -376,7 +376,7 @@ try:
             average_mass=535.6900984019711,
             dict_composition={'C': 19, 'D': 8, 'H': 17, 'N': 7, 'O': 5, 'S': 3},
     ),
-        "01046": XlModInfo(
+        "01046": XlmodInfo(
             id="01046",
             name="ammonium amidated CBDPS-d8",
             formula="C19H17D8N8O4S3",
@@ -384,7 +384,7 @@ try:
             average_mass=533.6973966890987,
             dict_composition={'C': 19, 'D': 8, 'H': 17, 'N': 8, 'O': 4, 'S': 3},
     ),
-        "01047": XlModInfo(
+        "01047": XlmodInfo(
             id="01047",
             name="hydrolyzed CBDPSS",
             formula="C19H25N7O5S3",
@@ -392,7 +392,7 @@ try:
             average_mass=527.6408102094573,
             dict_composition={'C': 19, 'H': 25, 'N': 7, 'O': 5, 'S': 3},
     ),
-        "01048": XlModInfo(
+        "01048": XlmodInfo(
             id="01048",
             name="ammonium amidated CBDPSS",
             formula="C19H25N8O4S3",
@@ -400,7 +400,7 @@ try:
             average_mass=525.6481084965849,
             dict_composition={'C': 19, 'H': 25, 'N': 8, 'O': 4, 'S': 3},
     ),
-        "01049": XlModInfo(
+        "01049": XlmodInfo(
             id="01049",
             name="hydrolyzed CBDPSS-d8",
             formula="C19H17D8N7O5S3",
@@ -408,7 +408,7 @@ try:
             average_mass=535.6900984019711,
             dict_composition={'C': 19, 'D': 8, 'H': 17, 'N': 7, 'O': 5, 'S': 3},
     ),
-        "01050": XlModInfo(
+        "01050": XlmodInfo(
             id="01050",
             name="ammonium amidated CBDPSS-d8",
             formula="C19H17D8N8O4S3",
@@ -416,7 +416,7 @@ try:
             average_mass=533.6973966890987,
             dict_composition={'C': 19, 'D': 8, 'H': 17, 'N': 8, 'O': 4, 'S': 3},
     ),
-        "01051": XlModInfo(
+        "01051": XlmodInfo(
             id="01051",
             name="hydrolyzed BS3-d12",
             formula="C8D12O3",
@@ -424,7 +424,7 @@ try:
             average_mass=168.25332328427683,
             dict_composition={'C': 8, 'D': 12, 'O': 3},
     ),
-        "01052": XlModInfo(
+        "01052": XlmodInfo(
             id="01052",
             name="ammonium amidated BS3-d12",
             formula="C8HD12NO2",
@@ -432,7 +432,7 @@ try:
             average_mass=167.26856232546015,
             dict_composition={'C': 8, 'D': 12, 'H': 1, 'N': 1, 'O': 2},
     ),
-        "01053": XlModInfo(
+        "01053": XlmodInfo(
             id="01053",
             name="hydrolyzed DSG-d6",
             formula="C5D6O3",
@@ -440,7 +440,7 @@ try:
             average_mass=120.13650492535106,
             dict_composition={'C': 5, 'D': 6, 'O': 3},
     ),
-        "01054": XlModInfo(
+        "01054": XlmodInfo(
             id="01054",
             name="ammonium amidated DSG-d6",
             formula="C5HD6NO2",
@@ -448,7 +448,7 @@ try:
             average_mass=119.15174396653437,
             dict_composition={'C': 5, 'D': 6, 'H': 1, 'N': 1, 'O': 2},
     ),
-        "01055": XlModInfo(
+        "01055": XlmodInfo(
             id="01055",
             name="hydrolyzed BS2G-d6",
             formula="C5D6O3",
@@ -456,7 +456,7 @@ try:
             average_mass=120.13650492535106,
             dict_composition={'C': 5, 'D': 6, 'O': 3},
     ),
-        "01056": XlModInfo(
+        "01056": XlmodInfo(
             id="01056",
             name="ammonium amidated BS2G-d6",
             formula="C5HD6NO2",
@@ -464,7 +464,7 @@ try:
             average_mass=119.15174396653437,
             dict_composition={'C': 5, 'D': 6, 'H': 1, 'N': 1, 'O': 2},
     ),
-        "01057": XlModInfo(
+        "01057": XlmodInfo(
             id="01057",
             name="hydrolyzed SDH",
             formula="C8H16N4O",
@@ -472,7 +472,7 @@ try:
             average_mass=184.23915700887588,
             dict_composition={'C': 8, 'H': 16, 'N': 4, 'O': 1},
     ),
-        "01058": XlModInfo(
+        "01058": XlmodInfo(
             id="01058",
             name="hydrolyzed SDH-d12",
             formula="C8H4D12N4O",
@@ -480,7 +480,7 @@ try:
             average_mass=196.31308929764657,
             dict_composition={'C': 8, 'D': 12, 'H': 4, 'N': 4, 'O': 1},
     ),
-        "01059": XlModInfo(
+        "01059": XlmodInfo(
             id="01059",
             name="hydrolyzed ADH",
             formula="C6H12N4O",
@@ -488,7 +488,7 @@ try:
             average_mass=156.18592219918227,
             dict_composition={'C': 6, 'H': 12, 'N': 4, 'O': 1},
     ),
-        "01060": XlModInfo(
+        "01060": XlmodInfo(
             id="01060",
             name="hydrolyzed ADH-d8",
             formula="C6H4D8N4O",
@@ -496,7 +496,7 @@ try:
             average_mass=164.23521039169606,
             dict_composition={'C': 6, 'D': 8, 'H': 4, 'N': 4, 'O': 1},
     ),
-        "01061": XlModInfo(
+        "01061": XlmodInfo(
             id="01061",
             name="hydrolyzed GDH",
             formula="C5H10N4O",
@@ -504,7 +504,7 @@ try:
             average_mass=142.15930479433547,
             dict_composition={'C': 5, 'H': 10, 'N': 4, 'O': 1},
     ),
-        "01062": XlModInfo(
+        "01062": XlmodInfo(
             id="01062",
             name="hydrolyzed GDH-d6",
             formula="C5H4D6N4O",
@@ -512,7 +512,7 @@ try:
             average_mass=148.1962709387208,
             dict_composition={'C': 5, 'D': 6, 'H': 4, 'N': 4, 'O': 1},
     ),
-        "01063": XlModInfo(
+        "01063": XlmodInfo(
             id="01063",
             name="hydrolyzed BCCL1",
             formula=None,
@@ -520,7 +520,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01064": XlModInfo(
+        "01064": XlmodInfo(
             id="01064",
             name="hydrolyzed BCCL2",
             formula=None,
@@ -528,7 +528,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01065": XlModInfo(
+        "01065": XlmodInfo(
             id="01065",
             name="hydrolyzed IRCX",
             formula=None,
@@ -536,7 +536,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01066": XlModInfo(
+        "01066": XlmodInfo(
             id="01066",
             name="hydrolyzed azide-DSG",
             formula=None,
@@ -544,7 +544,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01067": XlModInfo(
+        "01067": XlmodInfo(
             id="01067",
             name="hydrolyzed JMV 3378",
             formula=None,
@@ -552,7 +552,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01068": XlModInfo(
+        "01068": XlmodInfo(
             id="01068",
             name="hydrolyzed BuTuGPG",
             formula=None,
@@ -560,7 +560,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01070": XlModInfo(
+        "01070": XlmodInfo(
             id="01070",
             name="hydrolyzed DEST",
             formula="C8H14N2O",
@@ -568,7 +568,7 @@ try:
             average_mass=154.20986907787272,
             dict_composition={'C': 8, 'H': 14, 'N': 2, 'O': 1},
     ),
-        "01071": XlModInfo(
+        "01071": XlmodInfo(
             id="01071",
             name="ammonium amidated DEST",
             formula="C8H15N3",
@@ -576,7 +576,7 @@ try:
             average_mass=153.22510811905605,
             dict_composition={'C': 8, 'H': 15, 'N': 3},
     ),
-        "01072": XlModInfo(
+        "01072": XlmodInfo(
             id="01072",
             name="thioesterized DEST",
             formula="C10H17NOS",
@@ -584,7 +584,7 @@ try:
             average_mass=199.31324732819184,
             dict_composition={'C': 10, 'H': 17, 'N': 1, 'O': 1, 'S': 1},
     ),
-        "01073": XlModInfo(
+        "01073": XlmodInfo(
             id="01073",
             name="hydrolyzed BS(PEG)5",
             formula="C14H24O8",
@@ -592,7 +592,7 @@ try:
             average_mass=320.3361200461784,
             dict_composition={'C': 14, 'H': 24, 'O': 8},
     ),
-        "01074": XlModInfo(
+        "01074": XlmodInfo(
             id="01074",
             name="ammonium amidated BS(PEG)5",
             formula="C14H27NO7",
@@ -600,7 +600,7 @@ try:
             average_mass=321.3672405954732,
             dict_composition={'C': 14, 'H': 27, 'N': 1, 'O': 7},
     ),
-        "01075": XlModInfo(
+        "01075": XlmodInfo(
             id="01075",
             name="hydrolyzed BSOCOES",
             formula="C6H8O7S",
@@ -608,7 +608,7 @@ try:
             average_mass=224.18856328921274,
             dict_composition={'C': 6, 'H': 8, 'O': 7, 'S': 1},
     ),
-        "01076": XlModInfo(
+        "01076": XlmodInfo(
             id="01076",
             name="ammonium amidated BSOCOES",
             formula="C6H9NO6S",
@@ -616,7 +616,7 @@ try:
             average_mass=223.20380233039603,
             dict_composition={'C': 6, 'H': 9, 'N': 1, 'O': 6, 'S': 1},
     ),
-        "01077": XlModInfo(
+        "01077": XlmodInfo(
             id="01077",
             name="hydrolyzed DST",
             formula="C4H4O5",
@@ -624,7 +624,7 @@ try:
             average_mass=132.07173122475547,
             dict_composition={'C': 4, 'H': 4, 'O': 5},
     ),
-        "01078": XlModInfo(
+        "01078": XlmodInfo(
             id="01078",
             name="ammonium amidated DST",
             formula="C4H5NO4",
@@ -632,7 +632,7 @@ try:
             average_mass=131.0869702659388,
             dict_composition={'C': 4, 'H': 5, 'N': 1, 'O': 4},
     ),
-        "01079": XlModInfo(
+        "01079": XlmodInfo(
             id="01079",
             name="hydrolyzed SDA",
             formula="C5H8O2",
@@ -640,7 +640,7 @@ try:
             average_mass=100.11601536475901,
             dict_composition={'C': 5, 'H': 8, 'O': 2},
     ),
-        "01080": XlModInfo(
+        "01080": XlmodInfo(
             id="01080",
             name="oxidized SDA",
             formula="C5H6O2",
@@ -648,7 +648,7 @@ try:
             average_mass=98.10013385664746,
             dict_composition={'C': 5, 'H': 6, 'O': 2},
     ),
-        "01081": XlModInfo(
+        "01081": XlmodInfo(
             id="01081",
             name="alkenized SDA",
             formula="C4H4O",
@@ -656,7 +656,7 @@ try:
             average_mass=68.07411152748239,
             dict_composition={'C': 4, 'H': 4, 'O': 1},
     ),
-        "01082": XlModInfo(
+        "01082": XlmodInfo(
             id="01082",
             name="hydrolyzed LC-SDA",
             formula="C11H19NO3",
@@ -664,7 +664,7 @@ try:
             average_mass=213.27388717554814,
             dict_composition={'C': 11, 'H': 19, 'N': 1, 'O': 3},
     ),
-        "01083": XlModInfo(
+        "01083": XlmodInfo(
             id="01083",
             name="oxidized LC-SDA",
             formula="C11H17NO3",
@@ -672,7 +672,7 @@ try:
             average_mass=211.25800566743658,
             dict_composition={'C': 11, 'H': 17, 'N': 1, 'O': 3},
     ),
-        "01084": XlModInfo(
+        "01084": XlmodInfo(
             id="01084",
             name="alkenized LC-SDA",
             formula="C10H15NO2",
@@ -680,7 +680,7 @@ try:
             average_mass=181.2319833382715,
             dict_composition={'C': 10, 'H': 15, 'N': 1, 'O': 2},
     ),
-        "01085": XlModInfo(
+        "01085": XlmodInfo(
             id="01085",
             name="hydrolyzed L-Photo-Leucine",
             formula="C-1H-2O",
@@ -688,7 +688,7 @@ try:
             average_mass=1.9727875194714741,
             dict_composition={'C': -1, 'H': -2, 'O': 1},
     ),
-        "01086": XlModInfo(
+        "01086": XlmodInfo(
             id="01086",
             name="oxidized L-Photo-Leucine",
             formula="C-1H-4O",
@@ -696,7 +696,7 @@ try:
             average_mass=-0.04309398864008074,
             dict_composition={'C': -1, 'H': -4, 'O': 1},
     ),
-        "01087": XlModInfo(
+        "01087": XlmodInfo(
             id="01087",
             name="alkenized L-Photo-Leucine",
             formula="C-2H-6",
@@ -704,7 +704,7 @@ try:
             average_mass=-30.06911631780516,
             dict_composition={'C': -2, 'H': -6},
     ),
-        "01088": XlModInfo(
+        "01088": XlmodInfo(
             id="01088",
             name="hydrolyzed L-Photo-Methionine",
             formula="CH2OS-1",
@@ -712,7 +712,7 @@ try:
             average_mass=-2.0387650769619867,
             dict_composition={'C': 1, 'H': 2, 'O': 1, 'S': -1},
     ),
-        "01089": XlModInfo(
+        "01089": XlmodInfo(
             id="01089",
             name="oxidized L-Photo-Methionine",
             formula="COS-1",
@@ -720,7 +720,7 @@ try:
             average_mass=-4.054646585073542,
             dict_composition={'C': 1, 'O': 1, 'S': -1},
     ),
-        "01090": XlModInfo(
+        "01090": XlmodInfo(
             id="01090",
             name="alkenized L-Photo-Methionine",
             formula="H-2S-1",
@@ -728,7 +728,7 @@ try:
             average_mass=-34.08066891423862,
             dict_composition={'H': -2, 'S': -1},
     ),
-        "01092": XlModInfo(
+        "01092": XlmodInfo(
             id="01092",
             name="hydrolyzed BMPS",
             formula="C7H7NO4",
@@ -736,7 +736,7 @@ try:
             average_mass=169.1350594642561,
             dict_composition={'C': 7, 'H': 7, 'O': 4, 'N': 1},
     ),
-        "01093": XlModInfo(
+        "01093": XlmodInfo(
             id="01093",
             name="ammonium amidated BMPS",
             formula="C7H8N2O3",
@@ -744,7 +744,7 @@ try:
             average_mass=168.1502985054394,
             dict_composition={'C': 7, 'H': 8, 'O': 3, 'N': 2},
     ),
-        "01094": XlModInfo(
+        "01094": XlmodInfo(
             id="01094",
             name="hydrolyzed PDH",
             formula="C7H12N4",
@@ -752,7 +752,7 @@ try:
             average_mass=152.19725317159927,
             dict_composition={'C': 7, 'H': 12, 'N': 4},
     ),
-        "01095": XlModInfo(
+        "01095": XlmodInfo(
             id="01095",
             name="hydrolyzed PDH-d10",
             formula="C7H2D10N4",
@@ -760,7 +760,7 @@ try:
             average_mass=162.25886341224148,
             dict_composition={'C': 7, 'D': 10, 'H': 2, 'N': 4},
     ),
-        "01096": XlModInfo(
+        "01096": XlmodInfo(
             id="01096",
             name="hydrolyzed SuDP",
             formula=None,
@@ -768,7 +768,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01097": XlModInfo(
+        "01097": XlmodInfo(
             id="01097",
             name="hydrolyzed L-Photo-Isoleucine",
             formula="C-1H-2O",
@@ -776,7 +776,7 @@ try:
             average_mass=1.9727875194714741,
             dict_composition={'C': -1, 'H': -2, 'O': 1},
     ),
-        "01098": XlModInfo(
+        "01098": XlmodInfo(
             id="01098",
             name="oxidized L-Photo-Isoleucine",
             formula="C-1H-4O",
@@ -784,7 +784,7 @@ try:
             average_mass=-0.04309398864008074,
             dict_composition={'C': -1, 'H': -4, 'O': 1},
     ),
-        "01099": XlModInfo(
+        "01099": XlmodInfo(
             id="01099",
             name="alkenized L-Photo-Isoleucine",
             formula="C-2H-6",
@@ -792,7 +792,7 @@ try:
             average_mass=-30.06911631780516,
             dict_composition={'C': -2, 'H': -6},
     ),
-        "01100": XlModInfo(
+        "01100": XlmodInfo(
             id="01100",
             name="hydrolyzed Sulfo-SBED",
             formula=None,
@@ -800,7 +800,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01102": XlModInfo(
+        "01102": XlmodInfo(
             id="01102",
             name="hydrolized PL",
             formula=None,
@@ -808,7 +808,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01711": XlModInfo(
+        "01711": XlmodInfo(
             id="01711",
             name="bis-[3-(2-ketobutyraldehyde)ether",
             formula=None,
@@ -816,7 +816,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01712": XlModInfo(
+        "01712": XlmodInfo(
             id="01712",
             name="mechlorethamine",
             formula=None,
@@ -824,7 +824,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01713": XlModInfo(
+        "01713": XlmodInfo(
             id="01713",
             name="4-[bis-(2-chloroethyl)amino]benzenebutanoic acid",
             formula=None,
@@ -832,7 +832,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01714": XlModInfo(
+        "01714": XlmodInfo(
             id="01714",
             name="sym-triazine trichloride",
             formula=None,
@@ -840,7 +840,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01715": XlModInfo(
+        "01715": XlmodInfo(
             id="01715",
             name="Heteroconjugate 20",
             formula=None,
@@ -848,7 +848,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "01900": XlModInfo(
+        "01900": XlmodInfo(
             id="01900",
             name="L-Photo-Leucine",
             formula="C-1H-4",
@@ -856,7 +856,7 @@ try:
             average_mass=-16.042498912958358,
             dict_composition={'C': -1, 'H': -4},
     ),
-        "01901": XlModInfo(
+        "01901": XlmodInfo(
             id="01901",
             name="L-Photo-Methionine",
             formula="CS-1",
@@ -864,7 +864,7 @@ try:
             average_mass=-20.05405150939182,
             dict_composition={'C': 1, 'S': -1},
     ),
-        "01902": XlModInfo(
+        "01902": XlmodInfo(
             id="01902",
             name="L-Photo-Isoleucine",
             formula="C-1H-4",
@@ -872,7 +872,7 @@ try:
             average_mass=-16.042498912958358,
             dict_composition={'C': -1, 'H': -4},
     ),
-        "02000": XlModInfo(
+        "02000": XlmodInfo(
             id="02000",
             name="BS3",
             formula="C8H10O2",
@@ -880,7 +880,7 @@ try:
             average_mass=138.1641045630763,
             dict_composition={'C': 8, 'H': 10, 'O': 2},
     ),
-        "02001": XlModInfo(
+        "02001": XlmodInfo(
             id="02001",
             name="DSS",
             formula="C8H10O2",
@@ -888,7 +888,7 @@ try:
             average_mass=138.1641045630763,
             dict_composition={'C': 8, 'H': 10, 'O': 2},
     ),
-        "02002": XlModInfo(
+        "02002": XlmodInfo(
             id="02002",
             name="DSS-d4",
             formula="C8H6D4O2",
@@ -896,7 +896,7 @@ try:
             average_mass=142.1887486593332,
             dict_composition={'C': 8, 'D': 4, 'H': 6, 'O': 2},
     ),
-        "02003": XlModInfo(
+        "02003": XlmodInfo(
             id="02003",
             name="DSS-d12",
             formula="C8D10O2",
@@ -904,7 +904,7 @@ try:
             average_mass=148.22571480371855,
             dict_composition={'C': 8, 'D': 10, 'O': 2},
     ),
-        "02004": XlModInfo(
+        "02004": XlmodInfo(
             id="02004",
             name="BS3-d4",
             formula=None,
@@ -912,7 +912,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02005": XlModInfo(
+        "02005": XlmodInfo(
             id="02005",
             name="BS2G",
             formula="C5H4O2",
@@ -920,7 +920,7 @@ try:
             average_mass=96.0842523485359,
             dict_composition={'C': 5, 'H': 4, 'O': 2},
     ),
-        "02006": XlModInfo(
+        "02006": XlmodInfo(
             id="02006",
             name="DSG",
             formula="C5H4O2",
@@ -928,7 +928,7 @@ try:
             average_mass=96.0842523485359,
             dict_composition={'C': 5, 'H': 4, 'O': 2},
     ),
-        "02007": XlModInfo(
+        "02007": XlmodInfo(
             id="02007",
             name="DSG-d4",
             formula="C5D4O2",
@@ -936,7 +936,7 @@ try:
             average_mass=100.10889644479279,
             dict_composition={'C': 5, 'D': 4, 'O': 2},
     ),
-        "02008": XlModInfo(
+        "02008": XlmodInfo(
             id="02008",
             name="BS2G-d4",
             formula="C5D4O2",
@@ -944,7 +944,7 @@ try:
             average_mass=100.10889644479279,
             dict_composition={'C': 5, 'D': 4, 'O': 2},
     ),
-        "02009": XlModInfo(
+        "02009": XlmodInfo(
             id="02009",
             name="Disulfide",
             formula="H-2",
@@ -952,7 +952,7 @@ try:
             average_mass=-2.0158815081115544,
             dict_composition={'H': -2},
     ),
-        "02010": XlModInfo(
+        "02010": XlmodInfo(
             id="02010",
             name="1-ethyl-3-(3-Dimethylaminopropyl)carbodiimide hydrochloride",
             formula="H-2O-1",
@@ -960,7 +960,7 @@ try:
             average_mass=-18.015286432429832,
             dict_composition={'H': -2, 'O': -1},
     ),
-        "02011": XlModInfo(
+        "02011": XlmodInfo(
             id="02011",
             name="BDP-NHP",
             formula=None,
@@ -968,7 +968,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02013": XlModInfo(
+        "02013": XlmodInfo(
             id="02013",
             name="BMPS",
             formula="C7H5NO3",
@@ -976,7 +976,7 @@ try:
             average_mass=151.11977303182627,
             dict_composition={'C': 7, 'H': 5, 'O': 3, 'N': 1},
     ),
-        "02029": XlModInfo(
+        "02029": XlmodInfo(
             id="02029",
             name="DSP",
             formula="C6H6O2S2",
@@ -984,7 +984,7 @@ try:
             average_mass=174.24044456563684,
             dict_composition={'C': 6, 'H': 6, 'O': 2, 'S': 2},
     ),
-        "02030": XlModInfo(
+        "02030": XlmodInfo(
             id="02030",
             name="DSP-d8",
             formula="C6D6O2S2",
@@ -992,7 +992,7 @@ try:
             average_mass=180.2774107100222,
             dict_composition={'C': 6, 'D': 6, 'O': 2, 'S': 2},
     ),
-        "02032": XlModInfo(
+        "02032": XlmodInfo(
             id="02032",
             name="DST",
             formula="C4H2O4",
@@ -1000,7 +1000,7 @@ try:
             average_mass=114.05644479232566,
             dict_composition={'C': 4, 'H': 2, 'O': 4},
     ),
-        "02033": XlModInfo(
+        "02033": XlmodInfo(
             id="02033",
             name="DTSSP",
             formula="C6H6O2S2",
@@ -1008,7 +1008,7 @@ try:
             average_mass=174.24044456563684,
             dict_composition={'C': 6, 'H': 6, 'O': 2, 'S': 2},
     ),
-        "02034": XlModInfo(
+        "02034": XlmodInfo(
             id="02034",
             name="EGS",
             formula="C10H10O6",
@@ -1016,7 +1016,7 @@ try:
             average_mass=226.18319605381993,
             dict_composition={'C': 10, 'H': 10, 'O': 6},
     ),
-        "02035": XlModInfo(
+        "02035": XlmodInfo(
             id="02035",
             name="Sulfo-EGS",
             formula="C10H10O6",
@@ -1024,7 +1024,7 @@ try:
             average_mass=226.18319605381993,
             dict_composition={'C': 10, 'H': 10, 'O': 6},
     ),
-        "02040": XlModInfo(
+        "02040": XlmodInfo(
             id="02040",
             name="BiPS",
             formula="C16H16N2O4S2",
@@ -1032,7 +1032,7 @@ try:
             average_mass=364.4394273450752,
             dict_composition={'C': 16, 'H': 16, 'N': 2, 'O': 4, 'S': 2},
     ),
-        "02043": XlModInfo(
+        "02043": XlmodInfo(
             id="02043",
             name="DSA",
             formula="C6H6O2",
@@ -1040,7 +1040,7 @@ try:
             average_mass=110.1108697533827,
             dict_composition={'C': 6, 'H': 6, 'O': 2},
     ),
-        "02044": XlModInfo(
+        "02044": XlmodInfo(
             id="02044",
             name="DNBDPS",
             formula="C12H9N2O6S2",
@@ -1048,7 +1048,7 @@ try:
             average_mass=341.33970832838037,
             dict_composition={'C': 12, 'H': 9, 'N': 2, 'O': 6, 'S': 2},
     ),
-        "02045": XlModInfo(
+        "02045": XlmodInfo(
             id="02045",
             name="TEABS",
             formula="C28H39N5O11S",
@@ -1056,7 +1056,7 @@ try:
             average_mass=653.7020521476194,
             dict_composition={'C': 28, 'H': 39, 'N': 5, 'O': 11, 'S': 1},
     ),
-        "02048": XlModInfo(
+        "02048": XlmodInfo(
             id="02048",
             name="DTSSP-d8",
             formula="C6D6O2S2",
@@ -1064,7 +1064,7 @@ try:
             average_mass=180.2774107100222,
             dict_composition={'C': 6, 'D': 6, 'O': 2, 'S': 2},
     ),
-        "02049": XlModInfo(
+        "02049": XlmodInfo(
             id="02049",
             name="EGS-d12",
             formula="C10D10O6",
@@ -1072,7 +1072,7 @@ try:
             average_mass=236.24480629446214,
             dict_composition={'C': 10, 'D': 10, 'O': 6},
     ),
-        "02050": XlModInfo(
+        "02050": XlmodInfo(
             id="02050",
             name="Sulfo-EGS-d12",
             formula="C10D10O6",
@@ -1080,7 +1080,7 @@ try:
             average_mass=236.24480629446214,
             dict_composition={'C': 10, 'D': 10, 'O': 6},
     ),
-        "02051": XlModInfo(
+        "02051": XlmodInfo(
             id="02051",
             name="PCAS",
             formula="C6H3NO",
@@ -1088,7 +1088,7 @@ try:
             average_mass=105.0943457783429,
             dict_composition={'C': 6, 'H': 3, 'N': 1, 'O': 1},
     ),
-        "02052": XlModInfo(
+        "02052": XlmodInfo(
             id="02052",
             name="PCAS-d4",
             formula="C6D3NO",
@@ -1096,7 +1096,7 @@ try:
             average_mass=108.11282885053555,
             dict_composition={'C': 6, 'D': 3, 'N': 1, 'O': 1},
     ),
-        "02053": XlModInfo(
+        "02053": XlmodInfo(
             id="02053",
             name="DSA-13C6",
             formula="H6[13C6]O2",
@@ -1104,7 +1104,7 @@ try:
             average_mass=116.06658338339122,
             dict_composition={'H': 6, 'O': 2, '13C': 6},
     ),
-        "02054": XlModInfo(
+        "02054": XlmodInfo(
             id="02054",
             name="CBDPS-d8",
             formula="C19H15D8N7O4S3",
@@ -1112,7 +1112,7 @@ try:
             average_mass=517.6748119695413,
             dict_composition={'C': 19, 'D': 8, 'H': 15, 'N': 7, 'O': 4, 'S': 3},
     ),
-        "02055": XlModInfo(
+        "02055": XlmodInfo(
             id="02055",
             name="CBDPSS",
             formula="C19H23N7O4S3",
@@ -1120,7 +1120,7 @@ try:
             average_mass=509.6255237770275,
             dict_composition={'C': 19, 'H': 23, 'N': 7, 'O': 4, 'S': 3},
     ),
-        "02056": XlModInfo(
+        "02056": XlmodInfo(
             id="02056",
             name="CBDPSS-d8",
             formula="C19H15D8N7O4S3",
@@ -1128,7 +1128,7 @@ try:
             average_mass=517.6748119695413,
             dict_composition={'C': 19, 'D': 8, 'H': 15, 'N': 7, 'O': 4, 'S': 3},
     ),
-        "02057": XlModInfo(
+        "02057": XlmodInfo(
             id="02057",
             name="SDH",
             formula="C8H14N4",
@@ -1136,7 +1136,7 @@ try:
             average_mass=166.22387057644605,
             dict_composition={'C': 8, 'H': 14, 'N': 4},
     ),
-        "02058": XlModInfo(
+        "02058": XlmodInfo(
             id="02058",
             name="SDH-d12",
             formula="C8H2D12N4",
@@ -1144,7 +1144,7 @@ try:
             average_mass=178.29780286521674,
             dict_composition={'C': 8, 'D': 12, 'H': 2, 'N': 4},
     ),
-        "02059": XlModInfo(
+        "02059": XlmodInfo(
             id="02059",
             name="ADH",
             formula="C6H10N4",
@@ -1152,7 +1152,7 @@ try:
             average_mass=138.17063576675244,
             dict_composition={'C': 6, 'H': 10, 'N': 4},
     ),
-        "02060": XlModInfo(
+        "02060": XlmodInfo(
             id="02060",
             name="ADH-d8",
             formula="C6H2D8N4",
@@ -1160,7 +1160,7 @@ try:
             average_mass=146.21992395926623,
             dict_composition={'C': 6, 'D': 8, 'H': 2, 'N': 4},
     ),
-        "02061": XlModInfo(
+        "02061": XlmodInfo(
             id="02061",
             name="GDH",
             formula="C5H8N4",
@@ -1168,7 +1168,7 @@ try:
             average_mass=124.14401836190564,
             dict_composition={'C': 5, 'H': 8, 'N': 4},
     ),
-        "02062": XlModInfo(
+        "02062": XlmodInfo(
             id="02062",
             name="GDH-d6",
             formula="C5H2D6N4",
@@ -1176,7 +1176,7 @@ try:
             average_mass=130.18098450629097,
             dict_composition={'C': 5, 'D': 6, 'H': 2, 'N': 4},
     ),
-        "02063": XlModInfo(
+        "02063": XlmodInfo(
             id="02063",
             name="BS3-d12",
             formula=None,
@@ -1184,7 +1184,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02064": XlModInfo(
+        "02064": XlmodInfo(
             id="02064",
             name="DSG-d6",
             formula="C5D6O2",
@@ -1192,7 +1192,7 @@ try:
             average_mass=104.13710000103279,
             dict_composition={'C': 5, 'D': 6, 'O': 2},
     ),
-        "02065": XlModInfo(
+        "02065": XlmodInfo(
             id="02065",
             name="BS2G-d6",
             formula="C5D4O2",
@@ -1200,7 +1200,7 @@ try:
             average_mass=100.10889644479279,
             dict_composition={'C': 5, 'D': 4, 'O': 2},
     ),
-        "02078": XlModInfo(
+        "02078": XlmodInfo(
             id="02078",
             name="BSOCOES",
             formula="C6H6O6S",
@@ -1208,7 +1208,7 @@ try:
             average_mass=206.17327685678288,
             dict_composition={'C': 6, 'H': 6, 'O': 6, 'S': 1},
     ),
-        "02103": XlModInfo(
+        "02103": XlmodInfo(
             id="02103",
             name="1,4-diacetalbenzene",
             formula=None,
@@ -1216,7 +1216,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02107": XlModInfo(
+        "02107": XlmodInfo(
             id="02107",
             name="BCCL1",
             formula=None,
@@ -1224,7 +1224,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02108": XlModInfo(
+        "02108": XlmodInfo(
             id="02108",
             name="BCCL2",
             formula=None,
@@ -1232,7 +1232,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02109": XlModInfo(
+        "02109": XlmodInfo(
             id="02109",
             name="SBC",
             formula=None,
@@ -1240,7 +1240,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02110": XlModInfo(
+        "02110": XlmodInfo(
             id="02110",
             name="SBDC",
             formula=None,
@@ -1248,7 +1248,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02114": XlModInfo(
+        "02114": XlmodInfo(
             id="02114",
             name="IRCX",
             formula=None,
@@ -1256,7 +1256,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02115": XlModInfo(
+        "02115": XlmodInfo(
             id="02115",
             name="BAMG",
             formula=None,
@@ -1264,7 +1264,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02116": XlModInfo(
+        "02116": XlmodInfo(
             id="02116",
             name="azide-DSG",
             formula=None,
@@ -1272,7 +1272,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02118": XlModInfo(
+        "02118": XlmodInfo(
             id="02118",
             name="JMV 3378",
             formula=None,
@@ -1280,7 +1280,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02119": XlModInfo(
+        "02119": XlmodInfo(
             id="02119",
             name="BuTuGPG",
             formula=None,
@@ -1288,7 +1288,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02124": XlModInfo(
+        "02124": XlmodInfo(
             id="02124",
             name="SDAD",
             formula=None,
@@ -1296,7 +1296,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02125": XlModInfo(
+        "02125": XlmodInfo(
             id="02125",
             name="Sulfo-SDAD",
             formula=None,
@@ -1304,7 +1304,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02126": XlModInfo(
+        "02126": XlmodInfo(
             id="02126",
             name="DSSO",
             formula="C6H6O3S",
@@ -1312,7 +1312,7 @@ try:
             average_mass=158.17506208382804,
             dict_composition={'C': 6, 'O': 3, 'S': 1, 'H': 6},
     ),
-        "02127": XlModInfo(
+        "02127": XlmodInfo(
             id="02127",
             name="DEST",
             formula="C8H12N2",
@@ -1320,7 +1320,7 @@ try:
             average_mass=136.19458264544292,
             dict_composition={'C': 8, 'H': 12, 'N': 2},
     ),
-        "02128": XlModInfo(
+        "02128": XlmodInfo(
             id="02128",
             name="cis-Diamminedichloroplatinum (II)",
             formula=None,
@@ -1328,7 +1328,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02134": XlModInfo(
+        "02134": XlmodInfo(
             id="02134",
             name="SDA",
             formula="C5H6O",
@@ -1336,7 +1336,7 @@ try:
             average_mass=82.10072893232919,
             dict_composition={'C': 5, 'H': 6, 'O': 1},
     ),
-        "02135": XlModInfo(
+        "02135": XlmodInfo(
             id="02135",
             name="LC-SDA",
             formula="C11H12NO2",
@@ -1344,7 +1344,7 @@ try:
             average_mass=190.2188969728394,
             dict_composition={'C': 11, 'H': 12, 'N': 1, 'O': 2},
     ),
-        "02139": XlModInfo(
+        "02139": XlmodInfo(
             id="02139",
             name="DMP",
             formula="C7H10N2",
@@ -1352,7 +1352,7 @@ try:
             average_mass=122.1679652405961,
             dict_composition={'C': 7, 'H': 10, 'N': 2},
     ),
-        "02198": XlModInfo(
+        "02198": XlmodInfo(
             id="02198",
             name="BS(PEG)5",
             formula="C14H22O7",
@@ -1360,7 +1360,7 @@ try:
             average_mass=302.3208336137485,
             dict_composition={'C': 14, 'H': 22, 'O': 7},
     ),
-        "02206": XlModInfo(
+        "02206": XlmodInfo(
             id="02206",
             name="TPAL",
             formula="C8H6",
@@ -1368,7 +1368,7 @@ try:
             average_mass=102.13353169821664,
             dict_composition={'C': 8, 'H': 6},
     ),
-        "02207": XlModInfo(
+        "02207": XlmodInfo(
             id="02207",
             name="DEB",
             formula="C10H6",
@@ -1376,7 +1376,7 @@ try:
             average_mass=126.15500349168714,
             dict_composition={'C': 10, 'H': 6},
     ),
-        "02209": XlModInfo(
+        "02209": XlmodInfo(
             id="02209",
             name="PDH",
             formula="C7H12N4",
@@ -1384,7 +1384,7 @@ try:
             average_mass=152.19725317159927,
             dict_composition={'C': 7, 'H': 12, 'N': 4},
     ),
-        "02210": XlModInfo(
+        "02210": XlmodInfo(
             id="02210",
             name="PDH-d10",
             formula="C7H2D10N4",
@@ -1392,7 +1392,7 @@ try:
             average_mass=162.25886341224148,
             dict_composition={'C': 7, 'D': 10, 'H': 2, 'N': 4},
     ),
-        "02215": XlModInfo(
+        "02215": XlmodInfo(
             id="02215",
             name="SDA-13C5",
             formula="H6[13C5]O",
@@ -1400,7 +1400,7 @@ try:
             average_mass=87.06382362400294,
             dict_composition={'H': 6, 'O': 1, '13C': 5},
     ),
-        "02227": XlModInfo(
+        "02227": XlmodInfo(
             id="02227",
             name="PL",
             formula=None,
@@ -1408,7 +1408,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02234": XlModInfo(
+        "02234": XlmodInfo(
             id="02234",
             name="PIR-I",
             formula="C6H10NO2",
@@ -1416,7 +1416,7 @@ try:
             average_mass=128.14933598105162,
             dict_composition={'C': 6, 'H': 10, 'O': 2, 'N': 1},
     ),
-        "02235": XlModInfo(
+        "02235": XlmodInfo(
             id="02235",
             name="PIR-II",
             formula="C4H6NO2",
@@ -1424,7 +1424,7 @@ try:
             average_mass=100.09610117135801,
             dict_composition={'C': 4, 'H': 6, 'O': 2, 'N': 1},
     ),
-        "02236": XlModInfo(
+        "02236": XlmodInfo(
             id="02236",
             name="PIR-III",
             formula="C4H6NO2",
@@ -1432,7 +1432,7 @@ try:
             average_mass=100.09610117135801,
             dict_composition={'C': 4, 'H': 6, 'O': 2, 'N': 1},
     ),
-        "02254": XlModInfo(
+        "02254": XlmodInfo(
             id="02254",
             name="ARGO1",
             formula=None,
@@ -1440,7 +1440,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02255": XlModInfo(
+        "02255": XlmodInfo(
             id="02255",
             name="ARGO2",
             formula=None,
@@ -1448,7 +1448,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02256": XlModInfo(
+        "02256": XlmodInfo(
             id="02256",
             name="ARGO3",
             formula=None,
@@ -1456,7 +1456,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "02257": XlModInfo(
+        "02257": XlmodInfo(
             id="02257",
             name="KARGO",
             formula=None,
@@ -1464,7 +1464,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "03001": XlModInfo(
+        "03001": XlmodInfo(
             id="03001",
             name="CBDPS",
             formula="C19H23N7O4S3",
@@ -1472,7 +1472,7 @@ try:
             average_mass=509.6255237770275,
             dict_composition={'C': 19, 'H': 23, 'N': 7, 'O': 4, 'S': 3},
     ),
-        "03002": XlModInfo(
+        "03002": XlmodInfo(
             id="03002",
             name="Sulfo-SBED",
             formula=None,
@@ -1480,7 +1480,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "03009": XlModInfo(
+        "03009": XlmodInfo(
             id="03009",
             name="NNP9",
             formula="C7H2D10N4",
@@ -1488,7 +1488,7 @@ try:
             average_mass=162.25886341224148,
             dict_composition={'C': 7, 'D': 10, 'H': 2, 'N': 4},
     ),
-        "03010": XlModInfo(
+        "03010": XlmodInfo(
             id="03010",
             name="TATA",
             formula=None,
@@ -1496,7 +1496,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "03011": XlModInfo(
+        "03011": XlmodInfo(
             id="03011",
             name="TATA-13C6",
             formula=None,
@@ -1504,7 +1504,7 @@ try:
             average_mass=None,
             dict_composition=None,
     ),
-        "09317": XlModInfo(
+        "09317": XlmodInfo(
             id="09317",
             name="DSAU",
             formula="C5H4N2O3",
@@ -1512,7 +1512,7 @@ try:
             average_mass=140.09706369574576,
             dict_composition={'C': 5, 'H': 4, 'N': 2, 'O': 3},
     ),
-        "09320": XlModInfo(
+        "09320": XlmodInfo(
             id="09320",
             name="QKiso",
             formula="H-3N-1",

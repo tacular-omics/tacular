@@ -57,6 +57,11 @@ hits = t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=0.001)
 print(hits[0].name)  # Phospho
 ```
 
+Every lookup has the same interface: `LOOKUP[key]`, `.get(key, default)`, `in`, `len`,
+`.keys()`, `.values()` and `.items()`. A miss raises `tacular.TacularKeyError`, which is
+both a `KeyError` and a `ValueError`. Physical constants such as `PROTON_MASS` are in
+`tacular.constants`.
+
 ## What else it can do
 
 - Query PSI-MOD, RESID, XLMOD, GNOme, and UniProt-PTM the same way as UNIMOD above.
@@ -80,6 +85,8 @@ print(hits[0].name)  # Phospho
 
 - Full docs: [tacular.readthedocs.io](https://tacular.readthedocs.io/)
 - Changelog: [CHANGELOG.md](https://github.com/tacular-omics/tacular/blob/main/CHANGELOG.md)
+- Upgrading from 1.x: [Migrating to 2.0](https://tacular.readthedocs.io/en/latest/migration.html)
+  lists every renamed or removed name
 - Architecture and contributing (also useful for AI coding agents): [CLAUDE.md](https://github.com/tacular-omics/tacular/blob/main/CLAUDE.md)
   (`AGENTS.md` points here for tools that look for that filename instead)
 - Data-generation pipeline (regenerating the bundled ontology snapshots): [data_gen/README.md](https://github.com/tacular-omics/tacular/blob/main/data_gen/README.md)

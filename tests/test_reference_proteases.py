@@ -24,21 +24,21 @@ from itertools import product
 
 import pytest
 
-from tacular.proteases.data import PROTEASES_DICT, Proteases
+from tacular.proteases.data import PROTEASE_DICT, Protease
 
 AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY"
 PAIRS = ["".join(p) for p in product(AMINO_ACIDS, repeat=2)]
 
 # (P1, P1') -> cleaves?
-PEPTIDECUTTER: dict[Proteases, Callable[[str, str], bool]] = {
-    Proteases.ARG_C: lambda p1, p1p: p1 == "R",
-    Proteases.ASP_N: lambda p1, p1p: p1p == "D",
-    Proteases.GLU_C: lambda p1, p1p: p1 == "E",  # "Glutamyl endopeptidase"
-    Proteases.LYS_C: lambda p1, p1p: p1 == "K",
-    Proteases.LYS_N: lambda p1, p1p: p1p == "K",
-    Proteases.PROTEINASE_K: lambda p1, p1p: p1 in "AEFILTVWY",
-    Proteases.TRYPSIN: lambda p1, p1p: p1 in "KR" and p1p != "P",
-    Proteases.THERMOLYSIN: lambda p1, p1p: p1 not in "DE" and p1p in "AFILMV",
+PEPTIDECUTTER: dict[Protease, Callable[[str, str], bool]] = {
+    Protease.ARG_C: lambda p1, p1p: p1 == "R",
+    Protease.ASP_N: lambda p1, p1p: p1p == "D",
+    Protease.GLU_C: lambda p1, p1p: p1 == "E",  # "Glutamyl endopeptidase"
+    Protease.LYS_C: lambda p1, p1p: p1 == "K",
+    Protease.LYS_N: lambda p1, p1p: p1p == "K",
+    Protease.PROTEINASE_K: lambda p1, p1p: p1 in "AEFILTVWY",
+    Protease.TRYPSIN: lambda p1, p1p: p1 in "KR" and p1p != "P",
+    Protease.THERMOLYSIN: lambda p1, p1p: p1 not in "DE" and p1p in "AFILMV",
 }
 
 
@@ -48,7 +48,7 @@ def _cleaves_between(regex: str, pair: str) -> bool:
 
 @pytest.mark.parametrize("protease", list(PEPTIDECUTTER), ids=str)
 def test_regex_matches_peptidecutter_rule(protease):
-    regex = PROTEASES_DICT[protease].regex
+    regex = PROTEASE_DICT[protease].regex
     rule = PEPTIDECUTTER[protease]
     wrong = [pair for pair in PAIRS if _cleaves_between(regex, pair) != rule(pair[0], pair[1])]
     assert not wrong, f"{protease}: {len(wrong)} P1-P1' pairs disagree, e.g. {wrong[:10]}"
@@ -56,5 +56,5 @@ def test_regex_matches_peptidecutter_rule(protease):
 
 def test_thermolysin_cleaves_n_terminal_to_hydrophobic_residues():
     # PeptideCutter: P1' in A, F, I, L, M, V; P1 not D or E.
-    regex = PROTEASES_DICT[Proteases.THERMOLYSIN].regex
+    regex = PROTEASE_DICT[Protease.THERMOLYSIN].regex
     assert re.split(regex, "GGLGGEVGG") == ["GG", "LGGEVGG"]

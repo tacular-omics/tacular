@@ -19,7 +19,7 @@ from tacular._datagen._utils import calculate_mass, format_composition_string, p
 settings.register_profile("default", max_examples=100, deadline=None)
 settings.load_profile("default")
 
-ISOTOPES = sorted((str(sym), a) for sym, a in ELEMENT_LOOKUP.element_data if a is not None)
+ISOTOPES = sorted((str(sym), a) for sym, a in ELEMENT_LOOKUP.keys() if a is not None)
 ELEMENT_KEYS = st.one_of(
     st.sampled_from(sorted(str(e) for e in Element)),
     st.sampled_from([f"{a}{sym}" for sym, a in ISOTOPES]),
@@ -81,7 +81,7 @@ def test_deuterium_and_tritium_aliases():
 # --- ontology id keys -------------------------------------------------------------------
 
 # (lookup, accession prefix, id prefix)
-ONTOLOGIES = {
+ONTOLOGY_CASES = {
     "unimod": (UNIMOD_LOOKUP, "UNIMOD:", ""),
     "psimod": (PSIMOD_LOOKUP, "MOD:", ""),
     "resid": (RESID_LOOKUP, "RESID:", "AA"),
@@ -98,7 +98,7 @@ def _random_case(draw, text):
 
 @st.composite
 def id_variants(draw, name):
-    lookup, accession, id_prefix = ONTOLOGIES[name]
+    lookup, accession, id_prefix = ONTOLOGY_CASES[name]
     info = draw(st.sampled_from(lookup.values()))
     bare = info.id.removeprefix(id_prefix)
     body = draw(st.sampled_from([bare, bare.lstrip("0") or "0", "00" + bare]))
@@ -108,31 +108,31 @@ def id_variants(draw, name):
     return info, _random_case(draw, key)
 
 
-@pytest.mark.parametrize("name", list(ONTOLOGIES))
+@pytest.mark.parametrize("name", list(ONTOLOGY_CASES))
 @settings(max_examples=50)
 @given(data=st.data())
 def test_id_key_variants_resolve_to_the_same_entry(name, data):
     info, key = data.draw(id_variants(name))
-    assert ONTOLOGIES[name][0].query_id(key) is info
+    assert ONTOLOGY_CASES[name][0].query_id(key) is info
     if info.id.isdigit():
-        assert ONTOLOGIES[name][0].query_id(int(info.id)) is info
+        assert ONTOLOGY_CASES[name][0].query_id(int(info.id)) is info
 
 
-@pytest.mark.parametrize("name", list(ONTOLOGIES))
+@pytest.mark.parametrize("name", list(ONTOLOGY_CASES))
 @settings(max_examples=50)
 @given(data=st.data())
 def test_name_lookup_ignores_case(name, data):
-    lookup = ONTOLOGIES[name][0]
+    lookup = ONTOLOGY_CASES[name][0]
     info = data.draw(st.sampled_from(lookup.values()))
     found = lookup.query_name(_random_case(data.draw, info.name))
     assert found is not None and found.name.lower() == info.name.lower()
 
 
-@pytest.mark.parametrize("name", list(ONTOLOGIES))
+@pytest.mark.parametrize("name", list(ONTOLOGY_CASES))
 @pytest.mark.parametrize("key", [None, 1.5, b"21", ("21",)])
 def test_unsupported_key_types_are_not_found(name, key):
     # Regression: these raised AttributeError/TypeError from ``key.lower()``.
-    lookup = ONTOLOGIES[name][0]
+    lookup = ONTOLOGY_CASES[name][0]
     assert key not in lookup
     assert lookup.get(key) is None
     with pytest.raises(KeyError):

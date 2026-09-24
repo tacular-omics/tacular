@@ -1,6 +1,12 @@
 """The ``ElementInfo`` dataclass: a chemical element or one specific isotope of it."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+from typing import Any, Self
+
+from .._util import _round
+from ..errors import TacularError
+
+__all__ = ["ElementInfo"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -91,9 +97,13 @@ class ElementInfo:
 
     @property
     def neutron_count(self) -> int:
-        """Calculate the number of neutrons in this isotope."""
+        """Number of neutrons in this isotope.
+
+        Raises:
+            TacularError: for the non-specific element entry (``mass_number`` is ``None``).
+        """
         if self.mass_number is None:
-            raise ValueError("Mass number is None, cannot calculate neutron count")
+            raise TacularError(f"{self.symbol!r} is the element entry (no mass number); it has no neutron count.")
         return self.mass_number - self.number
 
     @property
@@ -113,27 +123,26 @@ class ElementInfo:
             return f"{self.symbol}"
         return f"{self.mass_number}{self.symbol}"
 
-    def get_mass(self, monoisotopic: bool = True) -> float:
-        """Get the mass of this element isotope.
-
-        Args:
-            monoisotopic: If True, return isotopic mass; if False, return average mass
-        """
+    def get_mass(self, *, monoisotopic: bool = True) -> float:
+        """The isotopic mass (default) or, with ``monoisotopic=False``, the element's
+        average mass, in Da."""
         return self.mass if monoisotopic else self.average_mass
 
-    def to_dict(self, float_precision: int = 6) -> dict[str, object]:
-        """Convert the ElementInfo to a dictionary.
+    def to_dict(self, *, float_precision: int | None = 6) -> dict[str, object]:
+        """Convert to a plain, JSON-serializable dictionary.
 
-        Args:
-            float_precision: Number of decimal places for mass values
+        Keys: ``number``, ``symbol``, ``mass_number``, ``mass``, ``abundance``,
+        ``average_mass``, ``is_monoisotopic``. ``float_precision`` rounds the masses
+        (default 6); ``None`` keeps full precision.
         """
         return {
             "number": self.number,
             "symbol": self.symbol,
             "mass_number": self.mass_number,
-            "mass": round(self.mass, float_precision),
+            "mass": _round(self.mass, float_precision),
             "abundance": self.abundance,
-            "average_mass": round(self.average_mass, float_precision),
+            "average_mass": _round(self.average_mass, float_precision),
+            "is_monoisotopic": self.is_monoisotopic,
         }
 
     def __repr__(self) -> str:
@@ -144,32 +153,25 @@ class ElementInfo:
             f"is_monoisotopic={self.is_monoisotopic})"
         )
 
-    def update(self, **kwargs: object) -> "ElementInfo":
-        """Return a new ElementInfo with updated fields.
+    def update(self, **changes: Any) -> Self:
+        """Return a copy with the given fields replaced (``dataclasses.replace``).
 
-        Args:
-            **kwargs: Field names and new values to update
+        Raises:
+            TypeError: for a keyword that is not a field of this class.
         """
-        # Since we use slots=True, we need to get fields manually
-        current_values: dict[str, object] = {
-            "number": self.number,
-            "symbol": self.symbol,
-            "mass_number": self.mass_number,
-            "mass": self.mass,
-            "abundance": self.abundance,
-            "average_mass": self.average_mass,
-            "is_monoisotopic": self.is_monoisotopic,
-        }
-        return self.__class__(**{**current_values, **kwargs})  # type: ignore
+        return replace(self, **changes)
 
     def serialize(self, count: int) -> str:
         """Serialize the ElementInfo to a ProForma formula element compatible string.
 
         Args:
             count: Number of atoms of this element
+
+        Raises:
+            TacularError: if ``count`` is zero.
         """
         if count == 0:
-            raise ValueError("Count cannot be zero for serialization")
+            raise TacularError("Count cannot be zero for serialization")
         if count == 1:
             if self.mass_number is not None:
                 return f"[{str(self)}]"

@@ -35,7 +35,7 @@ def gen_xl(output_file: str = OutputFile.XLMOD):
     for mod in entries_list:
         formula_str = f'"{mod.formula}"' if mod.formula is not None else "None"
 
-        entry = f'''        "{mod.id}": XlModInfo(
+        entry = f'''        "{mod.id}": XlmodInfo(
             id="{mod.id}",
             name="{mod.name}",
             formula={formula_str},
@@ -53,10 +53,10 @@ def gen_xl(output_file: str = OutputFile.XLMOD):
 VERSION = "{version}"
 
 
-from .dclass import XlModInfo
+from .dclass import XlmodInfo
 
 try:
-    XLMOD_MODIFICATIONS: dict[str, XlModInfo] = {{
+    XLMOD_MODIFICATIONS: dict[str, XlmodInfo] = {{
 {entries_str}
     }}
 

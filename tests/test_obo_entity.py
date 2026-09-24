@@ -2,7 +2,7 @@ from types import MappingProxyType
 
 import pytest
 
-from tacular.obo_entity import OboEntity, filter_infos
+from tacular.obo_entity import OboEntity
 
 
 class DummyElement:
@@ -20,8 +20,8 @@ def test_obo_entity_str_and_repr():
     )
     assert str(entity) == "TestEntity (H2O)"
     assert "OboEntity" in repr(entity)
-    assert entity.mass() == 18.0106
-    assert entity.mass(monoisotopic=False) == 18.015
+    assert entity.get_mass() == 18.0106
+    assert entity.get_mass(monoisotopic=False) == 18.015
     d = entity.to_dict()
     assert d["id"] == "E1"
     assert d["name"] == "TestEntity"
@@ -58,32 +58,6 @@ def test_modentity_inherits_cv():
     )
 
 
-def test_filter_infos():
-    e1 = OboEntity(
-        id="1",
-        name="A",
-        formula="H2O",
-        monoisotopic_mass=1.0,
-        average_mass=2.0,
-        dict_composition=MappingProxyType({"H": 2, "O": 1}),
-    )
-    e2 = OboEntity(
-        id="2",
-        name="B",
-        formula=None,
-        monoisotopic_mass=None,
-        average_mass=None,
-        dict_composition=None,
-    )
-    infos = [e1, e2]
-    assert filter_infos(infos, has_monoisotopic_mass=True) == [e1]
-    assert filter_infos(infos, has_monoisotopic_mass=False) == [e2]
-    assert filter_infos(infos, has_composition=True) == [e1]
-    assert filter_infos(infos, has_composition=False) == [e2]
-    assert filter_infos(infos, id="1") == [e1]
-    assert filter_infos(infos, name="B") == [e2]
-
-
 if __name__ == "__main__":
     pytest.main([__file__])
 
@@ -118,10 +92,12 @@ def test_other_infos_to_dict_composition_is_a_copy(attr):
     assert dict(info.dict_composition) == before
 
 
-def test_get_mass_matches_mass():
+def test_get_mass_matches_fields_and_is_keyword_only():
     import tacular as t
 
     for info in (t.UNIMOD_LOOKUP["Phospho"], t.MONOSACCHARIDE_LOOKUP["Hex"]):
-        assert info.get_mass() == info.mass() == info.monoisotopic_mass
-        assert info.get_mass(monoisotopic=False) == info.mass(False) == info.average_mass
-        assert info.get_mass(False) == info.average_mass
+        assert info.get_mass() == info.monoisotopic_mass
+        assert info.get_mass(monoisotopic=False) == info.average_mass
+        with pytest.raises(TypeError):
+            info.get_mass(False)  # type: ignore[misc]
+        assert not hasattr(info, "mass")

@@ -1,16 +1,18 @@
-"""Shared base class and helpers for ontology entries (UNIMOD, PSI-MOD, RESID, XLMOD,
-GNOme, amino acids, elements, ...). Every ``*Info`` dataclass in this package
-(``UnimodInfo``, ``PsimodInfo``, ``ElementInfo``, ...) subclasses :class:`OboEntity`
-and inherits its fields, serialization, and mass/composition helpers.
+"""Shared base class for ontology entries.
+
+The ontology ``*Info`` dataclasses (``UnimodInfo``, ``PsimodInfo``, ``ResidInfo``,
+``XlmodInfo``, ``GnoInfo``, ``UniprotPtmInfo``) and ``MonosaccharideInfo`` subclass
+:class:`OboEntity` and inherit its fields, serialization, and mass/composition helpers.
 """
 
 from collections.abc import Mapping
-from dataclasses import dataclass, field
-from typing import Any, Self, TypeVar
+from dataclasses import dataclass, field, replace
+from typing import Any, Self
 
+from ._util import _round
 from .elements import ElementInfo, parse_composition
 
-T = TypeVar("T", bound="OboEntity")
+__all__ = ["OboEntity"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -68,11 +70,8 @@ class OboEntity:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> Self:
-        """Reconstruct an OboEntity from its ``to_dict`` representation.
-
-        The inverse of :meth:`to_dict`; note ``to_dict`` serialises
-        ``dict_composition`` under the ``"composition"`` key.
-        """
+        """Reconstruct an entry from its :meth:`to_dict` representation (the inverse of
+        ``to_dict``, which writes :attr:`dict_composition` under ``"composition"``)."""
         return cls(
             id=data["id"],
             name=data["name"],
@@ -82,54 +81,33 @@ class OboEntity:
             dict_composition=data.get("composition"),
         )
 
-    def update(self, **kwargs: Any) -> Self:
-        """Return a new instance with updated fields"""
-        return self.__class__(
-            id=kwargs.get("id", self.id),
-            name=kwargs.get("name", self.name),
-            formula=kwargs.get("formula", self.formula),
-            monoisotopic_mass=kwargs.get("monoisotopic_mass", self.monoisotopic_mass),
-            average_mass=kwargs.get("average_mass", self.average_mass),
-            dict_composition=kwargs.get("dict_composition", self.dict_composition),
-        )
+    def update(self, **changes: Any) -> Self:
+        """Return a copy with the given fields replaced (``dataclasses.replace``).
 
-    def mass(self, monoisotopic: bool = True) -> float | None:
-        """Get the mass of the entity (monoisotopic by default, else average);
-        ``None`` if not available. Same as :meth:`get_mass`."""
+        Raises:
+            TypeError: for a keyword that is not a field of this class.
+        """
+        return replace(self, **changes)
+
+    def get_mass(self, *, monoisotopic: bool = True) -> float | None:
+        """The monoisotopic mass (default) or average mass; ``None`` if not available."""
         return self.monoisotopic_mass if monoisotopic else self.average_mass
 
-    def get_mass(self, monoisotopic: bool = True) -> float | None:
-        """Get the mass of the entity (monoisotopic by default, else average);
-        ``None`` if not available.
+    def to_dict(self, *, float_precision: int | None = 6) -> dict[str, object]:
+        """Convert the entry to a plain, JSON-serializable dictionary.
 
-        Same as :meth:`mass`; ``get_mass`` is the name the amino acid, fragment ion
-        and reference-molecule entries use.
+        Keys: ``id``, ``name``, ``formula``, ``monoisotopic_mass``, ``average_mass`` and
+        ``composition`` (a copy of :attr:`dict_composition`, or ``None``); subclasses
+        append their own fields. ``float_precision`` rounds the masses (default 6, as
+        used for the bundled ``jsons/*.json``); ``None`` keeps full precision, e.g. when
+        round-tripping through the ``tacular update`` cache.
         """
-        return self.monoisotopic_mass if monoisotopic else self.average_mass
-
-    def to_dict(self, float_precision: int | None = 6) -> dict[str, object]:
-        """Convert the OboEntity to a dictionary.
-
-        ``"composition"`` is a copy of :attr:`dict_composition` (a plain ``dict``, or
-        ``None``), so changing it does not change this entry.
-
-        ``float_precision`` rounds the masses (default 6, as used for the bundled
-        ``jsons/*.json``). Pass ``None`` to preserve full float precision, e.g. when
-        round-tripping through the runtime cache so an updated install matches the
-        precision of the bundled ``data.py``.
-        """
-
-        def _round(value: float | None) -> float | None:
-            if value is None or float_precision is None:
-                return value
-            return round(value, float_precision)
-
         return {
             "id": self.id,
             "name": self.name,
             "formula": self.formula,
-            "monoisotopic_mass": _round(self.monoisotopic_mass),
-            "average_mass": _round(self.average_mass),
+            "monoisotopic_mass": _round(self.monoisotopic_mass, float_precision),
+            "average_mass": _round(self.average_mass, float_precision),
             # A copy: dict_composition is shared with the lookup and must stay read-only.
             "composition": dict(self.dict_composition) if self.dict_composition is not None else None,
         }
@@ -137,12 +115,7 @@ class OboEntity:
     def __hash__(self) -> int:
         """Hash on ``(id, name)`` only, so equal entries hash equal even if a mass
         field was later updated via :meth:`update`."""
-        return hash(
-            (
-                self.id,
-                self.name,
-            )
-        )
+        return hash((self.id, self.name))
 
     @property
     def id_tag(self) -> str:
@@ -152,41 +125,3 @@ class OboEntity:
         example) override this to strip that prefix too.
         """
         return self.id.lstrip("0")
-
-
-def filter_infos[T: OboEntity](
-    infos: list[T],
-    has_monoisotopic_mass: bool | None = None,
-    has_composition: bool | None = None,
-    **criteria: Any,
-) -> list[T]:
-    """Filter a list of OboEntity or its subclasses based on criteria."""
-    filtered: list[T] = []
-    for info in infos:
-        match = True
-
-        # Check monoisotopic mass requirement
-        if has_monoisotopic_mass is not None:
-            if has_monoisotopic_mass and info.monoisotopic_mass is None:
-                match = False
-            elif not has_monoisotopic_mass and info.monoisotopic_mass is not None:
-                match = False
-
-        # Check composition requirement
-        if match and has_composition is not None:
-            if has_composition and info.dict_composition is None:
-                match = False
-            elif not has_composition and info.dict_composition is not None:
-                match = False
-
-        # Check other criteria
-        if match:
-            for key, value in criteria.items():
-                if not hasattr(info, key) or getattr(info, key) != value:
-                    match = False
-                    break
-
-        if match:
-            filtered.append(info)
-
-    return filtered

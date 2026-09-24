@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generated_date": "2026-09-23T21:10:47.661784",
+        "generated_date": "2026-09-23T22:30:35.150619",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
         "tacular_version": "1.2.0",
@@ -14,7 +14,7 @@
             "amino_acids": [],
             "monoisotopic_mass": -1.007825,
             "average_mass": -1.007941,
-            "dict_composition": {
+            "composition": {
                 "H": -1
             }
         },
@@ -23,14 +23,14 @@
             "name": "Ammonia",
             "description": "From amine groups",
             "amino_acids": [
-                "N",
                 "K",
-                "R",
-                "Q"
+                "N",
+                "Q",
+                "R"
             ],
             "monoisotopic_mass": -17.026549,
             "average_mass": -17.030525,
-            "dict_composition": {
+            "composition": {
                 "N": -1,
                 "H": -3
             }
@@ -40,14 +40,14 @@
             "name": "Water",
             "description": "From -OH and -COOH groups",
             "amino_acids": [
-                "S",
-                "E",
                 "D",
+                "E",
+                "S",
                 "T"
             ],
             "monoisotopic_mass": -18.010565,
             "average_mass": -18.015286,
-            "dict_composition": {
+            "composition": {
                 "H": -2,
                 "O": -1
             }
@@ -62,7 +62,7 @@
             ],
             "monoisotopic_mass": -27.994915,
             "average_mass": -28.010141,
-            "dict_composition": {
+            "composition": {
                 "C": -1,
                 "O": -1
             }
@@ -72,12 +72,12 @@
             "name": "Carbon dioxide",
             "description": "From -COOH groups",
             "amino_acids": [
-                "E",
-                "D"
+                "D",
+                "E"
             ],
             "monoisotopic_mass": -43.989829,
             "average_mass": -44.009546,
-            "dict_composition": {
+            "composition": {
                 "C": -1,
                 "O": -2
             }
@@ -87,12 +87,12 @@
             "name": "Formamide",
             "description": "From -CONH2 groups",
             "amino_acids": [
-                "Q",
-                "N"
+                "N",
+                "Q"
             ],
             "monoisotopic_mass": -45.021464,
             "average_mass": -45.040666,
-            "dict_composition": {
+            "composition": {
                 "H": -3,
                 "C": -1,
                 "O": -1,
@@ -104,12 +104,12 @@
             "name": "Formic acid",
             "description": "From -COOH groups",
             "amino_acids": [
-                "E",
-                "D"
+                "D",
+                "E"
             ],
             "monoisotopic_mass": -46.005479,
             "average_mass": -46.025427,
-            "dict_composition": {
+            "composition": {
                 "H": -2,
                 "C": -1,
                 "O": -2
@@ -124,7 +124,7 @@
             ],
             "monoisotopic_mass": -63.998286,
             "average_mass": -64.106691,
-            "dict_composition": {
+            "composition": {
                 "C": -1,
                 "H": -4,
                 "O": -1,
@@ -140,7 +140,7 @@
             ],
             "monoisotopic_mass": -79.956815,
             "average_mass": -80.063002,
-            "dict_composition": {
+            "composition": {
                 "S": -1,
                 "O": -3
             }
@@ -151,12 +151,12 @@
             "description": "From phosphotyrosine and sometimes from phosphoserine and phosphothreonine",
             "amino_acids": [
                 "S",
-                "Y",
-                "T"
+                "T",
+                "Y"
             ],
             "monoisotopic_mass": -79.966331,
             "average_mass": -79.979918,
-            "dict_composition": {
+            "composition": {
                 "H": -1,
                 "P": -1,
                 "O": -3
@@ -171,7 +171,7 @@
             ],
             "monoisotopic_mass": -91.009185,
             "average_mass": -91.132071,
-            "dict_composition": {
+            "composition": {
                 "C": -2,
                 "H": -5,
                 "N": -1,
@@ -188,7 +188,7 @@
             ],
             "monoisotopic_mass": -91.993201,
             "average_mass": -92.116832,
-            "dict_composition": {
+            "composition": {
                 "C": -2,
                 "H": -4,
                 "O": -2,
@@ -205,7 +205,7 @@
             ],
             "monoisotopic_mass": -97.976896,
             "average_mass": -97.995204,
-            "dict_composition": {
+            "composition": {
                 "H": -3,
                 "P": -1,
                 "O": -4

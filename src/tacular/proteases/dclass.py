@@ -2,27 +2,33 @@
 
 import re
 from dataclasses import dataclass
-from functools import cached_property
+
+__all__ = ["ProteaseInfo"]
 
 
-@dataclass(frozen=True)  # Cannot use slots and cached_property together
+@dataclass(frozen=True, slots=True)
 class ProteaseInfo:
-    """Information about a protease enzyme"""
+    """A digestion enzyme and its cleavage-site regex."""
 
     id: str
+    """Id, e.g. ``"trypsin"``."""
     name: str
+    """Short name, e.g. ``"Trypsin"``."""
     full_name: str
+    """Descriptive name, e.g. ``"Trypsin with proline restriction"``."""
     regex: str
+    """Zero-width regex matching the cleavage sites, e.g. ``"(?<=[KR])(?=[^P])"``."""
 
-    @cached_property
+    @property
     def pattern(self) -> re.Pattern[str]:
-        """Compiled regex pattern for the protease"""
+        """:attr:`regex`, compiled (served from ``re``'s compile cache after the first call)."""
         return re.compile(self.regex)
 
     def to_dict(self) -> dict[str, object]:
-        """Convert the ProteaseInfo to a dictionary"""
+        """Convert to a plain, JSON-serializable dictionary with keys ``id``, ``name``,
+        ``full_name``, ``regex``."""
         return {
-            "id": self.id,
+            "id": str(self.id),
             "name": self.name,
             "full_name": self.full_name,
             "regex": self.regex,

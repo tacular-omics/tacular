@@ -4,11 +4,12 @@ singleton, and ``parse_composition`` for resolving composition dicts to ``Elemen
 
 from .data import Element
 from .dclass import ElementInfo
-from .lookup import ELEMENT_LOOKUP, ElementLookup, parse_composition
+from .lookup import ELEMENT_LOOKUP, ElementKey, ElementLookup, parse_composition
 
 __all__ = [
     "ElementInfo",
     "Element",
+    "ElementKey",
     "ElementLookup",
     "ELEMENT_LOOKUP",
     "parse_composition",

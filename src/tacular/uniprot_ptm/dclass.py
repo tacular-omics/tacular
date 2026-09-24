@@ -1,3 +1,5 @@
+"""``UniprotPtmInfo`` (a UniProt ``ptmlist.txt`` entry) and the ``ModLocation`` enum."""
+
 from __future__ import annotations
 
 from collections.abc import Mapping
@@ -7,6 +9,8 @@ from typing import TYPE_CHECKING, Any, Self
 
 from ..amino_acids import AminoAcid
 from ..obo_entity import OboEntity
+
+__all__ = ["ModLocation", "UniprotPtmInfo"]
 
 if TYPE_CHECKING:
     from ..psimod.dclass import PsimodInfo
@@ -48,11 +52,6 @@ class UniprotPtmInfo(OboEntity):
     cross_references: tuple[str, ...] = field(default=())
     """Cross-reference entries (``DR``), e.g. ``"PSI-MOD; MOD:01624."``. See :attr:`has_psimod`/:meth:`get_psimod`."""
 
-    @property
-    def id_tag(self) -> str:
-        """`id` with leading zeros stripped, e.g. ``"0450"`` -> ``"450"``."""
-        return self.id.lstrip("0")
-
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> Self:
         """Reconstruct a UniprotPtmInfo from its ``to_dict`` representation.
@@ -78,7 +77,7 @@ class UniprotPtmInfo(OboEntity):
             cross_references=tuple(data.get("cross_references") or ()),
         )
 
-    def to_dict(self, float_precision: int | None = 6) -> dict[str, object]:
+    def to_dict(self, *, float_precision: int | None = 6) -> dict[str, object]:
         """Convert to a dictionary, extending :meth:`OboEntity.to_dict` with this
         ontology's extra fields (see :meth:`from_dict` for the inverse).
 
@@ -89,7 +88,7 @@ class UniprotPtmInfo(OboEntity):
             cell and raises ``TypeError: super(type, obj): obj must be an
             instance or subtype of type``.
         """
-        data = OboEntity.to_dict(self, float_precision)
+        data = OboEntity.to_dict(self, float_precision=float_precision)
         data.update(
             feature_key=self.feature_key,
             target=self.target,
@@ -103,25 +102,6 @@ class UniprotPtmInfo(OboEntity):
             cross_references=list(self.cross_references),
         )
         return data
-
-    def update(self, **kwargs: Any) -> Self:
-        """Return a new instance with updated fields."""
-        return self.__class__(
-            id=kwargs.get("id", self.id),
-            name=kwargs.get("name", self.name),
-            formula=kwargs.get("formula", self.formula),
-            monoisotopic_mass=kwargs.get("monoisotopic_mass", self.monoisotopic_mass),
-            average_mass=kwargs.get("average_mass", self.average_mass),
-            dict_composition=kwargs.get("dict_composition", self.dict_composition),
-            feature_key=kwargs.get("feature_key", self.feature_key),
-            target=kwargs.get("target", self.target),
-            position_aa=kwargs.get("position_aa", self.position_aa),
-            position_polypeptide=kwargs.get("position_polypeptide", self.position_polypeptide),
-            cellular_location=kwargs.get("cellular_location", self.cellular_location),
-            taxonomic_range=kwargs.get("taxonomic_range", self.taxonomic_range),
-            keywords=kwargs.get("keywords", self.keywords),
-            cross_references=kwargs.get("cross_references", self.cross_references),
-        )
 
     # ------------------------------------------------------------------
     # Cross-reference helpers

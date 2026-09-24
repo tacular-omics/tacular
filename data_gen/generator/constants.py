@@ -1,7 +1,8 @@
 from enum import StrEnum
-from typing import Final
 
-PROTON_MASS: Final[float] = 1.00727646688
+from tacular.constants import PROTON_MASS
+
+__all__ = ["PROTON_MASS", "OutputFile"]
 
 
 class OutputFile(StrEnum):

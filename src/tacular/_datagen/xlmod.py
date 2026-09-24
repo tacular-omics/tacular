@@ -1,4 +1,4 @@
-"""Build XLMOD ``XlModInfo`` objects from an ``XLMod.obo`` file.
+"""Build XLMOD ``XlmodInfo`` objects from an ``XLMod.obo`` file.
 
 Ported from ``data_gen/generator/gen_xlmod.py`` (parsing only; no ``.py``
 rendering). Includes the isotope-composition fix: isotope-labelled atoms are
@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from ..elements import ELEMENT_LOOKUP
-from ..xlmod.dclass import XlModInfo
+from ..xlmod.dclass import XlmodInfo
 from ._utils import (
     format_composition_string,
     get_id_and_name,
@@ -105,7 +105,7 @@ def _find_inherited_properties(
     return None, None, None
 
 
-def _entries(terms: list[dict[str, Any]]) -> Iterator[XlModInfo]:
+def _entries(terms: list[dict[str, Any]]) -> Iterator[XlmodInfo]:
     # Build lookup table for quick term access
     term_lookup = _build_term_lookup(terms)
 
@@ -214,15 +214,15 @@ def _entries(terms: list[dict[str, Any]]) -> Iterator[XlModInfo]:
                 comp_mono = 0.0
                 comp_avg = 0.0
                 for (elem_sym, iso), iso_count in isotope_counts.items():
-                    comp_mono += ELEMENT_LOOKUP.mass(f"{iso}{elem_sym}") * iso_count
-                    comp_avg += ELEMENT_LOOKUP.mass(f"{iso}{elem_sym}") * iso_count
+                    comp_mono += ELEMENT_LOOKUP.get_mass(f"{iso}{elem_sym}") * iso_count
+                    comp_avg += ELEMENT_LOOKUP.get_mass(f"{iso}{elem_sym}") * iso_count
                     composition[elem_sym] = composition.get(elem_sym, 0) - iso_count
 
                 for elem_sym, cnt in composition.items():
                     if cnt == 0:
                         continue
-                    comp_mono += ELEMENT_LOOKUP.mass(elem_sym, monoisotopic=True) * cnt
-                    comp_avg += ELEMENT_LOOKUP.mass(elem_sym, monoisotopic=False) * cnt
+                    comp_mono += ELEMENT_LOOKUP.get_mass(elem_sym, monoisotopic=True) * cnt
+                    comp_avg += ELEMENT_LOOKUP.get_mass(elem_sym, monoisotopic=False) * cnt
 
                 calc_mono = comp_mono
                 calc_avg = comp_avg
@@ -291,7 +291,7 @@ def _entries(terms: list[dict[str, Any]]) -> Iterator[XlModInfo]:
         ):
             continue
 
-        yield XlModInfo(
+        yield XlmodInfo(
             id=term_id,
             name=term_name,
             formula=formula,
@@ -305,7 +305,7 @@ def _entries(terms: list[dict[str, Any]]) -> Iterator[XlModInfo]:
         )
 
 
-def build(obo_path: str | Path) -> tuple[str, list[XlModInfo]]:
+def build(obo_path: str | Path) -> tuple[str, list[XlmodInfo]]:
     """Parse ``obo_path`` and return ``(version, infos)``."""
     with open(obo_path) as f:
         version = get_obo_metadata(f).get("data-version", "unknown")

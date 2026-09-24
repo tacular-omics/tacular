@@ -11,7 +11,7 @@ Usage::
     tacular update unimod xlmod    # refresh a subset
     tacular update --offline DIR   # regenerate from local .obo files in DIR
     tacular status                 # show bundled vs cached versions
-    tacular clear                  # remove cached data (revert to bundled); keeps downloaded sources
+    tacular clear                  # remove cached data and downloaded sources (revert to bundled)
     tacular where                  # print the cache directory
 
 If regenerating data hits an entry it can't parse (e.g. an ontology release
@@ -34,12 +34,15 @@ import urllib.request
 from pathlib import Path
 
 from . import _cache
+from .errors import TacularError
+
+__all__ = ["main", "update"]
 
 logger = logging.getLogger(__name__)
 
 # Source files to download (not all are OBO -- uniprot_ptm is UniProt's own flat-file
 # format). Several ontologies can share one source (resid derives from PSI-MOD).
-OBO_SOURCES: dict[str, tuple[str, str]] = {
+_OBO_SOURCES: dict[str, tuple[str, str]] = {
     "unimod": ("https://www.unimod.org/obo/unimod.obo", "UNIMOD.obo"),
     "psimod": ("https://purl.obolibrary.org/obo/mod.obo", "PSI-MOD.obo"),
     "gno": ("https://purl.obolibrary.org/obo/gno.obo", "GNOme.obo"),
@@ -51,7 +54,7 @@ OBO_SOURCES: dict[str, tuple[str, str]] = {
 }
 
 # Output ontology -> (builder module, OBO source key). Order = default update order.
-ONTOLOGIES: dict[str, tuple[str, str]] = {
+_ONTOLOGIES: dict[str, tuple[str, str]] = {
     "unimod": ("tacular._datagen.unimod", "unimod"),
     "xlmod": ("tacular._datagen.xlmod", "xlmod"),
     "psimod": ("tacular._datagen.psimod", "psimod"),
@@ -100,36 +103,45 @@ def _mass_mismatches(infos: list) -> list[tuple[str, str, float]]:
 
 
 def update(names: list[str] | None = None, *, offline: str | Path | None = None) -> list[str]:
-    """Refresh ``names`` (default: all). With ``offline``, read OBOs from that dir instead of downloading.
+    """Refresh ``names`` (default: all six ontologies).
 
-    Returns the list of ontologies successfully refreshed.
+    Downloads each needed source file afresh (so an update always picks up the latest
+    upstream release) into the cache's ``obo/`` directory, regenerates the data and
+    writes it to the cache. With ``offline``, reads the source files from that
+    directory instead and downloads nothing.
+
+    Returns:
+        The ontologies refreshed, in order.
+
+    Raises:
+        TacularError: if a name is not one of the six ontologies.
+        FileNotFoundError: in offline mode, if a source file is missing.
+        OSError: if a download fails.
     """
-    names = list(ONTOLOGIES) if not names else names
-    unknown = [n for n in names if n not in ONTOLOGIES]
+    names = list(_ONTOLOGIES) if not names else names
+    unknown = [n for n in names if n not in _ONTOLOGIES]
     if unknown:
-        raise ValueError(f"unknown ontologies {unknown}; choose from {list(ONTOLOGIES)}")
+        raise TacularError(f"unknown ontologies {unknown}; choose from {list(_ONTOLOGIES)}")
 
     obo_root = Path(offline).expanduser() if offline is not None else _cache.obo_dir()
 
     # Fetch each needed OBO source once.
-    needed_sources = {ONTOLOGIES[n][1] for n in names}
+    needed_sources = {_ONTOLOGIES[n][1] for n in names}
     obo_paths: dict[str, Path] = {}
     for src in needed_sources:
-        url, fname = OBO_SOURCES[src]
+        url, fname = _OBO_SOURCES[src]
         path = obo_root / fname
         if offline is not None:
             if not path.is_file():
                 raise FileNotFoundError(f"offline mode: {path} not found")
             print(f"  using {path}")
-        elif not path.is_file():
-            _download(url, path)
         else:
-            print(f"  using cached {path} (delete to force re-download)")
+            _download(url, path)
         obo_paths[src] = path
 
     refreshed: list[str] = []
     for name in names:
-        module_path, src = ONTOLOGIES[name]
+        module_path, src = _ONTOLOGIES[name]
         builder = importlib.import_module(module_path)
         print(f"regenerating {name} ...")
         version, infos = builder.build(obo_paths[src])
@@ -159,9 +171,9 @@ def _cmd_status() -> int:
     }
     print(f"cache dir: {_cache.cache_dir()}")
     print(f"cache {'DISABLED' if _cache.cache_disabled() else 'enabled'}\n")
-    name_width = max(len("ontology"), *(len(n) for n in ONTOLOGIES)) + 1
+    name_width = max(len("ontology"), *(len(n) for n in _ONTOLOGIES)) + 1
     print(f"{'ontology':{name_width}} {'cached':8} {'active version':24} entries")
-    for name, (module_path, _src) in ONTOLOGIES.items():
+    for name, (module_path, _src) in _ONTOLOGIES.items():
         builder = importlib.import_module(module_path)
         cached = _cache.data_file(builder.JSON_NAME).is_file()
         lk = lookups[name]
@@ -170,11 +182,13 @@ def _cmd_status() -> int:
 
 
 def _cmd_clear() -> int:
-    d = _cache.data_dir()
-    if d.exists():
-        shutil.rmtree(d)
-        print(f"removed cached data: {d}")
-    else:
+    removed = False
+    for d, what in ((_cache.data_dir(), "cached data"), (_cache.obo_dir(), "downloaded sources")):
+        if d.exists():
+            shutil.rmtree(d)
+            print(f"removed {what}: {d}")
+            removed = True
+    if not removed:
         print("no cached data to remove")
     return 0
 
@@ -209,11 +223,11 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_update = sub.add_parser("update", help="download latest OBOs and regenerate cached data")
-    p_update.add_argument("ontologies", nargs="*", help=f"subset to refresh (default all): {list(ONTOLOGIES)}")
+    p_update.add_argument("ontologies", nargs="*", help=f"subset to refresh (default all): {list(_ONTOLOGIES)}")
     p_update.add_argument("--offline", metavar="DIR", help="regenerate from local .obo files in DIR (no download)")
 
     sub.add_parser("status", help="show bundled vs cached data versions")
-    sub.add_parser("clear", help="remove cached data (revert to bundled)")
+    sub.add_parser("clear", help="remove cached data and downloaded sources (revert to bundled)")
     sub.add_parser("where", help="print the cache directory")
 
     args = parser.parse_args(argv)
@@ -225,7 +239,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"note: refreshing all ontologies including {sorted(_LARGE)} (large download)\n")
         try:
             refreshed = update(names, offline=args.offline)
-        except (ValueError, FileNotFoundError, OSError) as exc:
+        except (ValueError, OSError) as exc:  # TacularError, and parse errors from _datagen
             # Log the full traceback at DEBUG (visible with -vv) before the concise
             # one-line message every user sees, so the root cause is never lost.
             logger.debug("`tacular update` failed", exc_info=True)

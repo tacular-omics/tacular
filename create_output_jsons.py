@@ -46,7 +46,7 @@ def gen_aa():
 
 
 def gen_elem():
-    elem_infos: list[t.ElementInfo] = sorted(list(set(t.ELEMENT_LOOKUP)))
+    elem_infos: list[t.ElementInfo] = sorted(set(t.ELEMENT_LOOKUP))
     elem_dicts = [elem_info.to_dict() for elem_info in elem_infos]
     write_json_with_metadata(ELEM_JSON_PATH, "elements", elem_dicts)
 
@@ -94,7 +94,7 @@ def gen_proteases():
 
 
 def gen_xlmodifications():
-    xlmod_infos: list[t.XlModInfo] = list(t.XLMOD_LOOKUP)
+    xlmod_infos: list[t.XlmodInfo] = list(t.XLMOD_LOOKUP)
     xlmod_dicts = [xlmod_info.to_dict() for xlmod_info in xlmod_infos]
     write_json_with_metadata(XLMOD_JSON_PATH, "xlmodifications", xlmod_dicts, t.XLMOD_LOOKUP.version)
 

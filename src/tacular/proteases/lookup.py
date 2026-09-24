@@ -1,84 +1,48 @@
 """``ProteaseLookup`` (singleton ``PROTEASE_LOOKUP``): query proteases by id or name."""
 
-from collections.abc import Iterator
+from collections.abc import Mapping
 
-from .data import PROTEASES_DICT, Proteases
+from .._lookup import _BaseLookup
+from .data import PROTEASE_DICT, Protease
 from .dclass import ProteaseInfo
 
+__all__ = ["PROTEASE_LOOKUP", "ProteaseLookup"]
 
-class ProteaseLookup:
+
+class ProteaseLookup(_BaseLookup[str | Protease, str, ProteaseInfo]):
     """Protease lookup (singleton ``PROTEASE_LOOKUP``), keyed by name or id
     (e.g. ``"trypsin"``, ``"Arg-C"``), case-insensitively.
 
-    ``lookup[key]`` raises ``KeyError`` if nothing matches (including keys that
-    are not strings); ``get``/``in`` never raise.
+    ``lookup[key]`` tries the name, then the id, and raises
+    :class:`~tacular.TacularKeyError` if nothing matches (including keys that are not
+    strings); ``get`` / ``in`` / ``query_*`` never raise. :meth:`keys` are the ids as
+    plain strings, in data order.
     """
 
-    def __init__(self, data: dict[Proteases, ProteaseInfo]) -> None:
-        """Build id/name lookup dicts (keys lowercased) from `data`."""
-        self._data: dict[Proteases, ProteaseInfo] = dict(data)
-        self.name_to_info: dict[str, ProteaseInfo] = {info.name: info for info in data.values()}
+    _kind = "Protease"
 
-        # make keys lowercase for case-insensitive lookup
-        self.id_to_info = {k.lower(): v for k, v in data.items()}
-        self.name_to_info = {k.lower(): v for k, v in self.name_to_info.items()}
+    def __init__(self, data: Mapping[Protease, ProteaseInfo]) -> None:
+        """Build id and name indexes (case-insensitive) from ``data``."""
+        self._data: dict[str, ProteaseInfo] = {str(k): v for k, v in data.items()}
+        self._by_id = {k.lower(): v for k, v in self._data.items()}
+        self._by_name = {v.name.lower(): v for v in self._data.values()}
+
+    def _entries(self) -> Mapping[str, ProteaseInfo]:
+        return self._data
+
+    def _resolve(self, key: object) -> ProteaseInfo | None:
+        return self.query_name(key) or self.query_id(key)  # ty: ignore[invalid-argument-type]
+
+    def _miss_message(self, key: object) -> str:
+        return f"Protease {key!r} not found by name or id."
 
     def query_id(self, protease_id: str) -> ProteaseInfo | None:
-        """Query by protease ID (e.g., 'trypsin', 'arg-c')"""
-        if not isinstance(protease_id, str):
-            return None
-        return self.id_to_info.get(protease_id.lower())
+        """By id (e.g. ``"trypsin"``, ``"arg_c"``; case-insensitive); ``None`` if nothing matches."""
+        return self._by_id.get(protease_id.lower()) if isinstance(protease_id, str) else None
 
     def query_name(self, name: str) -> ProteaseInfo | None:
-        """Query by protease name (e.g., 'Trypsin', 'Arg-C')"""
-        if not isinstance(name, str):
-            return None
-        return self.name_to_info.get(name.lower())
-
-    def __getitem__(self, key: str) -> ProteaseInfo:
-        """Get protease by ID or name"""
-        # Try name first (more specific)
-        info = self.query_name(key)
-        if info is not None:
-            return info
-
-        # Then try ID
-        info = self.query_id(key)
-        if info is not None:
-            return info
-
-        raise KeyError(f"Protease '{key}' not found by name or ID.")
-
-    def __contains__(self, key: str) -> bool:
-        """Check if protease exists"""
-        try:
-            self[key]
-            return True
-        except KeyError:
-            return False
-
-    def get(self, key: str, default: ProteaseInfo | None = None) -> ProteaseInfo | None:
-        """Like `lookup[key]`, but return `default` instead of raising `KeyError`."""
-        try:
-            return self[key]
-        except KeyError:
-            return default
-
-    def keys(self) -> list[str]:
-        """Ids of all proteases (plain strings, e.g. ``"trypsin"``), in data order."""
-        return [str(k) for k in self._data]
-
-    def values(self) -> list[ProteaseInfo]:
-        """All protease infos, in data order (the same order as iteration)."""
-        return list(self.id_to_info.values())
-
-    def __iter__(self) -> Iterator[ProteaseInfo]:
-        """Iterator over all ProteaseInfo entries in the lookup."""
-        return iter(self.id_to_info.values())
-
-    def __len__(self) -> int:
-        """Number of proteases in the lookup."""
-        return len(self.id_to_info)
+        """By name (e.g. ``"Trypsin"``, ``"Arg-C"``; case-insensitive); ``None`` if nothing matches."""
+        return self._by_name.get(name.lower()) if isinstance(name, str) else None
 
 
-PROTEASE_LOOKUP = ProteaseLookup(PROTEASES_DICT)
+PROTEASE_LOOKUP = ProteaseLookup(PROTEASE_DICT)

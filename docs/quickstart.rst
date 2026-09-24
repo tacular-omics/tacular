@@ -18,15 +18,15 @@ Lookup API and errors
 
 Every ``*_LOOKUP`` supports the same mapping-style calls: ``lookup[key]``,
 ``lookup.get(key, default=None)``, ``key in lookup``, ``len(lookup)``, iteration over
-the info objects, and ``keys()`` / ``values()`` (new lists on each call). The error
-policy is the same everywhere:
+the info objects, and ``keys()`` / ``values()`` / ``items()`` (new lists on each call).
+The error policy is the same everywhere:
 
-- ``KeyError`` means *not found*: ``lookup[key]`` raises it for an unknown key and for
-  a key of the wrong type (e.g. ``None`` or a ``bool``). Numeric ids are plain ASCII
-  digits: ``"+21"`` or ``"2_1"`` is not UNIMOD 21.
-- ``ValueError`` means *bad input*: a malformed key or argument, such as the lowercase
-  element symbol ``t.ELEMENT_LOOKUP["c"]``, or a missing mass or composition when you
-  ask for one.
+- Every error tacular raises is a :class:`~tacular.TacularError`, a ``ValueError``.
+- ``lookup[key]`` raises :class:`~tacular.TacularKeyError` (a ``TacularError`` that is
+  also a ``KeyError``) for an unknown key, a malformed key such as the lowercase element
+  symbol ``"c"``, and a key of the wrong type (e.g. ``None`` or a ``bool``). Numeric ids
+  are plain ASCII digits: ``"+21"`` or ``"2_1"`` is not UNIMOD 21.
+- Asking for a mass or composition an entry does not have raises ``TacularError``.
 - ``get`` returns its default and ``in`` returns ``False`` for any key ``lookup[key]``
   would reject, so neither raises. ``query_*`` methods return ``None`` (or an empty
   list) for any such key.
@@ -36,6 +36,16 @@ policy is the same everywhere:
    assert t.UNIMOD_LOOKUP.get(None) is None
    assert "not-a-protease" not in t.PROTEASE_LOOKUP
    assert t.ELEMENT_LOOKUP.get("c", "missing") == "missing"
+
+   try:
+       t.AA_LOOKUP["not-an-amino-acid"]
+   except t.TacularKeyError as err:
+       assert isinstance(err, KeyError) and isinstance(err, t.TacularError)
+
+Options on ``get_mass`` and ``to_dict`` are keyword-only:
+``info.get_mass(monoisotopic=False)`` and ``info.to_dict(float_precision=None)``.
+Physical constants (``PROTON_MASS``, ``ELECTRON_MASS``, ``NEUTRON_MASS``,
+``HYDROGEN_MASS``, ``C13_C12_MASS_DIFF``) live in :mod:`tacular.constants`.
 
 Returned info objects are immutable and hashable, and their ``composition`` and
 ``to_dict()["composition"]`` are fresh copies, so changing them cannot affect the
@@ -165,8 +175,10 @@ to the latest upstream releases with ``tacular update`` (see :doc:`cli`).
 
 RESID IDs have an ``AA`` prefix (e.g., ``AA0002``), which is optional when querying.
 GNOme IDs have a ``G`` prefix (e.g., ``G00008BG``), which is optional when querying.
-Each database's accession prefix is also accepted: ``UNIMOD:21``, ``MOD:00046``,
-``XLMOD:01000``, ``RESID:AA0002``, ``GNO:G00008BG`` and UniProt's ``PTM-0476``.
+Each database's accession prefix is also accepted, long or short and in any case:
+``UNIMOD:21`` / ``U:21``, ``MOD:00046`` / ``M:00046``, ``XLMOD:01000`` / ``X:01000``,
+``RESID:AA0002`` / ``R:AA0002``, ``GNO:G00008BG`` / ``G:G00008BG`` and UniProt's
+``PTM-0476``. Prefixed names work too (``U:Phospho``).
 In addition, all leading zeros are removed, and when applicable, integer IDs can be used.
 
 Query modifications from various databases:
@@ -180,6 +192,9 @@ Query modifications from various databases:
    acetyl_by_id = t.UNIMOD_LOOKUP[1]  # Can also use int IDs
    print(f"Acetyl by ID: {acetyl_by_id.name}")
  
+   # Accession prefixes, long or short, work for ids and names
+   assert t.UNIMOD_LOOKUP['UNIMOD:1'] is t.UNIMOD_LOOKUP['U:Acetyl'] is acetyl
+
    # PSI-MOD
    phospho = t.PSIMOD_LOOKUP.query_name('phosphorylated residue')
    print(f"PSI-MOD found: {phospho is not None}")

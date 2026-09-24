@@ -15,12 +15,12 @@ Module data
 
 .. py:data:: tacular.proteases.PROTEASE_LOOKUP
 
-   Singleton protease lookup. Query by protease name.
+   Singleton protease lookup. Query by protease name or id.
 
-.. py:data:: tacular.proteases.PROTEASES_DICT
+.. py:data:: tacular.proteases.PROTEASE_DICT
 
-   Mapping of :class:`~tacular.proteases.Proteases` to :class:`~tacular.proteases.ProteaseInfo`.
+   Mapping of :class:`~tacular.proteases.Protease` to :class:`~tacular.proteases.ProteaseInfo`.
 
-.. py:data:: tacular.proteases.PROTEASE_LITERALS
+.. py:data:: tacular.proteases.ProteaseLiteral
 
    ``Literal`` of every accepted protease name.
