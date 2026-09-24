@@ -242,7 +242,9 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
         Bisects a mass-sorted index (built on the first call) for the entries inside
         :func:`~tacular.tolerance_window` ``(lo, hi)``, bounds included, so a hit here is
         exactly a ``within_tolerance`` hit. A NaN or infinite ``mass`` or a NaN
-        ``tolerance`` matches nothing; an infinite ``tolerance`` matches every entry.
+        ``tolerance`` matches nothing. An infinite Da ``tolerance`` matches every entry;
+        an infinite ppm ``tolerance`` does too, except at ``mass == 0`` (``0 * inf`` is NaN),
+        where it matches nothing.
         """
         tolerance = _half_width(mass, tolerance, unit)  # validates unit; Da from here on
         if not math.isfinite(mass) or tolerance != tolerance:

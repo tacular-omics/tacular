@@ -421,6 +421,13 @@ def test_query_mass_nan_returns_empty():
     assert t.UNIMOD_LOOKUP.query_mass(math.inf, tolerance=0, unit="ppm") == []
 
 
+def test_query_mass_infinite_tolerance():
+    everything = len(t.UNIMOD_LOOKUP.query_mass(100.0, tolerance=math.inf))
+    assert everything == len(t.UNIMOD_LOOKUP.query_mass(100.0, tolerance=math.inf, unit="ppm")) > 100
+    # documented: ppm at mass 0 is 0 * inf = NaN, which matches nothing
+    assert t.UNIMOD_LOOKUP.query_mass(0.0, tolerance=math.inf, unit="ppm") == []
+
+
 def test_read_only_dict_refuses_a_second_init_even_when_empty():
     from tacular._util import _ReadOnlyDict
 
