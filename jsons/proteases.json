@@ -1,9 +1,9 @@
 {
     "metadata": {
-        "generated_date": "2026-02-03T14:29:44.244858",
+        "generated_date": "2026-09-23T17:25:42.896250",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "tacular_version": "1.0.1",
+        "tacular_version": "1.1.3",
         "data_version": null
     },
     "proteases": [
@@ -107,7 +107,7 @@
             "id": "thermolysin",
             "name": "Thermolysin",
             "full_name": "Bacillus thermoproteolyticus thermolysin",
-            "regex": "(?<=[LFIAVM])"
+            "regex": "(?<![DE])(?=[AFILMV])"
         },
         {
             "id": "unspecific",
