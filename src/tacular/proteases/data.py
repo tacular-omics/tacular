@@ -153,7 +153,7 @@ Proteases.THERMOLYSIN: ProteaseInfo(
     id=Proteases.THERMOLYSIN,
     name="Thermolysin",
     full_name="Bacillus thermoproteolyticus thermolysin",
-    regex='(?<=[LFIAVM])',
+    regex='(?<![DE])(?=[AFILMV])',
 ),
 Proteases.UNSPECIFIC: ProteaseInfo(
     id=Proteases.UNSPECIFIC,

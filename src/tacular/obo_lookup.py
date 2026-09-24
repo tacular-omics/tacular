@@ -168,9 +168,12 @@ class OntologyLookup[T: OboEntity]:
         """``lookup[key]``: query by name first, then by id.
 
         Raises:
-            KeyError: if ``key`` matches no entry by name or id. The message
-                names the ontology and the exact key that failed to resolve.
+            KeyError: if ``key`` matches no entry by name or id, or is not a
+                ``str`` or ``int``. The message names the ontology and the key.
         """
+        if not isinstance(key, str | int):
+            raise KeyError(f"{self.ontology_name} modification {key!r} not found: keys are str or int.")
+
         if isinstance(key, str):
             info = self.query_name(key)
             if info is not None:

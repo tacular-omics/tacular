@@ -10,6 +10,18 @@
   compositions and masses were already correct.
 - `OntologyLookup` now raises `ValueError` on duplicate ids or duplicate (case-insensitive)
   names. A chained `!=` only raised when both counts were off, so duplicates slipped through.
+- Satellite ion offsets follow mzPAF 1.0.1 (neutral residue remnant, charge excluded):
+  `d` is `C2H4N` (was `C2H3N`), `v` is `C2H3NO2` (was `C2H2NO`), `w` is `C3H4O2` (was
+  `C3H3O`), and the residue-specific `w` ions gain an `O` (`w-valine` `C4H6O2`). `d` is
+  1.0078 Da, `v`/`w` 17.0027 Da and the specific `w` ions 15.9949 Da heavier; the
+  residue-specific `d` ions were already right.
+- Thermolysin cleaves N-terminal to A, F, I, L, M, V (not after D or E), as in ExPASy
+  PeptideCutter; it previously cleaved C-terminal to them.
+- UniProt ptmlist refreshed to 2026_03: 29 glycan entries (e.g. PTM-0745) had their
+  monoisotopic and average masses swapped; PTM-0775 and PTM-0776 are new.
+- Ontology lookups return "not found" for keys that are not `str` or `int` (`None in
+  UNIMOD_LOOKUP` is `False`, `get(None)` returns the default, `[None]` raises `KeyError`)
+  instead of raising `AttributeError` or `TypeError`.
 
 ## [1.1.3] (2026-09-23)
 

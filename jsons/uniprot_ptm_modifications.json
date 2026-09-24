@@ -1,10 +1,10 @@
 {
     "metadata": {
-        "generated_date": "2026-07-08T14:07:20.766986",
+        "generated_date": "2026-09-23T17:29:43.491671",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "tacular_version": "1.1.0",
-        "data_version": "2026_01 of 28-Jan-2026"
+        "tacular_version": "1.1.3",
+        "data_version": "2026_03 of 02-Sep-2026"
     },
     "uniprot_ptm_modifications": [
         {
@@ -2103,6 +2103,30 @@
             ]
         },
         {
+            "id": "0775",
+            "name": "3'-chlorotyrosine",
+            "formula": "H-1Cl",
+            "monoisotopic_mass": 33.961028,
+            "average_mass": 34.44,
+            "composition": {
+                "Cl": 1,
+                "H": -1
+            },
+            "feature_key": "MOD_RES",
+            "target": "Tyrosine.",
+            "position_aa": "Amino acid side chain.",
+            "position_polypeptide": "Anywhere.",
+            "cellular_location": "Intracellular localisation or Extracellular and lumenal localisation.",
+            "taxonomic_range": [
+                "Eukaryota; taxId:2759 (Eukaryota)."
+            ],
+            "keywords": [],
+            "cross_references": [
+                "PSI-MOD; MOD:01046.",
+                "Unimod; 936."
+            ]
+        },
+        {
             "id": "0051",
             "name": "6'-bromotryptophan",
             "formula": "H-1Br",
@@ -2868,6 +2892,29 @@
                 "PSI-MOD; MOD:00182.",
                 "Unimod; 340."
             ]
+        },
+        {
+            "id": "0776",
+            "name": "Cholesterol aspartate ester",
+            "formula": "C27H44",
+            "monoisotopic_mass": 368.344301,
+            "average_mass": 368.65,
+            "composition": {
+                "C": 27,
+                "H": 44
+            },
+            "feature_key": "LIPID",
+            "target": "Aspartate.",
+            "position_aa": "Amino acid side chain.",
+            "position_polypeptide": "Anywhere.",
+            "cellular_location": "Extracellular and lumenal localisation.",
+            "taxonomic_range": [
+                "Eukaryota; taxId:33208 (Metazoa)."
+            ],
+            "keywords": [
+                "Lipoprotein."
+            ],
+            "cross_references": []
         },
         {
             "id": "0090",
@@ -9894,8 +9941,8 @@
             "id": "0745",
             "name": "N-linked (beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAcl-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C50H82N4O35",
-            "monoisotopic_mass": 1299.19,
-            "average_mass": 1298.47596,
+            "monoisotopic_mass": 1298.47596,
+            "average_mass": 1299.19,
             "composition": {
                 "C": 50,
                 "H": 82,
@@ -9921,8 +9968,8 @@
             "id": "0746",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C56H92N4O40",
-            "monoisotopic_mass": 1461.33,
-            "average_mass": 1460.52878,
+            "monoisotopic_mass": 1460.52878,
+            "average_mass": 1461.33,
             "composition": {
                 "C": 56,
                 "H": 92,
@@ -9948,8 +9995,8 @@
             "id": "0747",
             "name": "N-linked (beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C56H92N4O40",
-            "monoisotopic_mass": 1461.33,
-            "average_mass": 1460.52878,
+            "monoisotopic_mass": 1460.52878,
+            "average_mass": 1461.33,
             "composition": {
                 "C": 56,
                 "H": 92,
@@ -9975,8 +10022,8 @@
             "id": "0748",
             "name": "N-linked ([beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)]-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C62H102N4O45",
-            "monoisotopic_mass": 1623.48,
-            "average_mass": 1622.58161,
+            "monoisotopic_mass": 1622.58161,
+            "average_mass": 1623.48,
             "composition": {
                 "C": 62,
                 "H": 102,
@@ -10002,8 +10049,8 @@
             "id": "0749",
             "name": "N-linked ([alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)]-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C73H119N5O53",
-            "monoisotopic_mass": 1914.73,
-            "average_mass": 1913.67702,
+            "monoisotopic_mass": 1913.67702,
+            "average_mass": 1914.73,
             "composition": {
                 "C": 73,
                 "H": 119,
@@ -10029,8 +10076,8 @@
             "id": "0750",
             "name": "N-linked (alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C84H136N6O61",
-            "monoisotopic_mass": 2205.99,
-            "average_mass": 2204.77244,
+            "monoisotopic_mass": 2204.77244,
+            "average_mass": 2205.99,
             "composition": {
                 "C": 84,
                 "H": 136,
@@ -10056,8 +10103,8 @@
             "id": "0751",
             "name": "N-linked (beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C58H95N5O40",
-            "monoisotopic_mass": 1502.39,
-            "average_mass": 1501.55533,
+            "monoisotopic_mass": 1501.55533,
+            "average_mass": 1502.39,
             "composition": {
                 "C": 58,
                 "H": 95,
@@ -10083,8 +10130,8 @@
             "id": "0752",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C64H105N5O45",
-            "monoisotopic_mass": 1664.53,
-            "average_mass": 1663.60816,
+            "monoisotopic_mass": 1663.60816,
+            "average_mass": 1664.53,
             "composition": {
                 "C": 64,
                 "H": 105,
@@ -10110,8 +10157,8 @@
             "id": "0753",
             "name": "N-linked (beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C64H105N5O45",
-            "monoisotopic_mass": 1664.53,
-            "average_mass": 1663.60816,
+            "monoisotopic_mass": 1663.60816,
+            "average_mass": 1664.53,
             "composition": {
                 "C": 64,
                 "H": 105,
@@ -10137,8 +10184,8 @@
             "id": "0754",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C70H115N5O50",
-            "monoisotopic_mass": 1826.67,
-            "average_mass": 1825.66098,
+            "monoisotopic_mass": 1825.66098,
+            "average_mass": 1826.67,
             "composition": {
                 "C": 70,
                 "H": 115,
@@ -10164,8 +10211,8 @@
             "id": "0755",
             "name": "N-linked (alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C75H122N6O53",
-            "monoisotopic_mass": 1955.78,
-            "average_mass": 1954.70357,
+            "monoisotopic_mass": 1954.70357,
+            "average_mass": 1955.78,
             "composition": {
                 "C": 75,
                 "H": 122,
@@ -10191,8 +10238,8 @@
             "id": "0756",
             "name": "N-linked (beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C75H122N6O53",
-            "monoisotopic_mass": 1955.78,
-            "average_mass": 1954.70357,
+            "monoisotopic_mass": 1954.70357,
+            "average_mass": 1955.78,
             "composition": {
                 "C": 75,
                 "H": 122,
@@ -10218,8 +10265,8 @@
             "id": "0757",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C81H132N6O58",
-            "monoisotopic_mass": 2117.92,
-            "average_mass": 2116.7564,
+            "monoisotopic_mass": 2116.7564,
+            "average_mass": 2117.92,
             "composition": {
                 "C": 81,
                 "H": 132,
@@ -10245,8 +10292,8 @@
             "id": "0758",
             "name": "N-linked (alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C81H132N6O58",
-            "monoisotopic_mass": 2117.92,
-            "average_mass": 2116.7564,
+            "monoisotopic_mass": 2116.7564,
+            "average_mass": 2117.92,
             "composition": {
                 "C": 81,
                 "H": 132,
@@ -10272,8 +10319,8 @@
             "id": "0759",
             "name": "N-linked (alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C92H149N7O66",
-            "monoisotopic_mass": 2409.18,
-            "average_mass": 2407.85181,
+            "monoisotopic_mass": 2407.85181,
+            "average_mass": 2409.18,
             "composition": {
                 "C": 92,
                 "H": 149,
@@ -10299,8 +10346,8 @@
             "id": "0760",
             "name": "N-linked (beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C56H92N4O39",
-            "monoisotopic_mass": 1445.34,
-            "average_mass": 1444.53387,
+            "monoisotopic_mass": 1444.53387,
+            "average_mass": 1445.34,
             "composition": {
                 "C": 56,
                 "H": 92,
@@ -10326,8 +10373,8 @@
             "id": "0761",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C62H102N4O44",
-            "monoisotopic_mass": 1607.48,
-            "average_mass": 1606.58669,
+            "monoisotopic_mass": 1606.58669,
+            "average_mass": 1607.48,
             "composition": {
                 "C": 62,
                 "H": 102,
@@ -10353,8 +10400,8 @@
             "id": "0762",
             "name": "N-linked (beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C62H102N4O44",
-            "monoisotopic_mass": 1607.48,
-            "average_mass": 1606.58669,
+            "monoisotopic_mass": 1606.58669,
+            "average_mass": 1607.48,
             "composition": {
                 "C": 62,
                 "H": 102,
@@ -10380,8 +10427,8 @@
             "id": "0763",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C68H112N4O49",
-            "monoisotopic_mass": 1769.62,
-            "average_mass": 1768.63952,
+            "monoisotopic_mass": 1768.63952,
+            "average_mass": 1769.62,
             "composition": {
                 "C": 68,
                 "H": 112,
@@ -10407,8 +10454,8 @@
             "id": "0764",
             "name": "N-linked (alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C79H129N5O57",
-            "monoisotopic_mass": 2060.87,
-            "average_mass": 2059.73493,
+            "monoisotopic_mass": 2059.73493,
+            "average_mass": 2060.87,
             "composition": {
                 "C": 79,
                 "H": 129,
@@ -10434,8 +10481,8 @@
             "id": "0765",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C79H129N5O57",
-            "monoisotopic_mass": 2060.87,
-            "average_mass": 2059.73493,
+            "monoisotopic_mass": 2059.73493,
+            "average_mass": 2060.87,
             "composition": {
                 "C": 79,
                 "H": 129,
@@ -10461,8 +10508,8 @@
             "id": "0766",
             "name": "N-linked (alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C90H146N6O65",
-            "monoisotopic_mass": 2352.13,
-            "average_mass": 2350.83035,
+            "monoisotopic_mass": 2350.83035,
+            "average_mass": 2352.13,
             "composition": {
                 "C": 90,
                 "H": 146,
@@ -10488,8 +10535,8 @@
             "id": "0767",
             "name": "N-linked (beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C64H105N5O44",
-            "monoisotopic_mass": 1648.53,
-            "average_mass": 1647.61324,
+            "monoisotopic_mass": 1647.61324,
+            "average_mass": 1648.53,
             "composition": {
                 "C": 64,
                 "H": 105,
@@ -10515,8 +10562,8 @@
             "id": "0768",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C70H115N5O49",
-            "monoisotopic_mass": 1810.67,
-            "average_mass": 1809.66607,
+            "monoisotopic_mass": 1809.66607,
+            "average_mass": 1810.67,
             "composition": {
                 "C": 70,
                 "H": 115,
@@ -10542,8 +10589,8 @@
             "id": "0769",
             "name": "N-linked (beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C70H115N5O49",
-            "monoisotopic_mass": 1810.67,
-            "average_mass": 1809.66607,
+            "monoisotopic_mass": 1809.66607,
+            "average_mass": 1810.67,
             "composition": {
                 "C": 70,
                 "H": 115,
@@ -10569,8 +10616,8 @@
             "id": "0770",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C76H125N5O54",
-            "monoisotopic_mass": 1972.81,
-            "average_mass": 1971.71889,
+            "monoisotopic_mass": 1971.71889,
+            "average_mass": 1972.81,
             "composition": {
                 "C": 76,
                 "H": 125,
@@ -10596,8 +10643,8 @@
             "id": "0771",
             "name": "N-linked (alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C87H142N6O62",
-            "monoisotopic_mass": 2264.06,
-            "average_mass": 2262.81431,
+            "monoisotopic_mass": 2262.81431,
+            "average_mass": 2264.06,
             "composition": {
                 "C": 87,
                 "H": 142,
@@ -10623,8 +10670,8 @@
             "id": "0772",
             "name": "N-linked (beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C87H142N6O62",
-            "monoisotopic_mass": 2264.06,
-            "average_mass": 2262.81431,
+            "monoisotopic_mass": 2262.81431,
+            "average_mass": 2264.06,
             "composition": {
                 "C": 87,
                 "H": 142,
@@ -10650,8 +10697,8 @@
             "id": "0773",
             "name": "N-linked (alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->3)-[beta-D-GlcNAc-(1->4)]-[alpha-Neu5Ac-(2->6)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->2)-alpha-D-Man-(1->6)]-beta-D-Man-(1->4)-beta-D-GlcNAc-(1->4)-[alpha-L-Fuc-(1->6)]-beta-D-GlcNAc) (complex) asparagine",
             "formula": "C98H159N7O70",
-            "monoisotopic_mass": 2555.32,
-            "average_mass": 2553.90972,
+            "monoisotopic_mass": 2553.90972,
+            "average_mass": 2555.32,
             "composition": {
                 "C": 98,
                 "H": 159,

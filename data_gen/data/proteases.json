@@ -104,7 +104,7 @@
       "id": "thermolysin",
       "name": "Thermolysin",
       "full_name": "Bacillus thermoproteolyticus thermolysin",
-      "regex_pattern": "(?<=[LFIAVM])"
+      "regex_pattern": "(?<![DE])(?=[AFILMV])"
     },
     {
       "id": "unspecific",

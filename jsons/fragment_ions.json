@@ -1,9 +1,9 @@
 {
     "metadata": {
-        "generated_date": "2026-07-07T16:00:26.358951",
+        "generated_date": "2026-09-23T17:25:42.862321",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "tacular_version": "1.1.0",
+        "tacular_version": "1.1.3",
         "data_version": null
     },
     "fragment_ions": [
@@ -138,12 +138,12 @@
         {
             "id": "d",
             "name": "d-ion",
-            "formula": "C2H3N",
-            "monoisotopic_mass": 41.026549,
-            "average_mass": 41.051997,
+            "formula": "C2H4N",
+            "monoisotopic_mass": 42.034374,
+            "average_mass": 42.059938,
             "composition": {
                 "C": 2,
-                "H": 3,
+                "H": 4,
                 "N": 1
             }
         },
@@ -227,43 +227,19 @@
         {
             "id": "v",
             "name": "v-ion",
-            "formula": "C2H2NO",
-            "monoisotopic_mass": 56.013639,
-            "average_mass": 56.043461,
+            "formula": "C2H3NO2",
+            "monoisotopic_mass": 73.016378,
+            "average_mass": 73.050807,
             "composition": {
                 "C": 2,
-                "H": 2,
+                "H": 3,
                 "N": 1,
-                "O": 1
+                "O": 2
             }
         },
         {
             "id": "w",
             "name": "w-ion",
-            "formula": "C3H3O",
-            "monoisotopic_mass": 55.01839,
-            "average_mass": 55.055435,
-            "composition": {
-                "C": 3,
-                "H": 3,
-                "O": 1
-            }
-        },
-        {
-            "id": "w-valine",
-            "name": "w-ion (valine)",
-            "formula": "C4H6O",
-            "monoisotopic_mass": 70.041865,
-            "average_mass": 70.089993,
-            "composition": {
-                "C": 4,
-                "H": 6,
-                "O": 1
-            }
-        },
-        {
-            "id": "wa-threonine",
-            "name": "wa-ion (threonine)",
             "formula": "C3H4O2",
             "monoisotopic_mass": 72.021129,
             "average_mass": 72.062781,
@@ -271,6 +247,30 @@
                 "C": 3,
                 "H": 4,
                 "O": 2
+            }
+        },
+        {
+            "id": "w-valine",
+            "name": "w-ion (valine)",
+            "formula": "C4H6O2",
+            "monoisotopic_mass": 86.036779,
+            "average_mass": 86.089398,
+            "composition": {
+                "C": 4,
+                "H": 6,
+                "O": 2
+            }
+        },
+        {
+            "id": "wa-threonine",
+            "name": "wa-ion (threonine)",
+            "formula": "C3H4O3",
+            "monoisotopic_mass": 88.016044,
+            "average_mass": 88.062185,
+            "composition": {
+                "C": 3,
+                "H": 4,
+                "O": 3
             }
         },
         {
@@ -292,37 +292,37 @@
         {
             "id": "wa-isoleucine",
             "name": "wa-ion (isoleucine)",
-            "formula": "C5H8O",
-            "monoisotopic_mass": 84.057515,
-            "average_mass": 84.11661,
+            "formula": "C5H8O2",
+            "monoisotopic_mass": 100.052429,
+            "average_mass": 100.116015,
             "composition": {
                 "C": 5,
                 "H": 8,
-                "O": 1
+                "O": 2
             }
         },
         {
             "id": "wb-threonine",
             "name": "wb-ion (threonine)",
-            "formula": "C4H6O",
-            "monoisotopic_mass": 70.041865,
-            "average_mass": 70.089993,
+            "formula": "C4H6O2",
+            "monoisotopic_mass": 86.036779,
+            "average_mass": 86.089398,
             "composition": {
                 "C": 4,
                 "H": 6,
-                "O": 1
+                "O": 2
             }
         },
         {
             "id": "wb-isoleucine",
             "name": "wb-ion (isoleucine)",
-            "formula": "C4H6O",
-            "monoisotopic_mass": 70.041865,
-            "average_mass": 70.089993,
+            "formula": "C4H6O2",
+            "monoisotopic_mass": 86.036779,
+            "average_mass": 86.089398,
             "composition": {
                 "C": 4,
                 "H": 6,
-                "O": 1
+                "O": 2
             }
         },
         {
