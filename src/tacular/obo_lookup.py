@@ -7,6 +7,7 @@ prefixes (see e.g. ``unimod/lookup.py``). Every id query, in every ontology, goe
 through one normalization function, :func:`_normalize_id`.
 """
 
+import math
 from bisect import bisect_left, bisect_right
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -16,7 +17,7 @@ from random import choice
 from ._lookup import _BaseLookup
 from .errors import TacularError
 from .obo_entity import OboEntity
-from .tolerance import ToleranceUnit, _half_width, tolerance_window
+from .tolerance import ToleranceUnit, _half_width
 
 __all__ = ["OntologyLookup"]
 
@@ -52,12 +53,6 @@ def _normalize_id(key: str, accession_prefixes: tuple[str, ...] = (), id_prefix:
     if id_prefix is not None and key.startswith(id_prefix):
         key = key[len(id_prefix) :]
     return key.lstrip("0")
-
-
-# Relative slack on the bisect window of ``query_mass``; the exact
-# ``abs(m - mass) <= tolerance`` test is then applied to every candidate, so the window
-# only has to exceed float rounding (a few ulps of the largest operand).
-_MASS_WINDOW_SLACK = 1e-9
 
 
 @dataclass(frozen=True, slots=True)
@@ -244,22 +239,23 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
         Raises:
             TacularError: if ``unit`` is not ``"da"`` or ``"ppm"``.
 
-        Bisects a mass-sorted index (built on the first call), then applies the exact
-        ``abs(entry_mass - mass) <= tolerance`` test to each candidate.
+        Bisects a mass-sorted index (built on the first call) for the entries inside
+        :func:`~tacular.tolerance_window` ``(lo, hi)``, bounds included, so a hit here is
+        exactly a ``within_tolerance`` hit. A NaN or infinite ``mass`` or a NaN
+        ``tolerance`` matches nothing; an infinite ``tolerance`` matches every entry.
         """
         tolerance = _half_width(mass, tolerance, unit)  # validates unit; Da from here on
-        if mass != mass or tolerance != tolerance:  # NaN matches nothing
+        if not math.isfinite(mass) or tolerance != tolerance:
             return []
         index = self._mass_index(monoisotopic)
         masses = index.masses
-        window_lo, window_hi = tolerance_window(mass, tolerance)
-        slack = _MASS_WINDOW_SLACK * (1.0 + abs(mass) + abs(tolerance))
-        lo = bisect_left(masses, window_lo - slack)
-        hi = bisect_right(masses, window_hi + slack)
+        window_lo, window_hi = mass - tolerance, mass + tolerance  # tolerance_window, minus its finite check
+        lo = bisect_left(masses, window_lo)
+        hi = bisect_right(masses, window_hi)
         if lo >= hi:
             return []
         infos = index.infos
-        hits = [(index.positions[i], infos[i]) for i in range(lo, hi) if abs(masses[i] - mass) <= tolerance]
+        hits = [(index.positions[i], infos[i]) for i in range(lo, hi)]
         hits.sort(key=lambda hit: hit[0])
         return [info for _, info in hits]
 

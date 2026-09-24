@@ -118,14 +118,14 @@ whether a cached copy exists, the version currently in use, and its entry count:
    gno          no       2025-10-10               3534
    uniprot_ptm  no       2026_03 of 02-Sep-2026   440
 
-The versions and counts above are the data bundled with tacular 1.2.0.
+The versions and counts above are the bundled data at the time of writing; ``tacular status`` shows yours.
 
 ``tacular clear``
 -----------------
 
 Deletes the cached ontology data (the ``data/`` folder of the cache directory)
-and the downloaded source files (the ``obo/`` folder), so every lookup goes back
-to the bundled copy on the next import.
+and the downloaded source files (the ``obo/`` folder), so each ontology goes back
+to the bundled copy the next time a process uses that ontology.
 
 ``tacular where``
 -----------------

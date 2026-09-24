@@ -340,7 +340,8 @@ relative to `abs(mass)`, so windows around negative masses are symmetric.
 - `da_to_ppm(delta, mz) -> float` - `delta / abs(mz) * 1e6`; `mz == 0` raises `TacularError`
 - `ppm_to_da(delta_ppm, mz) -> float` - `delta_ppm * abs(mz) / 1e6`
 - `tolerance_window(mass, tolerance, *, unit="da") -> tuple[float, float]` - `(lo, hi)`; a negative tolerance gives `lo > hi`
-- `within_tolerance(observed, theoretical, tolerance, *, unit="da") -> bool` - `abs(observed - theoretical) <= half-width`, ppm of `theoretical`; NaN gives `False`
+- `within_tolerance(observed, theoretical, tolerance, *, unit="da") -> bool` - `lo <= observed <= hi` on `tolerance_window(theoretical, ...)` (bounds included, so the two always agree); ppm of `theoretical`
+- `tolerance_window` and `within_tolerance` raise `TacularError` for NaN or infinite input; `da_to_ppm`/`ppm_to_da` use `abs(mz)` (spxtacular's `da_to_ppm` uses the signed m/z)
 
 `OntologyLookup.query_mass(..., unit=)` uses the same window.
 

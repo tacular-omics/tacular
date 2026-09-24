@@ -66,8 +66,6 @@ def test_within_tolerance_values():
     assert within_tolerance(1000.005, 1000.0, 10, unit="ppm")
     assert not within_tolerance(1000.02, 1000.0, 10, unit="ppm")
     assert within_tolerance(-1000.005, -1000.0, 10, unit="ppm")
-    assert not within_tolerance(math.nan, 100.0, 1.0)
-    assert not within_tolerance(100.0, 100.0, math.nan)
 
 
 @pytest.mark.parametrize("unit", ["Da", "PPM", "Ppm", "mda", "", None, "th"])
@@ -114,11 +112,50 @@ def test_negative_mass_window_mirrors_positive(mass, tol, unit):
 
 
 @given(masses, masses, tolerances, units)
-def test_within_tolerance_agrees_with_window(observed, theoretical, tol, unit):
+def test_within_tolerance_is_the_window(observed, theoretical, tol, unit):
     lo, hi = tolerance_window(theoretical, tol, unit=unit)
-    width = (hi - lo) / 2
-    assert within_tolerance(observed, theoretical, tol, unit=unit) == (abs(observed - theoretical) <= width)
+    assert within_tolerance(observed, theoretical, tol, unit=unit) == (lo <= observed <= hi)
     assert within_tolerance(theoretical, theoretical, tol, unit=unit)
+
+
+def _edge_cases():
+    # 4997.130779303885 +/- 0.01 is the review's repro: abs(lo - m) > 0.01 after rounding
+    return [(4997.130779303885, 0.01, "da"), (100.0, 0.5, "da"), (1000.0, 10.0, "ppm"), (-523.2847, 5.0, "ppm")]
+
+
+@pytest.mark.parametrize(("theoretical", "tol", "unit"), _edge_cases())
+def test_within_tolerance_edges(theoretical, tol, unit):
+    lo, hi = tolerance_window(theoretical, tol, unit=unit)
+    assert within_tolerance(lo, theoretical, tol, unit=unit)
+    assert within_tolerance(hi, theoretical, tol, unit=unit)
+    assert within_tolerance(math.nextafter(lo, math.inf), theoretical, tol, unit=unit)
+    assert within_tolerance(math.nextafter(hi, -math.inf), theoretical, tol, unit=unit)
+    assert not within_tolerance(math.nextafter(lo, -math.inf), theoretical, tol, unit=unit)
+    assert not within_tolerance(math.nextafter(hi, math.inf), theoretical, tol, unit=unit)
+
+
+@given(masses, tolerances, units)
+def test_within_tolerance_edges_property(theoretical, tol, unit):
+    lo, hi = tolerance_window(theoretical, tol, unit=unit)
+    assert within_tolerance(lo, theoretical, tol, unit=unit)
+    assert within_tolerance(hi, theoretical, tol, unit=unit)
+    assert not within_tolerance(math.nextafter(lo, -math.inf), theoretical, tol, unit=unit)
+    assert not within_tolerance(math.nextafter(hi, math.inf), theoretical, tol, unit=unit)
+
+
+@pytest.mark.parametrize("bad", [math.nan, math.inf, -math.inf])
+def test_non_finite_input_raises(bad):
+    with pytest.raises(TacularError):
+        tolerance_window(bad, 1.0, unit="ppm")
+    with pytest.raises(TacularError):
+        tolerance_window(100.0, bad)
+    for args in ((bad, 100.0, 1.0), (100.0, bad, 1.0), (100.0, 100.0, bad)):
+        with pytest.raises(TacularError):
+            within_tolerance(*args, unit="ppm")
+
+
+def test_negative_tolerance_matches_nothing():
+    assert not within_tolerance(100.0, 100.0, -1.0)
 
 
 @given(masses, st.floats(min_value=0, max_value=1e3, allow_nan=False))

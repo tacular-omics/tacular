@@ -21,7 +21,14 @@ class _ReadOnlyDict[K, V](dict[K, V]):
     (as a ``MappingProxyType`` would): the entry's cached ``composition`` depends on it.
     """
 
-    __slots__ = ()
+    __slots__ = ("_sealed",)
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Fill once, at construction; calling ``__init__`` again (which would re-fill it) raises."""
+        if getattr(self, "_sealed", False):
+            self._read_only()
+        dict.__init__(self, *args, **kwargs)
+        self._sealed = True
 
     def __reduce__(self) -> tuple[type, tuple[dict[K, V]]]:
         """Pickle/copy via the constructor (the default path calls ``__setitem__``)."""
