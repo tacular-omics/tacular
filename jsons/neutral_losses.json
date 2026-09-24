@@ -1,9 +1,9 @@
 {
     "metadata": {
-        "generated_date": "2026-07-07T14:55:16.213811",
+        "generated_date": "2026-09-23T21:10:47.661784",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "tacular_version": "1.0.1",
+        "tacular_version": "1.2.0",
         "data_version": null
     },
     "neutral_losses": [
@@ -23,10 +23,10 @@
             "name": "Ammonia",
             "description": "From amine groups",
             "amino_acids": [
+                "N",
                 "K",
                 "R",
-                "Q",
-                "N"
+                "Q"
             ],
             "monoisotopic_mass": -17.026549,
             "average_mass": -17.030525,
@@ -40,9 +40,9 @@
             "name": "Water",
             "description": "From -OH and -COOH groups",
             "amino_acids": [
-                "D",
                 "S",
                 "E",
+                "D",
                 "T"
             ],
             "monoisotopic_mass": -18.010565,
@@ -72,8 +72,8 @@
             "name": "Carbon dioxide",
             "description": "From -COOH groups",
             "amino_acids": [
-                "D",
-                "E"
+                "E",
+                "D"
             ],
             "monoisotopic_mass": -43.989829,
             "average_mass": -44.009546,
@@ -104,8 +104,8 @@
             "name": "Formic acid",
             "description": "From -COOH groups",
             "amino_acids": [
-                "D",
-                "E"
+                "E",
+                "D"
             ],
             "monoisotopic_mass": -46.005479,
             "average_mass": -46.025427,
@@ -151,8 +151,8 @@
             "description": "From phosphotyrosine and sometimes from phosphoserine and phosphothreonine",
             "amino_acids": [
                 "S",
-                "T",
-                "Y"
+                "Y",
+                "T"
             ],
             "monoisotopic_mass": -79.966331,
             "average_mass": -79.979918,
