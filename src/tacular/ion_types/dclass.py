@@ -47,7 +47,7 @@ class FragmentIonInfo(_CompositionCache):
     average_mass: float | None
     """Average mass offset in Da, or ``None``."""
     dict_composition: Mapping[str, int] | None = field(hash=False)
-    """Offset composition as ``{symbol: count}``, or ``None``. Read-only."""
+    """Offset composition as ``{symbol: count}``, or ``None``. Read-only (mutating it raises ``TypeError``)."""
     properties: IonTypeProperty = IonTypeProperty.NONE
     """Classification flags (forward, backward, internal, ...)."""
 

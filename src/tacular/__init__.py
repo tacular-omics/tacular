@@ -67,7 +67,10 @@ if TYPE_CHECKING:
 
 
 def __getattr__(name: str) -> object:
-    """Import an ontology subpackage on first access to one of its names (PEP 562)."""
+    """Import an ontology subpackage on first access to it (``tacular.unimod``) or to one
+    of its names (``tacular.UNIMOD_LOOKUP``) (PEP 562)."""
+    if name in _LAZY_SUBMODULES:
+        return import_module(f".{name}", __name__)  # the import binds it on the package too
     module = _LAZY_ATTRS.get(name)
     if module is None:
         raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
@@ -78,8 +81,8 @@ def __getattr__(name: str) -> object:
 
 
 def __dir__() -> list[str]:
-    """Module attributes, including the not-yet-loaded ontology names."""
-    return sorted(set(globals()) | set(_LAZY_ATTRS))
+    """Module attributes, including the not-yet-loaded ontology subpackages and names."""
+    return sorted(set(globals()) | set(_LAZY_ATTRS) | set(_LAZY_SUBMODULES))
 
 
 __all__ = [

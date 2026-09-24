@@ -46,8 +46,8 @@ class OboEntity(_CompositionCache):
     supported), or ``None`` if not available. Use :attr:`composition` for a version
     keyed by :class:`~tacular.ElementInfo` instead of plain strings.
 
-    Treat it as read-only: the dict is shared by every caller of the lookup, so
-    mutating it changes the entry for everyone. :meth:`to_dict` returns a copy."""
+    Read-only: stored as a read-only ``dict`` copy of the mapping passed in, so
+    mutating it raises ``TypeError``. :meth:`to_dict` returns a plain copy."""
 
     def __str__(self) -> str:
         """Return ``"{name} ({formula})"``, e.g. ``"Acetyl (C2H2O)"``."""

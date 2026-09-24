@@ -47,7 +47,7 @@ AME2016).
 
 Hashability: every `*Info` is hashable, so entries can be set members and dict keys.
 Ontology entries (`OboEntity` subclasses) hash on `(id, name)`. `dict_composition` is
-shared by every caller: treat it as read-only (`to_dict()` returns a copy).
+a read-only dict (mutating it raises `TypeError`); `to_dict()` returns a plain copy.
 
 ```python
 import tacular as t

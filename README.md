@@ -55,6 +55,7 @@ print(carbon_13.mass)  # 13.00335483507
 # Identify a modification from an observed mass shift
 hits = t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=0.001)
 print(hits[0].name)  # Phospho
+print([m.name for m in t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=10, unit="ppm")])  # ['Phospho']
 ```
 
 Every lookup has the same interface: `LOOKUP[key]`, `.get(key, default)`, `in`, `len`,
@@ -76,7 +77,8 @@ both a `KeyError` and a `ValueError`. Physical constants such as `PROTON_MASS` a
   tacular clear                  # revert to the bundled data
   ```
 
-  The refresh takes effect on the next `import tacular`. See the
+  The refresh takes effect the first time a Python process uses that ontology (e.g.
+  `t.UNIMOD_LOOKUP`); an ontology already loaded in a running process keeps its data. See the
   [docs](https://tacular.readthedocs.io/) for the full CLI reference (including
   `--offline`, verbosity flags, and cache environment variables) and the complete
   lookup API.

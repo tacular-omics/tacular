@@ -28,7 +28,7 @@ class AminoAcidInfo(_CompositionCache):
     average_mass: float | None
     """Average residue mass in Da, or ``None`` if undefined."""
     dict_composition: Mapping[str, int] | None = field(hash=False)
-    """Residue composition as ``{symbol: count}``, or ``None``. Read-only: shared by every caller."""
+    """Residue composition as ``{symbol: count}``, or ``None``. Read-only (mutating it raises ``TypeError``)."""
     is_mass_ambiguous: bool = False
     """True if the code stands for residues of different masses (``B``, ``Z``, ``X``)."""
     is_ambiguous: bool = False

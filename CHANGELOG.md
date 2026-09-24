@@ -10,8 +10,9 @@ in [docs/migration.rst](docs/migration.rst).
 No API or output changes; timings are indicative single-core numbers.
 
 - `import tacular` no longer loads the six ontologies (UNIMOD, PSI-MOD, RESID, XLMOD,
-  GNOme, UniProt-PTM): each loads on first use of one of its names, e.g.
-  `tacular.UNIMOD_LOOKUP` or `from tacular import GNO_LOOKUP` (~85 ms -> ~35 ms).
+  GNOme, UniProt-PTM): each loads on first use of its subpackage or one of its names, e.g.
+  `tacular.unimod`, `tacular.UNIMOD_LOOKUP` or `from tacular import GNO_LOOKUP`
+  (~85 ms -> ~35 ms). A `tacular update` refresh therefore applies at that first use.
 - `ElementInfo.__hash__` is computed once per instance instead of on every dict
   operation (~450 ns -> ~90 ns per hash).
 - `composition` on `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo` and `RefMolInfo`
@@ -25,8 +26,8 @@ No API or output changes; timings are indicative single-core numbers.
 ### Added
 
 - `OntologyLookup.query_mass(mass, *, tolerance=0.01, unit="da", monoisotopic=True)`:
-  `unit="ppm"` reads `tolerance` in parts per million of `mass` (matches `search_mass(unit=)`
-  in the ontology packages). An unknown `unit` raises `TacularError`.
+  `unit="ppm"` reads `tolerance` in parts per million of `mass` (same `unit: Literal["da", "ppm"]`
+  convention as paftacular). NaN `mass` or `tolerance` returns `[]`. An unknown `unit` raises `TacularError`.
 
 - `tacular.TacularError` (a `ValueError`) and `tacular.TacularKeyError` (a
   `TacularError` that is also a `KeyError`), in `tacular.errors`.
@@ -58,6 +59,13 @@ No API or output changes; timings are indicative single-core numbers.
 - `tacular.update.OBO_SOURCES` and `ONTOLOGIES` (now private).
 
 ### Changed
+
+- `dict_composition` on every `*Info` class (`OboEntity` and its ontology subclasses,
+  `MonosaccharideInfo`, `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo`,
+  `RefMolInfo`) is a read-only `dict` copy of what was passed in: item assignment,
+  `update`, `pop`, `clear`, ... raise `TypeError`. It still pickles, copies, compares and
+  `json.dumps` like a dict. Build a new dict (`dict(info.dict_composition) | {...}`) and
+  `dataclasses.replace` / `update(dict_composition=...)` instead.
 
 - Renamed: `Proteases` -> `Protease`, `PROTEASE_LITERALS` -> `ProteaseLiteral`,
   `PROTEASES_DICT` -> `PROTEASE_DICT`, `XlModInfo` -> `XlmodInfo`,

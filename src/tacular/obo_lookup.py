@@ -251,6 +251,8 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
             tolerance = abs(mass) * tolerance / 1e6
         elif unit != "da":
             raise TacularError(f"unit must be 'da' or 'ppm', got {unit!r}.")
+        if mass != mass or tolerance != tolerance:  # NaN matches nothing
+            return []
         index = self._mass_index(monoisotopic)
         masses = index.masses
         slack = _MASS_WINDOW_SLACK * (1.0 + abs(mass) + abs(tolerance))

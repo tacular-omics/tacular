@@ -30,7 +30,7 @@ class NeutralDeltaInfo(_CompositionCache):
     average_mass: float
     """Signed average mass delta in Da."""
     dict_composition: Mapping[str, int] = field(hash=False)
-    """Signed composition as ``{symbol: count}``. Read-only."""
+    """Signed composition as ``{symbol: count}``. Read-only (mutating it raises ``TypeError``)."""
 
     def __hash__(self) -> int:
         """Hash on ``name`` only (``dict_composition`` is a plain ``dict``)."""

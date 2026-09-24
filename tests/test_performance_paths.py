@@ -270,6 +270,21 @@ def test_star_import_and_all_resolve():
     assert int(_run(code)) == len(t.__all__)
 
 
+@pytest.mark.parametrize("module", [m.removeprefix("tacular.") for m in _LAZY_MODULES])
+def test_lazy_subpackage_attribute_in_a_fresh_process(module):
+    # Read the subpackage attribute first, before any of its names: on 1.x (eager
+    # imports) ``tacular.unimod`` etc. were bound by ``import tacular``.
+    code = (
+        "import tacular\n"
+        f"assert {module!r} in dir(tacular)\n"
+        f"mod = tacular.{module}\n"
+        f"assert mod.__name__ == 'tacular.{module}'\n"
+        f"assert all(getattr(tacular, n) is getattr(mod, n) for n in tacular._LAZY_SUBMODULES[{module!r}])\n"
+        "print('ok')"
+    )
+    assert _run(code) == "ok"
+
+
 def test_lazy_module_getattr_and_dir():
     assert t.XLMOD_LOOKUP is t.xlmod.XLMOD_LOOKUP
     assert set(t.__all__) <= set(dir(t))
@@ -345,3 +360,58 @@ def test_obo_entity_composition_none_and_bad_key():
     for _ in range(2):  # a failed resolution is not cached
         with pytest.raises(t.TacularKeyError):
             _ = bad.composition
+
+
+# --- read-only dict_composition ---------------------------------------------------------
+
+READ_ONLY_INFOS = [*COMPOSITION_INFOS, t.AA_LOOKUP["G"], *OBO_INFOS]
+
+
+@pytest.mark.parametrize("info", READ_ONLY_INFOS, ids=lambda i: type(i).__name__)
+def test_dict_composition_is_read_only_so_the_cache_cannot_go_stale(info):
+    import copy
+    import json
+
+    before = info.composition
+    comp = info.dict_composition
+    with pytest.raises(TypeError, match="read-only"):
+        comp["C"] = 99
+    for mutate in (
+        lambda: comp.update(C=99),
+        lambda: comp.pop("C"),
+        lambda: comp.popitem(),
+        lambda: comp.clear(),
+        lambda: comp.setdefault("Zz", 1),
+    ):
+        with pytest.raises(TypeError):
+            mutate()
+    with pytest.raises(TypeError):
+        del comp[next(iter(comp))]
+    with pytest.raises(TypeError):
+        comp |= {"C": 1}
+    assert info.composition == before
+    assert isinstance(comp, dict) and comp == dict(comp)
+    assert json.loads(json.dumps(comp)) == dict(comp)
+    for clone in (pickle.loads(pickle.dumps(info)), copy.copy(info), copy.deepcopy(info), dataclasses.replace(info)):
+        assert clone == info
+        assert clone.dict_composition == comp
+        assert type(clone.dict_composition) is type(comp)
+        assert clone.composition == before
+    assert dataclasses.asdict(info)["dict_composition"] == dict(comp)
+
+
+def test_dict_composition_input_is_copied():
+    source = {"H": 2, "O": 1}
+    e = OboEntity(id="1", name="w", formula=None, monoisotopic_mass=None, average_mass=None, dict_composition=source)
+    assert e.dict_composition is not source
+    source["H"] = 5  # the caller's dict stays theirs
+    assert e.dict_composition == {"H": 2, "O": 1}
+    assert e.composition == {t.ELEMENT_LOOKUP["H"]: 2, t.ELEMENT_LOOKUP["O"]: 1}
+    frozen = e.dict_composition
+    assert dataclasses.replace(e).dict_composition is frozen  # already read-only: not re-copied
+
+
+def test_query_mass_nan_returns_empty():
+    assert t.UNIMOD_LOOKUP.query_mass(math.nan) == []
+    assert t.UNIMOD_LOOKUP.query_mass(79.966, tolerance=math.nan) == []
+    assert t.UNIMOD_LOOKUP.query_mass(math.inf, tolerance=0, unit="ppm") == []

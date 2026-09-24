@@ -11,6 +11,7 @@ from collections.abc import Mapping
 from functools import cache
 
 from .._lookup import _BaseLookup
+from .._util import _freeze_composition
 from ..errors import TacularKeyError
 from .data import ISOTOPES, Element
 from .dclass import ElementInfo
@@ -198,12 +199,17 @@ class _CompositionCache:
 
     The slot is not a dataclass field (not in ``fields``/``asdict``/``repr``/pickle);
     ``dataclasses.replace`` builds a new instance, so a changed ``dict_composition``
-    is resolved afresh. ``dict_composition`` is documented read-only. A class uses
-    either :meth:`_composition_copy` or :meth:`_composition_dict_copy`, not both.
+    is resolved afresh. ``__post_init__`` stores ``dict_composition`` as a read-only
+    copy (:class:`~tacular._util._ReadOnlyDict`), so the memo cannot go stale. A class
+    uses either :meth:`_composition_copy` or :meth:`_composition_dict_copy`, not both.
     """
 
     __slots__ = ("_resolved_composition",)
     _resolved_composition: dict[ElementInfo, int]
+
+    def __post_init__(self) -> None:
+        """Freeze ``dict_composition`` (dataclass hook, inherited by every subclass)."""
+        _freeze_composition(self)
 
     def _composition_copy(self, dict_composition: Mapping[str, int]) -> Counter[ElementInfo]:
         """A fresh ``Counter`` of the resolved ``dict_composition`` (keys in sorted
