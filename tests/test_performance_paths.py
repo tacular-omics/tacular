@@ -275,3 +275,73 @@ def test_lazy_module_getattr_and_dir():
     assert set(t.__all__) <= set(dir(t))
     with pytest.raises(AttributeError, match="no attribute 'NOT_A_LOOKUP'"):
         _ = t.NOT_A_LOOKUP  # type: ignore[attr-defined]
+
+
+# --- query_mass(unit=) ------------------------------------------------------------------
+
+
+def test_query_mass_ppm_is_a_relative_window():
+    phospho = t.UNIMOD_LOOKUP["Phospho"]
+    mass = phospho.monoisotopic_mass
+    assert mass is not None
+    near = mass * (1 + 5e-6)  # 5 ppm away
+    assert phospho in t.UNIMOD_LOOKUP.query_mass(near, tolerance=10, unit="ppm")
+    assert phospho not in t.UNIMOD_LOOKUP.query_mass(near, tolerance=2, unit="ppm")
+    assert t.UNIMOD_LOOKUP.query_mass(near, tolerance=10, unit="ppm") == t.UNIMOD_LOOKUP.query_mass(
+        near, tolerance=abs(near) * 10 / 1e6
+    )
+    assert t.UNIMOD_LOOKUP.query_mass(mass, unit="da") == t.UNIMOD_LOOKUP.query_mass(mass)
+
+
+@settings(max_examples=200, deadline=None)
+@given(
+    lookup=st.sampled_from([*ONTOLOGY_LOOKUPS, _SYNTHETIC]),
+    mass=st.one_of(_FLOATS, st.floats(min_value=-50, max_value=3000)),
+    ppm=st.one_of(_FLOATS, st.floats(min_value=0, max_value=1000)),
+    monoisotopic=st.booleans(),
+)
+def test_query_mass_ppm_matches_linear_scan(lookup, mass, ppm, monoisotopic):
+    got = lookup.query_mass(mass, tolerance=ppm, unit="ppm", monoisotopic=monoisotopic)
+    assert got == _query_mass_linear(lookup, mass, abs(mass) * ppm / 1e6, monoisotopic)
+
+
+def test_query_mass_rejects_unknown_unit_and_positional_options():
+    with pytest.raises(t.TacularError, match="unit"):
+        t.UNIMOD_LOOKUP.query_mass(79.966, unit="mda")  # type: ignore[arg-type]
+    with pytest.raises(TypeError):
+        t.UNIMOD_LOOKUP.query_mass(79.966, 0.01)  # type: ignore[misc]
+
+
+# --- OboEntity.composition cache --------------------------------------------------------
+
+OBO_INFOS = [t.UNIMOD_LOOKUP["Phospho"], t.GNO_LOOKUP.choice(), t.MONOSACCHARIDE_LOOKUP["Hex"]]
+
+
+@pytest.mark.parametrize("info", OBO_INFOS, ids=lambda i: type(i).__name__)
+def test_obo_entity_composition_is_resolved_once_and_copied(info):
+    first = info.composition
+    resolved = info._resolved_composition
+    second = info.composition
+    assert info._resolved_composition is resolved
+    assert type(first) is dict and first == second == t.parse_composition(info.dict_composition)
+    assert first is not resolved and second is not first
+    assert [str(k) for k in first] == list(info.dict_composition)  # key order kept
+    first.clear()
+    assert info.composition == resolved
+    restored = pickle.loads(pickle.dumps(info))
+    with pytest.raises(AttributeError):
+        _ = restored._resolved_composition
+    assert restored.composition == resolved
+    assert "_resolved_composition" not in dataclasses.asdict(info)
+    changed = dataclasses.replace(info, dict_composition={"C": 2})
+    assert changed.composition == {t.ELEMENT_LOOKUP["C"]: 2}
+
+
+def test_obo_entity_composition_none_and_bad_key():
+    assert _entity(1, None).composition is None
+    bad = OboEntity(
+        id="1", name="bad", formula=None, monoisotopic_mass=None, average_mass=None, dict_composition={"Qq": 1}
+    )
+    for _ in range(2):  # a failed resolution is not cached
+        with pytest.raises(t.TacularKeyError):
+            _ = bad.composition

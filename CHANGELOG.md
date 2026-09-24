@@ -15,13 +15,18 @@ No API or output changes; timings are indicative single-core numbers.
 - `ElementInfo.__hash__` is computed once per instance instead of on every dict
   operation (~450 ns -> ~90 ns per hash).
 - `composition` on `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo` and `RefMolInfo`
-  resolves once per instance and returns a copy (~1.7 us -> ~0.9 us per access).
+  resolves once per instance and returns a copy (~1.7 us -> ~0.9 us per access); so does
+  `OboEntity.composition` (every ontology entry and `MonosaccharideInfo`).
 - `OntologyLookup.query_mass` bisects a mass-sorted index built on first use instead of
   scanning every entry; results and their order are unchanged (~90 us -> ~1-10 us).
 - `OntologyLookup.query_id` skips id normalization for keys that are already a stored or
   normalized id (`"21"`: ~420 ns -> ~230 ns).
 
 ### Added
+
+- `OntologyLookup.query_mass(mass, *, tolerance=0.01, unit="da", monoisotopic=True)`:
+  `unit="ppm"` reads `tolerance` in parts per million of `mass` (matches `search_mass(unit=)`
+  in the ontology packages). An unknown `unit` raises `TacularError`.
 
 - `tacular.TacularError` (a `ValueError`) and `tacular.TacularKeyError` (a
   `TacularError` that is also a `KeyError`), in `tacular.errors`.

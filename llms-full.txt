@@ -108,7 +108,7 @@ Methods and properties:
 - `.get(key, default=None) -> T | None`
 - `.query_id(mod_id: str | int) -> T | None` - id only; strips the accession prefix (`UNIMOD:`/`U:`, `MOD:`/`M:`, `XLMOD:`/`X:`, `RESID:`/`R:`, `GNO:`/`G:`, `PTM-`), the RESID `AA` / GNO `G` prefix, leading zeros and surrounding whitespace. A numeric id must be plain ASCII digits (`"+21"`, `"2_1"`, `"٢١"` do not match); a `bool` never matches
 - `.query_name(name: str) -> T | None` - name only, case-insensitive, optional accession prefix (`"U:Phospho"`); `None` for a non-`str`
-- `.query_mass(mass: float, *, tolerance: float = 0.01, monoisotopic: bool = True) -> list[T]` - all entries within +/- tolerance Da
+- `.query_mass(mass: float, *, tolerance: float = 0.01, unit: Literal["da", "ppm"] = "da", monoisotopic: bool = True) -> list[T]` - all entries within +/- tolerance (Da, or ppm of `mass` with `unit="ppm"`), in data order
 - `.choice(*, require_monoisotopic_mass: bool = True, require_composition: bool = True) -> T` - random entry; `TacularError` if none qualifies
 - `.values() -> list[T]`, `.keys() -> list[str]` (raw ids, e.g. `"21"`), `.items()`, `iter(lookup)`, `len(lookup)`
 - `.version -> str` - ontology release of the active data (bundled or refreshed cache)

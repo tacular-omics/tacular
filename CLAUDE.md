@@ -137,7 +137,7 @@ and checked). `import tacular as t` is the house style.
 - **Every lookup** subclasses `_BaseLookup`: `lookup[key]` (raises `TacularKeyError`),
   `.get(key, default)`, `in`, `len`, iteration over entries, `.keys()`, `.values()`, `.items()`.
 - **Ontology lookups** (`OntologyLookup` subclasses; `lookup[key]` tries name, then id;
-  `.query_id`, `.query_name`, `.query_mass(mass, *, tolerance=0.01, monoisotopic=True)`,
+  `.query_id`, `.query_name`, `.query_mass(mass, *, tolerance=0.01, unit="da"|"ppm", monoisotopic=True)`,
   `.choice(*, ...)`, `.version`; `.keys()` are raw ids):
   - `UNIMOD_LOOKUP`, `UnimodInfo`, `UnimodLookup` — UNIMOD
   - `PSIMOD_LOOKUP`, `PsimodInfo`, `PsimodLookup` — PSI-MOD
@@ -174,7 +174,7 @@ none. `*Info` dataclasses are `frozen=True, slots=True`; cached derived values l
 `field(init=False, repr=False, compare=False)` fields set in `__post_init__` with
 `object.__setattr__` (zero-arg `super()` breaks under `slots=True`, and `cached_property`
 needs `__dict__`). Per-instance memos that must stay out of `fields`/`asdict`/pickle
-(`ElementInfo`'s hash, the resolved `composition`) live instead in a `__slots__` of a
+(`ElementInfo`'s hash, the resolved `composition` incl. `OboEntity.composition`) live instead in a `__slots__` of a
 private base class (`_CachedHash`, `elements.lookup._CompositionCache`), set lazily.
 
 ## Conventions

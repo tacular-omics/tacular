@@ -12,6 +12,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import cached_property
 from random import choice
+from typing import Literal
 
 from ._lookup import _BaseLookup
 from .errors import TacularError
@@ -226,13 +227,30 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
             return by_name.get(stripped.lower())
         return None
 
-    def query_mass(self, mass: float, *, tolerance: float = 0.01, monoisotopic: bool = True) -> list[T]:
-        """Entries whose mass is within ``tolerance`` Da of ``mass`` (monoisotopic by
+    def query_mass(
+        self,
+        mass: float,
+        *,
+        tolerance: float = 0.01,
+        unit: Literal["da", "ppm"] = "da",
+        monoisotopic: bool = True,
+    ) -> list[T]:
+        """Entries whose mass is within ``tolerance`` of ``mass`` (monoisotopic by
         default, else average), in data order.
+
+        ``unit="da"`` (default) reads ``tolerance`` in Da; ``unit="ppm"`` in parts per
+        million of ``mass``, i.e. a window of ``abs(mass) * tolerance / 1e6`` Da.
+
+        Raises:
+            TacularError: if ``unit`` is not ``"da"`` or ``"ppm"``.
 
         Bisects a mass-sorted index (built on the first call), then applies the exact
         ``abs(entry_mass - mass) <= tolerance`` test to each candidate.
         """
+        if unit == "ppm":
+            tolerance = abs(mass) * tolerance / 1e6
+        elif unit != "da":
+            raise TacularError(f"unit must be 'da' or 'ppm', got {unit!r}.")
         index = self._mass_index(monoisotopic)
         masses = index.masses
         slack = _MASS_WINDOW_SLACK * (1.0 + abs(mass) + abs(tolerance))
