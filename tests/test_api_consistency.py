@@ -292,7 +292,7 @@ GEN = Path(__file__).resolve().parents[1] / "data_gen" / "generator"
 
 @pytest.mark.parametrize("name", DATA_MODULES)
 def test_generated_data_does_not_swallow_errors(name):
-    text = (SRC / name / "data.py").read_text()
+    text = (SRC / name / "data.py").read_text(encoding="utf-8")
     assert "UserWarning" not in text
     assert "Using empty dictionaries" not in text
 
@@ -300,7 +300,7 @@ def test_generated_data_does_not_swallow_errors(name):
 @pytest.mark.skipif(not GEN.is_dir(), reason="data_gen not available (installed wheel)")
 def test_generator_templates_do_not_swallow_errors():
     for path in GEN.glob("gen_*.py"):
-        text = path.read_text()
+        text = path.read_text(encoding="utf-8")
         assert "Using empty dictionaries" not in text, path.name
 
 
