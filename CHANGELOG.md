@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.2.0] (2026-09-23)
+
 ### Added
 
 - Every lookup now has the same mapping-style surface: `get(key, default=None)`,

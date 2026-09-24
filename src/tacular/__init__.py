@@ -40,7 +40,7 @@ from .unimod import UNIMOD_LOOKUP, UnimodInfo, UnimodLookup
 from .uniprot_ptm import UNIPROT_PTM_LOOKUP, ModLocation, UniprotPtmInfo, UniprotPtmLookup
 from .xlmod import XLMOD_LOOKUP, XlModInfo, XlModLookup
 
-__version__ = "1.1.3"
+__version__ = "1.2.0"
 
 __all__ = [
     "AA_LOOKUP",
