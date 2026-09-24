@@ -20,11 +20,13 @@ prefers a refreshed cache over the bundled copy if one exists (see
 :mod:`tacular._cache`).
 """
 
+from importlib import import_module
+from typing import TYPE_CHECKING
+
 from . import constants as constants
 from .amino_acids import AA_LOOKUP, AMINO_ACID_INFOS, ORDERED_AMINO_ACIDS, AALookup, AminoAcid, AminoAcidInfo
 from .elements import ELEMENT_LOOKUP, Element, ElementInfo, ElementKey, ElementLookup, parse_composition
 from .errors import TacularError, TacularKeyError
-from .gno import GNO_LOOKUP, GnoInfo, GnoLookup
 from .ion_types import FRAGMENT_ION_LOOKUP, FragmentIonInfo, FragmentIonLookup, IonType, IonTypeLiteral, IonTypeProperty
 from .monosaccharides import MONOSACCHARIDE_LOOKUP, Monosaccharide, MonosaccharideInfo, MonosaccharideLookup
 from .neutral_deltas import (
@@ -38,14 +40,47 @@ from .neutral_deltas import (
 from .obo_entity import OboEntity
 from .obo_lookup import OntologyLookup
 from .proteases import PROTEASE_DICT, PROTEASE_LOOKUP, Protease, ProteaseInfo, ProteaseLiteral, ProteaseLookup
-from .psimod import PSIMOD_LOOKUP, PsimodInfo, PsimodLookup
 from .refmol import REFMOL_LOOKUP, RefMolID, RefMolInfo, RefMolLiteral, RefMolLookup
-from .resid import RESID_LOOKUP, ResidInfo, ResidLookup
-from .unimod import UNIMOD_LOOKUP, UnimodInfo, UnimodLookup
-from .uniprot_ptm import UNIPROT_PTM_LOOKUP, ModLocation, UniprotPtmInfo, UniprotPtmLookup
-from .xlmod import XLMOD_LOOKUP, XlmodInfo, XlmodLookup
 
 __version__ = "1.2.0"
+
+# The six ontologies (about 2 MB of bundled data) load on first attribute access, not at
+# ``import tacular``: ``tacular.GNO_LOOKUP`` and ``from tacular import GNO_LOOKUP`` both
+# go through ``__getattr__`` below. Importing ``tacular.gno`` etc. directly also works.
+_LAZY_SUBMODULES: dict[str, tuple[str, ...]] = {
+    "gno": ("GNO_LOOKUP", "GnoInfo", "GnoLookup"),
+    "psimod": ("PSIMOD_LOOKUP", "PsimodInfo", "PsimodLookup"),
+    "resid": ("RESID_LOOKUP", "ResidInfo", "ResidLookup"),
+    "unimod": ("UNIMOD_LOOKUP", "UnimodInfo", "UnimodLookup"),
+    "uniprot_ptm": ("UNIPROT_PTM_LOOKUP", "ModLocation", "UniprotPtmInfo", "UniprotPtmLookup"),
+    "xlmod": ("XLMOD_LOOKUP", "XlmodInfo", "XlmodLookup"),
+}
+_LAZY_ATTRS: dict[str, str] = {name: module for module, names in _LAZY_SUBMODULES.items() for name in names}
+
+if TYPE_CHECKING:
+    from .gno import GNO_LOOKUP, GnoInfo, GnoLookup
+    from .psimod import PSIMOD_LOOKUP, PsimodInfo, PsimodLookup
+    from .resid import RESID_LOOKUP, ResidInfo, ResidLookup
+    from .unimod import UNIMOD_LOOKUP, UnimodInfo, UnimodLookup
+    from .uniprot_ptm import UNIPROT_PTM_LOOKUP, ModLocation, UniprotPtmInfo, UniprotPtmLookup
+    from .xlmod import XLMOD_LOOKUP, XlmodInfo, XlmodLookup
+
+
+def __getattr__(name: str) -> object:
+    """Import an ontology subpackage on first access to one of its names (PEP 562)."""
+    module = _LAZY_ATTRS.get(name)
+    if module is None:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    submodule = import_module(f".{module}", __name__)
+    for attr in _LAZY_SUBMODULES[module]:
+        globals()[attr] = getattr(submodule, attr)
+    return globals()[name]
+
+
+def __dir__() -> list[str]:
+    """Module attributes, including the not-yet-loaded ontology names."""
+    return sorted(set(globals()) | set(_LAZY_ATTRS))
+
 
 __all__ = [
     "AA_LOOKUP",

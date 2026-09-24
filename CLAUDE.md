@@ -52,7 +52,8 @@ lowest-direct resolution, and the built wheel.
 
 ```
 src/tacular/
-  __init__.py         # re-exports every public name; holds __version__
+  __init__.py         # re-exports every public name; holds __version__; the 6 ontology
+                      # subpackages load lazily via module __getattr__ (_LAZY_SUBMODULES)
   obo_entity.py       # OboEntity: shared base dataclass for ontology *Info classes
   obo_lookup.py       # OntologyLookup: shared base class for the 6 ontology *Lookup classes;
                       # _normalize_id is the ONE id normaliser for every ontology
@@ -93,11 +94,13 @@ Ontology packages (subclass `OboEntity` / `OntologyLookup`): `unimod`, `psimod`,
 `ion_types`, `monosaccharides`, `neutral_deltas`, `proteases`, `refmol`) have their
 own standalone Info/Lookup classes with different query methods.
 
-Data flow: `import tacular` builds each `*_LOOKUP` from its bundled `data.py`, except
-that the 6 ontology lookups first ask `_cache` for a refreshed JSON in
+Data flow: `import tacular` builds each non-ontology `*_LOOKUP` from its bundled
+`data.py`. The 6 ontology lookups are built on first access to one of their names
+(`tacular.__getattr__`; keep `_LAZY_SUBMODULES` and the `TYPE_CHECKING` imports in sync
+when adding one), and first ask `_cache` for a refreshed JSON in
 `$TACULAR_DATA_DIR` / `$XDG_CACHE_HOME/tacular` / `~/.cache/tacular` (disable with
 `TACULAR_DISABLE_CACHE=1`). `OntologyLookup` builds its id/name/number indexes lazily
-on first query.
+on first query, and a mass-sorted index (bisected by `query_mass`) on first mass query.
 
 ### Regenerating data
 
@@ -170,7 +173,9 @@ public module has an explicit `__all__`; generated `data.py` modules are interna
 none. `*Info` dataclasses are `frozen=True, slots=True`; cached derived values live in
 `field(init=False, repr=False, compare=False)` fields set in `__post_init__` with
 `object.__setattr__` (zero-arg `super()` breaks under `slots=True`, and `cached_property`
-needs `__dict__`).
+needs `__dict__`). Per-instance memos that must stay out of `fields`/`asdict`/pickle
+(`ElementInfo`'s hash, the resolved `composition`) live instead in a `__slots__` of a
+private base class (`_CachedHash`, `elements.lookup._CompositionCache`), set lazily.
 
 ## Conventions
 

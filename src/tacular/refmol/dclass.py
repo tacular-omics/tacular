@@ -6,13 +6,13 @@ from dataclasses import dataclass, field
 
 from .._util import _round
 from ..elements import ElementInfo
-from ..elements.lookup import _composition_copy
+from ..elements.lookup import _CompositionCache
 
 __all__ = ["RefMolInfo"]
 
 
 @dataclass(frozen=True, slots=True)
-class RefMolInfo:
+class RefMolInfo(_CompositionCache):
     """An mzPAF reference molecule."""
 
     name: str
@@ -37,7 +37,7 @@ class RefMolInfo:
     @property
     def composition(self) -> Counter[ElementInfo]:
         """The composition keyed by :class:`~tacular.ElementInfo` (a fresh copy on each access)."""
-        return _composition_copy(self.dict_composition)
+        return self._composition_copy(self.dict_composition)
 
     def to_dict(self, *, float_precision: int | None = 6) -> dict[str, object]:
         """Convert to a plain, JSON-serializable dictionary.

@@ -5,6 +5,22 @@
 Breaking API cleanup for 2.0.0. The bundled data is unchanged. Every old -> new name is
 in [docs/migration.rst](docs/migration.rst).
 
+### Performance
+
+No API or output changes; timings are indicative single-core numbers.
+
+- `import tacular` no longer loads the six ontologies (UNIMOD, PSI-MOD, RESID, XLMOD,
+  GNOme, UniProt-PTM): each loads on first use of one of its names, e.g.
+  `tacular.UNIMOD_LOOKUP` or `from tacular import GNO_LOOKUP` (~85 ms -> ~35 ms).
+- `ElementInfo.__hash__` is computed once per instance instead of on every dict
+  operation (~450 ns -> ~90 ns per hash).
+- `composition` on `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo` and `RefMolInfo`
+  resolves once per instance and returns a copy (~1.7 us -> ~0.9 us per access).
+- `OntologyLookup.query_mass` bisects a mass-sorted index built on first use instead of
+  scanning every entry; results and their order are unchanged (~90 us -> ~1-10 us).
+- `OntologyLookup.query_id` skips id normalization for keys that are already a stored or
+  normalized id (`"21"`: ~420 ns -> ~230 ns).
+
 ### Added
 
 - `tacular.TacularError` (a `ValueError`) and `tacular.TacularKeyError` (a

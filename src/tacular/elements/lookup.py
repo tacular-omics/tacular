@@ -192,6 +192,25 @@ def _cached_composition(items: tuple[tuple[str, int], ...]) -> Counter[ElementIn
     return Counter(parse_composition(dict(items)))
 
 
-def _composition_copy(dict_composition: Mapping[str, int]) -> Counter[ElementInfo]:
-    """A fresh ``Counter`` of the resolved ``dict_composition`` (cached underneath)."""
-    return Counter(_cached_composition(tuple(sorted(dict_composition.items()))))
+class _CompositionCache:
+    """Slotted base for the frozen ``*Info`` dataclasses whose ``composition`` property
+    resolves ``dict_composition``: memoizes the resolved ``Counter`` on the instance.
+
+    The slot is not a dataclass field (not in ``fields``/``asdict``/``repr``/pickle);
+    ``dataclasses.replace`` builds a new instance, so a changed ``dict_composition``
+    is resolved afresh. ``dict_composition`` is documented read-only.
+    """
+
+    __slots__ = ("_resolved_composition",)
+    _resolved_composition: Counter[ElementInfo]
+
+    def _composition_copy(self, dict_composition: Mapping[str, int]) -> Counter[ElementInfo]:
+        """A fresh ``Counter`` of the resolved ``dict_composition``; callers may mutate it."""
+        try:
+            resolved = self._resolved_composition
+        except AttributeError:
+            resolved = _cached_composition(tuple(sorted(dict_composition.items())))
+            object.__setattr__(self, "_resolved_composition", resolved)
+        copy: Counter[ElementInfo] = Counter()
+        dict.update(copy, resolved)  # plain dict copy; skips Counter.update's per-call checks
+        return copy

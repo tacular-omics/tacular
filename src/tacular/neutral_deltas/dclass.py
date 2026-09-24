@@ -8,13 +8,13 @@ from dataclasses import dataclass, field
 
 from .._util import _round
 from ..elements.dclass import ElementInfo
-from ..elements.lookup import _composition_copy
+from ..elements.lookup import _CompositionCache
 
 __all__ = ["NeutralDeltaInfo"]
 
 
 @dataclass(frozen=True, slots=True)
-class NeutralDeltaInfo:
+class NeutralDeltaInfo(_CompositionCache):
     """A neutral loss or gain. Masses are signed: a loss is negative (``H2O`` is -18.0106)."""
 
     formula: str
@@ -43,7 +43,7 @@ class NeutralDeltaInfo:
     @property
     def composition(self) -> Counter[ElementInfo]:
         """The signed composition keyed by :class:`~tacular.ElementInfo` (a fresh copy on each access)."""
-        return _composition_copy(self.dict_composition)
+        return self._composition_copy(self.dict_composition)
 
     def calculate_loss_sites(self, sequence: str) -> int:
         """Number of residues in ``sequence`` this delta can occur at."""
