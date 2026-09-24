@@ -16,6 +16,8 @@ Renamed
      - 2.0
    * - ``tacular.Proteases``
      - ``tacular.Protease``
+   * - ``info.dict_composition[k] = v`` (mutating in place)
+     - read-only now (``TypeError``): ``info.update(dict_composition=dict(info.dict_composition) | {k: v})``
    * - ``tacular.PROTEASE_LITERALS``
      - ``tacular.ProteaseLiteral``
    * - ``tacular.PROTEASES_DICT``

@@ -6,13 +6,13 @@ from dataclasses import dataclass, field
 
 from .._util import _round
 from ..elements import ElementInfo
-from ..elements.lookup import _composition_copy
+from ..elements.lookup import _CompositionCache
 
 __all__ = ["AminoAcidInfo"]
 
 
 @dataclass(frozen=True, slots=True)
-class AminoAcidInfo:
+class AminoAcidInfo(_CompositionCache):
     """One amino acid (or ambiguity code such as ``B``, ``J``, ``X``, ``Z``)."""
 
     id: str
@@ -28,7 +28,7 @@ class AminoAcidInfo:
     average_mass: float | None
     """Average residue mass in Da, or ``None`` if undefined."""
     dict_composition: Mapping[str, int] | None = field(hash=False)
-    """Residue composition as ``{symbol: count}``, or ``None``. Read-only: shared by every caller."""
+    """Residue composition as ``{symbol: count}``, or ``None``. Read-only (mutating it raises ``TypeError``)."""
     is_mass_ambiguous: bool = False
     """True if the code stands for residues of different masses (``B``, ``Z``, ``X``)."""
     is_ambiguous: bool = False
@@ -38,7 +38,7 @@ class AminoAcidInfo:
     def composition(self) -> Counter[ElementInfo] | None:
         """The composition keyed by :class:`~tacular.ElementInfo` (a fresh copy on each
         access), or ``None`` if undefined."""
-        return _composition_copy(self.dict_composition) if self.dict_composition is not None else None
+        return self._composition_copy(self.dict_composition) if self.dict_composition is not None else None
 
     @property
     def one_letter_code(self) -> str:

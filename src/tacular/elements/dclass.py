@@ -9,8 +9,20 @@ from ..errors import TacularError
 __all__ = ["ElementInfo"]
 
 
+class _CachedHash:
+    """Slotted base holding :class:`ElementInfo`'s memoized hash.
+
+    The slot is not a dataclass field, so it stays out of ``fields``/``asdict``/``repr``
+    and out of the pickled state (``str`` hashes are salted per process, so a pickled
+    hash would be wrong after unpickling); it is recomputed on first use instead.
+    """
+
+    __slots__ = ("_hash",)
+    _hash: int
+
+
 @dataclass(frozen=True, slots=True)
-class ElementInfo:
+class ElementInfo(_CachedHash):
     """Represents an element or specific isotope with its properties.
 
     Attributes:
@@ -33,8 +45,15 @@ class ElementInfo:
     is_monoisotopic: bool | None
 
     def __hash__(self) -> int:
-        """Hash on ``str(self)`` (e.g. ``"13C"``), matching :meth:`__eq__`'s string comparison."""
-        return hash(str(self))
+        """Hash on ``str(self)`` (e.g. ``"13C"``), matching :meth:`__eq__`'s string comparison.
+
+        Computed once per instance: element infos are dict keys in every composition."""
+        try:
+            return self._hash
+        except AttributeError:
+            h = hash(str(self))
+            object.__setattr__(self, "_hash", h)
+            return h
 
     def __eq__(self, other: object) -> bool:
         """Equal to another ``ElementInfo`` with the same ``(number, mass_number)``,

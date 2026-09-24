@@ -8,7 +8,8 @@
 Install with `pip install tacular` (Python >= 3.12). Each data type exposes a
 module-level `*_LOOKUP` singleton (e.g. `tacular.UNIMOD_LOOKUP`,
 `tacular.ELEMENT_LOOKUP`), queryable by id, name, or (for ontologies) approximate
-mass: `import tacular as t; t.UNIMOD_LOOKUP["Phospho"].monoisotopic_mass`.
+mass: `import tacular as t; t.UNIMOD_LOOKUP["Phospho"].monoisotopic_mass`;
+`t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=10, unit="ppm")` (or `tolerance=0.001` in Da).
 Ontology data ships baked into the package and can be refreshed to the latest
 upstream release without reinstalling via the `tacular update` CLI. Every error is a
 `tacular.TacularError` (a `ValueError`); a lookup miss is `TacularKeyError` (also a

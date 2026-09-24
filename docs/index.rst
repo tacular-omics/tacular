@@ -54,6 +54,7 @@ Quick example
    # Identify a modification from an observed mass shift
    hits = t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=0.001)
    print(hits[0].name)  # Phospho
+   print([m.name for m in t.UNIMOD_LOOKUP.query_mass(79.9663, tolerance=10, unit="ppm")])  # ['Phospho']
 
 Related packages
 ----------------

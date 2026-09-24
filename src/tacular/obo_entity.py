@@ -10,13 +10,14 @@ from dataclasses import dataclass, field, replace
 from typing import Any, Self
 
 from ._util import _round
-from .elements import ElementInfo, parse_composition
+from .elements import ElementInfo
+from .elements.lookup import _CompositionCache
 
 __all__ = ["OboEntity"]
 
 
 @dataclass(frozen=True, slots=True)
-class OboEntity:
+class OboEntity(_CompositionCache):
     """Base class for OBO file entities.
 
     Subclasses (one per ontology/data type) add no fields of their own beyond
@@ -45,8 +46,8 @@ class OboEntity:
     supported), or ``None`` if not available. Use :attr:`composition` for a version
     keyed by :class:`~tacular.ElementInfo` instead of plain strings.
 
-    Treat it as read-only: the dict is shared by every caller of the lookup, so
-    mutating it changes the entry for everyone. :meth:`to_dict` returns a copy."""
+    Read-only: stored as a read-only ``dict`` copy of the mapping passed in, so
+    mutating it raises ``TypeError``. :meth:`to_dict` returns a plain copy."""
 
     def __str__(self) -> str:
         """Return ``"{name} ({formula})"``, e.g. ``"Acetyl (C2H2O)"``."""
@@ -55,10 +56,15 @@ class OboEntity:
     @property
     def composition(self) -> dict[ElementInfo, int] | None:
         """``dict_composition`` with keys resolved to :class:`~tacular.ElementInfo`
-        objects instead of plain symbol strings; ``None`` if no composition is set."""
+        objects instead of plain symbol strings (a fresh dict on each access, resolved
+        once per entry); ``None`` if no composition is set.
+
+        Raises:
+            TacularKeyError: if a key is not an element or isotope in the data.
+        """
         if self.dict_composition is None:
             return None
-        return parse_composition(self.dict_composition)
+        return self._composition_dict_copy(self.dict_composition)
 
     def __repr__(self) -> str:
         """Return an eval-ish repr including id, name, formula, masses, and composition."""

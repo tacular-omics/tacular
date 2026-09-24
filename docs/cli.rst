@@ -24,8 +24,9 @@ How the cache works
 
 Every refreshable ontology ships baked into the package. ``tacular update``
 writes regenerated data to a per-user cache, and each lookup prefers the cached
-copy over the bundled one when it exists. A refresh takes effect on the next
-``import tacular``. If the cache is missing, disabled, or unreadable, tacular
+copy over the bundled one when it exists. A refresh takes effect the first time a
+Python process uses that ontology (e.g. ``t.UNIMOD_LOOKUP``); an ontology already
+loaded in a running process keeps its data. If the cache is missing, disabled, or unreadable, tacular
 logs a warning (for an unreadable file) and falls back to the bundled data.
 
 The refreshable ontologies are ``unimod``, ``xlmod``, ``psimod``, ``resid``,

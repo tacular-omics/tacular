@@ -10,7 +10,7 @@ from enum import Flag, auto
 
 from .._util import _round
 from ..elements import ElementInfo
-from ..elements.lookup import _composition_copy
+from ..elements.lookup import _CompositionCache
 from ..errors import TacularError
 
 # type checking
@@ -33,7 +33,7 @@ class IonTypeProperty(Flag):
 
 
 @dataclass(frozen=True, slots=True)
-class FragmentIonInfo:
+class FragmentIonInfo(_CompositionCache):
     """A fragment ion type: its mass/composition offset and :class:`IonTypeProperty` flags."""
 
     id: str
@@ -47,7 +47,7 @@ class FragmentIonInfo:
     average_mass: float | None
     """Average mass offset in Da, or ``None``."""
     dict_composition: Mapping[str, int] | None = field(hash=False)
-    """Offset composition as ``{symbol: count}``, or ``None``. Read-only."""
+    """Offset composition as ``{symbol: count}``, or ``None``. Read-only (mutating it raises ``TypeError``)."""
     properties: IonTypeProperty = IonTypeProperty.NONE
     """Classification flags (forward, backward, internal, ...)."""
 
@@ -112,7 +112,7 @@ class FragmentIonInfo:
         """
         if self.dict_composition is None:
             raise TacularError(f"Composition is not available for ion type {str(self.id)!r}.")
-        return _composition_copy(self.dict_composition)
+        return self._composition_copy(self.dict_composition)
 
     def to_dict(self, *, float_precision: int | None = 6) -> dict[str, object]:
         """Convert to a plain, JSON-serializable dictionary.

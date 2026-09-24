@@ -5,7 +5,29 @@
 Breaking API cleanup for 2.0.0. The bundled data is unchanged. Every old -> new name is
 in [docs/migration.rst](docs/migration.rst).
 
+### Performance
+
+No API or output changes; timings are indicative single-core numbers.
+
+- `import tacular` no longer loads the six ontologies (UNIMOD, PSI-MOD, RESID, XLMOD,
+  GNOme, UniProt-PTM): each loads on first use of its subpackage or one of its names, e.g.
+  `tacular.unimod`, `tacular.UNIMOD_LOOKUP` or `from tacular import GNO_LOOKUP`
+  (~85 ms -> ~35 ms). A `tacular update` refresh therefore applies at that first use.
+- `ElementInfo.__hash__` is computed once per instance instead of on every dict
+  operation (~450 ns -> ~90 ns per hash).
+- `composition` on `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo` and `RefMolInfo`
+  resolves once per instance and returns a copy (~1.7 us -> ~0.9 us per access); so does
+  `OboEntity.composition` (every ontology entry and `MonosaccharideInfo`).
+- `OntologyLookup.query_mass` bisects a mass-sorted index built on first use instead of
+  scanning every entry; results and their order are unchanged (~90 us -> ~1-10 us).
+- `OntologyLookup.query_id` skips id normalization for keys that are already a stored or
+  normalized id (`"21"`: ~420 ns -> ~230 ns).
+
 ### Added
+
+- `OntologyLookup.query_mass(mass, *, tolerance=0.01, unit="da", monoisotopic=True)`:
+  `unit="ppm"` reads `tolerance` in parts per million of `mass` (same `unit: Literal["da", "ppm"]`
+  convention as paftacular). NaN `mass` or `tolerance` returns `[]`. An unknown `unit` raises `TacularError`.
 
 - `tacular.TacularError` (a `ValueError`) and `tacular.TacularKeyError` (a
   `TacularError` that is also a `KeyError`), in `tacular.errors`.
@@ -37,6 +59,13 @@ in [docs/migration.rst](docs/migration.rst).
 - `tacular.update.OBO_SOURCES` and `ONTOLOGIES` (now private).
 
 ### Changed
+
+- `dict_composition` on every `*Info` class (`OboEntity` and its ontology subclasses,
+  `MonosaccharideInfo`, `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo`,
+  `RefMolInfo`) is a read-only `dict` copy of what was passed in: item assignment,
+  `update`, `pop`, `clear`, ... raise `TypeError`. It still pickles, copies, compares and
+  `json.dumps` like a dict. Build a new dict (`dict(info.dict_composition) | {...}`) and
+  `dataclasses.replace` / `update(dict_composition=...)` instead.
 
 - Renamed: `Proteases` -> `Protease`, `PROTEASE_LITERALS` -> `ProteaseLiteral`,
   `PROTEASES_DICT` -> `PROTEASE_DICT`, `XlModInfo` -> `XlmodInfo`,

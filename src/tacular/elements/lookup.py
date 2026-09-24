@@ -11,6 +11,7 @@ from collections.abc import Mapping
 from functools import cache
 
 from .._lookup import _BaseLookup
+from .._util import _freeze_composition
 from ..errors import TacularKeyError
 from .data import ISOTOPES, Element
 from .dclass import ElementInfo
@@ -192,6 +193,42 @@ def _cached_composition(items: tuple[tuple[str, int], ...]) -> Counter[ElementIn
     return Counter(parse_composition(dict(items)))
 
 
-def _composition_copy(dict_composition: Mapping[str, int]) -> Counter[ElementInfo]:
-    """A fresh ``Counter`` of the resolved ``dict_composition`` (cached underneath)."""
-    return Counter(_cached_composition(tuple(sorted(dict_composition.items()))))
+class _CompositionCache:
+    """Slotted base for the frozen ``*Info`` dataclasses whose ``composition`` property
+    resolves ``dict_composition``: memoizes the resolved mapping on the instance.
+
+    The slot is not a dataclass field (not in ``fields``/``asdict``/``repr``/pickle);
+    ``dataclasses.replace`` builds a new instance, so a changed ``dict_composition``
+    is resolved afresh. ``__post_init__`` stores ``dict_composition`` as a read-only
+    copy (:class:`~tacular._util._ReadOnlyDict`), so the memo cannot go stale. A class
+    uses either :meth:`_composition_copy` or :meth:`_composition_dict_copy`, not both.
+    """
+
+    __slots__ = ("_resolved_composition",)
+    _resolved_composition: dict[ElementInfo, int]
+
+    def __post_init__(self) -> None:
+        """Freeze ``dict_composition`` (dataclass hook, inherited by every subclass)."""
+        _freeze_composition(self)
+
+    def _composition_copy(self, dict_composition: Mapping[str, int]) -> Counter[ElementInfo]:
+        """A fresh ``Counter`` of the resolved ``dict_composition`` (keys in sorted
+        symbol order, shared module-wide cache underneath); callers may mutate it."""
+        try:
+            resolved = self._resolved_composition
+        except AttributeError:
+            resolved = _cached_composition(tuple(sorted(dict_composition.items())))
+            object.__setattr__(self, "_resolved_composition", resolved)
+        copy: Counter[ElementInfo] = Counter()
+        dict.update(copy, resolved)  # plain dict copy; skips Counter.update's per-call checks
+        return copy
+
+    def _composition_dict_copy(self, dict_composition: Mapping[str, int]) -> dict[ElementInfo, int]:
+        """A fresh ``dict`` of the resolved ``dict_composition``, keys in its order
+        (as :func:`parse_composition` returns them); callers may mutate it."""
+        try:
+            resolved = self._resolved_composition
+        except AttributeError:
+            resolved = parse_composition(dict_composition)
+            object.__setattr__(self, "_resolved_composition", resolved)
+        return dict(resolved)

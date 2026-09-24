@@ -7,10 +7,12 @@ prefixes (see e.g. ``unimod/lookup.py``). Every id query, in every ontology, goe
 through one normalization function, :func:`_normalize_id`.
 """
 
+from bisect import bisect_left, bisect_right
 from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import cached_property
 from random import choice
+from typing import Literal
 
 from ._lookup import _BaseLookup
 from .errors import TacularError
@@ -52,9 +54,25 @@ def _normalize_id(key: str, accession_prefixes: tuple[str, ...] = (), id_prefix:
     return key.lstrip("0")
 
 
+# Relative slack on the bisect window of ``query_mass``; the exact
+# ``abs(m - mass) <= tolerance`` test is then applied to every candidate, so the window
+# only has to exceed float rounding (a few ulps of the largest operand).
+_MASS_WINDOW_SLACK = 1e-9
+
+
+@dataclass(frozen=True, slots=True)
+class _MassIndex[T]:
+    """Entries with a mass, sorted by mass; ``positions`` is each entry's data order."""
+
+    masses: tuple[float, ...]
+    positions: tuple[int, ...]
+    infos: tuple[T, ...]
+
+
 @dataclass(frozen=True, slots=True)
 class _Index[T]:
     by_id: dict[str, T]
+    by_exact_id: dict[str, T]
     by_num: dict[int, T]
     by_name: dict[str, T]
     with_mass: tuple[T, ...]
@@ -96,17 +114,27 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
         self._data: dict[str, T] = dict(data)
         self._accession_prefixes = tuple(sorted((p.lower() for p in accession_prefixes), key=len, reverse=True))
         self._id_prefix = id_prefix.lower() if id_prefix is not None else None
+        self._mass_indexes: dict[bool, _MassIndex[T]] = {}
 
     @cached_property
     def _index(self) -> _Index[T]:
         by_id: dict[str, T] = {}
         by_num: dict[int, T] = {}
         by_name: dict[str, T] = {}
+        by_exact_id: dict[str, T] = {}
+        acc, idp = self._accession_prefixes, self._id_prefix
         for raw_id, info in self._data.items():
-            norm = _normalize_id(raw_id, (), self._id_prefix)
+            norm = _normalize_id(raw_id, (), idp)
             if norm in by_id:
                 raise TacularError(f"Duplicate id {raw_id!r} in {self.ontology_name} data.")
             by_id[norm] = info
+            # Keys query_id may use as-is: they normalize to ``norm`` anyway. The raw id
+            # does unless it starts with an accession prefix (normalization would strip
+            # it); ``norm`` does unless it starts with one or with the id prefix.
+            if _strip_accession(raw_id.strip(), acc) is None:
+                by_exact_id[raw_id] = info
+            if _strip_accession(norm, acc) is None and not (idp is not None and norm.startswith(idp)):
+                by_exact_id[norm] = info
             if norm.isascii() and norm.isdigit():
                 by_num[int(norm)] = info
             lname = info.name.lower()
@@ -116,12 +144,32 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
         infos = tuple(self._data.values())
         return _Index(
             by_id=by_id,
+            by_exact_id=by_exact_id,
             by_num=by_num,
             by_name=by_name,
             with_mass=tuple(i for i in infos if i.monoisotopic_mass is not None),
             with_composition=tuple(i for i in infos if i.dict_composition is not None),
             with_both=tuple(i for i in infos if i.monoisotopic_mass is not None and i.dict_composition is not None),
         )
+
+    def _mass_index(self, monoisotopic: bool) -> _MassIndex[T]:
+        cached = self._mass_indexes.get(monoisotopic)
+        if cached is not None:
+            return cached
+        rows: list[tuple[float, int, T]] = []
+        for position, info in enumerate(self._data.values()):
+            mass = info.monoisotopic_mass if monoisotopic else info.average_mass
+            # NaN never passes query_mass's test and would break the sort order.
+            if mass is not None and mass == mass:
+                rows.append((mass, position, info))
+        rows.sort(key=lambda row: (row[0], row[1]))
+        index = _MassIndex(
+            masses=tuple(row[0] for row in rows),
+            positions=tuple(row[1] for row in rows),
+            infos=tuple(row[2] for row in rows),
+        )
+        self._mass_indexes[monoisotopic] = index
+        return index
 
     def _entries(self) -> Mapping[str, T]:
         return self._data
@@ -158,7 +206,11 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
             return self._index.by_num.get(mod_id)
         if not isinstance(mod_id, str):
             return None
-        return self._index.by_id.get(_normalize_id(mod_id, self._accession_prefixes, self._id_prefix))
+        index = self._index
+        info = index.by_exact_id.get(mod_id)
+        if info is not None:
+            return info
+        return index.by_id.get(_normalize_id(mod_id, self._accession_prefixes, self._id_prefix))
 
     def query_name(self, name: str) -> T | None:
         """Query by name (case-insensitive), with or without an accession prefix
@@ -175,15 +227,43 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
             return by_name.get(stripped.lower())
         return None
 
-    def query_mass(self, mass: float, *, tolerance: float = 0.01, monoisotopic: bool = True) -> list[T]:
-        """Entries whose mass is within ``tolerance`` Da of ``mass`` (monoisotopic by
-        default, else average), in data order."""
-        matches: list[T] = []
-        for info in self._data.values():
-            mod_mass = info.monoisotopic_mass if monoisotopic else info.average_mass
-            if mod_mass is not None and abs(mod_mass - mass) <= tolerance:
-                matches.append(info)
-        return matches
+    def query_mass(
+        self,
+        mass: float,
+        *,
+        tolerance: float = 0.01,
+        unit: Literal["da", "ppm"] = "da",
+        monoisotopic: bool = True,
+    ) -> list[T]:
+        """Entries whose mass is within ``tolerance`` of ``mass`` (monoisotopic by
+        default, else average), in data order.
+
+        ``unit="da"`` (default) reads ``tolerance`` in Da; ``unit="ppm"`` in parts per
+        million of ``mass``, i.e. a window of ``abs(mass) * tolerance / 1e6`` Da.
+
+        Raises:
+            TacularError: if ``unit`` is not ``"da"`` or ``"ppm"``.
+
+        Bisects a mass-sorted index (built on the first call), then applies the exact
+        ``abs(entry_mass - mass) <= tolerance`` test to each candidate.
+        """
+        if unit == "ppm":
+            tolerance = abs(mass) * tolerance / 1e6
+        elif unit != "da":
+            raise TacularError(f"unit must be 'da' or 'ppm', got {unit!r}.")
+        if mass != mass or tolerance != tolerance:  # NaN matches nothing
+            return []
+        index = self._mass_index(monoisotopic)
+        masses = index.masses
+        slack = _MASS_WINDOW_SLACK * (1.0 + abs(mass) + abs(tolerance))
+        lo = bisect_left(masses, mass - tolerance - slack)
+        hi = bisect_right(masses, mass + tolerance + slack)
+        if lo >= hi:
+            return []
+        infos = index.infos
+        hits = [(index.positions[i], infos[i]) for i in range(lo, hi) if abs(masses[i] - mass) <= tolerance]
+        hits.sort(key=lambda hit: hit[0])
+        return [info for _, info in hits]
 
     def choice(self, *, require_monoisotopic_mass: bool = True, require_composition: bool = True) -> T:
         """A random entry, by default one with both a monoisotopic mass and a composition.

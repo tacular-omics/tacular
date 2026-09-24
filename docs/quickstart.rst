@@ -49,7 +49,7 @@ Physical constants (``PROTON_MASS``, ``ELECTRON_MASS``, ``NEUTRON_MASS``,
 
 Returned info objects are immutable and hashable, and their ``composition`` and
 ``to_dict()["composition"]`` are fresh copies, so changing them cannot affect the
-lookup. Treat ``dict_composition`` itself as read-only: it is shared with the lookup.
+lookup. ``dict_composition`` itself is a read-only dict: mutating it raises ``TypeError``.
 
 
 Amino Acid Lookups
