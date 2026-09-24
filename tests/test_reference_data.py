@@ -122,9 +122,7 @@ KNOWN_UPSTREAM_MISMATCHES: dict[str, dict[str, str]] = {
     "unimod": {
         "291": "stated mass uses an older Hg-202 isotope mass (-2.6e-5 Da)",
     },
-    "psimod": {
-        "02105": "DiffMono is O2 (+31.9898) but DiffFormula is O",
-    },
+    "psimod": {},
     "resid": {},
     "xlmod": {
         "01024": "stated mass is one H (or H+) above the formula",
@@ -189,11 +187,10 @@ ELECTRON_MASS = 0.000548579909
 
 
 def _agrees(calc, stated, tol, source):
-    # Charged entries state the mass of the ion: composition minus one electron per positive
-    # charge (quaternary ammonium, PSI-MOD "C 3 H 7 1+") or plus one per negative charge
-    # (iron-sulfur clusters, "Fe 4 H -4 S 4 2-").
-    # Only PSI-MOD (and RESID, which is read from it) and UniProt record charged entries.
-    charges = range(-4, 5) if source in ("psimod", "resid", "uniprot_ptm") else (0,)
+    # UniProt's charged entries state the mass of the ion: composition minus one electron per
+    # positive charge or plus one per negative charge. PSI-MOD (and RESID, read from it) stated
+    # ion masses too up to 1.032.x; since 1.039.0 charged entries carry the neutral formula mass.
+    charges = range(-4, 5) if source == "uniprot_ptm" else (0,)
     return any(abs(calc - k * ELECTRON_MASS - stated) <= tol for k in charges)
 
 

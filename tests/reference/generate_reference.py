@@ -8,7 +8,7 @@ Last run 2026-09-23, Python 3.13, with these inputs:
 
 - NIST "Atomic Weights and Isotopic Compositions for All Elements" (Coursey et al.),
   https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=&ascii=ascii2&isotype=some
-- UNIMOD.obo dated 17:02:2026, PSI-MOD.obo 1.032.4, XLMod.obo 1.5.1 and UniProt ptmlist.txt
+- UNIMOD.obo dated 17:02:2026, PSI-MOD.obo 1.039.0, XLMod.obo 1.5.1 and UniProt ptmlist.txt
   release 2026_03 of 02-Sep-2026: the copies in ``data_gen/data/``, the versions tacular
   bundles. RESID values come from the PSI-MOD terms that cite a single RESID id.
 - GNOme.obo data-version 2026-07-24, http://purl.obolibrary.org/obo/gno.obo (tacular bundles

@@ -105,8 +105,8 @@ whether a cached copy exists, the version currently in use, and its entry count:
    ontology     cached   active version           entries
    unimod       no       17:02:2026 11:36         1560
    xlmod        no       1.5.1                    189
-   psimod       no       1.032.4                  1558
-   resid        no       1.032.4                  535
+   psimod       no       1.039.0                  1607
+   resid        no       1.039.0                  534
    gno          no       2025-10-10               3534
    uniprot_ptm  no       2026_03 of 02-Sep-2026   440
 

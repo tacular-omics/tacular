@@ -1,10 +1,10 @@
 {
     "metadata": {
-        "generated_date": "2026-02-03T14:29:44.298005",
+        "generated_date": "2026-09-23T20:55:34.063633",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "tacular_version": "1.0.1",
-        "data_version": "1.032.4"
+        "tacular_version": "1.1.3",
+        "data_version": "1.039.0"
     },
     "resid_modifications": [
         {
@@ -264,7 +264,7 @@
             "id": "AA0040",
             "name": "2'-[3-carboxamido-3-(trimethylammonio)propyl]-L-histidine",
             "formula": "C7H15N2O",
-            "monoisotopic_mass": 143.11789,
+            "monoisotopic_mass": 143.118438,
             "average_mass": 143.21,
             "composition": {
                 "C": 7,
@@ -491,7 +491,7 @@
             "id": "AA0062",
             "name": "N,N,N-trimethyl-L-alanine",
             "formula": "C3H7",
-            "monoisotopic_mass": 43.054227,
+            "monoisotopic_mass": 43.054775,
             "average_mass": 43.09,
             "composition": {
                 "C": 3,
@@ -535,7 +535,7 @@
             "id": "AA0066",
             "name": "N,N-dimethyl-L-proline",
             "formula": "C2H5",
-            "monoisotopic_mass": 29.038577,
+            "monoisotopic_mass": 29.039125,
             "average_mass": 29.06,
             "composition": {
                 "C": 2,
@@ -601,7 +601,7 @@
             "id": "AA0074",
             "name": "N6,N6,N6-trimethyl-L-lysine",
             "formula": "C3H7",
-            "monoisotopic_mass": 43.054227,
+            "monoisotopic_mass": 43.054775,
             "average_mass": 43.09,
             "composition": {
                 "C": 3,
@@ -1012,7 +1012,7 @@
             "name": "N6-biotinyl-L-lysine",
             "formula": "C10H14N2O2S",
             "monoisotopic_mass": 226.077599,
-            "average_mass": 226.29,
+            "average_mass": 226.3,
             "composition": {
                 "C": 10,
                 "H": 14,
@@ -1026,7 +1026,7 @@
             "name": "N6-lipoyl-L-lysine",
             "formula": "C8H12OS2",
             "monoisotopic_mass": 188.032957,
-            "average_mass": 188.3,
+            "average_mass": 188.31,
             "composition": {
                 "C": 8,
                 "H": 12,
@@ -1053,7 +1053,7 @@
             "name": "N6-retinylidene-L-lysine",
             "formula": "C20H26",
             "monoisotopic_mass": 266.203451,
-            "average_mass": 266.43,
+            "average_mass": 266.42,
             "composition": {
                 "C": 20,
                 "H": 26
@@ -1123,7 +1123,7 @@
             "name": "S-phycocyanobilin-L-cysteine",
             "formula": "C33H38N4O6",
             "monoisotopic_mass": 586.279135,
-            "average_mass": 586.69,
+            "average_mass": 586.68,
             "composition": {
                 "C": 33,
                 "H": 38,
@@ -1136,7 +1136,7 @@
             "name": "S-phycoerythrobilin-L-cysteine",
             "formula": "C33H40N4O6",
             "monoisotopic_mass": 588.294785,
-            "average_mass": 588.7,
+            "average_mass": 588.69,
             "composition": {
                 "C": 33,
                 "H": 40,
@@ -1149,7 +1149,7 @@
             "name": "S-phytochromobilin-L-cysteine",
             "formula": "C33H36N4O6",
             "monoisotopic_mass": 584.263485,
-            "average_mass": 584.67,
+            "average_mass": 584.66,
             "composition": {
                 "C": 33,
                 "H": 36,
@@ -1160,120 +1160,120 @@
         {
             "id": "AA0134",
             "name": "heme-bis-L-cysteine",
-            "formula": "C34FeH32N4O4",
-            "monoisotopic_mass": 616.177293,
-            "average_mass": 616.5,
+            "formula": "C34H32N4O4Fe",
+            "monoisotopic_mass": 616.177291,
+            "average_mass": 616.49,
             "composition": {
                 "C": 34,
-                "Fe": 1,
                 "H": 32,
                 "N": 4,
-                "O": 4
+                "O": 4,
+                "Fe": 1
             }
         },
         {
             "id": "AA0135",
             "name": "heme-L-cysteine",
-            "formula": "C34FeH32N4O4",
-            "monoisotopic_mass": 616.177293,
-            "average_mass": 616.5,
+            "formula": "C34H32N4O4Fe",
+            "monoisotopic_mass": 616.177291,
+            "average_mass": 616.49,
             "composition": {
                 "C": 34,
-                "Fe": 1,
                 "H": 32,
                 "N": 4,
-                "O": 4
+                "O": 4,
+                "Fe": 1
             }
         },
         {
             "id": "AA0136",
             "name": "tetrakis-L-cysteinyl iron",
-            "formula": "FeH-4",
-            "monoisotopic_mass": 51.904735,
+            "formula": "H-4Fe",
+            "monoisotopic_mass": 51.903635,
             "average_mass": 51.81,
             "composition": {
-                "Fe": 1,
-                "H": -4
+                "H": -4,
+                "Fe": 1
             }
         },
         {
             "id": "AA0137",
             "name": "tetrakis-L-cysteinyl diiron disulfide",
-            "formula": "Fe2H-4S2",
-            "monoisotopic_mass": 171.783814,
-            "average_mass": 171.78,
+            "formula": "H-4S2Fe2",
+            "monoisotopic_mass": 171.782713,
+            "average_mass": 171.79,
             "composition": {
-                "Fe": 2,
                 "H": -4,
-                "S": 2
+                "S": 2,
+                "Fe": 2
             }
         },
         {
             "id": "AA0138",
             "name": "hexakis-L-cysteinyl triiron trisulfide",
-            "formula": "Fe3H-6S3",
-            "monoisotopic_mass": 257.675721,
-            "average_mass": 257.67,
+            "formula": "H-6S3Fe3",
+            "monoisotopic_mass": 257.67407,
+            "average_mass": 257.69,
             "composition": {
-                "Fe": 3,
                 "H": -6,
-                "S": 3
+                "S": 3,
+                "Fe": 3
             }
         },
         {
             "id": "AA0139",
             "name": "tris-L-cysteinyl triiron tetrasulfide",
-            "formula": "Fe3H-3S4",
-            "monoisotopic_mass": 292.671267,
-            "average_mass": 292.75,
+            "formula": "H-3S4Fe3",
+            "monoisotopic_mass": 292.669616,
+            "average_mass": 292.78,
             "composition": {
-                "Fe": 3,
                 "H": -3,
-                "S": 4
+                "S": 4,
+                "Fe": 3
             }
         },
         {
             "id": "AA0140",
             "name": "tetrakis-L-cysteinyl tetrairon tetrasulfide",
-            "formula": "Fe4H-4S4",
-            "monoisotopic_mass": 347.597831,
-            "average_mass": 347.59,
+            "formula": "H-4S4Fe4",
+            "monoisotopic_mass": 347.596727,
+            "average_mass": 347.62,
             "composition": {
-                "Fe": 4,
                 "H": -4,
-                "S": 4
+                "S": 4,
+                "Fe": 4
             }
         },
         {
             "id": "AA0141",
             "name": "L-cysteinyl-L-histidino-homocitryl molybdenum heptairon nonasulfide",
-            "formula": "C7Fe7H6MoNO7S9",
-            "monoisotopic_mass": 993.213036,
-            "average_mass": 991.53,
+            "formula": "C7H6NO7S9Fe7Mo",
+            "monoisotopic_mass": 993.213019,
+            "average_mass": 991.6,
             "composition": {
                 "C": 7,
-                "Fe": 7,
                 "H": 6,
-                "Mo": 1,
                 "N": 1,
                 "O": 7,
-                "S": 9
+                "S": 9,
+                "Fe": 7,
+                "Mo": 1
             }
         },
         {
             "id": "AA0142",
             "name": "L-cysteinyl molybdopterin",
-            "formula": "C10H11MoN5O8PS2",
-            "monoisotopic_mass": 521.884074,
-            "average_mass": 520.27,
+            "formula": "C10H11N5O8PS2Mo",
+            "monoisotopic_mass": 521.88407,
+            "average_mass": 520.28,
             "composition": {
                 "C": 10,
                 "H": 11,
-                "Mo": 1,
                 "N": 5,
                 "O": 8,
                 "P": 1,
-                "S": 2
+                "S": 2,
+                "Mo": 1
             }
         },
         {
@@ -1281,7 +1281,7 @@
             "name": "S-(8alpha-FAD)-L-cysteine",
             "formula": "C27H31N9O15P2",
             "monoisotopic_mass": 783.141485,
-            "average_mass": 783.54,
+            "average_mass": 783.53,
             "composition": {
                 "C": 27,
                 "H": 31,
@@ -1295,7 +1295,7 @@
             "name": "3'-(8alpha-FAD)-L-histidine",
             "formula": "C27H31N9O15P2",
             "monoisotopic_mass": 783.141485,
-            "average_mass": 783.54,
+            "average_mass": 783.53,
             "composition": {
                 "C": 27,
                 "H": 31,
@@ -1309,7 +1309,7 @@
             "name": "O4'-(8alpha-FAD)-L-tyrosine",
             "formula": "C27H31N9O15P2",
             "monoisotopic_mass": 783.141485,
-            "average_mass": 783.54,
+            "average_mass": 783.53,
             "composition": {
                 "C": 27,
                 "H": 31,
@@ -1355,8 +1355,8 @@
             "id": "AA0150",
             "name": "O-phosphopantetheine-L-serine",
             "formula": "C11H21N2O6PS",
-            "monoisotopic_mass": 340.085794,
-            "average_mass": 340.33,
+            "monoisotopic_mass": 340.085795,
+            "average_mass": 340.34,
             "composition": {
                 "C": 11,
                 "H": 21,
@@ -1570,8 +1570,8 @@
             "id": "AA0167",
             "name": "O-(phosphoribosyl dephospho-coenzyme A)-L-serine",
             "formula": "C26H42N7O19P3S",
-            "monoisotopic_mass": 881.146903,
-            "average_mass": 881.63,
+            "monoisotopic_mass": 881.146904,
+            "average_mass": 881.64,
             "composition": {
                 "C": 26,
                 "H": 42,
@@ -1585,7 +1585,7 @@
             "id": "AA0168",
             "name": "omega-N-(ADP-ribosyl)-L-arginine",
             "formula": "C15H21N5O13P2",
-            "monoisotopic_mass": 541.061109,
+            "monoisotopic_mass": 541.06111,
             "average_mass": 541.3,
             "composition": {
                 "C": 15,
@@ -1599,7 +1599,7 @@
             "id": "AA0169",
             "name": "S-(ADP-ribosyl)-L-cysteine",
             "formula": "C15H21N5O13P2",
-            "monoisotopic_mass": 541.061109,
+            "monoisotopic_mass": 541.06111,
             "average_mass": 541.3,
             "composition": {
                 "C": 15,
@@ -1628,7 +1628,7 @@
             "name": "S-sulfo-L-cysteine",
             "formula": "O3S",
             "monoisotopic_mass": 79.956815,
-            "average_mass": 80.06,
+            "average_mass": 80.07,
             "composition": {
                 "O": 3,
                 "S": 1
@@ -1639,7 +1639,7 @@
             "name": "O4'-sulfo-L-tyrosine",
             "formula": "O3S",
             "monoisotopic_mass": 79.956815,
-            "average_mass": 80.06,
+            "average_mass": 80.07,
             "composition": {
                 "O": 3,
                 "S": 1
@@ -1648,81 +1648,81 @@
         {
             "id": "AA0173",
             "name": "L-bromohistidine",
-            "formula": "BrH-1",
-            "monoisotopic_mass": 77.910512,
+            "formula": "H-1Br",
+            "monoisotopic_mass": 77.910513,
             "average_mass": 78.9,
             "composition": {
-                "Br": 1,
-                "H": -1
+                "H": -1,
+                "Br": 1
             }
         },
         {
             "id": "AA0174",
             "name": "L-2'-bromophenylalanine",
-            "formula": "BrH-1",
-            "monoisotopic_mass": 77.910512,
+            "formula": "H-1Br",
+            "monoisotopic_mass": 77.910513,
             "average_mass": 78.9,
             "composition": {
-                "Br": 1,
-                "H": -1
+                "H": -1,
+                "Br": 1
             }
         },
         {
             "id": "AA0175",
             "name": "L-3'-bromophenylalanine",
-            "formula": "BrH-1",
-            "monoisotopic_mass": 77.910512,
+            "formula": "H-1Br",
+            "monoisotopic_mass": 77.910513,
             "average_mass": 78.9,
             "composition": {
-                "Br": 1,
-                "H": -1
+                "H": -1,
+                "Br": 1
             }
         },
         {
             "id": "AA0176",
             "name": "L-4'-bromophenylalanine",
-            "formula": "BrH-1",
-            "monoisotopic_mass": 77.910512,
+            "formula": "H-1Br",
+            "monoisotopic_mass": 77.910513,
             "average_mass": 78.9,
             "composition": {
-                "Br": 1,
-                "H": -1
+                "H": -1,
+                "Br": 1
             }
         },
         {
             "id": "AA0177",
             "name": "3,3',5-triiodo-L-thyronine",
-            "formula": "C6HI3O",
-            "monoisotopic_mass": 469.716158,
-            "average_mass": 469.79,
+            "formula": "C6HOI3",
+            "monoisotopic_mass": 469.716157,
+            "average_mass": 469.78,
             "composition": {
                 "C": 6,
                 "H": 1,
-                "I": 3,
-                "O": 1
+                "O": 1,
+                "I": 3
             }
         },
         {
             "id": "AA0178",
             "name": "L-thyroxine",
-            "formula": "C6I4O",
+            "formula": "C6OI4",
             "monoisotopic_mass": 595.612805,
             "average_mass": 595.68,
             "composition": {
                 "C": 6,
-                "I": 4,
-                "O": 1
+                "O": 1,
+                "I": 4
             }
         },
         {
             "id": "AA0179",
             "name": "6'-bromo-L-tryptophan",
-            "formula": "BrH-1",
-            "monoisotopic_mass": 77.910512,
+            "formula": "H-1Br",
+            "monoisotopic_mass": 77.910513,
             "average_mass": 78.9,
             "composition": {
-                "Br": 1,
-                "H": -1
+                "H": -1,
+                "Br": 1
             }
         },
         {
@@ -1751,7 +1751,7 @@
             "name": "lactic acid",
             "formula": "H-1N-1",
             "monoisotopic_mass": -15.010899,
-            "average_mass": -15.02,
+            "average_mass": -15.01,
             "composition": {
                 "H": -1,
                 "N": -1
@@ -1961,7 +1961,7 @@
             "name": "1'-(8alpha-FAD)-L-histidine",
             "formula": "C27H31N9O15P2",
             "monoisotopic_mass": 783.141485,
-            "average_mass": 783.54,
+            "average_mass": 783.53,
             "composition": {
                 "C": 27,
                 "H": 31,
@@ -1995,25 +1995,25 @@
         {
             "id": "AA0225",
             "name": "bis-L-cysteinyl bis-L-histidino diiron disulfide",
-            "formula": "Fe2H-4S2",
-            "monoisotopic_mass": 171.783814,
-            "average_mass": 171.78,
+            "formula": "H-4S2Fe2",
+            "monoisotopic_mass": 171.782713,
+            "average_mass": 171.79,
             "composition": {
-                "Fe": 2,
                 "H": -4,
-                "S": 2
+                "S": 2,
+                "Fe": 2
             }
         },
         {
             "id": "AA0226",
             "name": "hexakis-L-cysteinyl hexairon hexasulfide",
-            "formula": "Fe6H-6S6",
-            "monoisotopic_mass": 521.395649,
-            "average_mass": 521.38,
+            "formula": "H-6S6Fe6",
+            "monoisotopic_mass": 521.39509,
+            "average_mass": 521.43,
             "composition": {
-                "Fe": 6,
                 "H": -6,
-                "S": 6
+                "S": 6,
+                "Fe": 6
             }
         },
         {
@@ -2034,7 +2034,7 @@
             "id": "AA0228",
             "name": "N6-(phospho-5'-guanosine)-L-lysine",
             "formula": "C10H12N5O7P",
-            "monoisotopic_mass": 345.047434,
+            "monoisotopic_mass": 345.047435,
             "average_mass": 345.21,
             "composition": {
                 "C": 10,
@@ -2049,7 +2049,7 @@
             "name": "L-cysteine glutathione disulfide",
             "formula": "C10H15N3O6S",
             "monoisotopic_mass": 305.068156,
-            "average_mass": 305.3,
+            "average_mass": 305.31,
             "composition": {
                 "C": 10,
                 "H": 15,
@@ -2074,7 +2074,7 @@
             "id": "AA0231",
             "name": "N4-(ADP-ribosyl)-L-asparagine",
             "formula": "C15H21N5O13P2",
-            "monoisotopic_mass": 541.061109,
+            "monoisotopic_mass": 541.06111,
             "average_mass": 541.3,
             "composition": {
                 "C": 15,
@@ -2144,7 +2144,7 @@
             "id": "AA0237",
             "name": "O-(ADP-ribosyl)-L-serine",
             "formula": "C15H21N5O13P2",
-            "monoisotopic_mass": 541.061109,
+            "monoisotopic_mass": 541.06111,
             "average_mass": 541.3,
             "composition": {
                 "C": 15,
@@ -2291,7 +2291,7 @@
             "id": "AA0255",
             "name": "O-(phospho-5'-DNA)-L-threonine",
             "formula": "O3P",
-            "monoisotopic_mass": 78.958505,
+            "monoisotopic_mass": 78.958506,
             "average_mass": 78.97,
             "composition": {
                 "O": 3,
@@ -2328,7 +2328,7 @@
             "name": "S-phycoviolobilin-L-cysteine",
             "formula": "C33H38N4O6",
             "monoisotopic_mass": 586.279135,
-            "average_mass": 586.69,
+            "average_mass": 586.68,
             "composition": {
                 "C": 33,
                 "H": 38,
@@ -2341,7 +2341,7 @@
             "name": "phycoerythrobilin-bis-L-cysteine",
             "formula": "C33H38N4O6",
             "monoisotopic_mass": 586.279135,
-            "average_mass": 586.69,
+            "average_mass": 586.68,
             "composition": {
                 "C": 33,
                 "H": 38,
@@ -2354,7 +2354,7 @@
             "name": "phycourobilin-bis-L-cysteine",
             "formula": "C33H38N4O6",
             "monoisotopic_mass": 586.279135,
-            "average_mass": 586.69,
+            "average_mass": 586.68,
             "composition": {
                 "C": 33,
                 "H": 38,
@@ -2398,15 +2398,15 @@
         {
             "id": "AA0266",
             "name": "heme P460-bis-L-cysteine-L-tyrosine",
-            "formula": "C34FeH30N4O4",
-            "monoisotopic_mass": 614.161643,
-            "average_mass": 614.48,
+            "formula": "C34H30N4O4Fe",
+            "monoisotopic_mass": 614.161641,
+            "average_mass": 614.47,
             "composition": {
                 "C": 34,
-                "Fe": 1,
                 "H": 30,
                 "N": 4,
-                "O": 4
+                "O": 4,
+                "Fe": 1
             }
         },
         {
@@ -2426,14 +2426,14 @@
         {
             "id": "AA0268",
             "name": "tris-L-cysteinyl L-cysteine persulfido bis-L-glutamato L-histidino tetrairon disulfide trioxide",
-            "formula": "Fe4H-7O3S3",
-            "monoisotopic_mass": 360.585932,
-            "average_mass": 360.5,
+            "formula": "H-7O3S3Fe4",
+            "monoisotopic_mass": 360.585924,
+            "average_mass": 360.52,
             "composition": {
-                "Fe": 4,
                 "H": -7,
                 "O": 3,
-                "S": 3
+                "S": 3,
+                "Fe": 4
             }
         },
         {
@@ -2441,7 +2441,7 @@
             "name": "L-cysteine persulfide",
             "formula": "S",
             "monoisotopic_mass": 31.972071,
-            "average_mass": 32.06,
+            "average_mass": 32.07,
             "composition": {
                 "S": 1
             }
@@ -2459,15 +2459,15 @@
         {
             "id": "AA0271",
             "name": "heme P460-bis-L-cysteine-L-lysine",
-            "formula": "C34FeH30N4O4",
-            "monoisotopic_mass": 614.161643,
-            "average_mass": 614.48,
+            "formula": "C34H30N4O4Fe",
+            "monoisotopic_mass": 614.161641,
+            "average_mass": 614.47,
             "composition": {
                 "C": 34,
-                "Fe": 1,
                 "H": 30,
                 "N": 4,
-                "O": 4
+                "O": 4,
+                "Fe": 1
             }
         },
         {
@@ -2519,22 +2519,22 @@
         {
             "id": "AA0276",
             "name": "3'-heme-L-histidine",
-            "formula": "C34FeH32N4O4",
-            "monoisotopic_mass": 616.177293,
-            "average_mass": 616.5,
+            "formula": "C34H32N4O4Fe",
+            "monoisotopic_mass": 616.177291,
+            "average_mass": 616.49,
             "composition": {
                 "C": 34,
-                "Fe": 1,
                 "H": 32,
                 "N": 4,
-                "O": 4
+                "O": 4,
+                "Fe": 1
             }
         },
         {
             "id": "AA0277",
             "name": "S-selenyl-L-cysteine",
             "formula": "Se",
-            "monoisotopic_mass": 79.916521,
+            "monoisotopic_mass": 79.916522,
             "average_mass": 78.97,
             "composition": {
                 "Se": 1
@@ -2543,45 +2543,45 @@
         {
             "id": "AA0279",
             "name": "dihydroxyheme-L-aspartate ester-L-glutamate ester",
-            "formula": "C34FeH28N4O4",
-            "monoisotopic_mass": 612.145993,
-            "average_mass": 612.47,
+            "formula": "C34H28N4O4Fe",
+            "monoisotopic_mass": 612.145991,
+            "average_mass": 612.45,
             "composition": {
                 "C": 34,
-                "Fe": 1,
                 "H": 28,
                 "N": 4,
-                "O": 4
+                "O": 4,
+                "Fe": 1
             }
         },
         {
             "id": "AA0280",
             "name": "dihydroxyheme-L-aspartate ester-L-glutamate ester-L-methionine sulfonium",
-            "formula": "C34FeH29N4O4",
-            "monoisotopic_mass": 613.153269,
-            "average_mass": 613.47,
+            "formula": "C34H29N4O4Fe",
+            "monoisotopic_mass": 613.153816,
+            "average_mass": 613.46,
             "composition": {
                 "C": 34,
-                "Fe": 1,
                 "H": 29,
                 "N": 4,
-                "O": 4
+                "O": 4,
+                "Fe": 1
             }
         },
         {
             "id": "AA0281",
             "name": "L-cysteinyl molybdenum bis(molybdopterin guanine dinucleotide)",
-            "formula": "C40H47MoN20O26P4S4",
-            "monoisotopic_mass": 1572.985775,
-            "average_mass": 1572.02,
+            "formula": "C40H47N20O26P4S4Mo",
+            "monoisotopic_mass": 1572.985773,
+            "average_mass": 1572.04,
             "composition": {
                 "C": 40,
                 "H": 47,
-                "Mo": 1,
                 "N": 20,
                 "O": 26,
                 "P": 4,
-                "S": 4
+                "S": 4,
+                "Mo": 1
             }
         },
         {
@@ -2608,37 +2608,37 @@
         {
             "id": "AA0284",
             "name": "tris-L-cysteinyl L-N1'-histidino tetrairon tetrasulfide",
-            "formula": "Fe4H-4S4",
-            "monoisotopic_mass": 347.597831,
-            "average_mass": 347.59,
+            "formula": "H-4S4Fe4",
+            "monoisotopic_mass": 347.596727,
+            "average_mass": 347.62,
             "composition": {
-                "Fe": 4,
                 "H": -4,
-                "S": 4
+                "S": 4,
+                "Fe": 4
             }
         },
         {
             "id": "AA0285",
             "name": "tris-L-cysteinyl L-N3'-histidino tetrairon tetrasulfide",
-            "formula": "Fe4H-4S4",
-            "monoisotopic_mass": 347.597831,
-            "average_mass": 347.59,
+            "formula": "H-4S4Fe4",
+            "monoisotopic_mass": 347.596727,
+            "average_mass": 347.62,
             "composition": {
-                "Fe": 4,
                 "H": -4,
-                "S": 4
+                "S": 4,
+                "Fe": 4
             }
         },
         {
             "id": "AA0286",
             "name": "tris-L-cysteinyl L-aspartato tetrairon tetrasulfide",
-            "formula": "Fe4H-4S4",
-            "monoisotopic_mass": 347.597831,
-            "average_mass": 347.59,
+            "formula": "H-4S4Fe4",
+            "monoisotopic_mass": 347.596727,
+            "average_mass": 347.62,
             "composition": {
-                "Fe": 4,
                 "H": -4,
-                "S": 4
+                "S": 4,
+                "Fe": 4
             }
         },
         {
@@ -2656,25 +2656,25 @@
         {
             "id": "AA0288",
             "name": "tris-L-cysteinyl L-serinyl tetrairon tetrasulfide",
-            "formula": "Fe4H-4S4",
-            "monoisotopic_mass": 347.597831,
-            "average_mass": 347.59,
+            "formula": "H-4S4Fe4",
+            "monoisotopic_mass": 347.596727,
+            "average_mass": 347.62,
             "composition": {
-                "Fe": 4,
                 "H": -4,
-                "S": 4
+                "S": 4,
+                "Fe": 4
             }
         },
         {
             "id": "AA0289",
             "name": "bis-L-cysteinyl L-N3'-histidino L-serinyl tetrairon tetrasulfide",
-            "formula": "Fe4H-4S4",
-            "monoisotopic_mass": 347.597831,
-            "average_mass": 347.59,
+            "formula": "H-4S4Fe4",
+            "monoisotopic_mass": 347.596727,
+            "average_mass": 347.62,
             "composition": {
-                "Fe": 4,
                 "H": -4,
-                "S": 4
+                "S": 4,
+                "Fe": 4
             }
         },
         {
@@ -2704,29 +2704,29 @@
         {
             "id": "AA0292",
             "name": "tris-L-cysteinyl L-cysteine persulfido bis-L-glutamato L-histidino nickel triiron disulfide trioxide",
-            "formula": "Fe3H-7NiO3S3",
-            "monoisotopic_mass": 362.586337,
-            "average_mass": 363.35,
+            "formula": "H-7O3S3Fe3Ni",
+            "monoisotopic_mass": 362.58633,
+            "average_mass": 363.37,
             "composition": {
-                "Fe": 3,
                 "H": -7,
-                "Ni": 1,
                 "O": 3,
-                "S": 3
+                "S": 3,
+                "Fe": 3,
+                "Ni": 1
             }
         },
         {
             "id": "AA0293",
             "name": "tris-L-cysteinyl L-cysteine persulfido L-glutamato L-histidino L-serinyl nickel triiron disulfide trioxide",
-            "formula": "Fe3H-7NiO3S3",
-            "monoisotopic_mass": 362.586337,
-            "average_mass": 363.35,
+            "formula": "H-7O3S3Fe3Ni",
+            "monoisotopic_mass": 362.58633,
+            "average_mass": 363.37,
             "composition": {
-                "Fe": 3,
                 "H": -7,
-                "Ni": 1,
                 "O": 3,
-                "S": 3
+                "S": 3,
+                "Fe": 3,
+                "Ni": 1
             }
         },
         {
@@ -2759,14 +2759,14 @@
         {
             "id": "AA0298",
             "name": "heptakis-L-histidino tetracopper mu4-sulfide hydroxide",
-            "formula": "Cu4H-6OS",
-            "monoisotopic_mass": 293.638425,
-            "average_mass": 296.19,
+            "formula": "H-6OSCu4",
+            "monoisotopic_mass": 293.638424,
+            "average_mass": 296.2,
             "composition": {
-                "Cu": 4,
                 "H": -6,
                 "O": 1,
-                "S": 1
+                "S": 1,
+                "Cu": 4
             }
         },
         {
@@ -2783,22 +2783,14 @@
         {
             "id": "AA0300",
             "name": "hexakis-L-cysteinyl L-serinyl octairon heptasulfide",
-            "formula": "Fe8H-8S7",
-            "monoisotopic_mass": 663.223042,
-            "average_mass": 663.12,
+            "formula": "H-8S7Fe8",
+            "monoisotopic_mass": 663.221382,
+            "average_mass": 663.17,
             "composition": {
-                "Fe": 8,
                 "H": -8,
-                "S": 7
+                "S": 7,
+                "Fe": 8
             }
-        },
-        {
-            "id": "AA0301",
-            "name": "residues isobaric at 113.084064 Da",
-            "formula": null,
-            "monoisotopic_mass": 0.0,
-            "average_mass": 0.0,
-            "composition": {}
         },
         {
             "id": "AA0302",
@@ -2848,7 +2840,7 @@
             "id": "AA0306",
             "name": "L-cysteine coenzyme A disulfide",
             "formula": "C21H34N7O16P3S",
-            "monoisotopic_mass": 765.099559,
+            "monoisotopic_mass": 765.09956,
             "average_mass": 765.52,
             "composition": {
                 "C": 21,
@@ -2876,7 +2868,7 @@
             "name": "S-palmitoleyl-L-cysteine",
             "formula": "C16H28O",
             "monoisotopic_mass": 236.214016,
-            "average_mass": 236.4,
+            "average_mass": 236.39,
             "composition": {
                 "C": 16,
                 "H": 28,
@@ -2888,7 +2880,7 @@
             "name": "glycine cholesterol ester",
             "formula": "C27H44",
             "monoisotopic_mass": 368.344301,
-            "average_mass": 368.65,
+            "average_mass": 368.64,
             "composition": {
                 "C": 27,
                 "H": 44
@@ -2897,14 +2889,14 @@
         {
             "id": "AA0310",
             "name": "pentakis-L-cysteinyl L-histidino nickel tetrairon pentasulfide",
-            "formula": "Fe4H-6NiS5",
-            "monoisotopic_mass": 435.488498,
-            "average_mass": 436.33,
+            "formula": "H-6S5Fe4Ni",
+            "monoisotopic_mass": 435.488489,
+            "average_mass": 436.36,
             "composition": {
-                "Fe": 4,
                 "H": -6,
-                "Ni": 1,
-                "S": 5
+                "S": 5,
+                "Fe": 4,
+                "Ni": 1
             }
         },
         {
@@ -2923,7 +2915,7 @@
             "name": "N6-3,4-didehydroretinylidene-L-lysine",
             "formula": "C20H24",
             "monoisotopic_mass": 264.187801,
-            "average_mass": 264.41,
+            "average_mass": 264.4,
             "composition": {
                 "C": 20,
                 "H": 24
@@ -2997,17 +2989,17 @@
         {
             "id": "AA0319",
             "name": "L-serinyl molybdenum bis(molybdopterin guanine dinucleotide)",
-            "formula": "C40H47MoN20O27P4S4",
-            "monoisotopic_mass": 1588.98069,
-            "average_mass": 1588.01,
+            "formula": "C40H47N20O27P4S4Mo",
+            "monoisotopic_mass": 1588.980688,
+            "average_mass": 1588.03,
             "composition": {
                 "C": 40,
                 "H": 47,
-                "Mo": 1,
                 "N": 20,
                 "O": 27,
                 "P": 4,
-                "S": 4
+                "S": 4,
+                "Mo": 1
             }
         },
         {
@@ -3035,22 +3027,22 @@
         {
             "id": "AA0324",
             "name": "hydroxyheme-L-glutamate ester",
-            "formula": "C34FeH30N4O4",
-            "monoisotopic_mass": 614.161643,
-            "average_mass": 614.48,
+            "formula": "C34H30N4O4Fe",
+            "monoisotopic_mass": 614.161641,
+            "average_mass": 614.47,
             "composition": {
                 "C": 34,
-                "Fe": 1,
                 "H": 30,
                 "N": 4,
-                "O": 4
+                "O": 4,
+                "Fe": 1
             }
         },
         {
             "id": "AA0325",
             "name": "(phospho-5'-guanosine)-L-histidine",
             "formula": "C10H12N5O7P",
-            "monoisotopic_mass": 345.047434,
+            "monoisotopic_mass": 345.047435,
             "average_mass": 345.21,
             "composition": {
                 "C": 10,
@@ -3063,13 +3055,13 @@
         {
             "id": "AA0326",
             "name": "tetrakis-L-cysteinyl triiron tetrasulfide",
-            "formula": "Fe3H-4S4",
-            "monoisotopic_mass": 291.663442,
-            "average_mass": 291.74,
+            "formula": "H-4S4Fe3",
+            "monoisotopic_mass": 291.661791,
+            "average_mass": 291.77,
             "composition": {
-                "Fe": 3,
                 "H": -4,
-                "S": 4
+                "S": 4,
+                "Fe": 3
             }
         },
         {
@@ -3089,15 +3081,15 @@
         {
             "id": "AA0329",
             "name": "1'-heme-L-histidine",
-            "formula": "C34FeH32N4O4",
-            "monoisotopic_mass": 616.177293,
-            "average_mass": 616.5,
+            "formula": "C34H32N4O4Fe",
+            "monoisotopic_mass": 616.177291,
+            "average_mass": 616.49,
             "composition": {
                 "C": 34,
-                "Fe": 1,
                 "H": 32,
                 "N": 4,
-                "O": 4
+                "O": 4,
+                "Fe": 1
             }
         },
         {
@@ -3113,13 +3105,13 @@
         {
             "id": "AA0331",
             "name": "tris-L-cysteinyl L-aspartato diiron disulfide",
-            "formula": "Fe2H-4S2",
-            "monoisotopic_mass": 171.783814,
-            "average_mass": 171.78,
+            "formula": "H-4S2Fe2",
+            "monoisotopic_mass": 171.782713,
+            "average_mass": 171.79,
             "composition": {
-                "Fe": 2,
                 "H": -4,
-                "S": 2
+                "S": 2,
+                "Fe": 2
             }
         },
         {
@@ -3150,16 +3142,16 @@
         {
             "id": "AA0334",
             "name": "L-cysteinyl hydrogenase diiron subcluster",
-            "formula": "C5Fe2H-1N2O5S2",
-            "monoisotopic_mass": 342.786913,
-            "average_mass": 342.87,
+            "formula": "C5H-1N2O5S2Fe2",
+            "monoisotopic_mass": 342.786909,
+            "average_mass": 342.88,
             "composition": {
                 "C": 5,
-                "Fe": 2,
                 "H": -1,
                 "N": 2,
                 "O": 5,
-                "S": 2
+                "S": 2,
+                "Fe": 2
             }
         },
         {
@@ -3276,8 +3268,8 @@
             "id": "AA0346",
             "name": "N-glycyl-1-(phosphatidyl)ethanolamine",
             "formula": "C39H74NO7P",
-            "monoisotopic_mass": 699.52029,
-            "average_mass": 699.99,
+            "monoisotopic_mass": 699.520291,
+            "average_mass": 699.98,
             "composition": {
                 "C": 39,
                 "H": 74,
@@ -3291,7 +3283,7 @@
             "name": "L-glutamyl 5-omega-hydroxyceramide ester",
             "formula": "C50H96O4",
             "monoisotopic_mass": 760.730862,
-            "average_mass": 761.31,
+            "average_mass": 761.29,
             "composition": {
                 "C": 50,
                 "H": 96,
@@ -3302,7 +3294,7 @@
             "id": "AA0348",
             "name": "S-[5'-(L-tryptoph-6'-yl)-L-tyrosin-3'-yl]-L-methionin-S-ium",
             "formula": "H-3",
-            "monoisotopic_mass": -3.024024,
+            "monoisotopic_mass": -3.023475,
             "average_mass": -3.02,
             "composition": {
                 "H": -3
@@ -3312,7 +3304,7 @@
             "id": "AA0349",
             "name": "O-(riboflavin phosphoryl)-L-threonine",
             "formula": "C17H19N4O8P",
-            "monoisotopic_mass": 438.09405,
+            "monoisotopic_mass": 438.094051,
             "average_mass": 438.33,
             "composition": {
                 "C": 17,
@@ -3326,7 +3318,7 @@
             "id": "AA0350",
             "name": "O-(riboflavin phosphoryl)-L-serine",
             "formula": "C17H19N4O8P",
-            "monoisotopic_mass": 438.09405,
+            "monoisotopic_mass": 438.094051,
             "average_mass": 438.33,
             "composition": {
                 "C": 17,
@@ -3341,7 +3333,7 @@
             "name": "S-(4alpha-FMN)-L-cysteine",
             "formula": "C17H21N4O9P",
             "monoisotopic_mass": 456.104615,
-            "average_mass": 456.35,
+            "average_mass": 456.34,
             "composition": {
                 "C": 17,
                 "H": 21,
@@ -3393,52 +3385,52 @@
         {
             "id": "AA0355",
             "name": "L-cysteinyl copper sulfido molybdopterin cytosine dinuncleotide",
-            "formula": "C19CuH24MoN8O15P2S3",
-            "monoisotopic_mass": 922.834854,
-            "average_mass": 922.07,
+            "formula": "C19H24N8O15P2S3CuMo",
+            "monoisotopic_mass": 922.83485,
+            "average_mass": 922.08,
             "composition": {
                 "C": 19,
-                "Cu": 1,
                 "H": 24,
-                "Mo": 1,
                 "N": 8,
                 "O": 15,
                 "P": 2,
-                "S": 3
+                "S": 3,
+                "Cu": 1,
+                "Mo": 1
             }
         },
         {
             "id": "AA0356",
             "name": "tris-L-cysteinyl S-adenosylmethion-N,O-diyl tetrairon tetrasulfide",
-            "formula": "C15Fe4H19N6O5S5",
-            "monoisotopic_mass": 746.742346,
-            "average_mass": 747.03,
+            "formula": "C15H19N6O5S5Fe4",
+            "monoisotopic_mass": 746.741791,
+            "average_mass": 747.07,
             "composition": {
                 "C": 15,
-                "Fe": 4,
                 "H": 19,
                 "N": 6,
                 "O": 5,
-                "S": 5
+                "S": 5,
+                "Fe": 4
             }
         },
         {
             "id": "AA0357",
             "name": "tris-L-cysteinyl L-arginyl diiron disulfide",
-            "formula": "Fe2H-3S2",
-            "monoisotopic_mass": 172.791639,
-            "average_mass": 172.79,
+            "formula": "H-3S2Fe2",
+            "monoisotopic_mass": 172.790538,
+            "average_mass": 172.8,
             "composition": {
-                "Fe": 2,
                 "H": -3,
-                "S": 2
+                "S": 2,
+                "Fe": 2
             }
         },
         {
             "id": "AA0359",
             "name": "5-hydroxy-N6,N6,N6-trimethyl-L-lysine",
             "formula": "C3H7O",
-            "monoisotopic_mass": 59.049141,
+            "monoisotopic_mass": 59.04969,
             "average_mass": 59.09,
             "composition": {
                 "C": 3,
@@ -3462,7 +3454,7 @@
             "name": "O-sulfo-L-serine",
             "formula": "O3S",
             "monoisotopic_mass": 79.956815,
-            "average_mass": 80.06,
+            "average_mass": 80.07,
             "composition": {
                 "O": 3,
                 "S": 1
@@ -3473,7 +3465,7 @@
             "name": "O-sulfo-L-threonine",
             "formula": "O3S",
             "monoisotopic_mass": 79.956815,
-            "average_mass": 80.06,
+            "average_mass": 80.07,
             "composition": {
                 "O": 3,
                 "S": 1
@@ -3503,14 +3495,14 @@
         {
             "id": "AA0366",
             "name": "bis-L-aspartato tris-L-glutamato L-histidino calcium tetramanganese tetroxide",
-            "formula": "CaH-6Mn4O4",
-            "monoisotopic_mass": 317.64748,
+            "formula": "H-6O4CaMn4",
+            "monoisotopic_mass": 317.647471,
             "average_mass": 317.78,
             "composition": {
-                "Ca": 1,
                 "H": -6,
-                "Mn": 4,
-                "O": 4
+                "O": 4,
+                "Ca": 1,
+                "Mn": 4
             }
         },
         {
@@ -3607,17 +3599,17 @@
         {
             "id": "AA0375",
             "name": "L-aspartyl molybdenum bis(molybdopterin guanine dinucleotide)",
-            "formula": "C40H47MoN20O26P4S4",
-            "monoisotopic_mass": 1572.985775,
-            "average_mass": 1572.02,
+            "formula": "C40H47N20O26P4S4Mo",
+            "monoisotopic_mass": 1572.985773,
+            "average_mass": 1572.04,
             "composition": {
                 "C": 40,
                 "H": 47,
-                "Mo": 1,
                 "N": 20,
                 "O": 26,
                 "P": 4,
-                "S": 4
+                "S": 4,
+                "Mo": 1
             }
         },
         {
@@ -3815,38 +3807,38 @@
         {
             "id": "AA0393",
             "name": "L-cysteinyl-L-histidino-homocitryl vanadium heptairon nonasulfide",
-            "formula": "C7Fe7H6O7S9V",
-            "monoisotopic_mass": 932.248513,
-            "average_mass": 932.51,
+            "formula": "C7H6O7S9VFe7",
+            "monoisotopic_mass": 932.2485,
+            "average_mass": 932.58,
             "composition": {
                 "C": 7,
-                "Fe": 7,
                 "H": 6,
                 "O": 7,
                 "S": 9,
-                "V": 1
+                "V": 1,
+                "Fe": 7
             }
         },
         {
             "id": "AA0394",
             "name": "L-cysteinyl-L-histidino-homocitryl octairon nonasulfide",
-            "formula": "C7Fe8H6O7S9",
-            "monoisotopic_mass": 937.240588,
-            "average_mass": 937.42,
+            "formula": "C7H6O7S9Fe8",
+            "monoisotopic_mass": 937.239477,
+            "average_mass": 937.49,
             "composition": {
                 "C": 7,
-                "Fe": 8,
                 "H": 6,
                 "O": 7,
-                "S": 9
+                "S": 9,
+                "Fe": 8
             }
         },
         {
             "id": "AA0395",
             "name": "L-histidino vanadium tetraoxide",
             "formula": "H2O4V",
-            "monoisotopic_mass": 116.939268,
-            "average_mass": 116.95,
+            "monoisotopic_mass": 116.939266,
+            "average_mass": 116.96,
             "composition": {
                 "H": 2,
                 "O": 4,
@@ -3978,7 +3970,7 @@
             "name": "O-xylosyl-L-serine",
             "formula": "C5H8O4",
             "monoisotopic_mass": 132.042259,
-            "average_mass": 132.12,
+            "average_mass": 132.11,
             "composition": {
                 "C": 5,
                 "H": 8,
@@ -3990,7 +3982,7 @@
             "name": "S-stearoyl-L-cysteine",
             "formula": "C18H34O",
             "monoisotopic_mass": 266.260966,
-            "average_mass": 266.47,
+            "average_mass": 266.46,
             "composition": {
                 "C": 18,
                 "H": 34,
@@ -4002,7 +3994,7 @@
             "name": "3'-geranyl-2',3'-dihydro-2',N2-cyclo-L-tryptophan",
             "formula": "C10H16",
             "monoisotopic_mass": 136.125201,
-            "average_mass": 136.24,
+            "average_mass": 136.23,
             "composition": {
                 "C": 10,
                 "H": 16
@@ -4179,13 +4171,13 @@
         {
             "id": "AA0438",
             "name": "tris-L-cysteinyl L-histidino diiron disulfide",
-            "formula": "Fe2H-4S2",
-            "monoisotopic_mass": 171.783814,
-            "average_mass": 171.78,
+            "formula": "H-4S2Fe2",
+            "monoisotopic_mass": 171.782713,
+            "average_mass": 171.79,
             "composition": {
-                "Fe": 2,
                 "H": -4,
-                "S": 2
+                "S": 2,
+                "Fe": 2
             }
         },
         {
@@ -4205,12 +4197,12 @@
         {
             "id": "AA0180",
             "name": "6'-chloro-L-tryptophan",
-            "formula": "ClH-1",
+            "formula": "H-1Cl",
             "monoisotopic_mass": 33.961028,
             "average_mass": 34.44,
             "composition": {
-                "Cl": 1,
-                "H": -1
+                "H": -1,
+                "Cl": 1
             }
         },
         {
@@ -4229,7 +4221,7 @@
             "name": "S-15,16-dihydrobiliverdin-L-cysteine",
             "formula": "C33H36N4O6",
             "monoisotopic_mass": 584.263485,
-            "average_mass": 584.67,
+            "average_mass": 584.66,
             "composition": {
                 "C": 33,
                 "H": 36,
@@ -4242,7 +4234,7 @@
             "name": "15,16-dihydrobiliverdin-bis-L-cysteine",
             "formula": "C33H36N4O6",
             "monoisotopic_mass": 584.263485,
-            "average_mass": 584.67,
+            "average_mass": 584.66,
             "composition": {
                 "C": 33,
                 "H": 36,
@@ -4295,7 +4287,7 @@
             "name": "S-(15-deoxy-Delta12,14-prostaglandin J2-9-yl)-L-cysteine",
             "formula": "C20H28O3",
             "monoisotopic_mass": 316.203845,
-            "average_mass": 316.44,
+            "average_mass": 316.43,
             "composition": {
                 "C": 20,
                 "H": 28,
@@ -4307,7 +4299,7 @@
             "name": "S-phycourobilin-L-cysteine",
             "formula": "C33H38N4O6",
             "monoisotopic_mass": 586.279135,
-            "average_mass": 586.69,
+            "average_mass": 586.68,
             "composition": {
                 "C": 33,
                 "H": 38,
@@ -4343,7 +4335,7 @@
             "name": "S-(aspart-4-yloxy) thiocarbonate",
             "formula": "CO2S",
             "monoisotopic_mass": 75.9619,
-            "average_mass": 76.07,
+            "average_mass": 76.08,
             "composition": {
                 "C": 1,
                 "O": 2,
@@ -4496,7 +4488,7 @@
             "name": "O-palmitoleyl-L-serine",
             "formula": "C16H28O",
             "monoisotopic_mass": 236.214016,
-            "average_mass": 236.4,
+            "average_mass": 236.39,
             "composition": {
                 "C": 16,
                 "H": 28,
@@ -4507,7 +4499,7 @@
             "id": "AA0456",
             "name": "N,N,N-trimethyl-L-methionine",
             "formula": "C3H7",
-            "monoisotopic_mass": 43.054227,
+            "monoisotopic_mass": 43.054775,
             "average_mass": 43.09,
             "composition": {
                 "C": 3,
@@ -4650,7 +4642,7 @@
             "name": "4-(1-hydroxyethyl)-7-isoleucino-2-(threonin-O3-ylcarbonyl)-7,8-dihydroquinolin-8-ol",
             "formula": "C12H9NO3",
             "monoisotopic_mass": 215.058243,
-            "average_mass": 215.21,
+            "average_mass": 215.2,
             "composition": {
                 "C": 12,
                 "H": 9,
@@ -4685,7 +4677,7 @@
             "id": "AA0476",
             "name": "N6-(ADP-ribosyl)-L-lysine",
             "formula": "C15H21N5O13P2",
-            "monoisotopic_mass": 541.061109,
+            "monoisotopic_mass": 541.06111,
             "average_mass": 541.3,
             "composition": {
                 "C": 15,
@@ -4838,15 +4830,15 @@
         {
             "id": "AA0491",
             "name": "tetrakis-L-glutamato bis-L-N1'-histidino lipid carboxylato manganese iron oxide",
-            "formula": "C14FeH23MnO3",
-            "monoisotopic_mass": 350.038251,
-            "average_mass": 350.12,
+            "formula": "C14H23O3MnFe",
+            "monoisotopic_mass": 350.037698,
+            "average_mass": 350.11,
             "composition": {
                 "C": 14,
-                "Fe": 1,
                 "H": 23,
+                "O": 3,
                 "Mn": 1,
-                "O": 3
+                "Fe": 1
             }
         },
         {
@@ -4900,7 +4892,7 @@
             "id": "AA0498",
             "name": "O-cholinephosphoryl-L-serine",
             "formula": "C5H13NO3P",
-            "monoisotopic_mass": 166.062756,
+            "monoisotopic_mass": 166.063305,
             "average_mass": 166.14,
             "composition": {
                 "C": 5,
@@ -4915,7 +4907,7 @@
             "name": "O-(2,4-diacetamido-2,4-dideoxyglucosyl)-L-serine",
             "formula": "C10H16N2O5",
             "monoisotopic_mass": 244.105922,
-            "average_mass": 244.25,
+            "average_mass": 244.24,
             "composition": {
                 "C": 10,
                 "H": 16,
@@ -4928,7 +4920,7 @@
             "name": "3'-farnesyl-2',3'-dihydro-2',N2-cyclo-L-tryptophan",
             "formula": "C15H24",
             "monoisotopic_mass": 204.187801,
-            "average_mass": 204.36,
+            "average_mass": 204.35,
             "composition": {
                 "C": 15,
                 "H": 24
@@ -4989,7 +4981,7 @@
             "name": "N2-(L-isoglutamyl)-L-lysine",
             "formula": "C6H12N2O",
             "monoisotopic_mass": 128.094963,
-            "average_mass": 128.18,
+            "average_mass": 128.17,
             "composition": {
                 "C": 6,
                 "H": 12,
@@ -5025,7 +5017,7 @@
             "name": "6-(S-L-cysteinyl)-8alpha-(-3'-L-histidino)-FMN",
             "formula": "C17H17N4O9P",
             "monoisotopic_mass": 452.073315,
-            "average_mass": 452.32,
+            "average_mass": 452.31,
             "composition": {
                 "C": 17,
                 "H": 17,
@@ -5087,7 +5079,7 @@
             "name": "trithiocystine",
             "formula": "H-2S3",
             "monoisotopic_mass": 93.900563,
-            "average_mass": 94.16,
+            "average_mass": 94.19,
             "composition": {
                 "H": -2,
                 "S": 3
@@ -5121,7 +5113,7 @@
             "id": "AA0518",
             "name": "N5-(ADP-ribosyl)-L-glutamine",
             "formula": "C15H21N5O13P2",
-            "monoisotopic_mass": 541.061109,
+            "monoisotopic_mass": 541.06111,
             "average_mass": 541.3,
             "composition": {
                 "C": 15,
@@ -5135,7 +5127,7 @@
             "id": "AA0519",
             "name": "O-(ADP-ribosyl)-L-threonine",
             "formula": "C15H21N5O13P2",
-            "monoisotopic_mass": 541.061109,
+            "monoisotopic_mass": 541.06111,
             "average_mass": 541.3,
             "composition": {
                 "C": 15,
@@ -5160,7 +5152,7 @@
             "name": "O4-(8alpha-FAD)-L-aspartate",
             "formula": "C27H31N9O15P2",
             "monoisotopic_mass": 783.141485,
-            "average_mass": 783.54,
+            "average_mass": 783.53,
             "composition": {
                 "C": 27,
                 "H": 31,
@@ -5183,12 +5175,12 @@
         {
             "id": "AA0524",
             "name": "N6-chloro-L-lysine",
-            "formula": "ClH-1",
+            "formula": "H-1Cl",
             "monoisotopic_mass": 33.961028,
             "average_mass": 34.44,
             "composition": {
-                "Cl": 1,
-                "H": -1
+                "H": -1,
+                "Cl": 1
             }
         },
         {
@@ -5196,7 +5188,7 @@
             "name": "N-[(12R)-12-hydroxymyristoyl]-L-cysteine",
             "formula": "C14H26O2",
             "monoisotopic_mass": 226.19328,
-            "average_mass": 226.36,
+            "average_mass": 226.35,
             "composition": {
                 "C": 14,
                 "H": 26,
@@ -5220,7 +5212,7 @@
             "name": "S-(coelenterazin-3a-yl)-L-cysteine",
             "formula": "C26H19N3O3",
             "monoisotopic_mass": 421.142641,
-            "average_mass": 421.46,
+            "average_mass": 421.45,
             "composition": {
                 "C": 26,
                 "H": 19,
@@ -5245,7 +5237,7 @@
             "name": "5-glutamyl serotonin",
             "formula": "C10H9NO",
             "monoisotopic_mass": 159.068414,
-            "average_mass": 159.19,
+            "average_mass": 159.18,
             "composition": {
                 "C": 10,
                 "H": 9,
@@ -5258,7 +5250,7 @@
             "name": "N-(glycyl)-L-cysteine",
             "formula": "C3H5NOS",
             "monoisotopic_mass": 103.009185,
-            "average_mass": 103.14,
+            "average_mass": 103.15,
             "composition": {
                 "C": 3,
                 "H": 5,
@@ -5272,7 +5264,7 @@
             "name": "N6-(L-lysyl)-L-lysine",
             "formula": "C6H12N2O",
             "monoisotopic_mass": 128.094963,
-            "average_mass": 128.18,
+            "average_mass": 128.17,
             "composition": {
                 "C": 6,
                 "H": 12,
@@ -5331,7 +5323,7 @@
             "id": "AA0535",
             "name": "N,N,N-trimethyl-L-serine",
             "formula": "C3H7",
-            "monoisotopic_mass": 43.054227,
+            "monoisotopic_mass": 43.054775,
             "average_mass": 43.09,
             "composition": {
                 "C": 3,
@@ -5387,7 +5379,7 @@
             "id": "AA0540",
             "name": "L-cysteine 3-hydroxy-2,5-pyridinedicarboxylic acid",
             "formula": "H-8N-1O-2",
-            "monoisotopic_mass": -54.055504,
+            "monoisotopic_mass": -54.055503,
             "average_mass": -54.07,
             "composition": {
                 "H": -8,
@@ -5460,8 +5452,8 @@
             "id": "AA0548",
             "name": "S-(2-aminovinyl)-L-cysteine",
             "formula": "C-1H-4O-2S-1",
-            "monoisotopic_mass": -79.9932,
-            "average_mass": -80.1,
+            "monoisotopic_mass": -79.993201,
+            "average_mass": -80.11,
             "composition": {
                 "C": -1,
                 "H": -4,
@@ -5472,12 +5464,12 @@
         {
             "id": "AA0549",
             "name": "5'-chloro-L-tryptophan",
-            "formula": "ClH-1",
+            "formula": "H-1Cl",
             "monoisotopic_mass": 33.961028,
             "average_mass": 34.44,
             "composition": {
-                "Cl": 1,
-                "H": -1
+                "H": -1,
+                "Cl": 1
             }
         },
         {
@@ -5505,13 +5497,13 @@
         {
             "id": "AA0552",
             "name": "methanobactin OB3b copper complex",
-            "formula": "CuH-10O2",
+            "formula": "H-10O2Cu",
             "monoisotopic_mass": 84.841176,
-            "average_mass": 85.46,
+            "average_mass": 85.47,
             "composition": {
-                "Cu": 1,
                 "H": -10,
-                "O": 2
+                "O": 2,
+                "Cu": 1
             }
         },
         {
@@ -5610,14 +5602,14 @@
         {
             "id": "AA0555",
             "name": "methanobactin SB2 copper complex",
-            "formula": "CuH-9NO",
-            "monoisotopic_mass": 83.857161,
+            "formula": "H-9NOCu",
+            "monoisotopic_mass": 83.85716,
             "average_mass": 84.48,
             "composition": {
-                "Cu": 1,
                 "H": -9,
                 "N": 1,
-                "O": 1
+                "O": 1,
+                "Cu": 1
             }
         },
         {
@@ -5879,7 +5871,7 @@
             "id": "AA0587",
             "name": "desmosine",
             "formula": "H-16N-3",
-            "monoisotopic_mass": -58.134971,
+            "monoisotopic_mass": -58.134423,
             "average_mass": -58.15,
             "composition": {
                 "H": -16,
@@ -5890,7 +5882,7 @@
             "id": "AA0588",
             "name": "isodesmosine",
             "formula": "H-16N-3",
-            "monoisotopic_mass": -58.134971,
+            "monoisotopic_mass": -58.134423,
             "average_mass": -58.15,
             "composition": {
                 "H": -16,
@@ -5961,7 +5953,7 @@
             "name": "L-isoglutamyl histamine",
             "formula": "C5H6N2",
             "monoisotopic_mass": 94.053098,
-            "average_mass": 94.12,
+            "average_mass": 94.11,
             "composition": {
                 "C": 5,
                 "H": 6,
@@ -5971,27 +5963,27 @@
         {
             "id": "AA0599",
             "name": "tetrakis-L-cysteinyl tetrairon octanitrosyl",
-            "formula": "Fe4H-4N8O8",
-            "monoisotopic_mass": 459.692359,
+            "formula": "H-4N8O8Fe4",
+            "monoisotopic_mass": 459.692351,
             "average_mass": 459.4,
             "composition": {
-                "Fe": 4,
                 "H": -4,
                 "N": 8,
-                "O": 8
+                "O": 8,
+                "Fe": 4
             }
         },
         {
             "id": "AA0600",
             "name": "L-alaninato bis-L-aspartato tris-L-glutamato L-histidino calcium tetramanganese pentoxide",
-            "formula": "CaH-6Mn4O5",
-            "monoisotopic_mass": 333.642394,
+            "formula": "H-6O5CaMn4",
+            "monoisotopic_mass": 333.642386,
             "average_mass": 333.78,
             "composition": {
-                "Ca": 1,
                 "H": -6,
-                "Mn": 4,
-                "O": 5
+                "O": 5,
+                "Ca": 1,
+                "Mn": 4
             }
         },
         {
@@ -6017,40 +6009,40 @@
         {
             "id": "AA0603",
             "name": "bis-L-cysteinyl bisglutathion-S-yl diiron disulfide",
-            "formula": "C20Fe2H30N6O12S4",
-            "monoisotopic_mass": 785.950329,
-            "average_mass": 786.42,
+            "formula": "C20H30N6O12S4Fe2",
+            "monoisotopic_mass": 785.950326,
+            "average_mass": 786.45,
             "composition": {
                 "C": 20,
-                "Fe": 2,
                 "H": 30,
                 "N": 6,
                 "O": 12,
-                "S": 4
+                "S": 4,
+                "Fe": 2
             }
         },
         {
             "id": "AA0604",
             "name": "tris-L-cysteinyl L-glutamato tetrairon tetrasulfide",
-            "formula": "Fe4H-4S4",
-            "monoisotopic_mass": 347.596734,
-            "average_mass": 347.59,
+            "formula": "H-4S4Fe4",
+            "monoisotopic_mass": 347.596727,
+            "average_mass": 347.62,
             "composition": {
-                "Fe": 4,
                 "H": -4,
-                "S": 4
+                "S": 4,
+                "Fe": 4
             }
         },
         {
             "id": "AA0605",
             "name": "tris-L-cysteinyl L-glutamin-O6-yl tetrairon tetrasulfide",
-            "formula": "Fe4H-4S4",
-            "monoisotopic_mass": 347.596734,
-            "average_mass": 347.59,
+            "formula": "H-4S4Fe4",
+            "monoisotopic_mass": 347.596727,
+            "average_mass": 347.62,
             "composition": {
-                "Fe": 4,
                 "H": -4,
-                "S": 4
+                "S": 4,
+                "Fe": 4
             }
         },
         {
@@ -6058,7 +6050,7 @@
             "name": "N4-(2,4-diacetamido-2,4,6-trideoxy-D-glucosyl)-L-asparagine",
             "formula": "C10H16N2O4",
             "monoisotopic_mass": 228.111007,
-            "average_mass": 228.25,
+            "average_mass": 228.24,
             "composition": {
                 "C": 10,
                 "H": 16,
@@ -6071,7 +6063,7 @@
             "name": "O-(2,4-diacetamido-2,4,6-trideoxy-D-glucosyl)-L-serine",
             "formula": "C10H16N2O4",
             "monoisotopic_mass": 228.111007,
-            "average_mass": 228.25,
+            "average_mass": 228.24,
             "composition": {
                 "C": 10,
                 "H": 16,
@@ -6135,7 +6127,7 @@
             "name": "5-glutamyl glutamic acid",
             "formula": "C5H7NO3",
             "monoisotopic_mass": 129.042593,
-            "average_mass": 129.12,
+            "average_mass": 129.11,
             "composition": {
                 "C": 5,
                 "H": 7,
@@ -6160,7 +6152,7 @@
             "id": "AA0614",
             "name": "5-glutamyl coenzyme A thioester",
             "formula": "C21H34N7O15P3S",
-            "monoisotopic_mass": 749.104644,
+            "monoisotopic_mass": 749.104646,
             "average_mass": 749.52,
             "composition": {
                 "C": 21,
@@ -6188,7 +6180,7 @@
             "id": "AA0616",
             "name": "S-methyl-L-methionine",
             "formula": "CH3",
-            "monoisotopic_mass": 15.022927,
+            "monoisotopic_mass": 15.023475,
             "average_mass": 15.03,
             "composition": {
                 "C": 1,
