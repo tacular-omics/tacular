@@ -328,6 +328,27 @@ Query mzPAF reference molecules:
    TMT ions found: ...
    Reporter ions found: True
 
+Isobaric Tags and SILAC Labels
+------------------------------
+
+TMT, TMTpro and iTRAQ plexes with their reporter ions, and SILAC labels. Compositions
+come from UNIMOD; masses and reporter m/z are computed from the element table:
+
+.. testcode::
+
+   tmt = t.ISOBARIC_TAG_LOOKUP['TMT10plex']
+   print(tmt.name, tmt.unimod_name, tmt.plex)
+   print(round(tmt.query_reporter('127N').mz, 6))
+
+   heavy = t.SILAC_LOOKUP.get_set('heavy')
+   print([(label.name, round(label.monoisotopic_mass, 6)) for label in heavy])
+
+.. testoutput::
+
+   TMT10 TMT6plex 10
+   127.124761
+   [('Lys8', 8.014199), ('Arg10', 10.008269)]
+
 Iteration and Advanced Usage
 -----------------------------
 

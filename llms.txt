@@ -13,6 +13,9 @@ mass: `import tacular as t; t.UNIMOD_LOOKUP["Phospho"].monoisotopic_mass`;
 Tolerance helpers: `t.ppm_error(observed, theoretical)`, `t.da_to_ppm(delta, mz)`,
 `t.ppm_to_da(delta_ppm, mz)`, `t.tolerance_window(mass, tol, *, unit="da"|"ppm") -> (lo, hi)`,
 `t.within_tolerance(observed, theoretical, tol, *, unit=...)`.
+Quantitative labels: `t.ISOBARIC_TAG_LOOKUP["TMT18"]` (TMT 0/2/6/10/11, TMTpro 0/16/18,
+iTRAQ 4/8: `.channels`, `.reporter_mzs`, `.query_reporter("127N").mz`, `.unimod_id`) and
+`t.SILAC_LOOKUP["Lys8"]` (Lys4/6/8, Arg6/10; `.get_set("light"|"medium"|"heavy")`).
 Ontology data ships baked into the package and can be refreshed to the latest
 upstream release without reinstalling via the `tacular update` CLI. Every error is a
 `tacular.TacularError` (a `ValueError`); a lookup miss is `TacularKeyError` (also a

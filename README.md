@@ -72,6 +72,8 @@ both a `KeyError` and a `ValueError`. Physical constants such as `PROTON_MASS` a
 - Query PSI-MOD, RESID, XLMOD, GNOme, and UniProt-PTM the same way as UNIMOD above.
 - Convert and compare mass errors: `ppm_error`, `da_to_ppm`, `ppm_to_da`,
   `tolerance_window` and `within_tolerance` (`tacular.tolerance`).
+- Isobaric tags and SILAC labels: `t.ISOBARIC_TAG_LOOKUP["TMT10"].reporter_mzs`,
+  `t.SILAC_LOOKUP.get_set("heavy")`, with UNIMOD ids and masses computed from the element table.
 - Look up fragment ion types, common neutral losses, mzPAF reference molecules,
   and protease cleavage patterns.
 - Refresh any ontology to its latest upstream release without reinstalling:

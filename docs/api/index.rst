@@ -13,6 +13,7 @@ This section contains the API documentation for tacular.
    neutral_deltas
    proteases
    refmol
+   labels
    monosaccharides
    tolerance
    base_classes
