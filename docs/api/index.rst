@@ -14,4 +14,5 @@ This section contains the API documentation for tacular.
    proteases
    refmol
    monosaccharides
+   tolerance
    base_classes

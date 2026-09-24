@@ -12,11 +12,11 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import cached_property
 from random import choice
-from typing import Literal
 
 from ._lookup import _BaseLookup
 from .errors import TacularError
 from .obo_entity import OboEntity
+from .tolerance import ToleranceUnit, _half_width, tolerance_window
 
 __all__ = ["OntologyLookup"]
 
@@ -232,7 +232,7 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
         mass: float,
         *,
         tolerance: float = 0.01,
-        unit: Literal["da", "ppm"] = "da",
+        unit: ToleranceUnit = "da",
         monoisotopic: bool = True,
     ) -> list[T]:
         """Entries whose mass is within ``tolerance`` of ``mass`` (monoisotopic by
@@ -247,17 +247,15 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
         Bisects a mass-sorted index (built on the first call), then applies the exact
         ``abs(entry_mass - mass) <= tolerance`` test to each candidate.
         """
-        if unit == "ppm":
-            tolerance = abs(mass) * tolerance / 1e6
-        elif unit != "da":
-            raise TacularError(f"unit must be 'da' or 'ppm', got {unit!r}.")
+        tolerance = _half_width(mass, tolerance, unit)  # validates unit; Da from here on
         if mass != mass or tolerance != tolerance:  # NaN matches nothing
             return []
         index = self._mass_index(monoisotopic)
         masses = index.masses
+        window_lo, window_hi = tolerance_window(mass, tolerance)
         slack = _MASS_WINDOW_SLACK * (1.0 + abs(mass) + abs(tolerance))
-        lo = bisect_left(masses, mass - tolerance - slack)
-        hi = bisect_right(masses, mass + tolerance + slack)
+        lo = bisect_left(masses, window_lo - slack)
+        hi = bisect_right(masses, window_hi + slack)
         if lo >= hi:
             return []
         infos = index.infos

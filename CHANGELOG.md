@@ -25,6 +25,16 @@ No API or output changes; timings are indicative single-core numbers.
 
 ### Added
 
+- `tacular.tolerance`, also exported from `tacular`: `ppm_error(observed, theoretical)`,
+  `da_to_ppm(delta, mz)`, `ppm_to_da(delta_ppm, mz)`,
+  `tolerance_window(mass, tolerance, *, unit="da") -> (lo, hi)` and
+  `within_tolerance(observed, theoretical, tolerance, *, unit="da")`, plus the
+  `ToleranceUnit` alias. ppm is relative to `abs(mass)`. A zero denominator or a unit other
+  than lowercase `"da"`/`"ppm"` raises `TacularError`. `query_mass(unit=)` uses
+  `tolerance_window`. These replace private copies in spxtacular, peptacular and tdfpy.
+- Tests check that every UNIMOD and PSI-MOD entry's monoisotopic mass and composition
+  match what unimodpy and psimodpy parse from the same OBO release. The two are
+  dev-only dependencies; the test skips without them.
 - `OntologyLookup.query_mass(mass, *, tolerance=0.01, unit="da", monoisotopic=True)`:
   `unit="ppm"` reads `tolerance` in parts per million of `mass` (same `unit: Literal["da", "ppm"]`
   convention as paftacular). NaN `mass` or `tolerance` returns `[]`. An unknown `unit` raises `TacularError`.

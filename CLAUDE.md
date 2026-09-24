@@ -60,6 +60,8 @@ src/tacular/
   _lookup.py          # _BaseLookup: [] / get / in / len / iter / keys / values / items for ALL 13 lookups
   errors.py           # TacularError(ValueError), TacularKeyError(TacularError, KeyError)
   constants.py        # PROTON_MASS, ELECTRON_MASS, NEUTRON_MASS, HYDROGEN_MASS, C13_C12_MASS_DIFF (cited)
+  tolerance.py        # ppm_error, da_to_ppm, ppm_to_da, tolerance_window, within_tolerance
+                      # (units "da"/"ppm"); query_mass uses its window
   _util.py            # _round (to_dict float rounding)
   _cache.py           # per-user cache resolution: lookups prefer a refreshed
                       # cache over the bundled data.py, if one exists
@@ -134,6 +136,9 @@ and checked). `import tacular as t` is the house style.
 
 - **Errors and constants**: `TacularError`, `TacularKeyError`, `tacular.constants`
   (module, not in `__all__`).
+- **Mass tolerances** (`tacular.tolerance`): `ppm_error`, `da_to_ppm`, `ppm_to_da`,
+  `tolerance_window(mass, tol, *, unit="da"|"ppm")`, `within_tolerance(obs, theo, tol, *, unit=)`,
+  `ToleranceUnit`.
 - **Every lookup** subclasses `_BaseLookup`: `lookup[key]` (raises `TacularKeyError`),
   `.get(key, default)`, `in`, `len`, iteration over entries, `.keys()`, `.values()`, `.items()`.
 - **Ontology lookups** (`OntologyLookup` subclasses; `lookup[key]` tries name, then id;

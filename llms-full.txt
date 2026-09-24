@@ -330,6 +330,28 @@ print(tmt.formula, round(tmt.monoisotopic_mass, 4))              # C8N1H15 125.1
 print(len(t.REFMOL_LOOKUP.query_molecule_type("reporter")) > 0)  # True
 ```
 
+## Mass tolerances
+
+`tacular.tolerance`; every name is also exported from `tacular`. Units are the lowercase
+strings `"da"` and `"ppm"` (`ToleranceUnit`); anything else raises `TacularError`. ppm is
+relative to `abs(mass)`, so windows around negative masses are symmetric.
+
+- `ppm_error(observed, theoretical) -> float` - `(observed - theoretical) / abs(theoretical) * 1e6`; `theoretical == 0` raises `TacularError`
+- `da_to_ppm(delta, mz) -> float` - `delta / abs(mz) * 1e6`; `mz == 0` raises `TacularError`
+- `ppm_to_da(delta_ppm, mz) -> float` - `delta_ppm * abs(mz) / 1e6`
+- `tolerance_window(mass, tolerance, *, unit="da") -> tuple[float, float]` - `(lo, hi)`; a negative tolerance gives `lo > hi`
+- `within_tolerance(observed, theoretical, tolerance, *, unit="da") -> bool` - `abs(observed - theoretical) <= half-width`, ppm of `theoretical`; NaN gives `False`
+
+`OntologyLookup.query_mass(..., unit=)` uses the same window.
+
+```python
+import tacular as t
+
+print(round(t.ppm_error(1000.01, 1000.0), 6))                # 10.0
+print(t.tolerance_window(100.0, 0.5))                        # (99.5, 100.5)
+print(t.within_tolerance(1000.005, 1000.0, 10, unit="ppm"))  # True
+```
+
 ## Refreshing ontology data (CLI)
 
 Bundled ontology snapshots can be replaced by the latest upstream release without
