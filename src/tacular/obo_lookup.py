@@ -241,9 +241,7 @@ class OntologyLookup[T: OboEntity](_BaseLookup[str | int, str, T]):
         if lo >= hi:
             return []
         infos = index.infos
-        hits = [
-            (index.positions[i], infos[i]) for i in range(lo, hi) if abs(masses[i] - mass) <= tolerance
-        ]
+        hits = [(index.positions[i], infos[i]) for i in range(lo, hi) if abs(masses[i] - mass) <= tolerance]
         hits.sort(key=lambda hit: hit[0])
         return [info for _, info in hits]
 

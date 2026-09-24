@@ -60,7 +60,12 @@ def test_element_info_replace_rehashes():
 
 # --- resolved composition ---------------------------------------------------------------
 
-COMPOSITION_INFOS = [t.AA_LOOKUP["W"], t.FRAGMENT_ION_LOOKUP["y"], t.NEUTRAL_DELTA_LOOKUP["H2O"], t.REFMOL_LOOKUP["TMT126"]]
+COMPOSITION_INFOS = [
+    t.AA_LOOKUP["W"],
+    t.FRAGMENT_ION_LOOKUP["y"],
+    t.NEUTRAL_DELTA_LOOKUP["H2O"],
+    t.REFMOL_LOOKUP["TMT126"],
+]
 
 
 @pytest.mark.parametrize("info", COMPOSITION_INFOS, ids=lambda i: type(i).__name__)
@@ -80,7 +85,7 @@ def test_composition_is_resolved_once_and_copied(info):
 
 @pytest.mark.parametrize("info", COMPOSITION_INFOS, ids=lambda i: type(i).__name__)
 def test_composition_cache_survives_pickle_and_is_not_a_field(info):
-    info.composition
+    _ = info.composition
     restored = pickle.loads(pickle.dumps(info))
     with pytest.raises(AttributeError):
         _ = restored._resolved_composition
@@ -110,7 +115,9 @@ def _query_mass_linear(lookup, mass, tolerance=0.01, monoisotopic=True):
 
 
 def _entity(i, mass, avg=None):
-    return OboEntity(id=str(i), name=f"e{i}", formula=None, monoisotopic_mass=mass, average_mass=avg, dict_composition=None)
+    return OboEntity(
+        id=str(i), name=f"e{i}", formula=None, monoisotopic_mass=mass, average_mass=avg, dict_composition=None
+    )
 
 
 # Ties, None, NaN, infinities and out-of-order masses, to pin down ordering and edge cases.
@@ -206,7 +213,9 @@ def test_query_id_matches_normalization(lookup, key):
 def test_prefixed_raw_ids_are_not_fast_pathed():
     # A raw id that itself starts with an accession prefix must still be normalized.
     e = _entity(1, None)
-    odd = OboEntity(id="x:5", name="odd", formula=None, monoisotopic_mass=None, average_mass=None, dict_composition=None)
+    odd = OboEntity(
+        id="x:5", name="odd", formula=None, monoisotopic_mass=None, average_mass=None, dict_composition=None
+    )
     lookup = OntologyLookup({"1": e, "x:5": odd}, "T", accession_prefixes=("x:",), id_prefix="g")
     assert "x:5" not in lookup._index.by_exact_id
     assert lookup.query_id("x:5") is _query_id_slow(lookup, "x:5")
@@ -219,7 +228,14 @@ def test_prefixed_raw_ids_are_not_fast_pathed():
 
 # --- lazy ontology imports --------------------------------------------------------------
 
-_LAZY_MODULES = ["tacular.gno", "tacular.unimod", "tacular.psimod", "tacular.resid", "tacular.xlmod", "tacular.uniprot_ptm"]
+_LAZY_MODULES = [
+    "tacular.gno",
+    "tacular.unimod",
+    "tacular.psimod",
+    "tacular.resid",
+    "tacular.xlmod",
+    "tacular.uniprot_ptm",
+]
 
 
 def _run(code: str) -> str:
@@ -245,7 +261,12 @@ def test_lazy_names_load_on_access():
 
 
 def test_star_import_and_all_resolve():
-    code = "from tacular import *\nimport tacular\nassert all(globals()[n] is getattr(tacular, n) for n in tacular.__all__)\nprint(len(tacular.__all__))"
+    code = (
+        "from tacular import *\n"
+        "import tacular\n"
+        "assert all(globals()[n] is getattr(tacular, n) for n in tacular.__all__)\n"
+        "print(len(tacular.__all__))"
+    )
     assert int(_run(code)) == len(t.__all__)
 
 
