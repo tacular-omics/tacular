@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- The source distribution now contains only the source, tests and the README, changelog, citation and license files: no paper, docs, lockfile or repository tooling.
+
 ## [2.0.0] (2026-09-24)
 
 **Breaking:** API cleanup (renames, removals, keyword-only options, new error types); the
