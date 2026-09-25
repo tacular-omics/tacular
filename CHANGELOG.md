@@ -2,8 +2,10 @@
 
 ## [Unreleased]
 
-Breaking API cleanup for 2.0.0. The bundled data is unchanged. Every old -> new name is
-in [docs/migration.rst](docs/migration.rst).
+## [2.0.0] (2026-09-24)
+
+**Breaking:** API cleanup (renames, removals, keyword-only options, new error types); the
+bundled data is unchanged. Every old -> new name is in [docs/migration.rst](docs/migration.rst).
 
 ### Performance
 

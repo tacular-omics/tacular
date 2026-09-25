@@ -53,7 +53,7 @@ from .refmol import REFMOL_LOOKUP, RefMolID, RefMolInfo, RefMolLiteral, RefMolLo
 from .tolerance import ToleranceUnit, da_to_ppm, ppm_error, ppm_to_da, tolerance_window, within_tolerance
 from .types import Polarity
 
-__version__ = "1.2.0"
+__version__ = "2.0.0"
 
 # The six ontologies (about 2 MB of bundled data) load on first attribute access, not at
 # ``import tacular``: ``tacular.GNO_LOOKUP`` and ``from tacular import GNO_LOOKUP`` both
