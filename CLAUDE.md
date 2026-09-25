@@ -180,8 +180,8 @@ and checked). `import tacular as t` is the house style.
   (`.formula`), `RefMolLiteral`
 
 Removed in 2.0 (see `docs/migration.rst`): no aliases are kept for renamed names. Every
-public module has an explicit `__all__`; generated `data.py` modules are internal and have
-none. `*Info` dataclasses are `frozen=True, slots=True`; cached derived values live in
+public module has an explicit `__all__`; generated `data.py` modules are internal but
+also carry an `__all__`. `*Info` dataclasses are `frozen=True, slots=True`; cached derived values live in
 `field(init=False, repr=False, compare=False)` fields set in `__post_init__` with
 `object.__setattr__` (zero-arg `super()` breaks under `slots=True`, and `cached_property`
 needs `__dict__`). Per-instance memos that must stay out of `fields`/`asdict`/pickle
