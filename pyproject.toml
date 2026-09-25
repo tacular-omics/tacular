@@ -45,6 +45,19 @@ build-backend = "hatchling.build"
 [tool.hatch.version]
 path = "src/tacular/__init__.py"
 
+[tool.hatch.build.targets.sdist]
+# Source, tests and paperwork only: no paper, docs, lockfile or repo tooling.
+only-include = [
+    "src/tacular",
+    "tests",
+    "conftest.py",
+    "README.md",
+    "CHANGELOG.md",
+    "CITATION.cff",
+    "LICENSE",
+    "pyproject.toml",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/tacular"]
 
