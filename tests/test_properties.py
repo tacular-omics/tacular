@@ -66,21 +66,31 @@ def test_isotope_formula_examples(formula, expected):
 # --- element keys -----------------------------------------------------------------------
 
 
-@given(st.sampled_from(ISOTOPES))
-def test_isotope_string_key_matches_tuple_key(isotope):
-    symbol, mass_number = isotope
-    key = f"{mass_number}{symbol}"
-    assert ELEMENT_LOOKUP[key] is ELEMENT_LOOKUP[(symbol, mass_number)]
-    assert key in ELEMENT_LOOKUP
+def test_every_isotope_string_key_matches_its_tuple_key():
+    """Catches a broken "13C"-style key parser or an isotope missing from the string index:
+    every isotope in the table must resolve to the same entry by "<A><symbol>" and by
+    (symbol, A)."""
+    wrong = []
+    for symbol, mass_number in ISOTOPES:
+        key = f"{mass_number}{symbol}"
+        if key not in ELEMENT_LOOKUP or ELEMENT_LOOKUP[key] is not ELEMENT_LOOKUP[(symbol, mass_number)]:
+            wrong.append(key)
+    assert not wrong, f"{len(wrong)} isotope keys do not resolve to their tuple key: {wrong[:10]}"
 
 
-@given(st.sampled_from(ISOTOPES), st.integers(1, 2))
-def test_isotope_string_key_rejects_leading_zeros(isotope, zeros):
-    symbol, mass_number = isotope
-    key = f"{'0' * zeros}{mass_number}{symbol}"
-    assert key not in ELEMENT_LOOKUP
-    with pytest.raises(TacularKeyError, match="leading zero"):
-        ELEMENT_LOOKUP[key]
+def test_every_isotope_string_key_rejects_leading_zeros():
+    """Catches a parser that strips leading zeros, which would read "013C" as 13C and
+    silently accept malformed isotope labels."""
+    accepted = []
+    for symbol, mass_number in ISOTOPES:
+        for zeros in ("0", "00"):
+            key = f"{zeros}{mass_number}{symbol}"
+            if key in ELEMENT_LOOKUP:
+                accepted.append(key)
+                continue
+            with pytest.raises(TacularKeyError, match="leading zero"):
+                ELEMENT_LOOKUP[key]
+    assert not accepted, f"{len(accepted)} zero-padded isotope keys accepted: {accepted[:10]}"
 
 
 def test_deuterium_and_tritium_aliases():
@@ -101,41 +111,39 @@ ONTOLOGY_CASES = {
 }
 
 
-def _random_case(draw, text):
-    flips = draw(st.lists(st.booleans(), min_size=len(text), max_size=len(text)))
-    return "".join(c.swapcase() if f else c for c, f in zip(text, flips, strict=True))
-
-
-@st.composite
-def id_variants(draw, name):
-    lookup, accession, id_prefix = ONTOLOGY_CASES[name]
-    info = draw(st.sampled_from(lookup.values()))
+def _id_variants(info, accession, id_prefix):
     bare = info.id.removeprefix(id_prefix)
-    body = draw(st.sampled_from([bare, bare.lstrip("0") or "0", "00" + bare]))
-    key = id_prefix + body
-    if draw(st.booleans()):
-        key = accession + key
-    return info, _random_case(draw, key)
+    for body in {bare, bare.lstrip("0") or "0", "00" + bare}:
+        for key in (id_prefix + body, accession + id_prefix + body):
+            yield from {key, key.lower(), key.upper(), key.swapcase()}
 
 
 @pytest.mark.parametrize("name", list(ONTOLOGY_CASES))
-@settings(max_examples=50)
-@given(data=st.data())
-def test_id_key_variants_resolve_to_the_same_entry(name, data):
-    info, key = data.draw(id_variants(name))
-    assert ONTOLOGY_CASES[name][0].query_id(key) is info
-    if info.id.isdigit():
-        assert ONTOLOGY_CASES[name][0].query_id(int(info.id)) is info
+def test_every_id_key_variant_resolves_to_its_entry(name):
+    """Catches id normalization bugs (accession prefix, case, zero padding, int keys) that
+    send a valid id to the wrong entry or to nothing, for every entry of the ontology."""
+    lookup, accession, id_prefix = ONTOLOGY_CASES[name]
+    wrong = []
+    for info in lookup.values():
+        for key in _id_variants(info, accession, id_prefix):
+            if lookup.query_id(key) is not info:
+                wrong.append((info.id, key))
+        if info.id.isdigit() and lookup.query_id(int(info.id)) is not info:
+            wrong.append((info.id, int(info.id)))
+    assert not wrong, f"{len(wrong)} {name} id keys resolve to the wrong entry: {wrong[:10]}"
 
 
 @pytest.mark.parametrize("name", list(ONTOLOGY_CASES))
-@settings(max_examples=50)
-@given(data=st.data())
-def test_name_lookup_ignores_case(name, data):
+def test_every_name_resolves_to_its_entry_in_any_case(name):
+    """Catches a broken case-insensitive name index and two entries whose names differ only
+    in case, where the later one would shadow the earlier in ``query_name``."""
     lookup = ONTOLOGY_CASES[name][0]
-    info = data.draw(st.sampled_from(lookup.values()))
-    found = lookup.query_name(_random_case(data.draw, info.name))
-    assert found is not None and found.name.lower() == info.name.lower()
+    wrong = []
+    for info in lookup.values():
+        for key in {info.name, info.name.lower(), info.name.upper(), info.name.swapcase()}:
+            if lookup.query_name(key) is not info:
+                wrong.append((info.id, key))
+    assert not wrong, f"{len(wrong)} {name} names resolve to the wrong entry: {wrong[:10]}"
 
 
 @pytest.mark.parametrize("name", list(ONTOLOGY_CASES))
