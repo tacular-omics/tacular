@@ -310,7 +310,7 @@
       "is_internal": false,
       "is_intact": false,
       "is_aa_specific_fwd": false,
-      "is_aa_specific_bwd": false
+      "is_aa_specific_bwd": true
     },
     {
       "id": "w_valine",

@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `FRAGMENT_ION_LOOKUP["w"]` now has `IonTypeProperty.AA_SPECIFIC_BWD`
+  (`is_aa_specific_backward=True`), like `v`, `wa`, `wb` and the residue-specific `w`
+  variants: a w ion's mass depends on the side chain. It was the only satellite ion
+  without its residue-specific flag.
+
 ### Changed
 
 - `AA_LOOKUP["X"]` (any amino acid) now has `is_ambiguous=True`, so it is in

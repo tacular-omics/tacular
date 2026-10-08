@@ -280,5 +280,50 @@ class TestFragmentIonDataIntegrity:
             break
 
 
+SATELLITE_FWD = {
+    IonType.D,
+    IonType.D_VALINE,
+    IonType.DA,
+    IonType.DB,
+    IonType.DA_THREONINE,
+    IonType.DA_ISOLEUCINE,
+    IonType.DB_THREONINE,
+    IonType.DB_ISOLEUCINE,
+}
+SATELLITE_BWD = {
+    IonType.V,
+    IonType.W,
+    IonType.W_VALINE,
+    IonType.WA,
+    IonType.WB,
+    IonType.WA_THREONINE,
+    IonType.WA_ISOLEUCINE,
+    IonType.WB_THREONINE,
+    IonType.WB_ISOLEUCINE,
+}
+
+
+class TestSatelliteIonFlags:
+    """Satellite ions (d, v, w and variants) depend on the side-chain, so they must be residue-specific."""
+
+    @pytest.mark.parametrize("ion_type", sorted(SATELLITE_FWD, key=lambda t: t.value))
+    def test_forward_satellite_is_aa_specific(self, ion_type):
+        info = db[ion_type]
+        assert info.is_aa_specific_forward
+        assert not info.is_aa_specific_backward
+
+    @pytest.mark.parametrize("ion_type", sorted(SATELLITE_BWD, key=lambda t: t.value))
+    def test_backward_satellite_is_aa_specific(self, ion_type):
+        info = db[ion_type]
+        assert info.is_aa_specific_backward
+        assert not info.is_aa_specific_forward
+
+    def test_only_satellites_are_aa_specific(self):
+        for ion in db:
+            if ion.ion_type not in SATELLITE_FWD | SATELLITE_BWD:
+                assert not ion.is_aa_specific_forward, ion.id
+                assert not ion.is_aa_specific_backward, ion.id
+
+
 if __name__ == "__main__":
     pytest.main([__file__])

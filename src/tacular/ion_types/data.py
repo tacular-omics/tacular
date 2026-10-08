@@ -289,7 +289,7 @@ IonType.W: FragmentIonInfo(
     monoisotopic_mass=72.021129,
     average_mass=72.062781,
     dict_composition={'C': 3, 'H': 4, 'O': 2},
-    properties=IonTypeProperty.BACKWARD,
+    properties=IonTypeProperty.BACKWARD | IonTypeProperty.AA_SPECIFIC_BWD,
 ),
 IonType.W_VALINE: FragmentIonInfo(
     id=IonType.W_VALINE,
