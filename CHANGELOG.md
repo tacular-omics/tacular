@@ -4,6 +4,11 @@
 
 ### Changed
 
+- `AA_LOOKUP["X"]` (any amino acid) now has `is_ambiguous=True`, so it is in
+  `ambiguous_amino_acids` and no longer in `unambiguous_amino_acids` or
+  `mass_unambiguous_amino_acids`. Its mass stays `0.0` and it stays not mass-ambiguous:
+  X is a zero-mass placeholder whose mass comes from an attached mass modification
+  (ProForma `X[+mass]`).
 - The source distribution now contains only the source, tests and the README, changelog, citation and license files: no paper, docs, lockfile or repository tooling.
 
 ## [2.0.0] (2026-09-24)
