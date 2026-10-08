@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.0.1] (2026-10-08)
+
 ### Fixed
 
 - `FRAGMENT_ION_LOOKUP["w"]` now has `IonTypeProperty.AA_SPECIFIC_BWD`
