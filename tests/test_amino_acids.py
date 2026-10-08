@@ -267,3 +267,15 @@ class TestAADataIntegrity:
 
 if __name__ == "__main__":
     pytest.main([__file__])
+
+
+def test_x_is_ambiguous_zero_mass_placeholder():
+    """X (any amino acid) is ambiguous, not mass-ambiguous, and has mass 0.0: its mass
+    comes from an attached mass modification (ProForma ``X[+mass]``)."""
+    x = db["X"]
+    assert x.is_ambiguous is True
+    assert x.is_mass_ambiguous is False
+    assert x.monoisotopic_mass == 0.0
+    assert x.average_mass == 0.0
+    assert x in db.ambiguous_amino_acids
+    assert x not in db.unambiguous_amino_acids

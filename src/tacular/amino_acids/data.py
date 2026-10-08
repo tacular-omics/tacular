@@ -306,7 +306,7 @@ AMINO_ACID_INFOS: dict[AminoAcid, AminoAcidInfo] = {
         average_mass=0.0000000000,
         dict_composition={},
         is_mass_ambiguous=False,
-        is_ambiguous=False,
+        is_ambiguous=True,
     ),
     AminoAcid.Y: AminoAcidInfo(
         id=AminoAcid.Y,

@@ -186,7 +186,7 @@ print(ala.id, ala.name, ala.formula, ala.monoisotopic_mass)      # A Alanine C3H
 print(t.AA_LOOKUP.get_mass("K"))                                 # 128.0949630152
 print(t.AA_LOOKUP["B"].monoisotopic_mass)                        # None (Asx is mass-ambiguous)
 print(t.AA_LOOKUP["J"].monoisotopic_mass)                        # 113.0840639785 (Leu/Ile)
-print(t.AA_LOOKUP["X"].monoisotopic_mass)                        # 0.0
+print(t.AA_LOOKUP["X"].monoisotopic_mass)                        # 0.0 (mass comes from X[+mass])
 ```
 
 ## Elements and isotopes
@@ -433,8 +433,9 @@ An unreadable cache logs a warning and falls back to bundled data.
 2. `LOOKUP[key]` tries the **name before the id**, so a name that looks like a number wins.
 3. Ontology entries may have `None` formula/mass/composition. `query_mass` skips them;
    `choice()` excludes them by default.
-4. `AA_LOOKUP["B"]` and `["Z"]` have mass `None`; `["X"]` has mass `0.0` and is not
-   flagged ambiguous; `["J"]` has the Leu/Ile mass.
+4. `AA_LOOKUP["B"]` and `["Z"]` have mass `None`; `["X"]` is ambiguous (not mass-ambiguous)
+   with mass `0.0`, a placeholder whose mass comes from an attached mass modification
+   (ProForma `X[+mass]`); `["J"]` has the Leu/Ile mass.
 5. `ELEMENT_LOOKUP["C"]` is the element (mass = 12C mass). Use `"13C"` or `("C", 13)` for
    an isotope; `"C13"` raises `TacularKeyError`. Element symbols are case-sensitive; everything
    else is case-insensitive.

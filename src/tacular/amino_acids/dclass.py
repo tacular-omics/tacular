@@ -13,7 +13,12 @@ __all__ = ["AminoAcidInfo"]
 
 @dataclass(frozen=True, slots=True)
 class AminoAcidInfo(_CompositionCache):
-    """One amino acid (or ambiguity code such as ``B``, ``J``, ``X``, ``Z``)."""
+    """One amino acid (or ambiguity code such as ``B``, ``J``, ``X``, ``Z``).
+
+    ``X`` (any amino acid) is a zero-mass placeholder: its masses are ``0.0`` and its
+    composition is empty, because its mass comes from an attached mass modification, as
+    in ProForma ``X[+113.08]``. It is ambiguous but not mass-ambiguous.
+    """
 
     id: str
     """One-letter code, e.g. ``"A"``."""
@@ -30,7 +35,8 @@ class AminoAcidInfo(_CompositionCache):
     dict_composition: Mapping[str, int] | None = field(hash=False)
     """Residue composition as ``{symbol: count}``, or ``None``. Read-only (mutating it raises ``TypeError``)."""
     is_mass_ambiguous: bool = False
-    """True if the code stands for residues of different masses (``B``, ``Z``, ``X``)."""
+    """True if the code stands for residues of different masses (``B``, ``Z``). ``X`` is not:
+    it is a zero-mass placeholder whose mass comes from an attached mass modification."""
     is_ambiguous: bool = False
     """True for an ambiguity code (``B``, ``J``, ``X``, ``Z``); ``J`` (L/I) is not mass-ambiguous."""
 

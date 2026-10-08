@@ -111,8 +111,11 @@ def gen_aa(output_file: str = OutputFile.AMINO_ACIDS) -> None:
         name = AA_NAMES[aa_code]
         three_letter = AA_THREE_LETTER[aa_code]
 
-        # Determine if this is an ambiguous or mass-ambiguous amino acid
-        is_ambiguous = aa_code in ["B", "Z", "J"]
+        # Determine if this is an ambiguous or mass-ambiguous amino acid.
+        # X (any amino acid) is ambiguous but kept at mass 0.0 and not mass-ambiguous:
+        # it is a zero-mass placeholder whose mass comes from an attached mass
+        # modification, as in ProForma X[+mass].
+        is_ambiguous = aa_code in ["B", "Z", "J", "X"]
         is_mass_ambiguous = aa_code in ["B", "Z"]
 
         monoisotopic_mass = calculate_mass(composition, monoisotopic=True)
