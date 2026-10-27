@@ -26,8 +26,8 @@ repository-code: https://github.com/tacular-omics/tacular
 url: https://tacular.readthedocs.io/
 license: MIT
 doi: "10.5281/zenodo.18475556"
-version: "2.0.1"
-date-released: "2026-10-08"
+version: "2.0.2"
+date-released: "2026-10-26"
 keywords:
   - Python
   - Proteomics
