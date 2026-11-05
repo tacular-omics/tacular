@@ -219,9 +219,11 @@ private base class (`_CachedHash`, `elements.lookup._CompositionCache`), set laz
     path: **never swallow an exception into a bare warning without the exception's
     own message/type attached**.
   - `_cache.py` deliberately uses `logging.warning`, not `warnings.warn`, for a
-    corrupt/unreadable cache — `warnings.warn` would raise under `-W error`/pytest's
-    `filterwarnings = error`, defeating the transparent fallback to bundled data.
-    Don't reintroduce `warnings.warn` there.
+    corrupt/unreadable cache: a warning becomes an exception under `-W error` or under a
+    `filterwarnings = error` pytest setting, which would defeat the transparent fallback
+    to bundled data. This repo has no pytest configuration section at all, so nothing
+    here turns warnings into errors today — the point is that a consumer's test suite
+    can, and the fallback must survive it. Don't reintroduce `warnings.warn` there.
   - The CLI's `-v`/`-vv` go through `update._configure_logging`, which calls
     `logging.basicConfig(force=True)` — this reconfigures the *global* root logger.
     Every test that calls `update.main(...)` must run under a fixture that
