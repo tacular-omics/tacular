@@ -91,6 +91,16 @@ GNOme
 UniProt-PTM
 -----------
 
+``UNIPROT_PTM_LOOKUP`` holds the single-residue modifications of UniProt's controlled
+vocabulary that carry a formula, a mass or a composition: 440 of the 750 entries in the
+bundled ``2026_03`` release. The 159 ``CROSSLNK`` entries are excluded because their
+``TG``/``PP`` values describe a link between two residues rather than a modification of
+one residue, which a single-residue id/name/mass lookup cannot represent; 151 further
+entries (69 ``MOD_RES``, 67 ``CARBOHYD``, 15 ``LIPID``) are excluded because upstream
+gives them no formula, no mass and no composition. ``tacular update uniprot_ptm``
+applies the same exclusions. For the whole vocabulary, crosslinks included, use
+`uniprotptmpy <https://github.com/tacular-omics/uniprotptmpy>`_.
+
 .. automodule:: tacular.uniprot_ptm.lookup
    :members:
    :undoc-members:

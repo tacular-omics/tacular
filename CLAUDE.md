@@ -158,7 +158,7 @@ and checked). `import tacular as t` is the house style.
   - `UNIPROT_PTM_LOOKUP`, `UniprotPtmInfo`, `UniprotPtmLookup` — UniProt ptmlist; extra
     fields plus `.get_unimod()`, `.get_psimod()`, `.residue`, `.location`
   - `OboEntity` — base dataclass: `id, name, formula, monoisotopic_mass, average_mass,
-    dict_composition`, `.composition`, `.get_mass(*, monoisotopic)`, `.to_dict(*, float_precision)`,
+    dict_composition`, `.composition` (a `Counter`, like every other lookup's), `.get_mass(*, monoisotopic)`, `.to_dict(*, float_precision)`,
     `.from_dict()`, `.update()`, `.id_tag`
 - **Amino acids**: `AA_LOOKUP`, `AALookup`, `AminoAcid` (enum A-Z incl. B J O U X Z),
   `AminoAcidInfo`, `AMINO_ACID_INFOS` (dict), `ORDERED_AMINO_ACIDS` (list); `AA_LOOKUP` also
@@ -200,6 +200,12 @@ private base class (`_CachedHash`, `elements.lookup._CompositionCache`), set laz
 - **Errors**: raise `TacularError` (from `tacular.errors`) for bad input and
   `TacularKeyError` for a lookup miss, never a bare `ValueError`/`KeyError`/`TypeError`.
   `.get()`, `in` and `.query_*()` never raise; they return `None`/`False`.
+- **`.composition` is always a `Counter`** keyed by `ElementInfo`, on every lookup's
+  entries, so compositions from different lookups add. `dict_composition` (a read-only
+  `{symbol: count}` dict) and `to_dict()["composition"]` (a plain dict) are the
+  serialization side and stay plain dicts. `_composition_copy` and
+  `_composition_ordered_copy` (`elements/lookup.py`) both return a fresh `Counter` and
+  differ only in key order; a class uses one of them, not both.
 - **Options are keyword-only**: `get_mass(*, monoisotopic=True)`,
   `to_dict(*, float_precision=6)` (`None` = no rounding). New physical constants go in
   `constants.py` with a cited source; never hard-code a proton/neutron mass elsewhere
@@ -233,6 +239,11 @@ private base class (`_CachedHash`, `elements.lookup._CompositionCache`), set laz
     `data_gen/data/`.
   - Coverage: keep new code near the ~90% project average (`just test-cov`); don't
     chase branches that are genuinely unreachable given upstream validation.
+  - `tests/test_data_agreement.py` is the only cross-check of the bundled UNIMOD and
+    PSI-MOD data (against the dev-only siblings unimodpy and psimodpy) and skips when
+    they are absent, which is silent in a wheel installed with `--isolated`. A release
+    gate sets `TACULAR_REQUIRE_SIBLINGS=1`, which turns the missing sibling into a
+    failure (`_import_sibling`).
 
 ## Gotchas (hard-won — read before touching mass/formula data)
 

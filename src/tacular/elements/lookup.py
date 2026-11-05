@@ -201,7 +201,9 @@ class _CompositionCache:
     ``dataclasses.replace`` builds a new instance, so a changed ``dict_composition``
     is resolved afresh. ``__post_init__`` stores ``dict_composition`` as a read-only
     copy (:class:`~tacular._util._ReadOnlyDict`), so the memo cannot go stale. A class
-    uses either :meth:`_composition_copy` or :meth:`_composition_dict_copy`, not both.
+    uses either :meth:`_composition_copy` or :meth:`_composition_ordered_copy`, not
+    both; both return a ``Counter``, and they differ only in key order (sorted symbol
+    order against the order of ``dict_composition``).
     """
 
     __slots__ = ("_resolved_composition",)
@@ -223,12 +225,14 @@ class _CompositionCache:
         dict.update(copy, resolved)  # plain dict copy; skips Counter.update's per-call checks
         return copy
 
-    def _composition_dict_copy(self, dict_composition: Mapping[str, int]) -> dict[ElementInfo, int]:
-        """A fresh ``dict`` of the resolved ``dict_composition``, keys in its order
+    def _composition_ordered_copy(self, dict_composition: Mapping[str, int]) -> Counter[ElementInfo]:
+        """A fresh ``Counter`` of the resolved ``dict_composition``, keys in its order
         (as :func:`parse_composition` returns them); callers may mutate it."""
         try:
             resolved = self._resolved_composition
         except AttributeError:
             resolved = parse_composition(dict_composition)
             object.__setattr__(self, "_resolved_composition", resolved)
-        return dict(resolved)
+        copy: Counter[ElementInfo] = Counter()
+        dict.update(copy, resolved)  # plain dict copy; skips Counter.update's per-call checks
+        return copy
