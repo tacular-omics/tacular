@@ -8,6 +8,7 @@ import math
 import pickle
 import subprocess
 import sys
+from collections import Counter
 
 import pytest
 from hypothesis import given, settings
@@ -340,7 +341,7 @@ def test_obo_entity_composition_is_resolved_once_and_copied(info):
     resolved = info._resolved_composition
     second = info.composition
     assert info._resolved_composition is resolved
-    assert type(first) is dict and first == second == t.parse_composition(info.dict_composition)
+    assert type(first) is Counter and first == second == t.parse_composition(info.dict_composition)
     assert first is not resolved and second is not first
     assert [str(k) for k in first] == list(info.dict_composition)  # key order kept
     first.clear()

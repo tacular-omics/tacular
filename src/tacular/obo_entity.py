@@ -5,6 +5,7 @@ The ontology ``*Info`` dataclasses (``UnimodInfo``, ``PsimodInfo``, ``ResidInfo`
 :class:`OboEntity` and inherit its fields, serialization, and mass/composition helpers.
 """
 
+from collections import Counter
 from collections.abc import Mapping
 from dataclasses import dataclass, field, replace
 from typing import Any, Self
@@ -54,17 +55,21 @@ class OboEntity(_CompositionCache):
         return f"{self.name} ({self.formula})"
 
     @property
-    def composition(self) -> dict[ElementInfo, int] | None:
+    def composition(self) -> Counter[ElementInfo] | None:
         """``dict_composition`` with keys resolved to :class:`~tacular.ElementInfo`
-        objects instead of plain symbol strings (a fresh dict on each access, resolved
-        once per entry); ``None`` if no composition is set.
+        objects instead of plain symbol strings (a fresh ``Counter`` on each access,
+        resolved once per entry); ``None`` if no composition is set.
+
+        Every ``composition`` in tacular is a ``Counter``, so a residue composition and
+        a modification composition can be added directly
+        (``AA_LOOKUP["S"].composition + UNIMOD_LOOKUP["Phospho"].composition``).
 
         Raises:
             TacularKeyError: if a key is not an element or isotope in the data.
         """
         if self.dict_composition is None:
             return None
-        return self._composition_dict_copy(self.dict_composition)
+        return self._composition_ordered_copy(self.dict_composition)
 
     def __repr__(self) -> str:
         """Return an eval-ish repr including id, name, formula, masses, and composition."""

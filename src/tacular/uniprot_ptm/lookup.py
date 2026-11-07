@@ -17,6 +17,21 @@ class UniprotPtmLookup(OntologyLookup[UniprotPtmInfo]):
 
     See :class:`~tacular.OntologyLookup` for the full query API. ``lookup[key]``
     raises :class:`~tacular.TacularKeyError` if nothing matches; ``get``/``in`` never raise.
+
+    **Coverage.** This lookup holds the single-residue modifications of the vocabulary
+    that carry a formula, a mass or a composition: 440 of the 750 entries in the bundled
+    ``2026_03`` release. Two groups are left out, and the same exclusions apply after
+    ``tacular update uniprot_ptm``:
+
+    * the 159 ``CROSSLNK`` entries. Their ``TG`` (target) and ``PP`` (position) values
+      describe a link between two residues, not a modification of one residue, so a
+      single-residue id/name/mass lookup cannot represent them.
+    * 151 further entries (69 ``MOD_RES``, 67 ``CARBOHYD``, 15 ``LIPID``) that give no
+      formula, no mass and no composition upstream.
+
+    For the whole vocabulary, crosslinks included, use `uniprotptmpy
+    <https://github.com/tacular-omics/uniprotptmpy>`_, which parses ptmlist.txt in full
+    and keeps the ``CROSSLNK`` feature type.
     """
 
     def __init__(self, data: dict[str, UniprotPtmInfo], version: str) -> None:

@@ -232,6 +232,7 @@ def _composition_sources():
         ("RefMolInfo", lambda: next(iter(REFMOL_LOOKUP)).composition),
         ("NeutralDeltaInfo", lambda: NEUTRAL_DELTA_LOOKUP["H2O"].composition),
         ("UnimodInfo", lambda: UNIMOD_LOOKUP["Phospho"].composition),
+        ("MonosaccharideInfo", lambda: MONOSACCHARIDE_LOOKUP["Hex"].composition),
     ]
 
 
@@ -244,11 +245,17 @@ def test_returned_composition_is_a_copy(get_comp):
     assert dict(get_comp()) == before
 
 
-def test_composition_is_still_a_counter():
-    assert isinstance(FRAGMENT_ION_LOOKUP["y"].composition, Counter)
-    assert isinstance(AA_LOOKUP["G"].composition, Counter)
-    assert isinstance(next(iter(REFMOL_LOOKUP)).composition, Counter)
-    assert isinstance(NEUTRAL_DELTA_LOOKUP["H2O"].composition, Counter)
+@pytest.mark.parametrize("get_comp", [g for _, g in _composition_sources()], ids=[n for n, _ in _composition_sources()])
+def test_composition_is_a_counter(get_comp):
+    """Every public ``composition`` is a ``Counter``, so compositions from different
+    lookups can be added (a residue plus a modification) without converting first."""
+    assert type(get_comp()) is Counter
+
+
+def test_compositions_from_different_lookups_add():
+    assert AA_LOOKUP["S"].composition + UNIMOD_LOOKUP["Phospho"].composition == Counter(
+        {ELEMENT_LOOKUP[sym]: n for sym, n in {"C": 3, "H": 6, "N": 1, "O": 5, "P": 1}.items()}
+    )
 
 
 # --- 7. docs -----------------------------------------------------------------------

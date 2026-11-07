@@ -3,10 +3,19 @@
 unimodpy and psimodpy parse the same OBO releases independently, so every entry's
 monoisotopic mass and composition should agree. A failure lists every disagreeing entry;
 fix the cause (a parser bug on either side, or a data-version drift), do not loosen the
-comparison. Skipped when the packages are not installed (they are dev-only dependencies).
+comparison.
+
+unimodpy and psimodpy are dev-only dependencies, so these tests skip when they are not
+installed. A skip here is silent, and in a release-gate environment (a built wheel
+installed with ``--isolated``, which installs nothing from the dev groups) it would hide
+the only independent check of the bundled UNIMOD and PSI-MOD data. Set
+``TACULAR_REQUIRE_SIBLINGS=1`` in such an environment: a missing sibling then fails the
+run instead of skipping it.
 """
 
+import importlib
 import math
+import os
 import warnings
 
 import pytest
@@ -48,15 +57,42 @@ def _mismatches(tacular_data, get_entry, mass_attr: str) -> list[str]:
     return problems
 
 
+def _import_sibling(name: str):
+    """Import a dev-only sibling package, skipping the test if it is absent.
+
+    With ``TACULAR_REQUIRE_SIBLINGS=1`` set, the absence fails instead: the environment
+    is claiming to be a release gate, where a silent skip would pass a suite that never
+    cross-checked the bundled data.
+    """
+    if os.environ.get("TACULAR_REQUIRE_SIBLINGS") == "1":
+        try:
+            return importlib.import_module(name)
+        except ModuleNotFoundError as exc:
+            pytest.fail(
+                f"TACULAR_REQUIRE_SIBLINGS=1 but {name} is not installed, so the "
+                f"UNIMOD/PSI-MOD data agreement tests cannot run ({exc})"
+            )
+    return pytest.importorskip(name)
+
+
+def test_require_siblings_turns_a_missing_sibling_into_a_failure(monkeypatch):
+    monkeypatch.setenv("TACULAR_REQUIRE_SIBLINGS", "1")
+    with pytest.raises(pytest.fail.Exception, match="not installed"):
+        _import_sibling("tacular_nonexistent_sibling")
+    monkeypatch.delenv("TACULAR_REQUIRE_SIBLINGS")
+    with pytest.raises(pytest.skip.Exception):
+        _import_sibling("tacular_nonexistent_sibling")
+
+
 @pytest.fixture(scope="module")
 def unimod_db():
-    unimodpy = pytest.importorskip("unimodpy")
+    unimodpy = _import_sibling("unimodpy")
     return unimodpy.load()
 
 
 @pytest.fixture(scope="module")
 def psimod_db():
-    psimodpy = pytest.importorskip("psimodpy")
+    psimodpy = _import_sibling("psimodpy")
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
         return psimodpy.load()

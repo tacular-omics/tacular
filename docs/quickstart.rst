@@ -50,6 +50,11 @@ Physical constants (``PROTON_MASS``, ``ELECTRON_MASS``, ``NEUTRON_MASS``,
 Returned info objects are immutable and hashable, and their ``composition`` and
 ``to_dict()["composition"]`` are fresh copies, so changing them cannot affect the
 lookup. ``dict_composition`` itself is a read-only dict: mutating it raises ``TypeError``.
+Every ``composition`` is a ``collections.Counter`` keyed by ``ElementInfo``, so
+compositions from different lookups add directly::
+
+   comp = AA_LOOKUP["S"].composition + UNIMOD_LOOKUP["Phospho"].composition
+   {str(k): v for k, v in comp.items()}  # {'C': 3, 'H': 6, 'N': 1, 'O': 5, 'P': 1}
 
 
 Amino Acid Lookups
