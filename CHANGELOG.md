@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.0] (2026-11-06)
+
 ### Changed
 
 - `composition` is now a `collections.Counter` on every lookup's entries. The six
