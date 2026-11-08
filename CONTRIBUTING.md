@@ -40,10 +40,10 @@ which you are looking at. The fragment-ion offset checks skip permanently for
 the ion types whose offset is resolved per residue rather than fixed, so nothing
 you install or download makes those run. The checks that rebuild the bundled
 UNIMOD and XLMOD data from their original OBO sources skip only because those two
-files are not in the repository; fetch them with
+files are not in the repository. Fetch them with
 `just -f data_gen/justfile download-uni download-xlmod` and the checks then run.
 They compare the rebuilt data against the bundled snapshot, so an upstream
-release newer than the snapshot makes them fail; that is a signal to refresh the
+release newer than the snapshot makes them fail. That is a signal to refresh the
 bundled data, not a problem with your change.
 
 If you change the documentation, build it the way CI does:
