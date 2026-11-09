@@ -23,6 +23,11 @@ class RefMolLookup(_BaseLookup[str | RefMolID, str, RefMolInfo]):
 
     _kind = "Reference molecule"
 
+    def _miss_message(self, key: object) -> str:
+        return (
+            f"Reference molecule {key!r} not found by id or name (case-insensitive). Valid names: {list(self.keys())}."
+        )
+
     def __init__(self, refmol_data: Mapping[RefMolID, RefMolInfo]) -> None:
         """Build name, label-type and molecule-type indexes from ``refmol_data``."""
         self._data: dict[str, RefMolInfo] = {str(k): v for k, v in refmol_data.items()}
