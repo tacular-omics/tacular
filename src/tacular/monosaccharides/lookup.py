@@ -22,6 +22,11 @@ class MonosaccharideLookup(_BaseLookup[str | Monosaccharide, str, Monosaccharide
 
     _kind = "Monosaccharide"
 
+    def _miss_message(self, key: object) -> str:
+        return (
+            f"Monosaccharide {key!r} not found by ProForma name (case-insensitive). Valid names: {list(self.keys())}."
+        )
+
     def __init__(
         self, monosaccharide_data: Mapping[Monosaccharide, MonosaccharideInfo] | Mapping[str, MonosaccharideInfo]
     ) -> None:
