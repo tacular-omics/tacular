@@ -46,6 +46,9 @@ class IsobaricTagLookup(_BaseLookup[str, str, IsobaricTagInfo]):
 
     _kind = "Isobaric tag"
 
+    def _miss_message(self, key: object) -> str:
+        return f"Isobaric tag {key!r} not found by name or alias (case-insensitive). Valid names: {list(self.keys())}."
+
     def __init__(self, data: Mapping[str, IsobaricTagInfo]) -> None:
         """Build the name/alias index from ``data``."""
         self._data = dict(data)
@@ -78,6 +81,9 @@ class SilacLabelLookup(_BaseLookup[str, str, SilacLabelInfo]):
     """
 
     _kind = "SILAC label"
+
+    def _miss_message(self, key: object) -> str:
+        return f"SILAC label {key!r} not found by name or alias (case-insensitive). Valid names: {list(self.keys())}."
 
     def __init__(self, data: Mapping[str, SilacLabelInfo], sets: Mapping[str, tuple[SilacLabelInfo, ...]]) -> None:
         """Build the name/alias index from ``data``; ``sets`` maps a set name to its labels."""
