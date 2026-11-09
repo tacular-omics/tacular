@@ -321,3 +321,31 @@ def test_generator_templates_do_not_swallow_errors():
 @pytest.mark.parametrize("lookup", OTHER_LOOKUPS, ids=_ids(OTHER_LOOKUPS))
 def test_non_ontology_keys_are_plain_strings(lookup):
     assert all(type(k) is str for k in lookup.keys())
+
+# --- 9. miss messages describe accepted keys ----------------------------------------- 
+
+
+@pytest.mark.parametrize("lookup", ALL_LOOKUPS, ids=_ids(ALL_LOOKUPS))
+def test_miss_message_says_more_than_the_key(lookup):
+    """Every lookup's KeyError should say more than the key itself.
+
+    The base message is ``"{kind} {key!r} not found."``. Overrides name the
+    accepted key kinds (and list valid names for closed sets).
+    """
+    bad_key = "___not_a_real_key___"
+    with pytest.raises(TacularKeyError) as exc_info:
+        lookup[bad_key]
+    msg = str(exc_info.value)
+    assert bad_key in msg
+    # Must contain more than the key and the minimal base wording.
+    assert len(msg) > len(bad_key) + len(" not found.")
+    # The four closed-set lookups that previously used the base message now
+    # mention the accepted key kinds.
+    if type(lookup).__name__ in {
+        "MonosaccharideLookup",
+        "RefMolLookup",
+        "IsobaricTagLookup",
+        "SilacLabelLookup",
+    }:
+        assert "not found by" in msg
+        assert "Valid names:" in msg
