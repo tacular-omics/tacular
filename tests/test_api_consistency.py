@@ -321,3 +321,14 @@ def test_generator_templates_do_not_swallow_errors():
 @pytest.mark.parametrize("lookup", OTHER_LOOKUPS, ids=_ids(OTHER_LOOKUPS))
 def test_non_ontology_keys_are_plain_strings(lookup):
     assert all(type(k) is str for k in lookup.keys())
+
+
+@pytest.mark.parametrize("lookup", ALL_LOOKUPS, ids=_ids(ALL_LOOKUPS))
+def test_all_lookups_miss_messages_describe_accepted_keys(lookup):
+    missing_key = "__nonexistent_key_miss__"
+    with pytest.raises(tacular.TacularKeyError) as exc_info:
+        _ = lookup[missing_key]
+    msg = str(exc_info.value)
+    base_msg = f"{lookup._kind} {missing_key!r} not found."
+    assert msg != base_msg
+    assert missing_key in msg

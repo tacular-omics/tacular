@@ -41,6 +41,9 @@ class RefMolLookup(_BaseLookup[str | RefMolID, str, RefMolInfo]):
     def _resolve(self, key: object) -> RefMolInfo | None:
         return self.query_name(key)  # ty: ignore[invalid-argument-type]
 
+    def _miss_message(self, key: object) -> str:
+        return f"Reference molecule {key!r} not found by name; expected one of {sorted(self._data)}."
+
     def query_id(self, refmol_id: RefMolID) -> RefMolInfo | None:
         """By :class:`RefMolID` member (or its string value); ``None`` if nothing matches."""
         return self._data.get(refmol_id) if isinstance(refmol_id, str) else None

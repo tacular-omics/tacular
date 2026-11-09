@@ -35,6 +35,9 @@ class MonosaccharideLookup(_BaseLookup[str | Monosaccharide, str, Monosaccharide
     def _resolve(self, key: object) -> MonosaccharideInfo | None:
         return self.query_name(key)  # ty: ignore[invalid-argument-type]
 
+    def _miss_message(self, key: object) -> str:
+        return f"Monosaccharide {key!r} not found by ProForma name; expected one of {sorted(self._data)}."
+
     def query_name(self, name: str) -> MonosaccharideInfo | None:
         """By ProForma name (case-insensitive); ``None`` if nothing matches."""
         return self._by_name.get(name.lower()) if isinstance(name, str) else None
