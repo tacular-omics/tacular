@@ -1,323 +1,360 @@
-"""Cross-lookup API consistency (1.2.0): hashing, non-string keys, the shared
-get/keys/values/len surface, exports, and callers not aliasing cached state."""
-
-import dataclasses
-import importlib
-import inspect
-import pkgutil
-import re
-from collections import Counter
-from pathlib import Path
-
-import pytest
-
-import tacular
-from tacular import (
-    AA_LOOKUP,
-    ELEMENT_LOOKUP,
-    FRAGMENT_ION_LOOKUP,
-    GNO_LOOKUP,
-    ISOBARIC_TAG_LOOKUP,
-    MONOSACCHARIDE_LOOKUP,
-    NEUTRAL_DELTA_LOOKUP,
-    PROTEASE_LOOKUP,
-    PSIMOD_LOOKUP,
-    REFMOL_LOOKUP,
-    RESID_LOOKUP,
-    SILAC_LOOKUP,
-    UNIMOD_LOOKUP,
-    UNIPROT_PTM_LOOKUP,
-    XLMOD_LOOKUP,
-    MonosaccharideInfo,
-    OboEntity,
-    TacularKeyError,
-)
-
-ONTOLOGY_LOOKUPS = [UNIMOD_LOOKUP, PSIMOD_LOOKUP, RESID_LOOKUP, XLMOD_LOOKUP, GNO_LOOKUP, UNIPROT_PTM_LOOKUP]
-OTHER_LOOKUPS = [
-    AA_LOOKUP,
-    PROTEASE_LOOKUP,
-    FRAGMENT_ION_LOOKUP,
-    MONOSACCHARIDE_LOOKUP,
-    NEUTRAL_DELTA_LOOKUP,
-    REFMOL_LOOKUP,
-    ISOBARIC_TAG_LOOKUP,
-    SILAC_LOOKUP,
-]
-ALL_LOOKUPS = ONTOLOGY_LOOKUPS + OTHER_LOOKUPS + [ELEMENT_LOOKUP]
-
-
-def _ids(lookups):
-    return [type(lk).__name__ for lk in lookups]
-
-
-# --- 1. hashing -------------------------------------------------------------
-
-
-def _one_of_each_info():
-    return [
-        UNIMOD_LOOKUP["Phospho"],
-        PSIMOD_LOOKUP["MOD:00046"],
-        RESID_LOOKUP["AA0002"],
-        next(iter(XLMOD_LOOKUP)),
-        next(iter(GNO_LOOKUP)),
-        next(iter(UNIPROT_PTM_LOOKUP)),
-        MONOSACCHARIDE_LOOKUP["Hex"],
-        AA_LOOKUP["A"],
-        FRAGMENT_ION_LOOKUP["b"],
-        next(iter(REFMOL_LOOKUP)),
-        NEUTRAL_DELTA_LOOKUP["H2O"],
-        PROTEASE_LOOKUP["trypsin"],
-        ELEMENT_LOOKUP["C"],
-        ISOBARIC_TAG_LOOKUP["TMT10"],
-        ISOBARIC_TAG_LOOKUP["TMT10"].reporter_ions[0],
-        SILAC_LOOKUP["Lys8"],
-    ]
-
-
-@pytest.mark.parametrize("info", _one_of_each_info(), ids=lambda i: type(i).__name__)
-def test_every_info_class_is_hashable(info):
-    h = hash(info)
-    assert isinstance(h, int)
-    assert {info: 1}[info] == 1
-    # equal copies hash equal
-    if dataclasses.is_dataclass(info):
-        assert hash(dataclasses.replace(info)) == h
-
-
-@pytest.mark.parametrize("lookup", ONTOLOGY_LOOKUPS, ids=_ids(ONTOLOGY_LOOKUPS))
-def test_every_ontology_entry_hashes(lookup):
-    assert len({info for info in lookup}) == len(lookup)
-
-
-def test_obo_entity_hash_is_id_and_name():
-    info = UNIMOD_LOOKUP["Phospho"]
-    assert hash(info) == hash((info.id, info.name))
-    # a mass update keeps the hash, as documented on OboEntity.__hash__
-    assert hash(info.update(monoisotopic_mass=1.0)) == hash(info)
-
-
-def test_monosaccharide_info_is_frozen_slotted_dataclass():
-    info = MONOSACCHARIDE_LOOKUP["Hex"]
-    assert dataclasses.is_dataclass(MonosaccharideInfo)
-    assert "__slots__" in MonosaccharideInfo.__dict__
-    assert not hasattr(info, "__dict__")
-    with pytest.raises(dataclasses.FrozenInstanceError):
-        info.name = "x"  # type: ignore[misc]
-    assert isinstance(info, OboEntity)
-
-
-# --- 3. non-string keys -------------------------------------------------------
-
-BAD_KEYS = [None, 1.5, object(), [], {}]
-
-
-@pytest.mark.parametrize("lookup", ALL_LOOKUPS, ids=_ids(ALL_LOOKUPS))
-@pytest.mark.parametrize("key", BAD_KEYS, ids=lambda k: type(k).__name__)
-def test_bad_key_types_are_not_found(lookup, key):
-    sentinel = object()
-    assert (key in lookup) is False
-    assert lookup.get(key) is None
-    assert lookup.get(key, sentinel) is sentinel
-    with pytest.raises(KeyError):
-        lookup[key]
-
-
-@pytest.mark.parametrize("lookup", OTHER_LOOKUPS, ids=_ids(OTHER_LOOKUPS))
-def test_int_keys_not_found_on_string_lookups(lookup):
-    assert (42 in lookup) is False
-    assert lookup.get(42) is None
-    with pytest.raises(KeyError):
-        lookup[42]
-
-
-def test_element_get_returns_default_for_bad_input():
-    assert ELEMENT_LOOKUP.get("c") is None
-    assert ELEMENT_LOOKUP.get("") is None
-    assert ELEMENT_LOOKUP.get("13") is None
-    assert ELEMENT_LOOKUP.get(("C", "x")) is None  # type: ignore[arg-type]
-    assert ELEMENT_LOOKUP.get("c", "d") == "d"  # type: ignore[arg-type]
-
-
-def test_element_getitem_errors_are_tacular_key_errors():
-    # bad input and wrong key types both raise TacularKeyError: a KeyError and a ValueError
-    for bad in ("c", None, ("C", 12, 1), 3.5):
-        with pytest.raises(TacularKeyError) as exc_info:
-            ELEMENT_LOOKUP[bad]  # type: ignore[index]
-        assert isinstance(exc_info.value, KeyError)
-        assert isinstance(exc_info.value, ValueError)
-        assert not isinstance(exc_info.value, TypeError)
-
-
-# --- 4. unified lookup surface --------------------------------------------------
-
-
-@pytest.mark.parametrize("lookup", ALL_LOOKUPS, ids=_ids(ALL_LOOKUPS))
-def test_common_lookup_surface(lookup):
-    n = len(lookup)
-    assert n > 0
-    values = lookup.values()
-    keys = lookup.keys()
-    assert isinstance(values, list)
-    assert isinstance(keys, list)
-    assert len(values) == n
-    assert len(keys) == n
-    assert list(lookup) == values
-    for key, value in zip(keys, values, strict=True):
-        assert lookup[key] is value or lookup[key] == value
-        assert key in lookup
-        assert lookup.get(key) is not None
-    # the returned lists are copies
-    values.clear()
-    keys.clear()
-    assert len(lookup.values()) == n
-    assert len(lookup.keys()) == n
-
-
-@pytest.mark.parametrize("lookup", ALL_LOOKUPS, ids=_ids(ALL_LOOKUPS))
-def test_get_has_default_param(lookup):
-    params = inspect.signature(lookup.get).parameters
-    assert "default" in params
-    sentinel = object()
-    assert lookup.get("definitely-not-a-key-xyz", sentinel) is sentinel
-
-
-def test_neutral_delta_get():
-    assert NEUTRAL_DELTA_LOOKUP.get("H2O") is NEUTRAL_DELTA_LOOKUP["H2O"]
-    assert NEUTRAL_DELTA_LOOKUP.get("nope") is None
-
-
-def test_monosaccharide_protease_refmol_get_default():
-    assert MONOSACCHARIDE_LOOKUP.get("nope", 1) == 1  # type: ignore[arg-type]
-    assert PROTEASE_LOOKUP.get("nope", 1) == 1  # type: ignore[arg-type]
-    assert REFMOL_LOOKUP.get("nope", 1) == 1  # type: ignore[arg-type]
-
-
-# --- 5. exports -------------------------------------------------------------------
-
-
-@pytest.mark.parametrize("name", ["ProteaseLookup", "OntologyLookup", "ModLocation"])
-def test_new_top_level_exports(name):
-    assert name in tacular.__all__
-    assert getattr(tacular, name) is not None
-
-
-def test_all_names_resolve():
-    for name in tacular.__all__:
-        assert hasattr(tacular, name), name
-    assert len(tacular.__all__) == len(set(tacular.__all__))
-
-
-# --- 6 / 9. no aliasing of internal state -----------------------------------------
-
-
-def test_refmol_query_lists_are_copies():
-    label = next(iter(REFMOL_LOOKUP)).label_type
-    mol_type = next(iter(REFMOL_LOOKUP)).molecule_type
-    got = REFMOL_LOOKUP.query_label_type(label)
-    n = len(got)
-    got.clear()
-    assert len(REFMOL_LOOKUP.query_label_type(label)) == n
-    got = REFMOL_LOOKUP.query_molecule_type(mol_type)
-    n = len(got)
-    got.clear()
-    assert len(REFMOL_LOOKUP.query_molecule_type(mol_type)) == n
-
-
-def _composition_sources():
-    return [
-        ("FragmentIonInfo", lambda: FRAGMENT_ION_LOOKUP["y"].composition),
-        ("AminoAcidInfo", lambda: AA_LOOKUP["G"].composition),
-        ("AALookup.composition", lambda: AA_LOOKUP.composition("G")),
-        ("RefMolInfo", lambda: next(iter(REFMOL_LOOKUP)).composition),
-        ("NeutralDeltaInfo", lambda: NEUTRAL_DELTA_LOOKUP["H2O"].composition),
-        ("UnimodInfo", lambda: UNIMOD_LOOKUP["Phospho"].composition),
-        ("MonosaccharideInfo", lambda: MONOSACCHARIDE_LOOKUP["Hex"].composition),
-    ]
-
-
-@pytest.mark.parametrize("get_comp", [g for _, g in _composition_sources()], ids=[n for n, _ in _composition_sources()])
-def test_returned_composition_is_a_copy(get_comp):
-    comp = get_comp()
-    before = dict(comp)
-    comp[ELEMENT_LOOKUP["C"]] = comp.get(ELEMENT_LOOKUP["C"], 0) + 1000
-    comp.clear()
-    assert dict(get_comp()) == before
-
-
-@pytest.mark.parametrize("get_comp", [g for _, g in _composition_sources()], ids=[n for n, _ in _composition_sources()])
-def test_composition_is_a_counter(get_comp):
-    """Every public ``composition`` is a ``Counter``, so compositions from different
-    lookups can be added (a residue plus a modification) without converting first."""
-    assert type(get_comp()) is Counter
-
-
-def test_compositions_from_different_lookups_add():
-    assert AA_LOOKUP["S"].composition + UNIMOD_LOOKUP["Phospho"].composition == Counter(
-        {ELEMENT_LOOKUP[sym]: n for sym, n in {"C": 3, "H": 6, "N": 1, "O": 5, "P": 1}.items()}
-    )
-
-
-# --- 7. docs -----------------------------------------------------------------------
-
-
-def _lookup_classes():
-    classes = []
-    for mod in pkgutil.iter_modules(tacular.__path__):
-        if not mod.ispkg or mod.name.startswith("_"):
-            continue
-        try:
-            lookup_mod = importlib.import_module(f"tacular.{mod.name}.lookup")
-        except ModuleNotFoundError:
-            continue
-        for _, obj in inspect.getmembers(lookup_mod, inspect.isclass):
-            if obj.__module__ == lookup_mod.__name__ and obj.__name__.endswith("Lookup"):
-                classes.append(obj)
-    return classes
-
-
-@pytest.mark.parametrize("cls", _lookup_classes(), ids=lambda c: c.__name__)
-def test_lookup_classes_have_docstrings(cls):
-    assert cls.__dict__.get("__doc__"), f"{cls.__name__} has no class docstring"
-
-
-def test_element_lookup_docs_do_not_promise_generated_isotopes():
-    from tacular.elements.lookup import ElementLookup
-
-    docs = " ".join(
-        d or ""
-        for d in (
-            ElementLookup.__doc__,
-            ElementLookup.__getitem__.__doc__,
-            ElementLookup.get_isotope.__doc__,
-            ElementLookup.get_all_isotopes.__doc__,
-        )
-    )
-    assert not re.search(r"auto_generate|include_generated|automatically generated", docs)
-    assert ElementLookup.keys.__annotations__["return"] != list[tuple[str, int | None]]
-
-
-# --- 8. generated data modules fail loudly ------------------------------------------
-
-DATA_MODULES = ["elements", "unimod", "psimod", "resid", "xlmod", "gno", "uniprot_ptm", "monosaccharides"]
-SRC = Path(tacular.__file__).parent
-GEN = Path(__file__).resolve().parents[1] / "data_gen" / "generator"
-
-
-@pytest.mark.parametrize("name", DATA_MODULES)
-def test_generated_data_does_not_swallow_errors(name):
-    text = (SRC / name / "data.py").read_text(encoding="utf-8")
-    assert "UserWarning" not in text
-    assert "Using empty dictionaries" not in text
-
-
-@pytest.mark.skipif(not GEN.is_dir(), reason="data_gen not available (installed wheel)")
-def test_generator_templates_do_not_swallow_errors():
-    for path in GEN.glob("gen_*.py"):
-        text = path.read_text(encoding="utf-8")
-        assert "Using empty dictionaries" not in text, path.name
-
-
-@pytest.mark.parametrize("lookup", OTHER_LOOKUPS, ids=_ids(OTHER_LOOKUPS))
-def test_non_ontology_keys_are_plain_strings(lookup):
-    assert all(type(k) is str for k in lookup.keys())
+# Changelog
+
+## [Unreleased]
+
+### Changed
+
+- Lookup miss messages for monosaccharides, reference molecules, isobaric tags and SILAC labels now name the kinds of key they accept and list the valid names (closed sets).
+
+## [2.1.0] (2026-11-06)
+
+### Changed
+
+- `composition` is now a `collections.Counter` on every lookup's entries. The six
+  ontology lookups' entries (`UnimodInfo`, `PsimodInfo`, `ResidInfo`, `XlmodInfo`,
+  `GnoInfo`, `UniprotPtmInfo`) and `MonosaccharideInfo` returned a plain `dict`, while
+  amino acids, elements, fragment ions, neutral deltas, reference molecules and the
+  quantitative labels already returned a `Counter`, so adding a residue composition to a
+  modification composition raised `TypeError`. A residue and a modification now add
+  directly: `AA_LOOKUP["S"].composition + UNIMOD_LOOKUP["Phospho"].composition`.
+  `Counter` is a `dict` subclass, the key order is unchanged, and `dict_composition`,
+  `to_dict()` and the JSON snapshots are untouched.
+
+### Documentation
+
+- `UNIPROT_PTM_LOOKUP`'s docstring and docs page now state which UniProt PTM entries the
+  lookup omits and why (the 159 `CROSSLNK` entries, which describe a link between two
+  residues rather than a modification of one residue, and 151 entries that carry no
+  formula, mass or composition upstream: 440 of the 750 entries in the bundled `2026_03`
+  release are kept), and point at
+  [uniprotptmpy](https://github.com/tacular-omics/uniprotptmpy) for the whole vocabulary.
+- The UNIMOD/PSI-MOD data agreement tests skip silently when the dev-only siblings
+  unimodpy and psimodpy are absent. Setting `TACULAR_REQUIRE_SIBLINGS=1` now makes a
+  missing sibling fail the run instead, for environments that gate a release.
+
+## [2.0.2] (2026-10-26)
+
+### Changed
+
+- Updated development and test dependencies. No changes to the library.
+
+## [2.0.1] (2026-10-08)
+
+### Fixed
+
+- `FRAGMENT_ION_LOOKUP["w"]` now has `IonTypeProperty.AA_SPECIFIC_BWD`
+  (`is_aa_specific_backward=True`), like `v`, `wa`, `wb` and the residue-specific `w`
+  variants: a w ion's mass depends on the side chain. It was the only satellite ion
+  without its residue-specific flag.
+
+### Changed
+
+- `AA_LOOKUP["X"]` (any amino acid) now has `is_ambiguous=True`, so it is in
+  `ambiguous_amino_acids` and no longer in `unambiguous_amino_acids` or
+  `mass_unambiguous_amino_acids`. Its mass stays `0.0` and it stays not mass-ambiguous:
+  X is a zero-mass placeholder whose mass comes from an attached mass modification
+  (ProForma `X[+mass]`).
+- The source distribution now contains only the source, tests and the README, changelog, citation and license files: no paper, docs, lockfile or repository tooling.
+
+## [2.0.0] (2026-09-24)
+
+**Breaking:** API cleanup (renames, removals, keyword-only options, new error types); the
+bundled data is unchanged. Every old -> new name is in [docs/migration.rst](docs/migration.rst).
+
+### Performance
+
+No other API changes; timings are indicative single-core numbers.
+
+- `import tacular` no longer loads the six ontologies (UNIMOD, PSI-MOD, RESID, XLMOD,
+  GNOme, UniProt-PTM): each loads on first use of its subpackage or one of its names, e.g.
+  `tacular.unimod`, `tacular.UNIMOD_LOOKUP` or `from tacular import GNO_LOOKUP`
+  (~85 ms -> ~35 ms). A `tacular update` refresh therefore applies at that first use.
+- `ElementInfo.__hash__` is computed once per instance instead of on every dict
+  operation (~450 ns -> ~90 ns per hash).
+- `composition` on `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo` and `RefMolInfo`
+  resolves once per instance and returns a copy (~1.7 us -> ~0.9 us per access); so does
+  `OboEntity.composition` (every ontology entry and `MonosaccharideInfo`).
+- `OntologyLookup.query_mass` bisects a mass-sorted index built on first use instead of
+  scanning every entry; results and their order are unchanged (~90 us -> ~1-10 us).
+- `OntologyLookup.query_id` skips id normalization for keys that are already a stored or
+  normalized id (`"21"`: ~420 ns -> ~230 ns).
+
+### Added
+
+- `tacular.types`: `Polarity = Literal["positive", "negative"]` (also exported from
+  `tacular`) and a re-export of `ToleranceUnit`, the shared vocabulary the other
+  packages import instead of defining their own.
+- `tacular.tolerance`, also exported from `tacular`: `ppm_error(observed, theoretical)`,
+  `da_to_ppm(delta, mz)`, `ppm_to_da(delta_ppm, mz)`,
+  `tolerance_window(mass, tolerance, *, tolerance_unit="da") -> (lo, hi)` and
+  `within_tolerance(observed, theoretical, tolerance, *, tolerance_unit="da")`, plus the
+  `ToleranceUnit` alias. ppm is relative to `abs(mass)` (so unlike spxtacular's signed
+  `da_to_ppm`, a negative m/z does not flip the sign). `within_tolerance` is
+  `lo <= observed <= hi` on `tolerance_window`'s bounds. A zero denominator, a NaN or
+  infinite input to the window functions, or a unit other than lowercase `"da"`/`"ppm"`
+  raises `TacularError`. `query_mass(tolerance_unit=)` uses the same window. These can replace
+  spxtacular's public `da_to_ppm`/`ppm_to_da` and peptacular's inline ppm arithmetic;
+  tdfpy does not depend on tacular and keeps its own.
+- `tacular.labels`, also exported from `tacular`: `ISOBARIC_TAG_LOOKUP` (TMT 0/2/6/10/11,
+  TMTpro 0/16/18, iTRAQ 4/8, each with its UNIMOD tag and reporter ion channels, m/z and
+  composition) and `SILAC_LOOKUP` (Lys4, Lys6, Lys8, Arg6, Arg10 with UNIMOD ids, plus the
+  light/medium/heavy sets). Compositions come from UNIMOD; every mass and m/z is computed
+  from the element table. TMT/TMTpro reporter m/z match Thermo's TMTpro user guide
+  (MAN0018773, Table 2) to 2e-6. iTRAQ reporter m/z are computed (ion composition minus
+  one electron); legacy iTRAQ tables (114.1112, ...) are about 0.0005 higher, as if the
+  electron were not subtracted. Each `ReporterIonInfo` carries its channel's UNIMOD tag
+  (`tag_unimod_id`, `tag_unimod_name`, `tag_dict_composition`, `tag_monoisotopic_mass`):
+  iTRAQ 4-plex 114/115 are UNIMOD:532/533 and iTRAQ 8-plex 115/118/119/121 are
+  UNIMOD:731, while the plex's `unimod_id` stays the tag search engines use (214, 730).
+  `average_mass` uses the bundled element table and differs from UNIMOD's by up to
+  6e-4 Da. `IsobaricTagInfo.query_reporter(channel)` returns one channel or `None`.
+- Tests check that every UNIMOD and PSI-MOD entry's monoisotopic mass and composition
+  match what unimodpy and psimodpy parse from the same OBO release. The two are
+  dev-only dependencies; the test skips without them.
+- `OntologyLookup.query_mass(mass, *, tolerance=0.01, tolerance_unit="da", monoisotopic=True)`:
+  `tolerance_unit="ppm"` reads `tolerance` in parts per million of `mass` (same `tolerance_unit: Literal["da", "ppm"]`
+  convention as paftacular). A NaN or infinite `mass`, or a NaN `tolerance`, returns `[]`; bounds are inclusive, exactly `within_tolerance`. An unknown `tolerance_unit` raises `TacularError`.
+
+- `tacular.TacularError` (a `ValueError`) and `tacular.TacularKeyError` (a
+  `TacularError` that is also a `KeyError`), in `tacular.errors`.
+- `tacular.constants`: `PROTON_MASS`, `ELECTRON_MASS`, `NEUTRON_MASS` (CODATA 2018),
+  `HYDROGEN_MASS` and `C13_C12_MASS_DIFF` (AME2016 via NIST, the bundled isotope table).
+  The data generators use them too.
+- `items()` on every lookup; `MONOSACCHARIDE_LOOKUP.query_name`;
+  `AA_LOOKUP.query_one_letter` / `query_three_letter` / `query_name` are public.
+- Short accession prefixes on every ontology (`U:21`, `M:00046`, `R:AA0002`,
+  `X:01000`, `G:G00008BG`), also in front of names (`U:Phospho`). All six ontologies use
+  one id normaliser.
+- `tacular.ElementKey`, the type of every key `ELEMENT_LOOKUP` accepts.
+- `ElementInfo.to_dict()` includes `is_monoisotopic`; `AminoAcidInfo.to_dict()`
+  includes `is_mass_ambiguous` and `is_ambiguous`.
+- Docs: `docs/migration.rst` (old -> new table); errors and constants in the API reference.
+
+### Removed
+
+- `OboEntity.mass()` and `MonosaccharideInfo.mass()`: use `get_mass(monoisotopic=...)`.
+- `ELEMENT_LOOKUP.mass()` and `AA_LOOKUP.mass()`: use `get_mass(key, monoisotopic=...)`.
+- `AA_LOOKUP.one_letter()`, `three_letter()`, `name()`: use `AA_LOOKUP[key]` or the
+  `query_*` methods.
+- `MONOSACCHARIDE_LOOKUP.proforma()`: use `MONOSACCHARIDE_LOOKUP[name]`.
+- Public index dicts: `AA_LOOKUP.one_letter_to_info` / `three_letter_to_info` /
+  `name_to_info`, `PROTEASE_LOOKUP.name_to_info` / `id_to_info`,
+  `MONOSACCHARIDE_LOOKUP.proforma_to_monosaccharide`, `ELEMENT_LOOKUP.element_data`.
+- `ElementLookup.NEUTRON_MASS`: use `tacular.constants.NEUTRON_MASS`.
+- `OntologyLookup.strip_id()`, `convert_key()` and `__str__`; `obo_entity.filter_infos()`.
+- `tacular.update.OBO_SOURCES` and `ONTOLOGIES` (now private).
+
+### Changed
+
+- `dict_composition` on every `*Info` class (`OboEntity` and its ontology subclasses,
+  `MonosaccharideInfo`, `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo`,
+  `RefMolInfo`) is a read-only `dict` copy of what was passed in: item assignment,
+  `update`, `pop`, `clear`, ... raise `TypeError`. It still pickles, copies, compares and
+  `json.dumps` like a dict; `dataclasses.asdict(info)["dict_composition"]` is also this
+  read-only dict. Build a new dict (`dict(info.dict_composition) | {...}`) and pass it to
+  `dataclasses.replace`, or to `info.update(dict_composition=...)` on ontology entries
+  (`OboEntity` and subclasses, including `MonosaccharideInfo`).
+
+- Renamed: `Proteases` -> `Protease`, `PROTEASE_LITERALS` -> `ProteaseLiteral`,
+  `PROTEASES_DICT` -> `PROTEASE_DICT`, `XlModInfo` -> `XlmodInfo`,
+  `XlModLookup` -> `XlmodLookup`, `RefMolInfo.chemical_formula` -> `formula` (field and
+  `to_dict` key), `NeutralDeltaInfo.to_dict()["dict_composition"]` -> `"composition"`.
+- Errors: `lookup[key]` raises `TacularKeyError` for every miss, malformed key or wrong
+  key type (an `ELEMENT_LOOKUP` tuple key such as `("C", "x")` raised `TypeError`).
+  Missing masses/compositions, `choice()` with no match, duplicate ids/names and an
+  unknown ontology in `update` raise `TacularError`. Both are `ValueError`s, so
+  existing `except KeyError` / `except ValueError` handlers still catch them.
+- Keyword-only options: `get_mass(*, monoisotopic)`, `to_dict(*, float_precision)`,
+  `OntologyLookup.query_mass(mass, *, tolerance, monoisotopic)`,
+  `OntologyLookup.choice(*, ...)` and the `OntologyLookup` constructor after
+  `ontology_name`.
+- Every lookup shares one base, so `get(key, default)`, `[]`, `in`, `len`, iteration,
+  `keys()`, `values()` and `items()` behave the same everywhere.
+- `OntologyLookup.keys()` (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM) returns
+  the raw accession ids (`"21"`, `"00046"`), the keys `items()` pairs with each entry.
+  1.2.0 returned the lowercased names; use `[info.name for info in lookup.values()]`
+  for those.
+- `update(**changes)` on ontology entries (`OboEntity` and every subclass) is
+  `dataclasses.replace`: an unknown keyword raises `TypeError` (1.2.0 ignored it), and
+  subclass fields are kept. The `UniprotPtmInfo.update` override, which rebuilt the
+  entry from a fixed field list, is gone.
+- `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo`, `ProteaseInfo` and
+  `RefMolInfo` are frozen, slotted dataclasses (no instance `__dict__`).
+- `NeutralDeltaInfo.to_dict()["amino_acids"]` is sorted, so
+  `jsons/neutral_losses.json` is deterministic.
+- `ElementLookup.get_neutron_offsets_and_abundances` / `get_masses_and_abundances` are
+  typed `float` for the abundance without a `type: ignore`. Values are unchanged: only
+  whole-element entries have `abundance=None`, and these helpers return isotopes only.
+- Fixed: `FragmentIonInfo.ion_type` resolves a string id (`"y"`) to its `IonType`
+  (it looked the id up as an enum member name and raised `KeyError`).
+- Every public module has an explicit `__all__`, including the 13 generated
+  `tacular.*.data` modules (emitted by the `data_gen` generators).
+- `AminoAcidInfo`, `FragmentIonInfo`, `NeutralDeltaInfo` and `RefMolInfo` no longer
+  carry a hidden composition cache field, so `dataclasses.asdict`, `pickle` and
+  `dataclasses.replace` work on them (`asdict` raised `TypeError`). `composition` is
+  cached per distinct `dict_composition` at module level.
+- `ELEMENT_LOOKUP` rejects an isotope mass number with a leading zero (`"013C"`).
+- `tacular update` always downloads the current release (it reused a cached download
+  forever); `tacular clear` also removes the downloaded sources in `obo/`.
+- `tacular.update.update()` raises `TacularError` (chained from the parser's error) for
+  a source file it cannot parse. Downloads time out after 60 s without data and remove
+  their `.part` file on failure; the CLI then suggests
+  `tacular update --offline $(tacular where)/obo`.
+
+## [1.2.0] (2026-09-23)
+
+### Added
+
+- Every lookup now has the same mapping-style surface: `get(key, default=None)`,
+  `in`, `len()`, `keys()` and `values()`. New: `NEUTRAL_DELTA_LOOKUP.get`; a `default`
+  argument on the monosaccharide, protease and reference-molecule `get`; `len()` on the
+  amino acid, fragment ion, monosaccharide and reference-molecule lookups; `keys()` /
+  `values()` on those plus the neutral delta and protease lookups.
+- `ProteaseLookup`, `OntologyLookup` and `ModLocation` are exported from `tacular`.
+- `get_mass(monoisotopic=True)` on ontology entries (`OboEntity`, so UNIMOD, PSI-MOD,
+  RESID, XLMOD, GNOme, UniProt-PTM) and `MonosaccharideInfo`, the name the amino acid,
+  fragment ion and reference-molecule entries already use. `mass()` still works.
+- Docs: the quick start states the error policy (`KeyError` = not found, `ValueError`
+  = bad input; `get`/`in` never raise). Every lookup class has a class docstring.
+
+### Changed
+
+- PyPI classifier is `Development Status :: 5 - Production/Stable` (was 4 - Beta).
+- `scripts/release_version.py sync --set X.Y.Z` also sets `date-released` in
+  `CITATION.cff` to today (adding the field if missing).
+- Docs: `llms-full.txt` describes 1.2 (every lookup's `len`/`keys`/`values`/`get(default)`,
+  the error policy and hashability, `ProteaseLookup`, `OntologyLookup` and `ModLocation`
+  exports); the `tacular status` example shows the bundled UniProt 2026_03 (440 entries).
+- PSI-MOD data refreshed from 1.032.4 to 1.039.0 (18:09:2026), the release psimodpy ships:
+  PSI-MOD 1558 -> 1607 entries (50 new, e.g. `MOD:00862`; `MOD:00306` is now obsolete),
+  RESID 534 (was 535; `AA0301` went with `MOD:00306`). 214 PSI-MOD monoisotopic masses
+  changed: 63 charged entries now state the neutral formula mass instead of the ion mass
+  (e.g. `MOD:00049` 143.11789 -> 143.118438, a shift of one electron mass per charge),
+  `MOD:00623` gains H2 (+2.01565 Da) and the rest move by under 5e-5 Da of rounding.
+  417 average masses changed (upstream precision). Deuterated entries' compositions use
+  `H` instead of `1H` (same mass), `MOD:02105` composition is now O2 matching its mass,
+  and 278 formula strings are reordered (`C34FeH32N4O4` -> `C34H32N4O4Fe`) with the same
+  composition. The composition check in `tests/test_reference_data.py` no longer allows an
+  electron-mass offset for PSI-MOD/RESID.
+
+### Fixed
+
+- `hash()` works on every info object. `@dataclass(frozen=True)` regenerated `__hash__`
+  over the `dict_composition` dict, so `hash(UNIMOD_LOOKUP["Phospho"])` (and any
+  ontology, amino acid, fragment ion or reference-molecule entry) raised `TypeError`.
+  Ontology entries hash on `(id, name)` as `OboEntity` documents.
+- `MonosaccharideInfo` is a `@dataclass(frozen=True, slots=True)` like the other
+  ontology entries.
+- Every lookup returns "not found" for keys of the wrong type (`get(None)` returns the
+  default, `None in` is `False`, `[None]` raises `KeyError`) instead of raising
+  `AttributeError` or `TypeError`: the ontology lookups for keys that are not `str` or
+  `int`, the others (amino acids, proteases, fragment ions, monosaccharides, neutral
+  deltas, reference molecules) for non-string keys. The public `query_id(None)`,
+  `query_name(None)` of the ontology lookups return `None`, and
+  `REFMOL_LOOKUP.query_label_type(None)` / `query_molecule_type(None)` return `[]`.
+  `ELEMENT_LOOKUP.get` returns the default for a malformed key such as `"c"` or a
+  wrong-type key such as `None` instead of raising `ValueError`/`TypeError`;
+  `ELEMENT_LOOKUP[None]` raises an error that is both a `KeyError` and (as before) a
+  `TypeError`.
+- `composition` on amino acid, fragment ion, neutral delta and reference-molecule
+  entries (and `AA_LOOKUP.composition()`) returns a fresh `Counter` each time. It was
+  a cached object, so mutating the result changed the entry for every later caller.
+- `REFMOL_LOOKUP.query_label_type` / `query_molecule_type` return a new list each call
+  instead of the lookup's internal list.
+- A bundled `data.py` that fails to load now raises `ImportError` instead of warning and
+  silently shipping an empty lookup (elements, UNIMOD, PSI-MOD, RESID, XLMOD, GNOme,
+  UniProt-PTM, monosaccharides). Only that block of the generated files changed.
+- `ElementLookup` docs no longer promise auto-generated isotopes or the nonexistent
+  `auto_generate` / `include_generated` parameters; `keys()` is annotated with
+  `Element` keys.
+- Isotope-labelled formulas are written in ProForma bracket syntax, so they parse back
+  to their own composition: UNIMOD `Label:13C(6)` was `C-613C6` (read as `C-613`) and is
+  now `C-6[13C6]`. 132 UNIMOD and 4 XLMOD `formula` strings (and `jsons/`) changed;
+  compositions and masses were already correct.
+- `OntologyLookup` now raises `ValueError` on duplicate ids or duplicate (case-insensitive)
+  names. A chained `!=` only raised when both counts were off, so duplicates slipped through.
+- Satellite ion offsets follow mzPAF 1.0.1 (neutral residue remnant, charge excluded):
+  `d` is `C2H4N` (was `C2H3N`), `v` is `C2H3NO2` (was `C2H2NO`), `w` is `C3H4O2` (was
+  `C3H3O`), and the residue-specific `w` ions gain an `O` (`w-valine` `C4H6O2`). `d` is
+  1.0078 Da, `v`/`w` 17.0027 Da and the specific `w` ions 15.9949 Da heavier; the
+  residue-specific `d` ions were already right.
+- Thermolysin cleaves N-terminal to A, F, I, L, M, V (not after D or E), as in ExPASy
+  PeptideCutter; it previously cleaved C-terminal to them.
+- UniProt ptmlist refreshed to 2026_03: 29 glycan entries (e.g. PTM-0745) had their
+  monoisotopic and average masses swapped; PTM-0775 and PTM-0776 are new.
+- Ontology id queries accept only plain ASCII-digit numeric ids (after stripping the
+  prefixes, leading zeros and surrounding whitespace). `"+21"`, `"2_1"` and non-ASCII
+  digits such as `"٢١"` resolved to UNIMOD 21 because they went through `int()`; they
+  are now not found. A `bool` is no longer an id (`UNIMOD_LOOKUP[True]` was entry 1).
+- `to_dict()["composition"]` is a copy on every entry type (ontology entries, amino
+  acids, fragment ions, reference molecules). It returned the entry's own
+  `dict_composition`, so editing the dict changed the entry in the global lookup.
+
+## [1.1.3] (2026-09-23)
+
+### Fixed
+
+- Id lookups now accept each ontology's own accession prefix, as `query_id` documented:
+  `UNIMOD_LOOKUP["UNIMOD:21"]`, `PSIMOD_LOOKUP["MOD:00046"]`, `XLMOD:01000`,
+  `RESID:AA0002`, `GNO:G00008BG` and UniProt's `PTM-0476` resolve (case-insensitive)
+  through `[]`, `get`, `in` and `query_id`. Another ontology's prefix is still rejected.
+- Trypsin's `full_name` said "no proline rule" although its regex does not cleave
+  before proline; it now reads "Trypsin with proline restriction".
+- README: `tacular update` with no names refreshes GNOme too (it is not opt-in).
+- `just test-docs` ran a pytest doctest pass that collected nothing and exited 5; it is
+  now an alias for `just docs-test`. `just lint` checks `tests` as CI does.
+- `GnoInfo` docstring said PSI-MOD; package docstring named a nonexistent `OboLookup`.
+
+## [1.1.2] (2026-09-23)
+
+### Fixed
+
+- Zenodo archiving: removed the grant ids and hard-coded version from `.zenodo.json`, which made Zenodo reject the previous release. Funding is now credited in the README.
+
+## [1.1.1] (2026-09-23)
+
+* Publish from GitHub Actions with PyPI trusted publishing (`publish.yml`),
+  replacing the API-token workflow; release metadata is checked against the tag.
+* Keep `__version__`, `CITATION.cff` and `.zenodo.json` in sync with
+  `scripts/release_version.py` (`just set-version X.Y.Z`).
+* CI tests Python 3.12-3.14 on Linux plus macOS and Windows, the lowest
+  direct dependency versions, and the built wheel.
+* Rename `HISTORY.md` to `CHANGELOG.md`; standardize citation, Zenodo and
+  package metadata.
+
+## [1.1.0] (2026-07-07)
+
+* Add `tacular update` CLI to refresh ontology data from the latest OBO
+  releases at runtime, cached per-user and preferred over bundled data.
+* Fix isotope-labelled atoms (13C, 15N, ...) being dropped from
+  composition/formula while the mass stayed correct.
+* Fix repeated element symbols collapsing in neutral-loss/fragment-ion
+  formula parsing (e.g. formic acid, formamide).
+* Refresh bundled UNIMOD data to the latest release.
+* Fix all 9 internal fragment ion offsets, which were systematically wrong
+  (the table was shifted so `by` was `-CO` instead of `0`). Corrected to
+  `internal(F,B) = δF + δB - H2O`, consistent with the a/b/c/x/y/z offsets.
+* Single-source the OBO parsing logic (shared by the build pipeline and
+  `tacular update`).
+* Improve logging/error diagnosability: `_datagen` parser failures now log the
+  exception type/message and a full traceback (not just "something failed"),
+  and a corrupt runtime cache logs via `logging` instead of `warnings.warn` so
+  it can never raise under `-W error`. Add `-v`/`-vv` verbosity flags to the
+  `tacular` CLI.
+* Add `CLAUDE.md`/`AGENTS.md`/`llms.txt` for AI coding agents and LLM tooling;
+  fill in missing module/function docstrings across the public API; correct
+  stale claims in `data_gen/README.md`.
+* Add a `UNIPROT_PTM_LOOKUP` lookup for UniProt's controlled vocabulary of
+  posttranslational modifications (`ptmlist.txt`), with `tacular update`/cache
+  support like the OBO ontologies. Cross-references to PSI-MOD/UNIMOD are
+  resolvable via `get_psimod()`/`get_unimod()`.
+
+## [1.0.1] (2026-02-03)
+
+* docs
+* zenodo
+
+## [1.0.0] (2026-02-02)
+
+* First release on PyPI.
+</content>
