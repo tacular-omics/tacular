@@ -30,7 +30,8 @@ test-cov:
 codecov-tests:
     uv run pytest tests --cov --junitxml=junit.xml -o junit_family=legacy
 
-# Alias for docs-test (the sources have no doctests of their own; the docs do)
+# Alias for docs-test, which runs the examples in the docs. The examples in the
+# sources are run by tests/test_doctests.py
 test-docs: docs-test
 
 # Generate Data Files
