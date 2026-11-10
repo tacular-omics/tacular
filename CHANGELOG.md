@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Changed
+
+- The four lookups that printed only the key they could not find now name the kinds of
+  key they accept and list their valid names: `MONOSACCHARIDE_LOOKUP`, `REFMOL_LOOKUP`,
+  `ISOBARIC_TAG_LOOKUP` and `SILAC_LOOKUP`. `MONOSACCHARIDE_LOOKUP["Hexx"]` raised
+  `Monosaccharide 'Hexx' not found.` and now raises
+  `Monosaccharide 'Hexx' not found by ProForma name; expected one of [...]` listing all
+  24 ProForma names. The other eleven lookups already said more than the key and are
+  unchanged. A new test in `tests/test_api_consistency.py` holds every lookup's miss
+  message to saying more than the key itself.
+
 ## [2.1.0] (2026-11-06)
 
 ### Changed
