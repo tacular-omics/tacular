@@ -57,6 +57,9 @@ class IsobaricTagLookup(_BaseLookup[str, str, IsobaricTagInfo]):
     def _resolve(self, key: object) -> IsobaricTagInfo | None:
         return self.query_name(key)  # ty: ignore[invalid-argument-type]
 
+    def _miss_message(self, key: object) -> str:
+        return f"Isobaric tag {key!r} not found by name or alias; expected one of {sorted(self._data)}."
+
     def query_name(self, name: str) -> IsobaricTagInfo | None:
         """By name or alias (case-insensitive); ``None`` if nothing matches."""
         return self._by_name.get(name.lower()) if isinstance(name, str) else None
@@ -90,6 +93,9 @@ class SilacLabelLookup(_BaseLookup[str, str, SilacLabelInfo]):
 
     def _resolve(self, key: object) -> SilacLabelInfo | None:
         return self.query_name(key)  # ty: ignore[invalid-argument-type]
+
+    def _miss_message(self, key: object) -> str:
+        return f"SILAC label {key!r} not found by name or alias; expected one of {sorted(self._data)}."
 
     def query_name(self, name: str) -> SilacLabelInfo | None:
         """By name or alias (case-insensitive); ``None`` if nothing matches."""
