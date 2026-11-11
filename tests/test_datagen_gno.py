@@ -52,6 +52,48 @@ def test_unknown_glycan_symbol_skips_entry(caplog):
     assert "Hex" in caplog.text
 
 
+def _composition_term(composition):
+    return _terms(
+        f'[Term]\nid: GNO:00000002\nname: bad glycan\nproperty_value: GNO:00000202 "{composition}" xsd:string\n'
+    )
+
+
+def test_uncounted_symbol_skips_entry(caplog):
+    # re.findall used to drop the uncounted "NeuAc" and keep the entry with a Hex-only
+    # formula (C36H60O30, 291.095 Da light). The warning must name the full composition
+    # string and the text that was not consumed.
+    _, terms = _composition_term("Hex(6)NeuAc")
+    infos = list(gno._entries(terms))
+    assert infos == []
+    assert "Hex(6)NeuAc" in caplog.text
+    assert "'NeuAc'" in caplog.text
+
+
+def test_bare_symbol_without_count_skips_entry(caplog):
+    # Nothing matched, so this used to be kept with formula "" and mass 0.0, which also
+    # got past the all-None guard in _entries.
+    _, terms = _composition_term("Hex")
+    infos = list(gno._entries(terms))
+    assert infos == []
+    assert "'Hex'" in caplog.text
+
+
+def test_uncounted_unknown_symbol_skips_entry(caplog):
+    _, terms = _composition_term("Hex(6)Xenon")
+    infos = list(gno._entries(terms))
+    assert infos == []
+    assert "Hex(6)Xenon" in caplog.text
+    assert "'Xenon'" in caplog.text
+
+
+def test_surrounding_whitespace_is_still_accepted(caplog):
+    _, terms = _composition_term(" Hex(6)NeuAc(1) ")
+    infos = list(gno._entries(terms))
+    assert len(infos) == 1
+    assert infos[0].formula == "C47H77NO38"
+    assert "Unparsed" not in caplog.text
+
+
 def test_obsolete_entry_skipped():
     _, terms = _terms(
         "[Term]\nid: GNO:00000003\nname: obsolete glycan\nis_obsolete: true\n"

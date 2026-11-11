@@ -42,7 +42,21 @@ _GLYCAN_COMPOSITIONS: dict[str, Counter[str]] = {
 def _parse_glycan_composition(composition_str: str) -> Counter[str] | None:
     """Parse GNO composition format like 'Hex(2)HexNAc(1)' into elemental composition."""
     try:
-        tokens = re.findall(r"([A-Za-z0-9]+)\((\d+)\)", composition_str)
+        token_pattern = r"([A-Za-z0-9]+)\((\d+)\)"
+        tokens = re.findall(token_pattern, composition_str)
+
+        # findall reports only the matches, so check that they account for the whole
+        # string; anything else left over (an uncounted "NeuAc", a bare "Hex") would
+        # otherwise be dropped silently and the entry kept with a partial composition.
+        unconsumed = re.sub(token_pattern, "", composition_str).strip()
+        if unconsumed:
+            logger.warning(
+                "Unparsed text %r in glycan composition %r (expected only Symbol(count) tokens)",
+                unconsumed,
+                composition_str,
+            )
+            return None
+
         total_composition: Counter[str] = Counter()
 
         for symbol, count in tokens:

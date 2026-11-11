@@ -13,6 +13,15 @@
   unchanged. A new test in `tests/test_api_consistency.py` holds every lookup's miss
   message to saying more than the key itself.
 
+### Fixed
+
+- The GNOme composition parser no longer drops text that is not spelled `Symbol(count)`.
+  `"Hex(6)NeuAc"` was kept as `C36H60O30` (291.095 Da light) and a bare `"Hex"` was kept
+  with an empty formula and a mass of 0.0, both without a warning. A composition the
+  `Symbol(count)` tokens do not fully account for, apart from surrounding whitespace, now
+  logs a warning naming the full string and the unconsumed text, and the entry is skipped,
+  as an unknown counted symbol already was. This change does not touch the bundled GNOme data. (#54)
+
 ## [2.1.0] (2026-11-06)
 
 ### Changed
