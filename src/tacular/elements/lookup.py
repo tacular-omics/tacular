@@ -185,9 +185,7 @@ def parse_composition(comp_dict: Mapping[str, int]) -> dict[ElementInfo, int]:
         TacularKeyError: if a key is not an element or isotope in the data.
     """
     if not isinstance(comp_dict, Mapping):
-        raise TacularError(
-            f"parse_composition expects a mapping of element symbol to count, got {comp_dict!r}."
-        )
+        raise TacularError(f"parse_composition expects a mapping of element symbol to count, got {comp_dict!r}.")
     return {ELEMENT_LOOKUP[elem_key]: count for elem_key, count in comp_dict.items()}
 
 
