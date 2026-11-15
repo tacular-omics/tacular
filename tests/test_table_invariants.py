@@ -5,6 +5,7 @@ The ontology tables (UNIMOD, PSI-MOD, ...) are covered by ``test_reference_data.
 ``test_properties.py``; the isobaric-tag and SILAC monoisotopic masses by ``test_labels.py``.
 """
 
+import re
 from collections import defaultdict
 
 import pytest
@@ -124,6 +125,16 @@ def test_monoisotopic_flag_marks_the_element_default_isotope():
         if stray:
             wrong.append(f"{symbol}: isotopes {stray} have an atomic number other than {element.number}")
     assert not wrong, f"{len(wrong)} elements have a bad monoisotopic flag:\n" + "\n".join(wrong)
+
+
+def test_protease_regexes_have_no_capturing_group():
+    """Catches a capturing cleavage regex: ``re.split`` interleaves each captured empty
+    string, so ``re.split(PROTEASE_LOOKUP["unspecific"].regex, "PEP")`` returned
+    ``['', '', 'P', '', 'E', '', 'P', '', '']`` instead of ``['P', 'E', 'P']``. The
+    field is documented as a zero-width regex, which a lookaround keeps and a group
+    does not."""
+    wrong = [(str(info.id), info.regex) for info in PROTEASE_LOOKUP.values() if re.compile(info.regex).groups]
+    assert not wrong, f"{len(wrong)} protease regexes capture a group:\n" + "\n".join(map(str, wrong))
 
 
 if __name__ == "__main__":

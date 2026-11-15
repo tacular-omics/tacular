@@ -110,7 +110,7 @@
       "id": "unspecific",
       "name": "Non-specific cleavage",
       "full_name": "Non-specific protease",
-      "regex_pattern": "()"
+      "regex_pattern": "(?<=.)(?=.)"
     },
     {
       "id": "no_enzyme",

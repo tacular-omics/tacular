@@ -15,6 +15,11 @@
 
 ### Fixed
 
+- `PROTEASE_LOOKUP["unspecific"].regex` was `()` — the only capturing regex of the 19 —
+  so `re.split` interleaved an empty string per residue and splitting `"PEP"` returned
+  nine pieces instead of `['P', 'E', 'P']`. It is now `(?<=.)(?=.)`, and a new test in
+  `tests/test_table_invariants.py` holds every protease regex to having no capturing
+  group. (#58)
 - The GNOme composition parser no longer drops text that is not spelled `Symbol(count)`.
   `"Hex(6)NeuAc"` was kept as `C36H60O30` (291.095 Da light) and a bare `"Hex"` was kept
   with an empty formula and a mass of 0.0, both without a warning. A composition the

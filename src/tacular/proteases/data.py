@@ -161,7 +161,7 @@ Protease.UNSPECIFIC: ProteaseInfo(
     id=Protease.UNSPECIFIC,
     name="Non-specific cleavage",
     full_name="Non-specific protease",
-    regex='()',
+    regex='(?<=.)(?=.)',
 ),
 Protease.NO_ENZYME: ProteaseInfo(
     id=Protease.NO_ENZYME,
