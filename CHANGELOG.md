@@ -21,6 +21,10 @@
   `Symbol(count)` tokens do not fully account for, apart from surrounding whitespace, now
   logs a warning naming the full string and the unconsumed text, and the entry is skipped,
   as an unknown counted symbol already was. This change does not touch the bundled GNOme data. (#54)
+- `parse_composition` raises `TacularError`, naming the value and the shape it expected, when it
+  is handed something that is not a mapping. It leaked `AttributeError: 'str' object has no
+  attribute 'items'` before, which is what a user saw after passing a formula string such as
+  `"C6H12O6"`. (#61, thanks @bfs2021)
 
 ## [2.1.0] (2026-11-06)
 
