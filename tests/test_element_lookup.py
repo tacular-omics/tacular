@@ -5,7 +5,7 @@ Tests for the ElementLookup class.
 import pytest
 
 import tacular as pt
-from tacular import TacularKeyError
+from tacular import TacularError, TacularKeyError
 from tacular.elements.lookup import _parse_key, parse_composition
 
 
@@ -456,6 +456,17 @@ class TestParseComposition:
         # Find the C entry
         c_count = next(count for elem, count in parsed.items() if elem.symbol == "C")
         assert c_count == 0
+
+    @pytest.mark.parametrize("value", ["C6H12O6", None, 5, [1, 2]])
+    def test_non_mapping_raises_tacular_error(self, value):
+        """A formula string (or any non-mapping) is rejected with a TacularError, not an AttributeError"""
+
+        with pytest.raises(TacularError) as excinfo:
+            parse_composition(value)
+
+        message = str(excinfo.value)
+        assert repr(value) in message
+        assert "mapping" in message
 
 
 class TestElementLookupEdgeCases:

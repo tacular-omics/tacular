@@ -12,7 +12,7 @@ from functools import cache
 
 from .._lookup import _BaseLookup
 from .._util import _freeze_composition
-from ..errors import TacularKeyError
+from ..errors import TacularError, TacularKeyError
 from .data import ISOTOPES, Element
 from .dclass import ElementInfo
 
@@ -181,8 +181,13 @@ def parse_composition(comp_dict: Mapping[str, int]) -> dict[ElementInfo, int]:
     :class:`ElementInfo`.
 
     Raises:
+        TacularError: if ``comp_dict`` is not a mapping of symbol to count.
         TacularKeyError: if a key is not an element or isotope in the data.
     """
+    if not isinstance(comp_dict, Mapping):
+        raise TacularError(
+            f"parse_composition expects a mapping of element symbol to count, got {comp_dict!r}."
+        )
     return {ELEMENT_LOOKUP[elem_key]: count for elem_key, count in comp_dict.items()}
 
 
