@@ -27,6 +27,7 @@ from . import constants as constants
 from .amino_acids import AA_LOOKUP, AMINO_ACID_INFOS, ORDERED_AMINO_ACIDS, AALookup, AminoAcid, AminoAcidInfo
 from .elements import ELEMENT_LOOKUP, Element, ElementInfo, ElementKey, ElementLookup, parse_composition
 from .errors import TacularError, TacularKeyError
+from .formula import formula_mass, parse_formula
 from .ion_types import FRAGMENT_ION_LOOKUP, FragmentIonInfo, FragmentIonLookup, IonType, IonTypeLiteral, IonTypeProperty
 from .labels import (
     ISOBARIC_TAG_LOOKUP,
@@ -109,6 +110,8 @@ __all__ = [
     "ElementKey",
     "ElementLookup",
     "parse_composition",
+    "parse_formula",
+    "formula_mass",
     "GNO_LOOKUP",
     "GnoInfo",
     "GnoLookup",
