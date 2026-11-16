@@ -4,6 +4,12 @@
 
 ### Changed
 
+- `FragmentIonInfo.to_dict()` now includes `"properties"`, the names of every set
+  `IonTypeProperty` flag in definition order: `b` gives `["FORWARD"]`, `y` `["BACKWARD"]`,
+  `by` `["INTERNAL"]`, `p` `["INTACT"]`, `d` `["FORWARD", "AA_SPECIFIC_FWD"]`, and an ion with
+  no flags `[]`. It was the only field of the sixteen `*Info` classes that `to_dict()` dropped,
+  so the bundled `jsons/fragment_ions.json` snapshot could not tell a `b` ion from a `y` ion;
+  that snapshot is regenerated with the new key. (#65)
 - The four lookups that printed only the key they could not find now name the kinds of
   key they accept and list their valid names: `MONOSACCHARIDE_LOOKUP`, `REFMOL_LOOKUP`,
   `ISOBARIC_TAG_LOOKUP` and `SILAC_LOOKUP`. `MONOSACCHARIDE_LOOKUP["Hexx"]` raised
