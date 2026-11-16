@@ -118,8 +118,10 @@ class FragmentIonInfo(_CompositionCache):
         """Convert to a plain, JSON-serializable dictionary.
 
         Keys: ``id``, ``name``, ``formula``, ``monoisotopic_mass``, ``average_mass``,
-        ``composition``. ``float_precision`` rounds the masses (default 6); ``None``
-        keeps full precision.
+        ``composition``, ``properties``. ``properties`` lists the names of every set
+        :class:`IonTypeProperty` flag in definition order (``["FORWARD"]`` for ``b``,
+        ``["FORWARD", "AA_SPECIFIC_FWD"]`` for ``d``, ``[]`` for no flags).
+        ``float_precision`` rounds the masses (default 6); ``None`` keeps full precision.
         """
         return {
             "id": str(self.id),
@@ -128,4 +130,9 @@ class FragmentIonInfo(_CompositionCache):
             "monoisotopic_mass": _round(self.monoisotopic_mass, float_precision),
             "average_mass": _round(self.average_mass, float_precision),
             "composition": dict(self.dict_composition) if self.dict_composition is not None else None,
+            "properties": [
+                flag.name
+                for flag in IonTypeProperty
+                if flag is not IonTypeProperty.NONE and flag.name is not None and flag in self.properties
+            ],
         }

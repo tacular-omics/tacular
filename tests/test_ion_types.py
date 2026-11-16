@@ -1,3 +1,6 @@
+import dataclasses
+import json
+
 import pytest
 
 from tacular import FRAGMENT_ION_LOOKUP as db
@@ -207,6 +210,29 @@ class TestFragmentIonMethods:
             assert "average_mass" in d
             assert "composition" in d
             break
+
+    @pytest.mark.parametrize(
+        ("ion_id", "expected"),
+        [
+            ("b", ["FORWARD"]),
+            ("y", ["BACKWARD"]),
+            ("by", ["INTERNAL"]),
+            ("p", ["INTACT"]),
+            ("d", ["FORWARD", "AA_SPECIFIC_FWD"]),
+            ("w", ["BACKWARD", "AA_SPECIFIC_BWD"]),
+            ("v", ["BACKWARD", "AA_SPECIFIC_BWD"]),
+        ],
+    )
+    def test_to_dict_properties(self, ion_id, expected):
+        """to_dict exports every set IonTypeProperty flag by name, in definition order"""
+        d = db[ion_id].to_dict()
+        assert d["properties"] == expected
+        json.dumps(d)
+
+    def test_to_dict_properties_none(self):
+        """No flags set gives an empty list"""
+        ion = dataclasses.replace(db["b"], properties=IonTypeProperty.NONE)
+        assert ion.to_dict()["properties"] == []
 
 
 class TestFragmentIonEdgeCases:
