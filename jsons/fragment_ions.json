@@ -1,9 +1,9 @@
 {
     "metadata": {
-        "generated_date": "2026-09-24T17:38:13.479377",
+        "generated_date": "2026-11-16T15:47:50.533112",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
-        "tacular_version": "2.0.0",
+        "tacular_version": "2.1.0",
         "data_version": null
     },
     "fragment_ions": [
@@ -16,7 +16,10 @@
             "composition": {
                 "H": 2,
                 "O": 1
-            }
+            },
+            "properties": [
+                "INTACT"
+            ]
         },
         {
             "id": "n",
@@ -24,7 +27,10 @@
             "formula": "",
             "monoisotopic_mass": 0.0,
             "average_mass": 0.0,
-            "composition": {}
+            "composition": {},
+            "properties": [
+                "INTACT"
+            ]
         },
         {
             "id": "a",
@@ -35,7 +41,10 @@
             "composition": {
                 "C": -1,
                 "O": -1
-            }
+            },
+            "properties": [
+                "FORWARD"
+            ]
         },
         {
             "id": "b",
@@ -43,7 +52,10 @@
             "formula": "",
             "monoisotopic_mass": 0.0,
             "average_mass": 0.0,
-            "composition": {}
+            "composition": {},
+            "properties": [
+                "FORWARD"
+            ]
         },
         {
             "id": "c",
@@ -54,7 +66,10 @@
             "composition": {
                 "H": 3,
                 "N": 1
-            }
+            },
+            "properties": [
+                "FORWARD"
+            ]
         },
         {
             "id": "x",
@@ -65,7 +80,10 @@
             "composition": {
                 "C": 1,
                 "O": 2
-            }
+            },
+            "properties": [
+                "BACKWARD"
+            ]
         },
         {
             "id": "y",
@@ -76,7 +94,10 @@
             "composition": {
                 "H": 2,
                 "O": 1
-            }
+            },
+            "properties": [
+                "BACKWARD"
+            ]
         },
         {
             "id": "z",
@@ -88,7 +109,10 @@
                 "H": -1,
                 "N": -1,
                 "O": 1
-            }
+            },
+            "properties": [
+                "BACKWARD"
+            ]
         },
         {
             "id": "z.",
@@ -99,7 +123,10 @@
             "composition": {
                 "N": -1,
                 "O": 1
-            }
+            },
+            "properties": [
+                "BACKWARD"
+            ]
         },
         {
             "id": "z+H",
@@ -111,7 +138,10 @@
                 "H": 1,
                 "N": -1,
                 "O": 1
-            }
+            },
+            "properties": [
+                "BACKWARD"
+            ]
         },
         {
             "id": "c-H",
@@ -122,7 +152,10 @@
             "composition": {
                 "H": 2,
                 "N": 1
-            }
+            },
+            "properties": [
+                "FORWARD"
+            ]
         },
         {
             "id": "i",
@@ -133,7 +166,10 @@
             "composition": {
                 "C": -1,
                 "O": -1
-            }
+            },
+            "properties": [
+                "INTERNAL"
+            ]
         },
         {
             "id": "d",
@@ -145,7 +181,11 @@
                 "C": 2,
                 "H": 4,
                 "N": 1
-            }
+            },
+            "properties": [
+                "FORWARD",
+                "AA_SPECIFIC_FWD"
+            ]
         },
         {
             "id": "d-valine",
@@ -157,7 +197,11 @@
                 "C": 3,
                 "H": 6,
                 "N": 1
-            }
+            },
+            "properties": [
+                "FORWARD",
+                "AA_SPECIFIC_FWD"
+            ]
         },
         {
             "id": "da",
@@ -165,7 +209,11 @@
             "formula": null,
             "monoisotopic_mass": null,
             "average_mass": null,
-            "composition": {}
+            "composition": {},
+            "properties": [
+                "FORWARD",
+                "AA_SPECIFIC_FWD"
+            ]
         },
         {
             "id": "db",
@@ -173,7 +221,11 @@
             "formula": null,
             "monoisotopic_mass": null,
             "average_mass": null,
-            "composition": {}
+            "composition": {},
+            "properties": [
+                "FORWARD",
+                "AA_SPECIFIC_FWD"
+            ]
         },
         {
             "id": "da-threonine",
@@ -186,7 +238,11 @@
                 "H": 4,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "properties": [
+                "FORWARD",
+                "AA_SPECIFIC_FWD"
+            ]
         },
         {
             "id": "da-isoleucine",
@@ -198,7 +254,11 @@
                 "C": 4,
                 "H": 8,
                 "N": 1
-            }
+            },
+            "properties": [
+                "FORWARD",
+                "AA_SPECIFIC_FWD"
+            ]
         },
         {
             "id": "db-threonine",
@@ -210,7 +270,11 @@
                 "C": 3,
                 "H": 6,
                 "N": 1
-            }
+            },
+            "properties": [
+                "FORWARD",
+                "AA_SPECIFIC_FWD"
+            ]
         },
         {
             "id": "db-isoleucine",
@@ -222,7 +286,11 @@
                 "C": 3,
                 "H": 6,
                 "N": 1
-            }
+            },
+            "properties": [
+                "FORWARD",
+                "AA_SPECIFIC_FWD"
+            ]
         },
         {
             "id": "v",
@@ -235,7 +303,11 @@
                 "H": 3,
                 "N": 1,
                 "O": 2
-            }
+            },
+            "properties": [
+                "BACKWARD",
+                "AA_SPECIFIC_BWD"
+            ]
         },
         {
             "id": "w",
@@ -247,7 +319,11 @@
                 "C": 3,
                 "H": 4,
                 "O": 2
-            }
+            },
+            "properties": [
+                "BACKWARD",
+                "AA_SPECIFIC_BWD"
+            ]
         },
         {
             "id": "w-valine",
@@ -259,7 +335,11 @@
                 "C": 4,
                 "H": 6,
                 "O": 2
-            }
+            },
+            "properties": [
+                "BACKWARD",
+                "AA_SPECIFIC_BWD"
+            ]
         },
         {
             "id": "wa-threonine",
@@ -271,7 +351,11 @@
                 "C": 3,
                 "H": 4,
                 "O": 3
-            }
+            },
+            "properties": [
+                "BACKWARD",
+                "AA_SPECIFIC_BWD"
+            ]
         },
         {
             "id": "wa",
@@ -279,7 +363,11 @@
             "formula": null,
             "monoisotopic_mass": null,
             "average_mass": null,
-            "composition": {}
+            "composition": {},
+            "properties": [
+                "BACKWARD",
+                "AA_SPECIFIC_BWD"
+            ]
         },
         {
             "id": "wb",
@@ -287,7 +375,11 @@
             "formula": null,
             "monoisotopic_mass": null,
             "average_mass": null,
-            "composition": {}
+            "composition": {},
+            "properties": [
+                "BACKWARD",
+                "AA_SPECIFIC_BWD"
+            ]
         },
         {
             "id": "wa-isoleucine",
@@ -299,7 +391,11 @@
                 "C": 5,
                 "H": 8,
                 "O": 2
-            }
+            },
+            "properties": [
+                "BACKWARD",
+                "AA_SPECIFIC_BWD"
+            ]
         },
         {
             "id": "wb-threonine",
@@ -311,7 +407,11 @@
                 "C": 4,
                 "H": 6,
                 "O": 2
-            }
+            },
+            "properties": [
+                "BACKWARD",
+                "AA_SPECIFIC_BWD"
+            ]
         },
         {
             "id": "wb-isoleucine",
@@ -323,7 +423,11 @@
                 "C": 4,
                 "H": 6,
                 "O": 2
-            }
+            },
+            "properties": [
+                "BACKWARD",
+                "AA_SPECIFIC_BWD"
+            ]
         },
         {
             "id": "by",
@@ -331,7 +435,10 @@
             "formula": "",
             "monoisotopic_mass": 0.0,
             "average_mass": 0.0,
-            "composition": {}
+            "composition": {},
+            "properties": [
+                "INTERNAL"
+            ]
         },
         {
             "id": "ax",
@@ -341,7 +448,10 @@
             "average_mass": -2.015882,
             "composition": {
                 "H": -2
-            }
+            },
+            "properties": [
+                "INTERNAL"
+            ]
         },
         {
             "id": "cz",
@@ -349,7 +459,10 @@
             "formula": "",
             "monoisotopic_mass": 0.0,
             "average_mass": 0.0,
-            "composition": {}
+            "composition": {},
+            "properties": [
+                "INTERNAL"
+            ]
         },
         {
             "id": "ay",
@@ -360,7 +473,10 @@
             "composition": {
                 "C": -1,
                 "O": -1
-            }
+            },
+            "properties": [
+                "INTERNAL"
+            ]
         },
         {
             "id": "az",
@@ -373,7 +489,10 @@
                 "H": -3,
                 "N": -1,
                 "O": -1
-            }
+            },
+            "properties": [
+                "INTERNAL"
+            ]
         },
         {
             "id": "bx",
@@ -385,7 +504,10 @@
                 "C": 1,
                 "H": -2,
                 "O": 1
-            }
+            },
+            "properties": [
+                "INTERNAL"
+            ]
         },
         {
             "id": "bz",
@@ -396,7 +518,10 @@
             "composition": {
                 "H": -3,
                 "N": -1
-            }
+            },
+            "properties": [
+                "INTERNAL"
+            ]
         },
         {
             "id": "cx",
@@ -409,7 +534,10 @@
                 "H": 1,
                 "N": 1,
                 "O": 1
-            }
+            },
+            "properties": [
+                "INTERNAL"
+            ]
         },
         {
             "id": "cy",
@@ -420,7 +548,10 @@
             "composition": {
                 "H": 3,
                 "N": 1
-            }
+            },
+            "properties": [
+                "INTERNAL"
+            ]
         }
     ]
 }
