@@ -199,6 +199,8 @@ print(t.AA_LOOKUP["X"].monoisotopic_mass)                        # 0.0 (mass com
     `.proton_count`, `.is_radioactive`, `.serialize(count) -> str` (ProForma formula token,
     e.g. `"[13C2]"`), `.to_dict(*, float_precision=6)` (includes `is_monoisotopic`), `.update(**kw)`
 - `parse_composition(comp_dict: Mapping[str, int]) -> dict[ElementInfo, int]`
+- `parse_formula(formula: str) -> dict[ElementInfo, int]`: `"C6H12O6"`, isotopes as `"[13C6]H12O6"` (bare `13C6` and UNIMOD `H(2)` raise `TacularError`)
+- `formula_mass(formula: str, monoisotopic: bool = True) -> float`
 
 `ElementLookup` methods: `lookup[key]` with key `"C"`, `"13C"`, `("C", 13)`,
 `("C", None)` or `Element.C`; `in`, `.get(key, default=None)`, `len`, iteration,
