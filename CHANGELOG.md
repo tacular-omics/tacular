@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+### Added
+
+- `parse_formula(formula)` and `formula_mass(formula, monoisotopic=True)`, in the new
+  `tacular.formula` module and exported from `tacular`. `parse_formula("C6H12O6")` returns
+  the `ElementInfo`-keyed composition that `parse_composition` returns, and
+  `formula_mass("C6H12O6")` returns 180.06338810418. Isotopes are written in the ProForma
+  spelling, `[13C6]H12O6`, and resolve through `ELEMENT_LOOKUP["13C"]`. The bare
+  `13C6H12O6`, the UNIMOD spelling `H(2)C(6)`, an empty string, an unknown element and a
+  non-string raise `TacularError` naming the text. `parse_composition` is unchanged. (#60)
+
 ### Changed
 
 - `FragmentIonInfo.to_dict()` now includes `"properties"`, the names of every set
