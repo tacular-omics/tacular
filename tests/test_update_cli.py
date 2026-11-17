@@ -307,6 +307,8 @@ def test_main_module_runs_in_process(isolated_cache, monkeypatch, capsys):
 
 
 _PTM_STANZA = "ID   {name}\nAC   PTM-{n:04d}\nFT   {ft}\nTG   Serine.\nCF   {cf}\n//\n"
+_PTM_STANZA_NO_AC = "ID   {name}\nFT   MOD_RES\nTG   Serine.\nCF   H O3 P\n//\n"
+_PTM_STANZA_NO_FORMULA = "ID   {name}\nAC   PTM-{n:04d}\nFT   MOD_RES\nTG   Serine.\n//\n"
 
 
 def _write_ptmlist(path, stanzas):
@@ -325,7 +327,7 @@ def test_update_reports_skipped_uniprot_ptm_records(tmp_path, capsys):
     )
     update_mod.update(["uniprot_ptm"], offline=src)
     out = capsys.readouterr().out
-    assert "note: skipped 1 uniprot_ptm source records (1 crosslink); 1 kept" in out
+    assert "note: skipped 1 uniprot_ptm source record (1 crosslink); 1 kept" in out
     assert "uniprot_ptm: 1 entries" in out
 
 
@@ -335,6 +337,46 @@ def test_update_prints_no_skip_note_when_nothing_skipped(tmp_path, capsys):
     _write_ptmlist(src / "ptmlist.txt", [_PTM_STANZA.format(name="Phospho", n=1, ft="MOD_RES", cf="H O3 P")])
     update_mod.update(["uniprot_ptm"], offline=src)
     assert "skipped" not in capsys.readouterr().out
+
+
+def test_update_counts_a_stanza_with_no_ac(tmp_path, capsys):
+    """A stanza without an AC line is dropped, and counted under its own reason."""
+    src = tmp_path / "src"
+    src.mkdir()
+    _write_ptmlist(
+        src / "ptmlist.txt",
+        [
+            _PTM_STANZA.format(name="Phospho", n=1, ft="MOD_RES", cf="H O3 P"),
+            _PTM_STANZA_NO_AC.format(name="Nameless"),
+        ],
+    )
+    update_mod.update(["uniprot_ptm"], offline=src)
+    out = capsys.readouterr().out
+    assert "note: skipped 1 uniprot_ptm source record (1 no ID or AC); 1 kept" in out
+
+
+def test_skip_reasons_are_reported_in_a_fixed_order(tmp_path, capsys):
+    """The reasons read in SKIP_REASONS order, not in the order the file happens to use."""
+    from tacular._datagen import uniprot_ptm
+
+    src = tmp_path / "src"
+    src.mkdir()
+    _write_ptmlist(
+        src / "ptmlist.txt",
+        [
+            _PTM_STANZA.format(name="Phospho", n=1, ft="MOD_RES", cf="H O3 P"),
+            _PTM_STANZA_NO_FORMULA.format(name="Massless", n=2),
+            _PTM_STANZA_NO_AC.format(name="Nameless"),
+            _PTM_STANZA.format(name="Link", n=3, ft="CROSSLNK", cf="H O3 P"),
+        ],
+    )
+    _version, infos, skipped = uniprot_ptm.build_with_skips(src / "ptmlist.txt")
+    assert len(infos) == 1
+    assert list(skipped) == list(uniprot_ptm.SKIP_REASONS)
+    update_mod.update(["uniprot_ptm"], offline=src)
+    assert (
+        "note: skipped 3 uniprot_ptm source records (1 crosslink, 1 no ID or AC, 1 with no formula and no mass); 1 kept"
+    ) in capsys.readouterr().out
 
 
 def test_bundled_ptmlist_skip_counts():
