@@ -158,7 +158,11 @@ def update(names: list[str] | None = None, *, offline: str | Path | None = None)
         builder = importlib.import_module(module_path)
         print(f"regenerating {name} ...")
         try:
-            version, infos = builder.build(obo_paths[src])
+            skipped: dict[str, int] = {}
+            if hasattr(builder, "build_with_skips"):
+                version, infos, skipped = builder.build_with_skips(obo_paths[src])
+            else:
+                version, infos = builder.build(obo_paths[src])
         except TacularError:
             raise
         except ValueError as e:
@@ -170,6 +174,10 @@ def update(names: list[str] | None = None, *, offline: str | Path | None = None)
                 f"  note: {len(mismatches)} {name} entries are internally inconsistent in the source "
                 f"(mass != composition), e.g. {eid} {ename} (Δ{delta:+.4f} Da)"
             )
+        if skipped:
+            total = sum(skipped.values())
+            reasons = ", ".join(f"{n} {why}" for why, n in skipped.items())
+            print(f"  note: skipped {total} {name} source records ({reasons}); {len(infos)} kept")
         out = _cache.save(builder.JSON_NAME, builder.DATA_KEY, infos, version)
         print(f"  {name}: {len(infos)} entries (v{version}) -> {out}")
         refreshed.append(name)
