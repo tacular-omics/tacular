@@ -180,13 +180,22 @@ def parse_composition(comp_dict: Mapping[str, int]) -> dict[ElementInfo, int]:
     """Resolve a composition keyed by strings (``{"C": 2, "13C": 1}``) to one keyed by
     :class:`ElementInfo`.
 
+    One element can be spelled more than one way (``"D"`` and ``"2H"``, ``"T"`` and
+    ``"3H"``), so counts whose keys resolve to the same element are **summed**:
+    ``{"D": 2, "2H": 3}`` gives five deuterium atoms. Keys appear in the order they
+    are first seen.
+
     Raises:
         TacularError: if ``comp_dict`` is not a mapping of symbol to count.
         TacularKeyError: if a key is not an element or isotope in the data.
     """
     if not isinstance(comp_dict, Mapping):
         raise TacularError(f"parse_composition expects a mapping of element symbol to count, got {comp_dict!r}.")
-    return {ELEMENT_LOOKUP[elem_key]: count for elem_key, count in comp_dict.items()}
+    resolved: dict[ElementInfo, int] = {}
+    for elem_key, count in comp_dict.items():
+        element = ELEMENT_LOOKUP[elem_key]
+        resolved[element] = resolved.get(element, 0) + count
+    return resolved
 
 
 @cache

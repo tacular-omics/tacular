@@ -1,3 +1,5 @@
+import dataclasses
+
 import pytest
 
 import tacular as t
@@ -51,6 +53,26 @@ def test_element_mass():
     m13_false = ELEMENT_LOOKUP.get_mass("13C", monoisotopic=False)
     assert m13 == m13_false
     assert m13 > 13.0
+
+
+def test_entry_composition_sums_keys_that_resolve_to_one_element():
+    """`*Info.composition` resolves through the same function, so it sums too."""
+    entry = dataclasses.replace(t.XLMOD_LOOKUP["01008"], dict_composition={"C": 8, "D": 4, "2H": 1, "O": 3})
+    assert entry.composition[ELEMENT_LOOKUP["2H"]] == 5
+    assert entry.composition[ELEMENT_LOOKUP["C"]] == 8
+
+
+def test_parse_composition_sums_keys_that_resolve_to_one_element():
+    """`D` and `2H` are one element, so their counts add instead of overwriting."""
+    deuterium = ELEMENT_LOOKUP["2H"]
+    assert parse_composition({"D": 2, "2H": 3}) == {deuterium: 5}
+    assert parse_composition({"2H": 3, "D": 2}) == {deuterium: 5}
+    tritium = ELEMENT_LOOKUP["3H"]
+    assert parse_composition({"T": 1, "3H": 1}) == {tritium: 2}
+    # A duplicate spelling merges into the element it resolves to, and nothing else moves.
+    mixed = parse_composition({"C": 2, "D": 1, "H": 4, "2H": 1})
+    assert mixed == {ELEMENT_LOOKUP["C"]: 2, deuterium: 2, ELEMENT_LOOKUP["H"]: 4}
+    assert list(mixed) == [ELEMENT_LOOKUP["C"], deuterium, ELEMENT_LOOKUP["H"]]
 
 
 def test_parse_composition():

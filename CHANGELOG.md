@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- A formula or composition that spells one element two ways no longer loses the first
+  spelling. `parse_formula("D2[2H3]")` returned three deuterium atoms and
+  `formula_mass("D2[2H3]")` 6.042305 Da, because `"D"` and `"2H"` are the same element and
+  the resolved composition kept only the last key; it is now five atoms and 10.070509 Da.
+  The same held for `"T"` and `"3H"`, for `parse_composition({"D": 2, "2H": 3})`, which has
+  behaved this way since before 2.2.0, and for `*Info.composition`, which resolves through
+  the same function. Counts whose keys resolve to the same element are summed, and keys keep
+  the order they are first seen. No bundled entry spells one element two ways, so no shipped
+  composition or mass changes.
+
 ## [2.2.0] (2026-11-16)
 
 ### Added
