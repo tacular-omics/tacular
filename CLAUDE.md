@@ -59,6 +59,8 @@ src/tacular/
                       # _normalize_id is the ONE id normaliser for every ontology
   _lookup.py          # _BaseLookup: [] / get / in / len / iter / keys / values / items for ALL 15 lookups
   errors.py           # TacularError(ValueError), TacularKeyError(TacularError, KeyError)
+  formula.py          # parse_formula / formula_mass: formula string -> ElementInfo composition / mass
+                      # (wraps _datagen/_utils.parse_formula_to_dict, errors are TacularError)
   constants.py        # PROTON_MASS, ELECTRON_MASS, NEUTRON_MASS, HYDROGEN_MASS, C13_C12_MASS_DIFF (cited)
   tolerance.py        # ppm_error, da_to_ppm, ppm_to_da, tolerance_window, within_tolerance
                       # (units "da"/"ppm"); query_mass uses its window
