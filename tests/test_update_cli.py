@@ -304,3 +304,43 @@ def test_main_module_runs_in_process(isolated_cache, monkeypatch, capsys):
         runpy.run_module("tacular.__main__", run_name="__main__")
     assert exc_info.value.code == 0
     assert str(isolated_cache) in capsys.readouterr().out
+
+
+_PTM_STANZA = "ID   {name}\nAC   PTM-{n:04d}\nFT   {ft}\nTG   Serine.\nCF   {cf}\n//\n"
+
+
+def _write_ptmlist(path, stanzas):
+    path.write_text("Release: 2099_01 of 01-Jan-2099\n//\n" + "".join(stanzas))
+
+
+def test_update_reports_skipped_uniprot_ptm_records(tmp_path, capsys):
+    src = tmp_path / "src"
+    src.mkdir()
+    _write_ptmlist(
+        src / "ptmlist.txt",
+        [
+            _PTM_STANZA.format(name="Phospho", n=1, ft="MOD_RES", cf="H O3 P"),
+            _PTM_STANZA.format(name="Link", n=2, ft="CROSSLNK", cf="H O3 P"),
+        ],
+    )
+    update_mod.update(["uniprot_ptm"], offline=src)
+    out = capsys.readouterr().out
+    assert "note: skipped 1 uniprot_ptm source records (1 crosslink); 1 kept" in out
+    assert "uniprot_ptm: 1 entries" in out
+
+
+def test_update_prints_no_skip_note_when_nothing_skipped(tmp_path, capsys):
+    src = tmp_path / "src"
+    src.mkdir()
+    _write_ptmlist(src / "ptmlist.txt", [_PTM_STANZA.format(name="Phospho", n=1, ft="MOD_RES", cf="H O3 P")])
+    update_mod.update(["uniprot_ptm"], offline=src)
+    assert "skipped" not in capsys.readouterr().out
+
+
+def test_bundled_ptmlist_skip_counts():
+    from tacular._datagen import uniprot_ptm
+
+    _version, infos, skipped = uniprot_ptm.build_with_skips(OBO_DIR / "ptmlist.txt")
+    assert len(infos) == 440
+    assert skipped == {"crosslink": 159, "with no formula and no mass": 151}
+    assert uniprot_ptm.build(OBO_DIR / "ptmlist.txt")[1] == infos
