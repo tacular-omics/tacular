@@ -169,21 +169,45 @@ def _build_entry(fields: dict[str, str | list[str]]) -> UniprotPtmInfo | None:
     )
 
 
-def build(ptmlist_path: str | Path) -> tuple[str, list[UniprotPtmInfo]]:
-    """Parse ``ptmlist_path`` and return ``(version, infos)``."""
+SKIP_CROSSLINK = "crosslink"
+SKIP_NO_ID = "no ID or AC"
+SKIP_NO_FORMULA_OR_MASS = "with no formula and no mass"
+
+
+def build_with_skips(ptmlist_path: str | Path) -> tuple[str, list[UniprotPtmInfo], dict[str, int]]:
+    """Parse ``ptmlist_path`` and return ``(version, infos, skipped)``.
+
+    ``skipped`` maps each reason a stanza was dropped to how many were dropped for it
+    (reasons with a count of zero are absent). ``len(infos) + sum(skipped.values())`` is
+    the number of stanzas in the file.
+    """
     with open(ptmlist_path) as f:
         lines = f.readlines()
 
     version = _get_version(lines)
-    infos = [
-        info
-        for fields in _stanzas(lines)
-        if (info := _build_entry(fields)) is not None
-        if not (
+    infos: list[UniprotPtmInfo] = []
+    skipped: dict[str, int] = {}
+    for fields in _stanzas(lines):
+        reason: str | None = None
+        info = _build_entry(fields)
+        if info is None:
+            reason = SKIP_CROSSLINK if fields.get("FT") == "CROSSLNK" else SKIP_NO_ID
+        elif (
             info.formula is None
             and info.monoisotopic_mass is None
             and info.average_mass is None
             and info.dict_composition is None
-        )
-    ]
+        ):
+            reason = SKIP_NO_FORMULA_OR_MASS
+        if reason is None:
+            assert info is not None
+            infos.append(info)
+        else:
+            skipped[reason] = skipped.get(reason, 0) + 1
+    return version, infos, skipped
+
+
+def build(ptmlist_path: str | Path) -> tuple[str, list[UniprotPtmInfo]]:
+    """Parse ``ptmlist_path`` and return ``(version, infos)``."""
+    version, infos, _skipped = build_with_skips(ptmlist_path)
     return version, infos
