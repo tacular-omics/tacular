@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.2.1] (2026-11-16)
+
 ### Fixed
 
 - A formula or composition that spells one element two ways no longer loses the first
