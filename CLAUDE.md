@@ -170,6 +170,10 @@ and checked). `import tacular as t` is the house style.
 - **Elements**: `ELEMENT_LOOKUP` (`.get_mass(key, *, monoisotopic)`), `ElementLookup`,
   `ElementKey` (type alias), `Element` (enum), `ElementInfo`,
   `parse_composition` (`{"C": 2}` -> `{ElementInfo: 2}`)
+- **Formula strings** (`tacular.formula`): `parse_formula("C6H12O6")` ->
+  `{ElementInfo: count}` (the `parse_composition` shape), `formula_mass(formula, *,
+  monoisotopic=True)`; isotopes only in the ProForma spelling `[13C6]H12O6`, and whitespace,
+  the bare `13C6`, the UNIMOD `H(2)` and a non-string all raise `TacularError`
 - **Fragment ions**: `FRAGMENT_ION_LOOKUP`, `FragmentIonLookup`, `FragmentIonInfo`,
   `IonType` (enum), `IonTypeLiteral`, `IonTypeProperty` (flag enum)
 - **Neutral deltas**: `NEUTRAL_DELTA_LOOKUP`, `NeutralDeltaLookup`, `NeutralDelta`,
