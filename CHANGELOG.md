@@ -15,6 +15,13 @@
 
 ### Changed
 
+- `tacular update uniprot_ptm` now says how many `ptmlist.txt` records it skipped and why, instead
+  of printing only the kept count. For the bundled file it prints
+  `note: skipped 310 uniprot_ptm source records (159 crosslink, 151 with no formula and no mass); 440 kept`.
+  The line appears only when something was skipped. `tacular._datagen.uniprot_ptm` gains
+  `build_with_skips()`, which returns the counts; `build()` is unchanged and the generated data is
+  byte-identical. (#59)
+
 - `FragmentIonInfo.to_dict()` now includes `"properties"`, the names of every set
   `IonTypeProperty` flag in definition order: `b` gives `["FORWARD"]`, `y` `["BACKWARD"]`,
   `by` `["INTERNAL"]`, `p` `["INTACT"]`, `d` `["FORWARD", "AA_SPECIFIC_FWD"]`, and an ion with
