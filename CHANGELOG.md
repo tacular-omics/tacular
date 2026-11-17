@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.2.0] (2026-11-16)
+
 ### Added
 
 - `parse_formula(formula)` and `formula_mass(formula, *, monoisotopic=True)`, in the new
