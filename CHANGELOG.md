@@ -21,7 +21,6 @@
   The line appears only when something was skipped. `tacular._datagen.uniprot_ptm` gains
   `build_with_skips()`, which returns the counts; `build()` is unchanged and the generated data is
   byte-identical. (#59)
-
 - `FragmentIonInfo.to_dict()` now includes `"properties"`, the names of every set
   `IonTypeProperty` flag in definition order: `b` gives `["FORWARD"]`, `y` `["BACKWARD"]`,
   `by` `["INTERNAL"]`, `p` `["INTACT"]`, `d` `["FORWARD", "AA_SPECIFIC_FWD"]`, and an ion with
@@ -34,8 +33,7 @@
   `Monosaccharide 'Hexx' not found.` and now raises
   `Monosaccharide 'Hexx' not found by ProForma name; expected one of [...]` listing all
   24 ProForma names. The other eleven lookups already said more than the key and are
-  unchanged. A new test in `tests/test_api_consistency.py` holds every lookup's miss
-  message to saying more than the key itself.
+  unchanged. (#50)
 
 ### Fixed
 
@@ -401,4 +399,3 @@ No other API changes; timings are indicative single-core numbers.
 ## [1.0.0] (2026-02-02)
 
 * First release on PyPI.
-</content>
