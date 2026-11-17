@@ -77,6 +77,26 @@ def test_bad_input_raises_tacular_error_naming_the_text(bad):
         formula_mass(bad)
 
 
+@pytest.mark.parametrize(
+    "bad",
+    [
+        "C6 H12 O6",
+        " C6H12O6",
+        "C6H12O6 ",
+        "C6\tH12O6",
+        "C6H12\nO6",
+        "[13C6] H12O6",
+    ],
+)
+def test_whitespace_anywhere_raises_rather_than_parsing(bad):
+    """A formula is one token: whitespace is never skipped, so there is one dialect."""
+    with pytest.raises(TacularError, match="whitespace") as exc:
+        parse_formula(bad)
+    assert repr(bad) in str(exc.value)
+    with pytest.raises(TacularError, match="whitespace"):
+        formula_mass(bad)
+
+
 def test_bare_isotope_spelling_error_points_to_bracket_spelling():
     with pytest.raises(TacularError, match=r"13C6H12O6.*\[13C6\]H12O6"):
         parse_formula("13C6H12O6")
@@ -86,6 +106,13 @@ def test_bare_isotope_spelling_error_points_to_bracket_spelling():
 def test_non_string_raises_tacular_error(bad):
     with pytest.raises(TacularError, match="formula string"):
         parse_formula(bad)  # ty: ignore[invalid-argument-type]
+
+
+def test_monoisotopic_is_keyword_only():
+    """Every option in tacular is keyword-only, so a positional flag is a TypeError."""
+    with pytest.raises(TypeError):
+        formula_mass("H2O", False)  # ty: ignore[too-many-positional-arguments]
+    assert formula_mass("H2O", monoisotopic=False) > formula_mass("H2O", monoisotopic=True)
 
 
 def test_public_exports():

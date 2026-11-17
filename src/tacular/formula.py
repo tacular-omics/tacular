@@ -12,7 +12,9 @@ A formula is element symbols with optional integer counts (``C6H12O6``, ``H2O``)
 A count may be negative (``C6H-2``), and a symbol written twice is summed. A specific
 isotope is written in the ProForma spelling, inside brackets: ``[13C6]H12O6``. The bare
 spelling ``13C6H12O6`` and the UNIMOD spelling ``H(2)C(6)`` are not accepted, so there is
-one formula dialect. Any other input raises :class:`~tacular.errors.TacularError`.
+one formula dialect. Whitespace is not accepted either, anywhere in the string, so
+``"C6 H12 O6"`` raises instead of quietly parsing as ``C6H12O6``. Any other input raises
+:class:`~tacular.errors.TacularError`.
 """
 
 from ._datagen._utils import parse_formula_to_dict
@@ -30,14 +32,20 @@ def parse_formula(formula: str) -> dict[ElementInfo, int]:
     ``ELEMENT_LOOKUP`` with a count of 6.
 
     Raises:
-        TacularError: if ``formula`` is not a non-empty string, is not written as element
-            symbols with optional counts and ``[13C6]`` isotope groups, or names a symbol
-            that is not an element or isotope in the data. The message includes ``formula``.
+        TacularError: if ``formula`` is not a non-empty string, contains whitespace, is not
+            written as element symbols with optional counts and ``[13C6]`` isotope groups, or
+            names a symbol that is not an element or isotope in the data. The message
+            includes ``formula``.
     """
     if not isinstance(formula, str):
         raise TacularError(f"parse_formula expects a formula string such as 'C6H12O6', got {formula!r}.")
     if not formula.strip():
         raise TacularError(f"Cannot parse an empty formula, got {formula!r}.")
+    if any(character.isspace() for character in formula):
+        raise TacularError(
+            f"Cannot parse formula {formula!r}: it contains whitespace. Write the formula as a "
+            f"single token, such as 'C6H12O6' or '[13C6]H12O6'."
+        )
     if not formula.isascii():
         raise TacularError(f"Cannot parse formula {formula!r}: it contains a character that is not ASCII.")
     try:
@@ -53,7 +61,7 @@ def parse_formula(formula: str) -> dict[ElementInfo, int]:
         raise TacularError(f"Cannot parse formula {formula!r}: {exc}") from exc
 
 
-def formula_mass(formula: str, monoisotopic: bool = True) -> float:
+def formula_mass(formula: str, *, monoisotopic: bool = True) -> float:
     """Mass in Daltons of a formula string (see :func:`parse_formula` for the spelling).
 
     Args:
