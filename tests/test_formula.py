@@ -47,6 +47,33 @@ def test_negative_and_repeated_counts_follow_the_private_parser():
     assert parse_formula("C-6[13C6]") == parse_composition({"C": -6, "13C": 6})
 
 
+def test_two_spellings_of_one_isotope_are_summed():
+    """`D` and `2H` are the same element, so a formula using both counts five, not three."""
+    parsed = parse_formula("D2[2H3]")
+    assert parsed == parse_composition({"2H": 5})
+    assert parsed[ELEMENT_LOOKUP["2H"]] == 5
+    assert formula_mass("D2[2H3]") == pytest.approx(5 * ELEMENT_LOOKUP["2H"].mass, abs=1e-9)
+    assert formula_mass("D2[2H3]") == pytest.approx(10.070508890600001, abs=1e-9)
+    assert formula_mass("D2[2H3]") == pytest.approx(formula_mass("[2H5]"), abs=1e-12)
+
+
+def test_two_spellings_of_tritium_are_summed():
+    """The same holds for `T` and `3H`."""
+    parsed = parse_formula("T[3H2]")
+    assert parsed == parse_composition({"3H": 3})
+    assert parsed[ELEMENT_LOOKUP["3H"]] == 3
+    assert formula_mass("T[3H2]") == pytest.approx(3 * ELEMENT_LOOKUP["3H"].mass, abs=1e-9)
+    assert formula_mass("T[3H2]") == pytest.approx(9.0481478337, abs=1e-9)
+
+
+def test_a_formula_with_one_spelling_is_unchanged():
+    """Hydrogen and deuterium stay separate: only keys resolving to one element merge."""
+    parsed = parse_formula("C2H4D2")
+    assert parsed[ELEMENT_LOOKUP["H"]] == 4
+    assert parsed[ELEMENT_LOOKUP["D"]] == 2
+    assert len(parsed) == 3
+
+
 def test_count_of_one_is_implicit():
     assert parse_formula("H2O") == parse_composition({"H": 2, "O": 1})
 
