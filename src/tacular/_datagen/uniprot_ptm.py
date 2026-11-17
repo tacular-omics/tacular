@@ -172,23 +172,25 @@ def _build_entry(fields: dict[str, str | list[str]]) -> UniprotPtmInfo | None:
 SKIP_CROSSLINK = "crosslink"
 SKIP_NO_ID = "no ID or AC"
 SKIP_NO_FORMULA_OR_MASS = "with no formula and no mass"
+SKIP_REASONS = (SKIP_CROSSLINK, SKIP_NO_ID, SKIP_NO_FORMULA_OR_MASS)
+"""Every reason a stanza is dropped, in the order they are reported."""
 
 
 def build_with_skips(ptmlist_path: str | Path) -> tuple[str, list[UniprotPtmInfo], dict[str, int]]:
     """Parse ``ptmlist_path`` and return ``(version, infos, skipped)``.
 
-    ``skipped`` maps each reason a stanza was dropped to how many were dropped for it
-    (reasons with a count of zero are absent). ``len(infos) + sum(skipped.values())`` is
-    the number of stanzas in the file.
+    ``skipped`` maps each reason a stanza was dropped to how many were dropped for it,
+    in :data:`SKIP_REASONS` order and whatever the order of the file, so the report reads
+    the same way every time (reasons with a count of zero are absent).
+    ``len(infos) + sum(skipped.values())`` is the number of stanzas in the file.
     """
     with open(ptmlist_path) as f:
         lines = f.readlines()
 
     version = _get_version(lines)
     infos: list[UniprotPtmInfo] = []
-    skipped: dict[str, int] = {}
+    counts: dict[str, int] = {}
     for fields in _stanzas(lines):
-        reason: str | None = None
         info = _build_entry(fields)
         if info is None:
             reason = SKIP_CROSSLINK if fields.get("FT") == "CROSSLNK" else SKIP_NO_ID
@@ -199,11 +201,11 @@ def build_with_skips(ptmlist_path: str | Path) -> tuple[str, list[UniprotPtmInfo
             and info.dict_composition is None
         ):
             reason = SKIP_NO_FORMULA_OR_MASS
-        if reason is None:
-            assert info is not None
-            infos.append(info)
         else:
-            skipped[reason] = skipped.get(reason, 0) + 1
+            infos.append(info)
+            continue
+        counts[reason] = counts.get(reason, 0) + 1
+    skipped = {reason: counts[reason] for reason in SKIP_REASONS if reason in counts}
     return version, infos, skipped
 
 

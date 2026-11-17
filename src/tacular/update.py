@@ -176,8 +176,9 @@ def update(names: list[str] | None = None, *, offline: str | Path | None = None)
             )
         if skipped:
             total = sum(skipped.values())
+            noun = "record" if total == 1 else "records"
             reasons = ", ".join(f"{n} {why}" for why, n in skipped.items())
-            print(f"  note: skipped {total} {name} source records ({reasons}); {len(infos)} kept")
+            print(f"  note: skipped {total} {name} source {noun} ({reasons}); {len(infos)} kept")
         out = _cache.save(builder.JSON_NAME, builder.DATA_KEY, infos, version)
         print(f"  {name}: {len(infos)} entries (v{version}) -> {out}")
         refreshed.append(name)
