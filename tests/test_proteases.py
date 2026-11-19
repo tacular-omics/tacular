@@ -219,6 +219,26 @@ if __name__ == "__main__":
     pytest.main([__file__])
 
 
+def test_chymotrypsin_full_name_names_the_definition_its_rule_follows():
+    """The rule cleaves after F, W, Y or L and not before P, which is Mascot's chymotrypsin
+    definition, not ExPASy PeptideCutter's high-specificity rule (F or Y not before P; W not
+    before M or P; no L).
+
+    Outside source, read 2026-11-18: Matrix Science enzyme help,
+    https://www.matrixscience.com/help/enzyme_help.html, whose enzyme table has the columns
+    "Name | Cleave | Don't cleave | N or C term" and the row "Chymotrypsin | FYWL | P | C".
+    """
+    chymotrypsin = t.PROTEASE_LOOKUP["Chymotrypsin"]
+    # The rule itself is unchanged: cleave after each of F, Y, W, L, except before P.
+    for residue in "FYWL":
+        assert chymotrypsin.pattern.search(f"{residue}A") is not None
+        assert chymotrypsin.pattern.search(f"{residue}P") is None
+    assert chymotrypsin.pattern.search("MA") is None
+    # The description must not claim ExPASy high specificity, and must name the definition.
+    assert "high specificity" not in chymotrypsin.full_name.lower()
+    assert "mascot" in chymotrypsin.full_name.lower()
+
+
 def test_trypsin_full_name_matches_its_proline_rule():
     """Trypsin's regex does not cleave before P, so its full_name must not say "no proline rule"."""
     trypsin = t.PROTEASE_LOOKUP["trypsin"]

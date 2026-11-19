@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generated_date": "2026-11-16T20:00:53.860577",
+        "generated_date": "2026-11-18T22:20:01.851251",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
         "tacular_version": "2.2.1",
@@ -22,7 +22,7 @@
         {
             "id": "chymotrypsin",
             "name": "Chymotrypsin",
-            "full_name": "Chymotrypsin (high specificity)",
+            "full_name": "Chymotrypsin with proline restriction (Mascot definition: cleave FYWL, don't cleave P)",
             "regex": "(?<=[FWYL])(?!P)"
         },
         {

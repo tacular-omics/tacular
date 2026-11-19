@@ -19,7 +19,7 @@
     {
       "id": "chymotrypsin",
       "name": "Chymotrypsin",
-      "full_name": "Chymotrypsin (high specificity)",
+      "full_name": "Chymotrypsin with proline restriction (Mascot definition: cleave FYWL, don't cleave P)",
       "regex_pattern": "(?<=[FWYL])(?!P)"
     },
     {

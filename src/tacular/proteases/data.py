@@ -70,7 +70,7 @@ Protease.ASP_N: ProteaseInfo(
 Protease.CHYMOTRYPSIN: ProteaseInfo(
     id=Protease.CHYMOTRYPSIN,
     name="Chymotrypsin",
-    full_name="Chymotrypsin (high specificity)",
+    full_name="Chymotrypsin with proline restriction (Mascot definition: cleave FYWL, don't cleave P)",
     regex='(?<=[FWYL])(?!P)',
 ),
 Protease.CHYMOTRYPSIN_LOW: ProteaseInfo(
