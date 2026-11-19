@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Chymotrypsin's `full_name` read "Chymotrypsin (high specificity)", which names ExPASy
+  PeptideCutter's high-specificity rule: F or Y not before P, and W not before M or P, with
+  no L at all. The rule tacular ships cleaves after F, W, Y or L and not before P, which is
+  Mascot's chymotrypsin definition (Matrix Science enzyme table: cleave `FYWL`, don't cleave
+  `P`, C-terminal). `full_name` now reads "Chymotrypsin with proline restriction (Mascot
+  definition: cleave FYWL, don't cleave P)". The cleavage regex is unchanged, as is `name`
+  and every lookup key; `full_name` is a public field, so code comparing that exact string,
+  or reading it from `to_dict()` or `jsons/proteases.json`, sees the new wording.
+
 ## [2.2.1] (2026-11-16)
 
 ### Fixed
