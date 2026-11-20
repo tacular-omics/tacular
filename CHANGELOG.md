@@ -4,6 +4,21 @@
 
 ### Fixed
 
+- `PROTEASE_LOOKUP["Thermolysin"].regex` is now the PSI-MS controlled vocabulary's own
+  expression, `(?<=[^DE])(?=[AFILMV][^P])` (psi-ms.obo term MS:1003978, "Regular expression
+  for Thermolysin"), in place of `(?<![DE])(?=[AFILMV])`. The old rule ignored ExPASy
+  PeptideCutter's sentence "Pro blocks when located in position P2' but not when found in
+  position P1", which that page's own table omits. **Three kinds of site disappear**, all of
+  them sites the rule should never have reported: a site whose P2' residue is proline
+  (`...CF|LP...`, position 11 of P00698), a site before the last residue of the sequence
+  (nothing can follow P1', so the rule no longer cleaves there), and a site before the first
+  residue (the expression now requires a residue in P1). Measured on two UniProt sequences
+  against pyteomics 5.0.2's `expasy_rules["thermolysin"]`: bovine albumin P02769 drops from
+  175 sites to 164 and chicken lysozyme P00698 from 47 to 43, with no site lost that
+  pyteomics reports. Anyone digesting with Thermolysin gets fewer, longer peptides;
+  `tests/test_reference_proteases.py`'s P1-P1' table check no longer covers thermolysin,
+  because a two-residue window cannot express a P2' rule.
+
 - Chymotrypsin's `full_name` read "Chymotrypsin (high specificity)", which names ExPASy
   PeptideCutter's high-specificity rule: F or Y not before P, and W not before M or P, with
   no L at all. The rule tacular ships cleaves after F, W, Y or L and not before P, which is

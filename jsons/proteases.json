@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generated_date": "2026-11-18T22:20:01.851251",
+        "generated_date": "2026-11-20T07:42:15.311834",
         "generator": "tacular data generator",
         "created_by": "Patrick Garrett <pgarrett@scripps.edu>",
         "tacular_version": "2.2.1",
@@ -107,7 +107,7 @@
             "id": "thermolysin",
             "name": "Thermolysin",
             "full_name": "Bacillus thermoproteolyticus thermolysin",
-            "regex": "(?<![DE])(?=[AFILMV])"
+            "regex": "(?<=[^DE])(?=[AFILMV][^P])"
         },
         {
             "id": "unspecific",

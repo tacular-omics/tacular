@@ -16,6 +16,10 @@ Known differences, not modelled by tacular's single-regex rules:
   tacular cleaves only C-terminal to them.
 - Proalanase, pancreatic elastase and the Promega chymotrypsin variants have no
   PeptideCutter entry.
+- Thermolysin is not in the P1-P1' table below: its rule depends on P2' ("Pro blocks when
+  located in position P2'", the same page's text, which its own table omits), so a
+  two-residue window cannot express it. It is checked in
+  ``tests/test_reference_thermolysin.py`` against pyteomics on real sequences instead.
 """
 
 import re
@@ -38,7 +42,6 @@ PEPTIDECUTTER: dict[Protease, Callable[[str, str], bool]] = {
     Protease.LYS_N: lambda p1, p1p: p1p == "K",
     Protease.PROTEINASE_K: lambda p1, p1p: p1 in "AEFILTVWY",
     Protease.TRYPSIN: lambda p1, p1p: p1 in "KR" and p1p != "P",
-    Protease.THERMOLYSIN: lambda p1, p1p: p1 not in "DE" and p1p in "AFILMV",
 }
 
 
@@ -55,6 +58,7 @@ def test_regex_matches_peptidecutter_rule(protease):
 
 
 def test_thermolysin_cleaves_n_terminal_to_hydrophobic_residues():
-    # PeptideCutter: P1' in A, F, I, L, M, V; P1 not D or E.
+    # PeptideCutter: P1' in A, F, I, L, M, V; P1 not D or E. The P2' half of the rule is
+    # covered in tests/test_reference_thermolysin.py.
     regex = PROTEASE_DICT[Protease.THERMOLYSIN].regex
     assert re.split(regex, "GGLGGEVGG") == ["GG", "LGGEVGG"]
