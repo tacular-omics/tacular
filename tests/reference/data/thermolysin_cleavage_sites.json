@@ -1,7 +1,7 @@
 {
  "_source": {
   "sequences": "UniProtKB FASTA, https://rest.uniprot.org/uniprotkb/<accession>.fasta, retrieved 2026-11-20",
-  "expected_sites": "pyteomics 5.0.2, pyteomics.parser.expasy_rules['thermolysin'] = '[^DE](?=[AFILMV][^P])', cut positions = sorted({m.end() for m in re.finditer(rule, sequence)})",
+  "expected_sites": "pyteomics 5.0.2 in a throwaway environment (uv run --isolated --with pyteomics), not the workspace venv, which carries 5.0.1; the rule and these positions are identical under 5.0.1. pyteomics.parser.expasy_rules['thermolysin'] = '[^DE](?=[AFILMV][^P])', cut positions = sorted({m.end() for m in re.finditer(rule, sequence)})",
   "note": "Neither the sequences nor the expected sites come from tacular. The same positions are produced by the PSI-MS CV regex MS:1003978 '(?<=[^DE])(?=[AFILMV][^P])'."
  },
  "entries": [

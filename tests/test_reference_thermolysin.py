@@ -4,14 +4,19 @@ The fixture ``tests/reference/data/thermolysin_cleavage_sites.json`` holds two s
 downloaded from UniProtKB on 2026-11-20
 (``https://rest.uniprot.org/uniprotkb/P02769.fasta`` and ``.../P00698.fasta``) and the
 cleavage positions produced by **pyteomics 5.0.2**, whose
-``pyteomics.parser.expasy_rules["thermolysin"]`` is ``'[^DE](?=[AFILMV][^P])'``. Neither
-the sequences nor the expected positions come from tacular, before or after this change.
+``pyteomics.parser.expasy_rules["thermolysin"]`` is ``'[^DE](?=[AFILMV][^P])'``. That version
+came from a throwaway environment (``uv run --isolated --with pyteomics``), not from the
+workspace venv, which carries 5.0.1; 5.0.1 has the identical rule and reproduces both
+sequences' positions exactly, so either version regenerates the fixture. Neither the
+sequences nor the expected positions come from tacular, before or after this change.
 
 The rule tacular ships is the PSI-MS controlled vocabulary term MS:1003978,
 ``name: (?<=[^DE])(?=[AFILMV][^P])``, ``def: "Regular expression for Thermolysin."``
 (psi-ms.obo, HUPO-PSI/psi-ms-CV master, read 2026-11-20), which encodes ExPASy
-PeptideCutter's sentence "Pro blocks when located in position P2' but not when found in
-position P1."
+PeptideCutter's sentence "Pro blocks when located inposition P2' but not when found in
+position P1." (quoted as printed, the missing space included). The two further differences
+from the old rule -- no site before the last residue, none before the first -- follow from
+the expression itself, not from that sentence.
 """
 
 import json
@@ -34,7 +39,7 @@ def test_sites_match_pyteomics_on_a_real_sequence(entry):
 
 
 def test_proline_in_p2_prime_blocks_cleavage():
-    """ExPASy: "Pro blocks when located in position P2' but not when found in position P1."
+    """ExPASy: "Pro blocks when located inposition P2' but not when found in position P1."
 
     ``CF|LP`` is position 11 of P00698, which pyteomics does not cut and the old rule did.
     """
