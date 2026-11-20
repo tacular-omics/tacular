@@ -18,7 +18,6 @@
   pyteomics reports. Anyone digesting with Thermolysin gets fewer, longer peptides;
   `tests/test_reference_proteases.py`'s P1-P1' table check no longer covers thermolysin,
   because a two-residue window cannot express a P2' rule.
-
 - Chymotrypsin's `full_name` read "Chymotrypsin (high specificity)", which names ExPASy
   PeptideCutter's high-specificity rule: F or Y not before P, and W not before M or P, with
   no L at all. The rule tacular ships cleaves after F, W, Y or L and not before P, which is
